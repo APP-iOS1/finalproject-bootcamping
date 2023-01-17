@@ -11,11 +11,7 @@
 		7C52294529768E4C0020BE44 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52294429768E4C0020BE44 /* ContentView.swift */; };
 		7C52294729768E4D0020BE44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C52294629768E4D0020BE44 /* Assets.xcassets */; };
 		7C52294A29768E4D0020BE44 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C52294929768E4D0020BE44 /* Preview Assets.xcassets */; };
-		7C52294C29768E4D0020BE44 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52294B29768E4D0020BE44 /* Persistence.swift */; };
 		7C52294F29768E4D0020BE44 /* BootCamping.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7C52294D29768E4D0020BE44 /* BootCamping.xcdatamodeld */; };
-		7C52295A29768E4D0020BE44 /* BootCampingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52295929768E4D0020BE44 /* BootCampingTests.swift */; };
-		7C52296429768E4D0020BE44 /* BootCampingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52296329768E4D0020BE44 /* BootCampingUITests.swift */; };
-		7C52296629768E4D0020BE44 /* BootCampingUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52296529768E4D0020BE44 /* BootCampingUITestsLaunchTests.swift */; };
 		7C52297329768EB30020BE44 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C52297229768EB20020BE44 /* GoogleService-Info.plist */; };
 		7C52297629768F250020BE44 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7C52297529768F250020BE44 /* FirebaseAuth */; };
 		7C52297829768F250020BE44 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 7C52297729768F250020BE44 /* FirebaseFirestore */; };
@@ -24,6 +20,10 @@
 		7C52298229768FF20020BE44 /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52298129768FF20020BE44 /* UIScreen+Extension.swift */; };
 		7C522984297690090020BE44 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C522983297690090020BE44 /* Date.swift */; };
 		7C522986297690420020BE44 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C522985297690420020BE44 /* ViewModifiers.swift */; };
+		7C5229882976953A0020BE44 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5229872976953A0020BE44 /* HomeView.swift */; };
+		7C52298A297696100020BE44 /* SearchCampingSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C522989297696100020BE44 /* SearchCampingSpotView.swift */; };
+		7C52298C2976961F0020BE44 /* MyCampingDiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52298B2976961F0020BE44 /* MyCampingDiaryView.swift */; };
+		7C52298E297696280020BE44 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52298D297696280020BE44 /* MyPageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,18 +49,18 @@
 		7C52294429768E4C0020BE44 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7C52294629768E4D0020BE44 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7C52294929768E4D0020BE44 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		7C52294B29768E4D0020BE44 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		7C52294E29768E4D0020BE44 /* BootCamping.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BootCamping.xcdatamodel; sourceTree = "<group>"; };
 		7C52295029768E4D0020BE44 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C52295529768E4D0020BE44 /* BootCampingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BootCampingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7C52295929768E4D0020BE44 /* BootCampingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootCampingTests.swift; sourceTree = "<group>"; };
 		7C52295F29768E4D0020BE44 /* BootCampingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BootCampingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7C52296329768E4D0020BE44 /* BootCampingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootCampingUITests.swift; sourceTree = "<group>"; };
-		7C52296529768E4D0020BE44 /* BootCampingUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootCampingUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		7C52297229768EB20020BE44 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7C52298129768FF20020BE44 /* UIScreen+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
 		7C522983297690090020BE44 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		7C522985297690420020BE44 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
+		7C5229872976953A0020BE44 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		7C522989297696100020BE44 /* SearchCampingSpotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCampingSpotView.swift; sourceTree = "<group>"; };
+		7C52298B2976961F0020BE44 /* MyCampingDiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCampingDiaryView.swift; sourceTree = "<group>"; };
+		7C52298D297696280020BE44 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,8 +96,6 @@
 			isa = PBXGroup;
 			children = (
 				7C52294129768E4C0020BE44 /* BootCamping */,
-				7C52295829768E4D0020BE44 /* BootCampingTests */,
-				7C52296229768E4D0020BE44 /* BootCampingUITests */,
 				7C52294029768E4C0020BE44 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -120,8 +118,6 @@
 				7C52297F29768F4D0020BE44 /* Models */,
 				7C52297E29768F3D0020BE44 /* ViewModels */,
 				7C52297D29768F320020BE44 /* Views */,
-				7C52294429768E4C0020BE44 /* ContentView.swift */,
-				7C52294B29768E4D0020BE44 /* Persistence.swift */,
 				7C52294629768E4D0020BE44 /* Assets.xcassets */,
 				7C52295029768E4D0020BE44 /* Info.plist */,
 				7C52297229768EB20020BE44 /* GoogleService-Info.plist */,
@@ -139,26 +135,14 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		7C52295829768E4D0020BE44 /* BootCampingTests */ = {
-			isa = PBXGroup;
-			children = (
-				7C52295929768E4D0020BE44 /* BootCampingTests.swift */,
-			);
-			path = BootCampingTests;
-			sourceTree = "<group>";
-		};
-		7C52296229768E4D0020BE44 /* BootCampingUITests */ = {
-			isa = PBXGroup;
-			children = (
-				7C52296329768E4D0020BE44 /* BootCampingUITests.swift */,
-				7C52296529768E4D0020BE44 /* BootCampingUITestsLaunchTests.swift */,
-			);
-			path = BootCampingUITests;
-			sourceTree = "<group>";
-		};
 		7C52297D29768F320020BE44 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7C52294429768E4C0020BE44 /* ContentView.swift */,
+				7C52298F2976964E0020BE44 /* Home */,
+				7C522990297696640020BE44 /* SearchCampingSpot */,
+				7C5229912976967A0020BE44 /* MyCampingDiary */,
+				7C5229922976968B0020BE44 /* MyPage */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -185,6 +169,38 @@
 				7C522985297690420020BE44 /* ViewModifiers.swift */,
 			);
 			name = Components;
+			sourceTree = "<group>";
+		};
+		7C52298F2976964E0020BE44 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				7C5229872976953A0020BE44 /* HomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		7C522990297696640020BE44 /* SearchCampingSpot */ = {
+			isa = PBXGroup;
+			children = (
+				7C522989297696100020BE44 /* SearchCampingSpotView.swift */,
+			);
+			path = SearchCampingSpot;
+			sourceTree = "<group>";
+		};
+		7C5229912976967A0020BE44 /* MyCampingDiary */ = {
+			isa = PBXGroup;
+			children = (
+				7C52298B2976961F0020BE44 /* MyCampingDiaryView.swift */,
+			);
+			path = MyCampingDiary;
+			sourceTree = "<group>";
+		};
+		7C5229922976968B0020BE44 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				7C52298D297696280020BE44 /* MyPageView.swift */,
+			);
+			path = MyPage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -327,11 +343,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C52294C29768E4D0020BE44 /* Persistence.swift in Sources */,
+				7C52298E297696280020BE44 /* MyPageView.swift in Sources */,
 				7C522986297690420020BE44 /* ViewModifiers.swift in Sources */,
 				7C522984297690090020BE44 /* Date.swift in Sources */,
+				7C52298C2976961F0020BE44 /* MyCampingDiaryView.swift in Sources */,
 				7C52298229768FF20020BE44 /* UIScreen+Extension.swift in Sources */,
+				7C52298A297696100020BE44 /* SearchCampingSpotView.swift in Sources */,
 				7C52294529768E4C0020BE44 /* ContentView.swift in Sources */,
+				7C5229882976953A0020BE44 /* HomeView.swift in Sources */,
 				7C52294329768E4C0020BE44 /* BootCampingApp.swift in Sources */,
 				7C52294F29768E4D0020BE44 /* BootCamping.xcdatamodeld in Sources */,
 			);
@@ -341,7 +360,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C52295A29768E4D0020BE44 /* BootCampingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,8 +367,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C52296629768E4D0020BE44 /* BootCampingUITestsLaunchTests.swift in Sources */,
-				7C52296429768E4D0020BE44 /* BootCampingUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

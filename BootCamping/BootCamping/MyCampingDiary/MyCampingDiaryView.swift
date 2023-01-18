@@ -9,7 +9,18 @@ import SwiftUI
 
 struct MyCampingDiaryView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            HStack {
+                Spacer()
+                Image(systemName: "plus")
+            }
+            .padding(.horizontal)
+            .padding(.bottom)
+            Divider()
+            ScrollView {
+                DiaryDetailView()
+            }
+        }
     }
 }
 

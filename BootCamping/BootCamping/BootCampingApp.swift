@@ -22,10 +22,19 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct BootCampingApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @AppStorage("login") var isSignIn: Bool = false
     
     var body: some Scene {
         WindowGroup {
+            if isSignIn {
             ContentView()
+                .environmentObject(AuthStore())
+                .environmentObject(DiaryStore())
+            } else {
+                LoginView(isSignIn: $isSignIn)
+                    .environmentObject(AuthStore())
+            }
+
         }
     }
 }

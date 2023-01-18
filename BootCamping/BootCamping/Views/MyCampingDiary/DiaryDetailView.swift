@@ -12,111 +12,133 @@ struct DiaryDetailView: View {
     var body: some View {
         VStack {
             ScrollView{
-                VStack(alignment: .leading) {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "lock")
-                    }
-                    .padding(.horizontal)
-                    Text("충주호 보면서 불멍하기")
-                        .font(.title)
-                        .padding(.horizontal)
-                        .padding(.bottom, 1)
-                    TabView{
-                        Image("1")
-                            .resizable()
-                            .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
-                        Image("2")
-                            .resizable()
-                            .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
-                    }
-                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
-                    .tabViewStyle(PageTabViewStyle())
-                    // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
-                    .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
-                    Group {
-                        Text("충주호 캠핑장")
-                            .font(.title2)
-                            .foregroundColor(.gray)
-                            .padding(.horizontal)
-                        Text("충북 충주")
-                            .font(.title3)
-                            .foregroundColor(.gray)
-                            .padding(.horizontal)
-                            .padding(.bottom, 1)
-                        Text("방문일: 2023.01.18")
-                            .font(.title3)
-                            .foregroundColor(.gray)
-                            .padding(.horizontal)
-                            .padding(.bottom, 1)
-                        HStack {
-                            Text("by 햄뿡이")
-                            Text("15분 전")
-                            Spacer()
-                            Text("좋아요 3")
-                            Text("댓글 8")
-                        }
-                        .padding(.horizontal)
-                        .padding(.bottom, 1)
-                    }
-                    Text(sampleText)
-                        .padding(.horizontal)
+                VStack {
+                    DiaryDetailTitleView
+                    DiaryDetailTapView
+                    DiaryDetailInfoView
                     Divider()
-                    Text("댓글")
-                        .font(.title3)
-                        .foregroundColor(.gray)
-                        .padding(.horizontal)
-                        .padding(.bottom, 1)
-                    
-                    VStack {
-                        
-                        HStack{
-                            Circle()
-                                .frame(width: 30)
-                            VStack(alignment: .leading) {
-                                Text("햄뿡이")
-                                    .font(.title3)
-                                Text("너무 좋아보여요")
-                            }
-                        }
-                        HStack{
-                            Circle()
-                                .frame(width: 30)
-                            VStack(alignment: .leading) {
-                                Text("햄뿡이")
-                                    .font(.title3)
-                                Text("너무 좋아보여요")
-                            }
-                        }
-                        HStack{
-                            Circle()
-                                .frame(width: 30)
-                            VStack(alignment: .leading) {
-                                Text("햄뿡이")
-                                    .font(.title3)
-                                Text("너무 좋아보여요")
-                            }
-                        }
-
-                        
-                    }
-                    .padding(.horizontal)
+                    DiaryCommetView
                 }
             }
             Divider()
+            DiaryCommetInputView
+        }
+    }
+    // MARK: -View : 공개여부 아이콘, 제목
+    private var DiaryDetailTitleView : some View {
+        VStack(alignment: .leading) {
             HStack {
-                Circle()
-                    .frame(width: 30)
-                TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
-                Button(action: {}) {
-                    Image(systemName: "arrowshape.turn.up.right.circle")
-                        .resizable()
-                        .frame(width: 30, height: 30)
+                Spacer()
+                Image(systemName: "lock")
+            }
+            .padding(.horizontal)
+            Text("충주호 보면서 불멍하기")
+                .font(.title)
+                .padding(.horizontal)
+                .padding(.bottom, 1)
+        }
+    }
+
+    // MARK: -View : 캠핑장 사진 탭뷰
+    private var DiaryDetailTapView : some View {
+        
+        TabView{
+            Image("1")
+                .resizable()
+            Image("2")
+                .resizable()
+        }
+        .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenWidth * 0.9)
+        .tabViewStyle(PageTabViewStyle())
+        // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
+        .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
+        
+    }
+
+    // MARK: -View : 다이어리 상세 정보
+    private var DiaryDetailInfoView : some View {
+        VStack(alignment: .leading) {
+            Text("충주호 캠핑장")
+                .font(.title2)
+                .foregroundColor(.gray)
+            Text("충북 충주")
+                .font(.title3)
+                .foregroundColor(.gray)
+                .padding(.bottom, 1)
+            Text("방문일: 2023.01.18")
+                .font(.title3)
+                .foregroundColor(.gray)
+                .padding(.bottom, 1)
+            HStack {
+                Text("by 햄뿡이")
+                Text("15분 전")
+                Spacer()
+                Text("좋아요 3")
+                Text("댓글 8")
+                    .padding(.bottom, 1)
+            }
+            Text(sampleText)
+        }
+        .padding(.horizontal)
+    }
+
+
+    // MARK: -View : 댓글 뷰
+    private var DiaryCommetView : some View {
+        VStack(alignment: .leading) {
+                Text("댓글")
+                    .font(.title3)
+                    .foregroundColor(.gray)
+                    .padding(.bottom, 1)
+                HStack{
+                    Circle()
+                        .frame(width: 30)
+                    VStack(alignment: .leading) {
+                        Text("햄뿡이")
+                            .font(.title3)
+                        Text("너무 좋아보여요")
+                    }
+                }
+                HStack{
+                    Circle()
+                        .frame(width: 30)
+                    VStack(alignment: .leading) {
+                        Text("햄뿡이")
+                            .font(.title3)
+                        Text("너무 좋아보여요")
+                    }
+                }
+                HStack{
+                    Circle()
+                        .frame(width: 30)
+                    VStack(alignment: .leading) {
+                        Text("햄뿡이")
+                            .font(.title3)
+                        Text("너무 좋아보여요")
+                    }
                 }
             }
             .padding(.horizontal)
-        }
+        
     }
+
+    // MARK: -View : 댓글 작성
+    private var DiaryCommetInputView : some View {
+        
+        HStack {
+            Circle()
+                .frame(width: 30)
+            TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
+            Button(action: {}) {
+                Image(systemName: "arrowshape.turn.up.right.circle")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+            }
+        }
+        .padding(.horizontal)
+    }
+
+
 }
 
 struct DiaryDetailView_Previews: PreviewProvider {

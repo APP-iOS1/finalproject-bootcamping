@@ -116,6 +116,7 @@ struct DiaryAddView: View {
                 TextField("일기를 작성해주세요", text: $diaryContent)
                     .padding()
             }
+
         }
         
     }

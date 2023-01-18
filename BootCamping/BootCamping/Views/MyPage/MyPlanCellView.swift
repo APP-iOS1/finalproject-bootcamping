@@ -11,7 +11,7 @@ import SwiftUI
 struct MyPlanCellView: View {
     // TODO: 캠핑장 데이터 받아와서 데이터 뿌려주기
     /// 캠핑장 데이터 받아와서 이미지, 이름, 주소 넣어주면 됩니다.
-    /// D-Day는 생각해봐야 함
+    /// D-Day는 어떻게 해야 할 지 생각해봐야 함
     var body: some View {
         VStack{
             Image("1")

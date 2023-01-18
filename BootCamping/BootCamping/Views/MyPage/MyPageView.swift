@@ -12,20 +12,18 @@ enum TapMypage : String, CaseIterable {
     case bookmarkedCampingSpot = "북마크한 캠핑장"
 }
 
+// MARK: - 마이페이지 첫 화면에 나타나는 뷰
 struct MyPageView: View {
     @State private var nickname: String = "민콩"
     @State private var selectedPicker2: TapMypage = .myCamping
-  
+    
     @Namespace private var animation
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-//            Group{
-                userProfileSection
-                animate()
-                myPageTap
-//            }
-            
+            userProfileSection
+            animate()
+            myPageTap
         }
         .padding(.horizontal, UIScreen.screenWidth * 0.1)
         .toolbar {
@@ -47,9 +45,9 @@ struct MyPageView: View {
     private var userProfileSection : some View {
         HStack{
             Image(systemName: "person")
-                    .resizable()
-                    .clipShape(Circle())
-                    .frame(width: 60, height: 60)
+                .resizable()
+                .clipShape(Circle())
+                .frame(width: 60, height: 60)
             Text("\(nickname) 님")
             NavigationLink {
                 ProfileSettingView()

@@ -9,6 +9,8 @@ import SwiftUI
 //import ExpandableText     // 패키지 또 추가하면 충돌날거같아서 일단 코드만 추가해둠~
 
 struct CampingSpotListView: View {
+    //TODO: 북마크 만들기
+    
     var body: some View {
         List{
             ForEach(0..<4) { i in
@@ -42,7 +44,9 @@ struct CampingSpotListView: View {
             Image("9")
                 .resizable()
                 .frame(width: UIScreen.screenWidth*0.9, height: UIScreen.screenWidth*0.9)
+            
                 .padding(.bottom, 5)
+            
             
             // 전망 알려주는 라벨
             RoundedRectangle(cornerRadius: 10)
@@ -80,11 +84,7 @@ struct CampingSpotListView: View {
             //                        .expandAnimation(.easeOut)//optional
             
         }
-        
-        
-        
     }
-    
 }
 
 

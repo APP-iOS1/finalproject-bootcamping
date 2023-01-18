@@ -179,9 +179,9 @@
 		63AF45B72977CDDA0014B1E1 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				63AF45B82977CDE20014B1E1 /* AuthSignUpView.swift */,
-				63AF45B92977CDE20014B1E1 /* LoginPasswordView.swift */,
 				63AF45BA2977CDE20014B1E1 /* LoginView.swift */,
+				63AF45B92977CDE20014B1E1 /* LoginPasswordView.swift */,
+				63AF45B82977CDE20014B1E1 /* AuthSignUpView.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";

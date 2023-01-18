@@ -15,7 +15,8 @@ struct CampingSpotDetailView: View {
     
     var body: some View {
         let images = ["10", "9", "8"]
-        
+        let diary = ["1", "2", "3"]
+     //   let services = ["전기", "무선인터넷", "장작판매", "온수", "트렘폴린", "물놀이장", "놀이터", "산책로", "운동장", "운동시설", "마트.편의점"]
         ZStack {
             ScrollView {
                 TabView {
@@ -24,7 +25,7 @@ struct CampingSpotDetailView: View {
                     }
                 }
                 .tabViewStyle(PageTabViewStyle())
-                .frame(width: 400, height: 300)
+                .frame(width: UIScreen.screenWidth, height: 300)
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Group {
@@ -65,7 +66,7 @@ struct CampingSpotDetailView: View {
                             .font(.headline)
                             .padding(.bottom, 10)
                         Map(coordinateRegion: $region, showsUserLocation: true, userTrackingMode: .constant(.follow))
-                            .frame(width: 330, height: 250)
+                            .frame(width: UIScreen.screenWidth * 0.84, height: 250)
                             .cornerRadius(10)
                      
                     }
@@ -90,21 +91,36 @@ struct CampingSpotDetailView: View {
                         }
                         ScrollView(.horizontal) {
                             HStack {
-                                VStack(alignment: .leading) {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 120, height: 120)
-                                    Text("캠핑장 다녀옴")
-                                }
-                                VStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 120, height: 120)
-                                    Text("제목 대충 뭐라고")
-                                }
-                                VStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 120, height: 120)
-                                    Text("지으면 되나")
-                                }
+                                    ForEach(diary, id: \.self) { item in
+                                        VStack(alignment: .leading) {
+                                        Image(item).resizable()
+                                            .frame(width: 120, height: 120)
+                                            .cornerRadius(7)
+                                            .scaledToFill()
+                                        Text("충주호 캠핑장 명당자리 예약하는 방법")
+                                                .font(.callout)
+                                                .frame(width: 120)
+                                                .lineLimit(2)
+                                    }
+                            }
+                                
+                                
+                                
+//                                VStack(alignment: .leading) {
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .frame(width: 120, height: 120)
+//                                    Text("캠핑장 다녀옴")
+//                                }
+//                                VStack {
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .frame(width: 120, height: 120)
+//                                    Text("제목 대충 뭐라고")
+//                                }
+//                                VStack {
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .frame(width: 120, height: 120)
+//                                    Text("지으면 되나")
+//                                }
                                 
                             }
                         }

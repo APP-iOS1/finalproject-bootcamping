@@ -27,11 +27,14 @@ struct BootCampingApp: App {
     var body: some Scene {
         WindowGroup {
             if isSignIn {
-                ContentView()
+            ContentView()
+                .environmentObject(AuthStore())
+                .environmentObject(DiaryStore())
             } else {
                 LoginView(isSignIn: $isSignIn)
                     .environmentObject(AuthStore())
             }
+
         }
     }
 }

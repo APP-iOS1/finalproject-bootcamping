@@ -7,15 +7,19 @@
 
 import SwiftUI
 import PhotosUI
+import Firebase
 
 struct DiaryAddView: View {
     @State private var selectedItems = [PhotosPickerItem]()
     @State private var selectedImages = [UIImage]()
-    @State private var diaryTilte: String = ""
+    @State private var diaryTitle: String = ""
     @State private var locationInfo: String = ""
     @State private var visitDate: String = ""
     @State private var isOpen: Bool = false
     @State private var diaryContent: String = ""
+    
+    @EnvironmentObject var diaryStore: DiaryStore
+    @EnvironmentObject var authStore: AuthStore
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -66,7 +70,7 @@ struct DiaryAddView: View {
             }
             .padding()
             Section {
-                TextField("제목을 입력해주세요(최대 10자)", text: $diaryTilte)
+                TextField("제목을 입력해주세요(최대 10자)", text: $diaryTitle)
                     .padding(6)
                     .background {
                         RoundedRectangle(cornerRadius: 2, style: .continuous)
@@ -115,6 +119,16 @@ struct DiaryAddView: View {
             ScrollView {
                 TextField("일기를 작성해주세요", text: $diaryContent)
                     .padding()
+            }
+            HStack {
+                Spacer()
+                Button {
+                    diaryStore.addData(uid: authStore.currentUser?.uid ?? "", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageURL: [""], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "")
+                } label: {
+                    Text("일기 작성하기")
+                        .modifier(GreenButtonModifier())
+                }
+                Spacer()
             }
         }
         

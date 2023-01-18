@@ -51,7 +51,7 @@ struct SearchCampingSpotView: View {
                 recommendCampingSpot
                 
             }//VStack 끝
-            .padding(.horizontal)
+            .padding(.horizontal, UIScreen.screenWidth*0.1)
             .toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {
                     Text("BOOTCAMPING")
@@ -151,7 +151,7 @@ struct SearchCampingSpotView: View {
                 ForEach(0..<campingSpotADName.count){ index in
                     VStack(alignment: .leading){
                         NavigationLink {
-                            //TODO: 소영님 만드신 뷰랑 연결하기
+                            CampingSpotDetailView()
                         } label: {
                             ZStack(alignment: .topTrailing){
                                 Image(campingSpotADImage[index])

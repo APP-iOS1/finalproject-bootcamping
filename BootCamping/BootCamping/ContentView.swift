@@ -28,7 +28,8 @@ struct ContentView: View {
                 Label("내 캠핑일기", systemImage: "book")
             }.tag(3)
             NavigationStack {
-                HomeView()
+                LoginView()
+                    .environmentObject(AuthStore())
             }.tabItem {
                 Label("마이 페이지", systemImage: "person")
             }.tag(4)

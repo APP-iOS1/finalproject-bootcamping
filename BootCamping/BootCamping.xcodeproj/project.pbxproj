@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6384E51129778053007605CB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6384E51029778053007605CB /* User.swift */; };
+		6384E5132977807E007605CB /* AuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6384E5122977807E007605CB /* AuthStore.swift */; };
+		6384E5152977830D007605CB /* LoginPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6384E5142977830D007605CB /* LoginPasswordView.swift */; };
+		6384E5172977831D007605CB /* AuthSignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6384E5162977831D007605CB /* AuthSignUpView.swift */; };
+		6384E5192977AE85007605CB /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6384E5182977AE85007605CB /* LoginView.swift */; };
 		7C52294329768E4C0020BE44 /* BootCampingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52294229768E4C0020BE44 /* BootCampingApp.swift */; };
 		7C52294529768E4C0020BE44 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52294429768E4C0020BE44 /* ContentView.swift */; };
 		7C52294729768E4D0020BE44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C52294629768E4D0020BE44 /* Assets.xcassets */; };
@@ -44,6 +49,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6384E51029778053007605CB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		6384E5122977807E007605CB /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
+		6384E5142977830D007605CB /* LoginPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordView.swift; sourceTree = "<group>"; };
+		6384E5162977831D007605CB /* AuthSignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthSignUpView.swift; sourceTree = "<group>"; };
+		6384E5182977AE85007605CB /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		7C52293F29768E4C0020BE44 /* BootCamping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BootCamping.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C52294229768E4C0020BE44 /* BootCampingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootCampingApp.swift; sourceTree = "<group>"; };
 		7C52294429768E4C0020BE44 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -92,6 +102,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6384E50D297777FD007605CB /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				6384E5182977AE85007605CB /* LoginView.swift */,
+				6384E5142977830D007605CB /* LoginPasswordView.swift */,
+				6384E5162977831D007605CB /* AuthSignUpView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
 		7C52293629768E4C0020BE44 = {
 			isa = PBXGroup;
 			children = (
@@ -139,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				7C52294429768E4C0020BE44 /* ContentView.swift */,
+				6384E50D297777FD007605CB /* Login */,
 				7C52298F2976964E0020BE44 /* Home */,
 				7C522990297696640020BE44 /* SearchCampingSpot */,
 				7C5229912976967A0020BE44 /* MyCampingDiary */,
@@ -150,6 +171,7 @@
 		7C52297E29768F3D0020BE44 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				6384E5122977807E007605CB /* AuthStore.swift */,
 			);
 			name = ViewModels;
 			sourceTree = "<group>";
@@ -157,6 +179,7 @@
 		7C52297F29768F4D0020BE44 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6384E51029778053007605CB /* User.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -346,12 +369,17 @@
 				7C52298E297696280020BE44 /* MyPageView.swift in Sources */,
 				7C522986297690420020BE44 /* ViewModifiers.swift in Sources */,
 				7C522984297690090020BE44 /* Date.swift in Sources */,
+				6384E5192977AE85007605CB /* LoginView.swift in Sources */,
 				7C52298C2976961F0020BE44 /* MyCampingDiaryView.swift in Sources */,
+				6384E51129778053007605CB /* User.swift in Sources */,
 				7C52298229768FF20020BE44 /* UIScreen+Extension.swift in Sources */,
 				7C52298A297696100020BE44 /* SearchCampingSpotView.swift in Sources */,
+				6384E5152977830D007605CB /* LoginPasswordView.swift in Sources */,
 				7C52294529768E4C0020BE44 /* ContentView.swift in Sources */,
 				7C5229882976953A0020BE44 /* HomeView.swift in Sources */,
+				6384E5132977807E007605CB /* AuthStore.swift in Sources */,
 				7C52294329768E4C0020BE44 /* BootCampingApp.swift in Sources */,
+				6384E5172977831D007605CB /* AuthSignUpView.swift in Sources */,
 				7C52294F29768E4D0020BE44 /* BootCamping.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

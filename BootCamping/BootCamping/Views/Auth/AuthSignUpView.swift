@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct AuthSignUpView: View {
     
+    @EnvironmentObject var authStore: AuthStore
     @Environment(\.presentationMode) var presentationMode
     var userEmail: String
     @State var nickName: String = ""
@@ -126,11 +128,18 @@ struct AuthSignUpView: View {
             }.padding(.horizontal, UIScreen.screenWidth * 0.1)
             Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
             Button {
+                Task {
+                    try await authStore.authSignUp(userEmail: userEmail, password: password, confirmPassword: confirmPassword)
+                    try await authStore.authSignIn(userEmail: userEmail, password: password)
+                    authStore.addUserList(User(id: String(Auth.auth().currentUser!.uid), profileImage: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: []))
+                    authStore.authSignOut()
+                }
                 self.presentationMode.wrappedValue.dismiss()
             } label: {
                 Text("동의하고 계속하기")
                     .modifier(GreenButtonModifier())
             }
+            .disabled(!authStore.checkPasswordFormat(password: password, confirmPassword: confirmPassword) && !isAgree1)
         }
         .foregroundColor(Color("BCBlack"))
     }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		790B62D7297791590048C110 /* CampingSpotListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62D6297791590048C110 /* CampingSpotListView.swift */; };
 		7C52294329768E4C0020BE44 /* BootCampingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52294229768E4C0020BE44 /* BootCampingApp.swift */; };
 		7C52294529768E4C0020BE44 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52294429768E4C0020BE44 /* ContentView.swift */; };
 		7C52294729768E4D0020BE44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C52294629768E4D0020BE44 /* Assets.xcassets */; };
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		790B62D6297791590048C110 /* CampingSpotListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampingSpotListView.swift; sourceTree = "<group>"; };
 		7C52293F29768E4C0020BE44 /* BootCamping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BootCamping.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C52294229768E4C0020BE44 /* BootCampingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootCampingApp.swift; sourceTree = "<group>"; };
 		7C52294429768E4C0020BE44 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				7C522989297696100020BE44 /* SearchCampingSpotView.swift */,
+				790B62D6297791590048C110 /* CampingSpotListView.swift */,
 			);
 			path = SearchCampingSpot;
 			sourceTree = "<group>";
@@ -347,6 +350,7 @@
 				7C522986297690420020BE44 /* ViewModifiers.swift in Sources */,
 				7C522984297690090020BE44 /* Date.swift in Sources */,
 				7C52298C2976961F0020BE44 /* MyCampingDiaryView.swift in Sources */,
+				790B62D7297791590048C110 /* CampingSpotListView.swift in Sources */,
 				7C52298229768FF20020BE44 /* UIScreen+Extension.swift in Sources */,
 				7C52298A297696100020BE44 /* SearchCampingSpotView.swift in Sources */,
 				7C52294529768E4C0020BE44 /* ContentView.swift in Sources */,

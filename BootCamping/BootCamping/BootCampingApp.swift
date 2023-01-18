@@ -25,7 +25,7 @@ struct BootCampingApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            DiaryDetailView()
         }
     }
 }

@@ -25,15 +25,16 @@ struct DiaryDetailView: View {
                     TabView{
                         Image("1")
                             .resizable()
-                            .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                         Image("2")
                             .resizable()
-                            .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     }
-                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
+                    .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenWidth * 0.9)
+                    .padding(.horizontal, UIScreen.screenWidth * 0.1)
+                    .padding(.vertical, UIScreen.screenWidth * 0.1)
                     .tabViewStyle(PageTabViewStyle())
                     // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
                     .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
+                    
                     Group {
                         Text("충주호 캠핑장")
                             .font(.title2)

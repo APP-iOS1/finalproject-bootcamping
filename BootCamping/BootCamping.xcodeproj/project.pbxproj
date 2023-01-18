@@ -7,198 +7,236 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7C52294329768E4C0020BE44 /* BootCampingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52294229768E4C0020BE44 /* BootCampingApp.swift */; };
-		7C52294529768E4C0020BE44 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52294429768E4C0020BE44 /* ContentView.swift */; };
-		7C52294729768E4D0020BE44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C52294629768E4D0020BE44 /* Assets.xcassets */; };
-		7C52294A29768E4D0020BE44 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C52294929768E4D0020BE44 /* Preview Assets.xcassets */; };
-		7C52294F29768E4D0020BE44 /* BootCamping.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7C52294D29768E4D0020BE44 /* BootCamping.xcdatamodeld */; };
-		7C52297329768EB30020BE44 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C52297229768EB20020BE44 /* GoogleService-Info.plist */; };
-		7C52297629768F250020BE44 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7C52297529768F250020BE44 /* FirebaseAuth */; };
-		7C52297829768F250020BE44 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 7C52297729768F250020BE44 /* FirebaseFirestore */; };
-		7C52297A29768F250020BE44 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7C52297929768F250020BE44 /* FirebaseFirestoreSwift */; };
-		7C52297C29768F250020BE44 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 7C52297B29768F250020BE44 /* FirebaseStorage */; };
-		7C52298229768FF20020BE44 /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52298129768FF20020BE44 /* UIScreen+Extension.swift */; };
-		7C522984297690090020BE44 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C522983297690090020BE44 /* Date.swift */; };
-		7C522986297690420020BE44 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C522985297690420020BE44 /* ViewModifiers.swift */; };
-		7C5229882976953A0020BE44 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5229872976953A0020BE44 /* HomeView.swift */; };
-		7C52298A297696100020BE44 /* SearchCampingSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C522989297696100020BE44 /* SearchCampingSpotView.swift */; };
-		7C52298C2976961F0020BE44 /* MyCampingDiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52298B2976961F0020BE44 /* MyCampingDiaryView.swift */; };
-		7C52298E297696280020BE44 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52298D297696280020BE44 /* MyPageView.swift */; };
+		630ADB4F2977CC6C000A517B /* BootCampingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630ADB4E2977CC6C000A517B /* BootCampingApp.swift */; };
+		630ADB512977CC6C000A517B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630ADB502977CC6C000A517B /* ContentView.swift */; };
+		630ADB532977CC6D000A517B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 630ADB522977CC6D000A517B /* Assets.xcassets */; };
+		630ADB572977CC6D000A517B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 630ADB562977CC6D000A517B /* Preview Assets.xcassets */; };
+		63AF45A12977CD590014B1E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 63AF45A02977CD590014B1E1 /* GoogleService-Info.plist */; };
+		63AF45A42977CD9C0014B1E1 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 63AF45A32977CD9C0014B1E1 /* FirebaseAuth */; };
+		63AF45A62977CD9C0014B1E1 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 63AF45A52977CD9C0014B1E1 /* FirebaseFirestore */; };
+		63AF45A82977CD9C0014B1E1 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 63AF45A72977CD9C0014B1E1 /* FirebaseStorage */; };
+		63AF45AD2977CDB40014B1E1 /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45AA2977CDB40014B1E1 /* UIScreen+Extension.swift */; };
+		63AF45AE2977CDB40014B1E1 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45AB2977CDB40014B1E1 /* ViewModifiers.swift */; };
+		63AF45AF2977CDB40014B1E1 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45AC2977CDB40014B1E1 /* Date.swift */; };
+		63AF45B22977CDC60014B1E1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45B12977CDC60014B1E1 /* User.swift */; };
+		63AF45B52977CDD20014B1E1 /* AuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45B42977CDD20014B1E1 /* AuthStore.swift */; };
+		63AF45BB2977CDE20014B1E1 /* AuthSignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45B82977CDE20014B1E1 /* AuthSignUpView.swift */; };
+		63AF45BC2977CDE20014B1E1 /* LoginPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45B92977CDE20014B1E1 /* LoginPasswordView.swift */; };
+		63AF45BD2977CDE20014B1E1 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45BA2977CDE20014B1E1 /* LoginView.swift */; };
+		63AF45C02977CDF90014B1E1 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45BF2977CDF90014B1E1 /* HomeView.swift */; };
+		63AF45C42977CE0B0014B1E1 /* WeeklyPopulerCampingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45C22977CE0B0014B1E1 /* WeeklyPopulerCampingView.swift */; };
+		63AF45C52977CE0B0014B1E1 /* WeeklyPopulerCampingDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45C32977CE0B0014B1E1 /* WeeklyPopulerCampingDetailView.swift */; };
+		63AF45C92977CE1A0014B1E1 /* RealtimeCampingCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45C72977CE1A0014B1E1 /* RealtimeCampingCellView.swift */; };
+		63AF45CA2977CE1A0014B1E1 /* RealtimeCampingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45C82977CE1A0014B1E1 /* RealtimeCampingView.swift */; };
+		63AF45CC2977CE220014B1E1 /* RealtimeCampingDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45CB2977CE220014B1E1 /* RealtimeCampingDetailView.swift */; };
+		63AF45D72977CE4C0014B1E1 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45D12977CE4B0014B1E1 /* MyPageView.swift */; };
+		63AF45D82977CE4C0014B1E1 /* BookmarkCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45D22977CE4B0014B1E1 /* BookmarkCellView.swift */; };
+		63AF45D92977CE4C0014B1E1 /* MyPlanCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45D32977CE4C0014B1E1 /* MyPlanCellView.swift */; };
+		63AF45DA2977CE4C0014B1E1 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45D42977CE4C0014B1E1 /* SettingView.swift */; };
+		63AF45DB2977CE4C0014B1E1 /* ProfileSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45D52977CE4C0014B1E1 /* ProfileSettingView.swift */; };
+		63AF45DF2977CE5E0014B1E1 /* MyCampingDiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45DC2977CE5E0014B1E1 /* MyCampingDiaryView.swift */; };
+		63AF45E02977CE5E0014B1E1 /* DiaryAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45DD2977CE5E0014B1E1 /* DiaryAddView.swift */; };
+		63AF45E12977CE5E0014B1E1 /* DiaryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45DE2977CE5E0014B1E1 /* DiaryDetailView.swift */; };
+		63AF45E52977CE650014B1E1 /* CampingSpotListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */; };
+		63AF45E62977CE650014B1E1 /* CampingSpotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */; };
+		63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		7C52295629768E4D0020BE44 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7C52293729768E4C0020BE44 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7C52293E29768E4C0020BE44;
-			remoteInfo = BootCamping;
-		};
-		7C52296029768E4D0020BE44 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7C52293729768E4C0020BE44 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7C52293E29768E4C0020BE44;
-			remoteInfo = BootCamping;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		7C52293F29768E4C0020BE44 /* BootCamping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BootCamping.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		7C52294229768E4C0020BE44 /* BootCampingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootCampingApp.swift; sourceTree = "<group>"; };
-		7C52294429768E4C0020BE44 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		7C52294629768E4D0020BE44 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		7C52294929768E4D0020BE44 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		7C52294E29768E4D0020BE44 /* BootCamping.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BootCamping.xcdatamodel; sourceTree = "<group>"; };
-		7C52295029768E4D0020BE44 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7C52295529768E4D0020BE44 /* BootCampingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BootCampingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7C52295F29768E4D0020BE44 /* BootCampingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BootCampingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7C52297229768EB20020BE44 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		7C52298129768FF20020BE44 /* UIScreen+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
-		7C522983297690090020BE44 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
-		7C522985297690420020BE44 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
-		7C5229872976953A0020BE44 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		7C522989297696100020BE44 /* SearchCampingSpotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCampingSpotView.swift; sourceTree = "<group>"; };
-		7C52298B2976961F0020BE44 /* MyCampingDiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCampingDiaryView.swift; sourceTree = "<group>"; };
-		7C52298D297696280020BE44 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
+		630ADB4B2977CC6C000A517B /* BootCamping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BootCamping.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		630ADB4E2977CC6C000A517B /* BootCampingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootCampingApp.swift; sourceTree = "<group>"; };
+		630ADB502977CC6C000A517B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		630ADB522977CC6D000A517B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		630ADB542977CC6D000A517B /* BootCamping.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BootCamping.entitlements; sourceTree = "<group>"; };
+		630ADB562977CC6D000A517B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		63AF45A02977CD590014B1E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		63AF45AA2977CDB40014B1E1 /* UIScreen+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
+		63AF45AB2977CDB40014B1E1 /* ViewModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
+		63AF45AC2977CDB40014B1E1 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		63AF45B12977CDC60014B1E1 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		63AF45B42977CDD20014B1E1 /* AuthStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
+		63AF45B82977CDE20014B1E1 /* AuthSignUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthSignUpView.swift; sourceTree = "<group>"; };
+		63AF45B92977CDE20014B1E1 /* LoginPasswordView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginPasswordView.swift; sourceTree = "<group>"; };
+		63AF45BA2977CDE20014B1E1 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		63AF45BF2977CDF90014B1E1 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		63AF45C22977CE0B0014B1E1 /* WeeklyPopulerCampingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeeklyPopulerCampingView.swift; sourceTree = "<group>"; };
+		63AF45C32977CE0B0014B1E1 /* WeeklyPopulerCampingDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeeklyPopulerCampingDetailView.swift; sourceTree = "<group>"; };
+		63AF45C72977CE1A0014B1E1 /* RealtimeCampingCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealtimeCampingCellView.swift; sourceTree = "<group>"; };
+		63AF45C82977CE1A0014B1E1 /* RealtimeCampingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealtimeCampingView.swift; sourceTree = "<group>"; };
+		63AF45CB2977CE220014B1E1 /* RealtimeCampingDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealtimeCampingDetailView.swift; sourceTree = "<group>"; };
+		63AF45D12977CE4B0014B1E1 /* MyPageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
+		63AF45D22977CE4B0014B1E1 /* BookmarkCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkCellView.swift; sourceTree = "<group>"; };
+		63AF45D32977CE4C0014B1E1 /* MyPlanCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPlanCellView.swift; sourceTree = "<group>"; };
+		63AF45D42977CE4C0014B1E1 /* SettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		63AF45D52977CE4C0014B1E1 /* ProfileSettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSettingView.swift; sourceTree = "<group>"; };
+		63AF45DC2977CE5E0014B1E1 /* MyCampingDiaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCampingDiaryView.swift; sourceTree = "<group>"; };
+		63AF45DD2977CE5E0014B1E1 /* DiaryAddView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryAddView.swift; sourceTree = "<group>"; };
+		63AF45DE2977CE5E0014B1E1 /* DiaryDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryDetailView.swift; sourceTree = "<group>"; };
+		63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CampingSpotListView.swift; sourceTree = "<group>"; };
+		63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CampingSpotDetailView.swift; sourceTree = "<group>"; };
+		63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCampingSpotView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		7C52293C29768E4C0020BE44 /* Frameworks */ = {
+		630ADB482977CC6C000A517B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C52297629768F250020BE44 /* FirebaseAuth in Frameworks */,
-				7C52297C29768F250020BE44 /* FirebaseStorage in Frameworks */,
-				7C52297829768F250020BE44 /* FirebaseFirestore in Frameworks */,
-				7C52297A29768F250020BE44 /* FirebaseFirestoreSwift in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7C52295229768E4D0020BE44 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7C52295C29768E4D0020BE44 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				63AF45A42977CD9C0014B1E1 /* FirebaseAuth in Frameworks */,
+				63AF45A62977CD9C0014B1E1 /* FirebaseFirestore in Frameworks */,
+				63AF45A82977CD9C0014B1E1 /* FirebaseStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7C52293629768E4C0020BE44 = {
+		630ADB422977CC6C000A517B = {
 			isa = PBXGroup;
 			children = (
-				7C52294129768E4C0020BE44 /* BootCamping */,
-				7C52294029768E4C0020BE44 /* Products */,
+				630ADB4D2977CC6C000A517B /* BootCamping */,
+				630ADB4C2977CC6C000A517B /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		7C52294029768E4C0020BE44 /* Products */ = {
+		630ADB4C2977CC6C000A517B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7C52293F29768E4C0020BE44 /* BootCamping.app */,
-				7C52295529768E4D0020BE44 /* BootCampingTests.xctest */,
-				7C52295F29768E4D0020BE44 /* BootCampingUITests.xctest */,
+				630ADB4B2977CC6C000A517B /* BootCamping.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		7C52294129768E4C0020BE44 /* BootCamping */ = {
+		630ADB4D2977CC6C000A517B /* BootCamping */ = {
 			isa = PBXGroup;
 			children = (
-				7C52294229768E4C0020BE44 /* BootCampingApp.swift */,
-				7C52298029768F750020BE44 /* Components */,
-				7C52297F29768F4D0020BE44 /* Models */,
-				7C52297E29768F3D0020BE44 /* ViewModels */,
-				7C52297D29768F320020BE44 /* Views */,
-				7C52294629768E4D0020BE44 /* Assets.xcassets */,
-				7C52295029768E4D0020BE44 /* Info.plist */,
-				7C52297229768EB20020BE44 /* GoogleService-Info.plist */,
-				7C52294D29768E4D0020BE44 /* BootCamping.xcdatamodeld */,
-				7C52294829768E4D0020BE44 /* Preview Content */,
+				630ADB4E2977CC6C000A517B /* BootCampingApp.swift */,
+				63AF45B02977CDBC0014B1E1 /* Models */,
+				63AF45B32977CDC90014B1E1 /* ViewModels */,
+				63AF45B62977CDD50014B1E1 /* Views */,
+				63AF45A92977CDA30014B1E1 /* Components */,
+				63AF45A02977CD590014B1E1 /* GoogleService-Info.plist */,
+				630ADB522977CC6D000A517B /* Assets.xcassets */,
+				630ADB542977CC6D000A517B /* BootCamping.entitlements */,
+				630ADB552977CC6D000A517B /* Preview Content */,
 			);
 			path = BootCamping;
 			sourceTree = "<group>";
 		};
-		7C52294829768E4D0020BE44 /* Preview Content */ = {
+		630ADB552977CC6D000A517B /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				7C52294929768E4D0020BE44 /* Preview Assets.xcassets */,
+				630ADB562977CC6D000A517B /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		7C52297D29768F320020BE44 /* Views */ = {
+		63AF45A92977CDA30014B1E1 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				7C52294429768E4C0020BE44 /* ContentView.swift */,
-				7C52298F2976964E0020BE44 /* Home */,
-				7C522990297696640020BE44 /* SearchCampingSpot */,
-				7C5229912976967A0020BE44 /* MyCampingDiary */,
-				7C5229922976968B0020BE44 /* MyPage */,
+				63AF45AC2977CDB40014B1E1 /* Date.swift */,
+				63AF45AA2977CDB40014B1E1 /* UIScreen+Extension.swift */,
+				63AF45AB2977CDB40014B1E1 /* ViewModifiers.swift */,
 			);
-			name = Views;
+			path = Components;
 			sourceTree = "<group>";
 		};
-		7C52297E29768F3D0020BE44 /* ViewModels */ = {
+		63AF45B02977CDBC0014B1E1 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				63AF45B12977CDC60014B1E1 /* User.swift */,
 			);
-			name = ViewModels;
+			path = Models;
 			sourceTree = "<group>";
 		};
-		7C52297F29768F4D0020BE44 /* Models */ = {
+		63AF45B32977CDC90014B1E1 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				63AF45B42977CDD20014B1E1 /* AuthStore.swift */,
 			);
-			name = Models;
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		7C52298029768F750020BE44 /* Components */ = {
+		63AF45B62977CDD50014B1E1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				7C52298129768FF20020BE44 /* UIScreen+Extension.swift */,
-				7C522983297690090020BE44 /* Date.swift */,
-				7C522985297690420020BE44 /* ViewModifiers.swift */,
+				630ADB502977CC6C000A517B /* ContentView.swift */,
+				63AF45BE2977CDF00014B1E1 /* Home */,
+				63AF45CE2977CE320014B1E1 /* MyCampingDiary */,
+				63AF45CD2977CE250014B1E1 /* SearchCampingSpot */,
+				63AF45CF2977CE3C0014B1E1 /* MyPage */,
+				63AF45B72977CDDA0014B1E1 /* Auth */,
 			);
-			name = Components;
+			path = Views;
 			sourceTree = "<group>";
 		};
-		7C52298F2976964E0020BE44 /* Home */ = {
+		63AF45B72977CDDA0014B1E1 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				7C5229872976953A0020BE44 /* HomeView.swift */,
+				63AF45B82977CDE20014B1E1 /* AuthSignUpView.swift */,
+				63AF45B92977CDE20014B1E1 /* LoginPasswordView.swift */,
+				63AF45BA2977CDE20014B1E1 /* LoginView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		63AF45BE2977CDF00014B1E1 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				63AF45C62977CE0E0014B1E1 /* RealtimeCampingView */,
+				63AF45C12977CE020014B1E1 /* WeeklyPopulerCampingView */,
+				63AF45BF2977CDF90014B1E1 /* HomeView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
 		};
-		7C522990297696640020BE44 /* SearchCampingSpot */ = {
+		63AF45C12977CE020014B1E1 /* WeeklyPopulerCampingView */ = {
 			isa = PBXGroup;
 			children = (
-				7C522989297696100020BE44 /* SearchCampingSpotView.swift */,
+				63AF45C32977CE0B0014B1E1 /* WeeklyPopulerCampingDetailView.swift */,
+				63AF45C22977CE0B0014B1E1 /* WeeklyPopulerCampingView.swift */,
+			);
+			path = WeeklyPopulerCampingView;
+			sourceTree = "<group>";
+		};
+		63AF45C62977CE0E0014B1E1 /* RealtimeCampingView */ = {
+			isa = PBXGroup;
+			children = (
+				63AF45C72977CE1A0014B1E1 /* RealtimeCampingCellView.swift */,
+				63AF45C82977CE1A0014B1E1 /* RealtimeCampingView.swift */,
+				63AF45CB2977CE220014B1E1 /* RealtimeCampingDetailView.swift */,
+			);
+			path = RealtimeCampingView;
+			sourceTree = "<group>";
+		};
+		63AF45CD2977CE250014B1E1 /* SearchCampingSpot */ = {
+			isa = PBXGroup;
+			children = (
+				63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */,
+				63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */,
+				63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */,
 			);
 			path = SearchCampingSpot;
 			sourceTree = "<group>";
 		};
-		7C5229912976967A0020BE44 /* MyCampingDiary */ = {
+		63AF45CE2977CE320014B1E1 /* MyCampingDiary */ = {
 			isa = PBXGroup;
 			children = (
-				7C52298B2976961F0020BE44 /* MyCampingDiaryView.swift */,
+				63AF45DD2977CE5E0014B1E1 /* DiaryAddView.swift */,
+				63AF45DE2977CE5E0014B1E1 /* DiaryDetailView.swift */,
+				63AF45DC2977CE5E0014B1E1 /* MyCampingDiaryView.swift */,
 			);
 			path = MyCampingDiary;
 			sourceTree = "<group>";
 		};
-		7C5229922976968B0020BE44 /* MyPage */ = {
+		63AF45CF2977CE3C0014B1E1 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
-				7C52298D297696280020BE44 /* MyPageView.swift */,
+				63AF45D22977CE4B0014B1E1 /* BookmarkCellView.swift */,
+				63AF45D12977CE4B0014B1E1 /* MyPageView.swift */,
+				63AF45D32977CE4C0014B1E1 /* MyPlanCellView.swift */,
+				63AF45D52977CE4C0014B1E1 /* ProfileSettingView.swift */,
+				63AF45D42977CE4C0014B1E1 /* SettingView.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -206,13 +244,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		7C52293E29768E4C0020BE44 /* BootCamping */ = {
+		630ADB4A2977CC6C000A517B /* BootCamping */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7C52296929768E4D0020BE44 /* Build configuration list for PBXNativeTarget "BootCamping" */;
+			buildConfigurationList = 630ADB5A2977CC6D000A517B /* Build configuration list for PBXNativeTarget "BootCamping" */;
 			buildPhases = (
-				7C52293B29768E4C0020BE44 /* Sources */,
-				7C52293C29768E4C0020BE44 /* Frameworks */,
-				7C52293D29768E4C0020BE44 /* Resources */,
+				630ADB472977CC6C000A517B /* Sources */,
+				630ADB482977CC6C000A517B /* Frameworks */,
+				630ADB492977CC6C000A517B /* Resources */,
 			);
 			buildRules = (
 			);
@@ -220,75 +258,30 @@
 			);
 			name = BootCamping;
 			packageProductDependencies = (
-				7C52297529768F250020BE44 /* FirebaseAuth */,
-				7C52297729768F250020BE44 /* FirebaseFirestore */,
-				7C52297929768F250020BE44 /* FirebaseFirestoreSwift */,
-				7C52297B29768F250020BE44 /* FirebaseStorage */,
+				63AF45A32977CD9C0014B1E1 /* FirebaseAuth */,
+				63AF45A52977CD9C0014B1E1 /* FirebaseFirestore */,
+				63AF45A72977CD9C0014B1E1 /* FirebaseStorage */,
 			);
 			productName = BootCamping;
-			productReference = 7C52293F29768E4C0020BE44 /* BootCamping.app */;
+			productReference = 630ADB4B2977CC6C000A517B /* BootCamping.app */;
 			productType = "com.apple.product-type.application";
-		};
-		7C52295429768E4D0020BE44 /* BootCampingTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 7C52296C29768E4D0020BE44 /* Build configuration list for PBXNativeTarget "BootCampingTests" */;
-			buildPhases = (
-				7C52295129768E4D0020BE44 /* Sources */,
-				7C52295229768E4D0020BE44 /* Frameworks */,
-				7C52295329768E4D0020BE44 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				7C52295729768E4D0020BE44 /* PBXTargetDependency */,
-			);
-			name = BootCampingTests;
-			productName = BootCampingTests;
-			productReference = 7C52295529768E4D0020BE44 /* BootCampingTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		7C52295E29768E4D0020BE44 /* BootCampingUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 7C52296F29768E4D0020BE44 /* Build configuration list for PBXNativeTarget "BootCampingUITests" */;
-			buildPhases = (
-				7C52295B29768E4D0020BE44 /* Sources */,
-				7C52295C29768E4D0020BE44 /* Frameworks */,
-				7C52295D29768E4D0020BE44 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				7C52296129768E4D0020BE44 /* PBXTargetDependency */,
-			);
-			name = BootCampingUITests;
-			productName = BootCampingUITests;
-			productReference = 7C52295F29768E4D0020BE44 /* BootCampingUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		7C52293729768E4C0020BE44 /* Project object */ = {
+		630ADB432977CC6C000A517B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
-					7C52293E29768E4C0020BE44 = {
+					630ADB4A2977CC6C000A517B = {
 						CreatedOnToolsVersion = 14.2;
-					};
-					7C52295429768E4D0020BE44 = {
-						CreatedOnToolsVersion = 14.2;
-						TestTargetID = 7C52293E29768E4C0020BE44;
-					};
-					7C52295E29768E4D0020BE44 = {
-						CreatedOnToolsVersion = 14.2;
-						TestTargetID = 7C52293E29768E4C0020BE44;
 					};
 				};
 			};
-			buildConfigurationList = 7C52293A29768E4C0020BE44 /* Build configuration list for PBXProject "BootCamping" */;
+			buildConfigurationList = 630ADB462977CC6C000A517B /* Build configuration list for PBXProject "BootCamping" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -296,97 +289,71 @@
 				en,
 				Base,
 			);
-			mainGroup = 7C52293629768E4C0020BE44;
+			mainGroup = 630ADB422977CC6C000A517B;
 			packageReferences = (
-				7C52297429768F250020BE44 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
-			productRefGroup = 7C52294029768E4C0020BE44 /* Products */;
+			productRefGroup = 630ADB4C2977CC6C000A517B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7C52293E29768E4C0020BE44 /* BootCamping */,
-				7C52295429768E4D0020BE44 /* BootCampingTests */,
-				7C52295E29768E4D0020BE44 /* BootCampingUITests */,
+				630ADB4A2977CC6C000A517B /* BootCamping */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		7C52293D29768E4C0020BE44 /* Resources */ = {
+		630ADB492977CC6C000A517B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C52294A29768E4D0020BE44 /* Preview Assets.xcassets in Resources */,
-				7C52294729768E4D0020BE44 /* Assets.xcassets in Resources */,
-				7C52297329768EB30020BE44 /* GoogleService-Info.plist in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7C52295329768E4D0020BE44 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7C52295D29768E4D0020BE44 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				630ADB572977CC6D000A517B /* Preview Assets.xcassets in Resources */,
+				630ADB532977CC6D000A517B /* Assets.xcassets in Resources */,
+				63AF45A12977CD590014B1E1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		7C52293B29768E4C0020BE44 /* Sources */ = {
+		630ADB472977CC6C000A517B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C52298E297696280020BE44 /* MyPageView.swift in Sources */,
-				7C522986297690420020BE44 /* ViewModifiers.swift in Sources */,
-				7C522984297690090020BE44 /* Date.swift in Sources */,
-				7C52298C2976961F0020BE44 /* MyCampingDiaryView.swift in Sources */,
-				7C52298229768FF20020BE44 /* UIScreen+Extension.swift in Sources */,
-				7C52298A297696100020BE44 /* SearchCampingSpotView.swift in Sources */,
-				7C52294529768E4C0020BE44 /* ContentView.swift in Sources */,
-				7C5229882976953A0020BE44 /* HomeView.swift in Sources */,
-				7C52294329768E4C0020BE44 /* BootCampingApp.swift in Sources */,
-				7C52294F29768E4D0020BE44 /* BootCamping.xcdatamodeld in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7C52295129768E4D0020BE44 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7C52295B29768E4D0020BE44 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				63AF45CA2977CE1A0014B1E1 /* RealtimeCampingView.swift in Sources */,
+				630ADB512977CC6C000A517B /* ContentView.swift in Sources */,
+				63AF45DF2977CE5E0014B1E1 /* MyCampingDiaryView.swift in Sources */,
+				63AF45AF2977CDB40014B1E1 /* Date.swift in Sources */,
+				63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */,
+				63AF45DA2977CE4C0014B1E1 /* SettingView.swift in Sources */,
+				63AF45BB2977CDE20014B1E1 /* AuthSignUpView.swift in Sources */,
+				63AF45E52977CE650014B1E1 /* CampingSpotListView.swift in Sources */,
+				63AF45B52977CDD20014B1E1 /* AuthStore.swift in Sources */,
+				63AF45D72977CE4C0014B1E1 /* MyPageView.swift in Sources */,
+				63AF45BC2977CDE20014B1E1 /* LoginPasswordView.swift in Sources */,
+				63AF45C02977CDF90014B1E1 /* HomeView.swift in Sources */,
+				63AF45E02977CE5E0014B1E1 /* DiaryAddView.swift in Sources */,
+				63AF45E12977CE5E0014B1E1 /* DiaryDetailView.swift in Sources */,
+				63AF45D82977CE4C0014B1E1 /* BookmarkCellView.swift in Sources */,
+				63AF45B22977CDC60014B1E1 /* User.swift in Sources */,
+				63AF45E62977CE650014B1E1 /* CampingSpotDetailView.swift in Sources */,
+				63AF45D92977CE4C0014B1E1 /* MyPlanCellView.swift in Sources */,
+				63AF45DB2977CE4C0014B1E1 /* ProfileSettingView.swift in Sources */,
+				63AF45C42977CE0B0014B1E1 /* WeeklyPopulerCampingView.swift in Sources */,
+				63AF45C52977CE0B0014B1E1 /* WeeklyPopulerCampingDetailView.swift in Sources */,
+				63AF45CC2977CE220014B1E1 /* RealtimeCampingDetailView.swift in Sources */,
+				630ADB4F2977CC6C000A517B /* BootCampingApp.swift in Sources */,
+				63AF45AD2977CDB40014B1E1 /* UIScreen+Extension.swift in Sources */,
+				63AF45BD2977CDE20014B1E1 /* LoginView.swift in Sources */,
+				63AF45AE2977CDB40014B1E1 /* ViewModifiers.swift in Sources */,
+				63AF45C92977CE1A0014B1E1 /* RealtimeCampingCellView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		7C52295729768E4D0020BE44 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 7C52293E29768E4C0020BE44 /* BootCamping */;
-			targetProxy = 7C52295629768E4D0020BE44 /* PBXContainerItemProxy */;
-		};
-		7C52296129768E4D0020BE44 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 7C52293E29768E4C0020BE44 /* BootCamping */;
-			targetProxy = 7C52296029768E4D0020BE44 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
-		7C52296729768E4D0020BE44 /* Debug */ = {
+		630ADB582977CC6D000A517B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -436,17 +403,15 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
-		7C52296829768E4D0020BE44 /* Release */ = {
+		630ADB592977CC6D000A517B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -490,179 +455,106 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		7C52296A29768E4D0020BE44 /* Debug */ = {
+		630ADB5B2977CC6D000A517B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = BootCamping/BootCamping.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BootCamping/Preview Content\"";
+				DEVELOPMENT_TEAM = QJ9LBR5S7P;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCamping;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCamping.BootCamping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		7C52296B29768E4D0020BE44 /* Release */ = {
+		630ADB5C2977CC6D000A517B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = BootCamping/BootCamping.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BootCamping/Preview Content\"";
+				DEVELOPMENT_TEAM = QJ9LBR5S7P;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCamping;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCamping.BootCamping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		7C52296D29768E4D0020BE44 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCampingTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BootCamping.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BootCamping";
-			};
-			name = Debug;
-		};
-		7C52296E29768E4D0020BE44 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCampingTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BootCamping.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BootCamping";
-			};
-			name = Release;
-		};
-		7C52297029768E4D0020BE44 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCampingUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = BootCamping;
-			};
-			name = Debug;
-		};
-		7C52297129768E4D0020BE44 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCampingUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = BootCamping;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7C52293A29768E4C0020BE44 /* Build configuration list for PBXProject "BootCamping" */ = {
+		630ADB462977CC6C000A517B /* Build configuration list for PBXProject "BootCamping" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7C52296729768E4D0020BE44 /* Debug */,
-				7C52296829768E4D0020BE44 /* Release */,
+				630ADB582977CC6D000A517B /* Debug */,
+				630ADB592977CC6D000A517B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7C52296929768E4D0020BE44 /* Build configuration list for PBXNativeTarget "BootCamping" */ = {
+		630ADB5A2977CC6D000A517B /* Build configuration list for PBXNativeTarget "BootCamping" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7C52296A29768E4D0020BE44 /* Debug */,
-				7C52296B29768E4D0020BE44 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		7C52296C29768E4D0020BE44 /* Build configuration list for PBXNativeTarget "BootCampingTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				7C52296D29768E4D0020BE44 /* Debug */,
-				7C52296E29768E4D0020BE44 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		7C52296F29768E4D0020BE44 /* Build configuration list for PBXNativeTarget "BootCampingUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				7C52297029768E4D0020BE44 /* Debug */,
-				7C52297129768E4D0020BE44 /* Release */,
+				630ADB5B2977CC6D000A517B /* Debug */,
+				630ADB5C2977CC6D000A517B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -670,51 +562,33 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		7C52297429768F250020BE44 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.0;
+				branch = master;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7C52297529768F250020BE44 /* FirebaseAuth */ = {
+		63AF45A32977CD9C0014B1E1 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7C52297429768F250020BE44 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
 		};
-		7C52297729768F250020BE44 /* FirebaseFirestore */ = {
+		63AF45A52977CD9C0014B1E1 /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7C52297429768F250020BE44 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
 		};
-		7C52297929768F250020BE44 /* FirebaseFirestoreSwift */ = {
+		63AF45A72977CD9C0014B1E1 /* FirebaseStorage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7C52297429768F250020BE44 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestoreSwift;
-		};
-		7C52297B29768F250020BE44 /* FirebaseStorage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7C52297429768F250020BE44 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
-
-/* Begin XCVersionGroup section */
-		7C52294D29768E4D0020BE44 /* BootCamping.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				7C52294E29768E4D0020BE44 /* BootCamping.xcdatamodel */,
-			);
-			currentVersion = 7C52294E29768E4D0020BE44 /* BootCamping.xcdatamodel */;
-			path = BootCamping.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
-	rootObject = 7C52293729768E4C0020BE44 /* Project object */;
+	rootObject = 630ADB432977CC6C000A517B /* Project object */;
 }

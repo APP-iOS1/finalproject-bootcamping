@@ -41,6 +41,8 @@
 		63AF45E62977CE650014B1E1 /* CampingSpotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */; };
 		63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */; };
 		AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD373AF92977D68A00E1236A /* DiaryCellView.swift */; };
+		7C715C982977E056009BC678 /* Diary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C715C972977E056009BC678 /* Diary.swift */; };
+		7C715C9A2977E086009BC678 /* DiaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C715C992977E086009BC678 /* DiaryStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +79,8 @@
 		63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CampingSpotDetailView.swift; sourceTree = "<group>"; };
 		63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCampingSpotView.swift; sourceTree = "<group>"; };
 		AD373AF92977D68A00E1236A /* DiaryCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCellView.swift; sourceTree = "<group>"; };
+		7C715C972977E056009BC678 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
+		7C715C992977E086009BC678 /* DiaryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				63AF45B12977CDC60014B1E1 /* User.swift */,
+				7C715C972977E056009BC678 /* Diary.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -155,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				63AF45B42977CDD20014B1E1 /* AuthStore.swift */,
+				7C715C992977E086009BC678 /* DiaryStore.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -175,9 +181,9 @@
 		63AF45B72977CDDA0014B1E1 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				63AF45B82977CDE20014B1E1 /* AuthSignUpView.swift */,
-				63AF45B92977CDE20014B1E1 /* LoginPasswordView.swift */,
 				63AF45BA2977CDE20014B1E1 /* LoginView.swift */,
+				63AF45B92977CDE20014B1E1 /* LoginPasswordView.swift */,
+				63AF45B82977CDE20014B1E1 /* AuthSignUpView.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -214,9 +220,9 @@
 		63AF45CD2977CE250014B1E1 /* SearchCampingSpot */ = {
 			isa = PBXGroup;
 			children = (
-				63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */,
-				63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */,
 				63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */,
+				63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */,
+				63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */,
 			);
 			path = SearchCampingSpot;
 			sourceTree = "<group>";
@@ -329,7 +335,9 @@
 				63AF45AF2977CDB40014B1E1 /* Date.swift in Sources */,
 				63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */,
 				63AF45DA2977CE4C0014B1E1 /* SettingView.swift in Sources */,
+				7C715C9A2977E086009BC678 /* DiaryStore.swift in Sources */,
 				63AF45BB2977CDE20014B1E1 /* AuthSignUpView.swift in Sources */,
+				7C715C982977E056009BC678 /* Diary.swift in Sources */,
 				63AF45E52977CE650014B1E1 /* CampingSpotListView.swift in Sources */,
 				63AF45B52977CDD20014B1E1 /* AuthStore.swift in Sources */,
 				63AF45D72977CE4C0014B1E1 /* MyPageView.swift in Sources */,
@@ -472,10 +480,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = BootCamping/BootCamping.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BootCamping/Preview Content\"";
-				DEVELOPMENT_TEAM = QJ9LBR5S7P;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -494,7 +503,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCamping.BootCamping;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCamping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -510,10 +519,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = BootCamping/BootCamping.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BootCamping/Preview Content\"";
-				DEVELOPMENT_TEAM = QJ9LBR5S7P;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -532,7 +542,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCamping.BootCamping;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCamping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";

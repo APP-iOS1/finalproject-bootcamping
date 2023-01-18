@@ -11,6 +11,8 @@ struct LoginView: View {
     
     @EnvironmentObject var authStore: AuthStore
     @State var userEmail: String = ""
+    @Binding var isSignIn: Bool
+    @State private var isLogin: Bool = true
     
     var body: some View {
         NavigationStack {
@@ -27,10 +29,10 @@ struct LoginView: View {
                      
                     }
                 NavigationLink {
-                    if authStore.testFunc(test: userEmail) != "" {
-                        LoginPasswordView(userEmail: userEmail)
-                    } else {
+                    if isLogin {
                         AuthSignUpView(userEmail: userEmail)
+                    } else {
+                        LoginPasswordView(userEmail: userEmail, isSignIn: $isSignIn)
                     }
                 } label: {
                     Text("계속")
@@ -79,13 +81,18 @@ struct LoginView: View {
             }
             .foregroundColor(Color("BCBlack"))
             .padding()
+            .task {
+                Task {
+                    isLogin = try await authStore.checkUserEmailDuplicated(userEmail: userEmail)
+                }
+            }
         }
     }
 }
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
+        LoginView(isSignIn: .constant(true))
             .environmentObject(AuthStore())
     }
 }

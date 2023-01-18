@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AuthSignUpView: View {
     
+    @Environment(\.presentationMode) var presentationMode
     var userEmail: String
     @State var nickName: String = ""
     @State var password: String = ""
@@ -125,7 +126,7 @@ struct AuthSignUpView: View {
             }.padding(.horizontal, UIScreen.screenWidth * 0.1)
             Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
             Button {
-                
+                self.presentationMode.wrappedValue.dismiss()
             } label: {
                 Text("동의하고 계속하기")
                     .modifier(GreenButtonModifier())
@@ -133,7 +134,7 @@ struct AuthSignUpView: View {
         }
         .foregroundColor(Color("BCBlack"))
     }
-    
+    //개인정보 수집 뷰
     var Agree1View: some View {
         Text("""
 콘텐츠로 바로가기
@@ -228,6 +229,7 @@ struct AuthSignUpView: View {
 """)
     }
     
+    //마케팅 이메일 수신 뷰
     var Agree2View: some View {
         Text("""
 콘텐츠로 바로가기

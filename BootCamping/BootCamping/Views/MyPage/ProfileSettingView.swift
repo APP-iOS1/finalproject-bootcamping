@@ -24,7 +24,10 @@ struct ProfileSettingView: View {
             }
             updateUserNameTextField
             updateUserPhoneNumberTextField
+            editButton
             Spacer()
+            signOutButton
+            
         }
         .padding(.vertical, UIScreen.screenHeight * 0.05)
         .padding(.horizontal, UIScreen.screenWidth * 0.1)
@@ -69,7 +72,7 @@ struct ProfileSettingView: View {
     }
     // MARK: -View : updateNicknameTextField
     private var updateNicknameTextField : some View {
-        TextField("변경할 닉네임", text: $updateNickname)
+        TextField("민콩콩콩", text: $updateNickname)
     }
     
     // MARK: -View : updateUserNameTextField
@@ -89,6 +92,32 @@ struct ProfileSettingView: View {
                 .font(.title3)
                 .bold()
             Text("01012345678")
+        }
+    }
+    // MARK: -View : editButton
+    private var editButton : some View {
+        Button {
+            // TODO: UserInfo 수정하기
+        } label: {
+            Text("수정")
+                .modifier(GreenButtonModifier())
+        }
+    }
+    // MARK: -View : signOutButton
+    private var signOutButton : some View {
+        HStack{
+            Spacer()
+            Button {
+                // TODO: 로그아웃
+            } label: {
+                Text("로그아웃")
+            }
+            Text("|")
+            Button {
+                // TODO: 회원탈퇴
+            } label: {
+                Text("회원탈퇴")
+            }
         }
     }
 }

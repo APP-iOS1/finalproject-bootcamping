@@ -19,14 +19,15 @@ struct MyPageView: View {
     @Namespace private var animation
     
     var body: some View {
-        ScrollView {
-            Group{
+        ScrollView(showsIndicators: false) {
+//            Group{
                 userProfileSection
                 animate()
                 myPageTap
-            }
-            .padding(.horizontal, 20)
+//            }
+            
         }
+        .padding(.horizontal, UIScreen.screenWidth * 0.1)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("마이페이지")

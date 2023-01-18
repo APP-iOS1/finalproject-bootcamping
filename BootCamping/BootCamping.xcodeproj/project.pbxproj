@@ -30,6 +30,11 @@
 		7C52298A297696100020BE44 /* SearchCampingSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C522989297696100020BE44 /* SearchCampingSpotView.swift */; };
 		7C52298C2976961F0020BE44 /* MyCampingDiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52298B2976961F0020BE44 /* MyCampingDiaryView.swift */; };
 		7C52298E297696280020BE44 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52298D297696280020BE44 /* MyPageView.swift */; };
+		CA729F252977862300CCC3BB /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F242977862300CCC3BB /* SettingView.swift */; };
+		CA729F2729778BC700CCC3BB /* ProfileSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F2629778BC700CCC3BB /* ProfileSettingView.swift */; };
+		CA729F2B29778F3D00CCC3BB /* MyPlanCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F2A29778F3D00CCC3BB /* MyPlanCellView.swift */; };
+		CA729F2D29778F5500CCC3BB /* BookmarkCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F2C29778F5500CCC3BB /* BookmarkCellView.swift */; };
+		CA729F2F2977BE6D00CCC3BB /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F2E2977BE6C00CCC3BB /* EmptyView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +78,11 @@
 		7C522989297696100020BE44 /* SearchCampingSpotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCampingSpotView.swift; sourceTree = "<group>"; };
 		7C52298B2976961F0020BE44 /* MyCampingDiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCampingDiaryView.swift; sourceTree = "<group>"; };
 		7C52298D297696280020BE44 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
+		CA729F242977862300CCC3BB /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		CA729F2629778BC700CCC3BB /* ProfileSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingView.swift; sourceTree = "<group>"; };
+		CA729F2A29778F3D00CCC3BB /* MyPlanCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlanCellView.swift; sourceTree = "<group>"; };
+		CA729F2C29778F5500CCC3BB /* BookmarkCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkCellView.swift; sourceTree = "<group>"; };
+		CA729F2E2977BE6C00CCC3BB /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -233,6 +243,11 @@
 			isa = PBXGroup;
 			children = (
 				7C52298D297696280020BE44 /* MyPageView.swift */,
+				CA729F2A29778F3D00CCC3BB /* MyPlanCellView.swift */,
+				CA729F242977862300CCC3BB /* SettingView.swift */,
+				CA729F2629778BC700CCC3BB /* ProfileSettingView.swift */,
+				CA729F2C29778F5500CCC3BB /* BookmarkCellView.swift */,
+				CA729F2E2977BE6C00CCC3BB /* EmptyView.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -378,6 +393,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C52298E297696280020BE44 /* MyPageView.swift in Sources */,
+				CA729F2F2977BE6D00CCC3BB /* EmptyView.swift in Sources */,
+				CA729F2B29778F3D00CCC3BB /* MyPlanCellView.swift in Sources */,
 				7C2D93CB297794E000A0A3B3 /* RealtimeCampingCellView.swift in Sources */,
 				7C522986297690420020BE44 /* ViewModifiers.swift in Sources */,
 				7C522984297690090020BE44 /* Date.swift in Sources */,
@@ -392,7 +409,10 @@
 				7C2D93C929778E7100A0A3B3 /* RealtimeCampingDetailView.swift in Sources */,
 				7C2D93C4297781AF00A0A3B3 /* RealtimeCampingView.swift in Sources */,
 				7C52294329768E4C0020BE44 /* BootCampingApp.swift in Sources */,
+				CA729F2729778BC700CCC3BB /* ProfileSettingView.swift in Sources */,
 				7C52294F29768E4D0020BE44 /* BootCamping.xcdatamodeld in Sources */,
+				CA729F252977862300CCC3BB /* SettingView.swift in Sources */,
+				CA729F2D29778F5500CCC3BB /* BookmarkCellView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

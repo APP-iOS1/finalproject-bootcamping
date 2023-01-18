@@ -8,7 +8,7 @@
 import SwiftUI
 
 // MARK: -Modifier :  메인 그린 버튼 속성
-struct GreenButtonModifier : ViewModifier {
+struct GreenButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.headline)
@@ -16,6 +16,15 @@ struct GreenButtonModifier : ViewModifier {
             .foregroundColor(.white)
             .background(Color("BCGreen"))
             .cornerRadius(10)
+    }
+}
+
+struct PhotoCardModifier : ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .frame(width: UIScreen.screenWidth * 0.75, height: UIScreen.screenHeight * 0.7)
+            .shadow(radius: 3)
+            .padding(10)
     }
 }
 

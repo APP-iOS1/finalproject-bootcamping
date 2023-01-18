@@ -36,9 +36,6 @@
 		7C52298A297696100020BE44 /* SearchCampingSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C522989297696100020BE44 /* SearchCampingSpotView.swift */; };
 		7C52298C2976961F0020BE44 /* MyCampingDiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52298B2976961F0020BE44 /* MyCampingDiaryView.swift */; };
 		7C52298E297696280020BE44 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C52298D297696280020BE44 /* MyPageView.swift */; };
-		AD373AED29777DF300E1236A /* DiaryAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD373AEC29777DF300E1236A /* DiaryAddView.swift */; };
-		AD373AF129777E2E00E1236A /* DiaryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD373AF029777E2E00E1236A /* DiaryDetailView.swift */; };
-		AD373AF4297783BE00E1236A /* ExpandableText in Frameworks */ = {isa = PBXBuildFile; productRef = AD373AF3297783BE00E1236A /* ExpandableText */; };
 		CA729F252977862300CCC3BB /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F242977862300CCC3BB /* SettingView.swift */; };
 		CA729F2729778BC700CCC3BB /* ProfileSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F2629778BC700CCC3BB /* ProfileSettingView.swift */; };
 		CA729F2B29778F3D00CCC3BB /* MyPlanCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F2A29778F3D00CCC3BB /* MyPlanCellView.swift */; };
@@ -93,8 +90,6 @@
 		7C522989297696100020BE44 /* SearchCampingSpotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCampingSpotView.swift; sourceTree = "<group>"; };
 		7C52298B2976961F0020BE44 /* MyCampingDiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCampingDiaryView.swift; sourceTree = "<group>"; };
 		7C52298D297696280020BE44 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
-		AD373AEC29777DF300E1236A /* DiaryAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryAddView.swift; sourceTree = "<group>"; };
-		AD373AF029777E2E00E1236A /* DiaryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailView.swift; sourceTree = "<group>"; };
 		CA729F242977862300CCC3BB /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		CA729F2629778BC700CCC3BB /* ProfileSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingView.swift; sourceTree = "<group>"; };
 		CA729F2A29778F3D00CCC3BB /* MyPlanCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlanCellView.swift; sourceTree = "<group>"; };
@@ -111,7 +106,6 @@
 				7C52297C29768F250020BE44 /* FirebaseStorage in Frameworks */,
 				7C52297829768F250020BE44 /* FirebaseFirestore in Frameworks */,
 				7C52297A29768F250020BE44 /* FirebaseFirestoreSwift in Frameworks */,
-				AD373AF4297783BE00E1236A /* ExpandableText in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,8 +259,6 @@
 			isa = PBXGroup;
 			children = (
 				7C52298B2976961F0020BE44 /* MyCampingDiaryView.swift */,
-				AD373AF029777E2E00E1236A /* DiaryDetailView.swift */,
-				AD373AEC29777DF300E1236A /* DiaryAddView.swift */,
 			);
 			path = MyCampingDiary;
 			sourceTree = "<group>";
@@ -305,7 +297,6 @@
 				7C52297729768F250020BE44 /* FirebaseFirestore */,
 				7C52297929768F250020BE44 /* FirebaseFirestoreSwift */,
 				7C52297B29768F250020BE44 /* FirebaseStorage */,
-				AD373AF3297783BE00E1236A /* ExpandableText */,
 			);
 			productName = BootCamping;
 			productReference = 7C52293F29768E4C0020BE44 /* BootCamping.app */;
@@ -381,7 +372,6 @@
 			mainGroup = 7C52293629768E4C0020BE44;
 			packageReferences = (
 				7C52297429768F250020BE44 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				AD373AF2297783BE00E1236A /* XCRemoteSwiftPackageReference "ExpandableText" */,
 			);
 			productRefGroup = 7C52294029768E4C0020BE44 /* Products */;
 			projectDirPath = "";
@@ -452,9 +442,6 @@
 				7C52294329768E4C0020BE44 /* BootCampingApp.swift in Sources */,
 				CA729F2729778BC700CCC3BB /* ProfileSettingView.swift in Sources */,
 				7C52294F29768E4D0020BE44 /* BootCamping.xcdatamodeld in Sources */,
-
-				AD373AED29777DF300E1236A /* DiaryAddView.swift in Sources */,
-				AD373AF129777E2E00E1236A /* DiaryDetailView.swift in Sources */,
 				CA729F252977862300CCC3BB /* SettingView.swift in Sources */,
 				CA729F2D29778F5500CCC3BB /* BookmarkCellView.swift in Sources */,
 			);
@@ -782,14 +769,6 @@
 				minimumVersion = 9.0.0;
 			};
 		};
-		AD373AF2297783BE00E1236A /* XCRemoteSwiftPackageReference "ExpandableText" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/NuPlay/ExpandableText";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -812,11 +791,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7C52297429768F250020BE44 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
-		};
-		AD373AF3297783BE00E1236A /* ExpandableText */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AD373AF2297783BE00E1236A /* XCRemoteSwiftPackageReference "ExpandableText" */;
-			productName = ExpandableText;
 		};
 /* End XCSwiftPackageProductDependency section */
 

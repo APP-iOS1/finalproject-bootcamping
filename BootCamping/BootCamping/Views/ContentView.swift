@@ -9,7 +9,12 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
+    
     @State private var tabSelection = 1
+    
+    @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var diaryStore: DiaryStore
+    
     var body: some View {
         TabView(selection: $tabSelection) {
             NavigationStack {
@@ -23,7 +28,11 @@ struct ContentView: View {
                 Label("캠핑장 검색", systemImage: "magnifyingglass")
             }.tag(2)
             NavigationStack {
-                MyCampingDiaryView()
+                if diaryStore.diaryList.count == 0 {
+                    DiaryAddView()
+                } else {
+                    MyCampingDiaryView()
+                }
             }.tabItem {
                 Label("내 캠핑일기", systemImage: "book")
             }.tag(3)

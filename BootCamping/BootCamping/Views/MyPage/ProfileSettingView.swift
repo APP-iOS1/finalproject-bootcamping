@@ -8,15 +8,26 @@
 import SwiftUI
 import PhotosUI
 
+// FIXME: 현재 기획한 UserInfo 데이터 모델에 따라서 텍스트 필드 변경 필요
+/// 현재 기획 모델 그대로 가면 닉네임이랑 이메일, 비밀번호 변경하는 걸로 바꿔야 할 것 같습니다
 struct ProfileSettingView: View {
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
+
+    @State private var updateNickname: String = ""
     
     var body: some View {
-        VStack(spacing: 10){
-            photoPicker
-            // TODO: 개인정보 수정 텍스트 필드 추가해야 함
+        VStack(alignment: .leading, spacing: UIScreen.screenHeight * 0.05){
+            HStack{
+                photoPicker
+                updateNicknameTextField
+            }
+            updateUserNameTextField
+            updateUserPhoneNumberTextField
+            Spacer()
         }
+        .padding(.vertical, UIScreen.screenHeight * 0.05)
+        .padding(.horizontal, UIScreen.screenWidth * 0.1)
     }
     
     // MARK: -View : PhotoPicker
@@ -54,6 +65,30 @@ struct ProfileSettingView: View {
                         }
                     }
             }
+        }
+    }
+    // MARK: -View : updateNicknameTextField
+    private var updateNicknameTextField : some View {
+        TextField("변경할 닉네임", text: $updateNickname)
+    }
+    
+    // MARK: -View : updateUserNameTextField
+    private var updateUserNameTextField : some View {
+        VStack(alignment: .leading, spacing: 10){
+            Text("예약자 이름")
+                .font(.title3)
+                .bold()
+            Text("이민경")
+        }
+    }
+    
+    // MARK: -View : updateUserPhoneNumberTextField
+    private var updateUserPhoneNumberTextField : some View {
+        VStack(alignment: .leading, spacing: 10){
+            Text("휴대폰 번호")
+                .font(.title3)
+                .bold()
+            Text("01012345678")
         }
     }
 }

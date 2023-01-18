@@ -40,6 +40,7 @@
 		63AF45E52977CE650014B1E1 /* CampingSpotListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */; };
 		63AF45E62977CE650014B1E1 /* CampingSpotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */; };
 		63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */; };
+		AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD373AF92977D68A00E1236A /* DiaryCellView.swift */; };
 		7C715C982977E056009BC678 /* Diary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C715C972977E056009BC678 /* Diary.swift */; };
 		7C715C9A2977E086009BC678 /* DiaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C715C992977E086009BC678 /* DiaryStore.swift */; };
 /* End PBXBuildFile section */
@@ -77,6 +78,7 @@
 		63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CampingSpotListView.swift; sourceTree = "<group>"; };
 		63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CampingSpotDetailView.swift; sourceTree = "<group>"; };
 		63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCampingSpotView.swift; sourceTree = "<group>"; };
+		AD373AF92977D68A00E1236A /* DiaryCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCellView.swift; sourceTree = "<group>"; };
 		7C715C972977E056009BC678 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
 		7C715C992977E086009BC678 /* DiaryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -228,9 +230,10 @@
 		63AF45CE2977CE320014B1E1 /* MyCampingDiary */ = {
 			isa = PBXGroup;
 			children = (
-				63AF45DD2977CE5E0014B1E1 /* DiaryAddView.swift */,
-				63AF45DE2977CE5E0014B1E1 /* DiaryDetailView.swift */,
 				63AF45DC2977CE5E0014B1E1 /* MyCampingDiaryView.swift */,
+				63AF45DE2977CE5E0014B1E1 /* DiaryDetailView.swift */,
+				AD373AF92977D68A00E1236A /* DiaryCellView.swift */,
+				63AF45DD2977CE5E0014B1E1 /* DiaryAddView.swift */,
 			);
 			path = MyCampingDiary;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 				63AF45E52977CE650014B1E1 /* CampingSpotListView.swift in Sources */,
 				63AF45B52977CDD20014B1E1 /* AuthStore.swift in Sources */,
 				63AF45D72977CE4C0014B1E1 /* MyPageView.swift in Sources */,
+				AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */,
 				63AF45BC2977CDE20014B1E1 /* LoginPasswordView.swift in Sources */,
 				63AF45C02977CDF90014B1E1 /* HomeView.swift in Sources */,
 				63AF45E02977CE5E0014B1E1 /* DiaryAddView.swift in Sources */,

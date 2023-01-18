@@ -18,7 +18,7 @@ struct ContentView: View {
                 Label("메인", systemImage: "tent")
             }.tag(1)
             NavigationStack {
-                HomeView()
+                SearchCampingSpotView()
             }.tabItem {
                 Label("캠핑장 검색", systemImage: "magnifyingglass")
             }.tag(2)

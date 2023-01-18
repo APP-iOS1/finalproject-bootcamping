@@ -86,40 +86,43 @@ struct DiaryDetailView: View {
     // MARK: -View : 댓글 뷰
     private var DiaryCommetView : some View {
         VStack(alignment: .leading) {
+            
+            HStack {
                 Text("댓글")
                     .font(.title3)
                     .foregroundColor(.gray)
                     .padding(.bottom, 1)
-                HStack{
-                    Circle()
-                        .frame(width: 30)
-                    VStack(alignment: .leading) {
-                        Text("햄뿡이")
-                            .font(.title3)
-                        Text("너무 좋아보여요")
-                    }
-                }
-                HStack{
-                    Circle()
-                        .frame(width: 30)
-                    VStack(alignment: .leading) {
-                        Text("햄뿡이")
-                            .font(.title3)
-                        Text("너무 좋아보여요")
-                    }
-                }
-                HStack{
-                    Circle()
-                        .frame(width: 30)
-                    VStack(alignment: .leading) {
-                        Text("햄뿡이")
-                            .font(.title3)
-                        Text("너무 좋아보여요")
-                    }
+                Spacer()
+            }
+            HStack{
+                Circle()
+                    .frame(width: 30)
+                VStack(alignment: .leading) {
+                    Text("햄뿡이")
+                        .font(.title3)
+                    Text("너무 좋아보여요")
                 }
             }
-            .padding(.horizontal)
-        
+            HStack{
+                Circle()
+                    .frame(width: 30)
+                VStack(alignment: .leading) {
+                    Text("햄뿡이")
+                        .font(.title3)
+                    Text("너무 좋아보여요")
+                }
+            }
+            HStack{
+                Circle()
+                    .frame(width: 30)
+                VStack(alignment: .leading) {
+                    Text("햄뿡이")
+                        .font(.title3)
+                    Text("너무 좋아보여요")
+                }
+            }
+        }
+        .padding(.horizontal)
     }
 
     // MARK: -View : 댓글 작성

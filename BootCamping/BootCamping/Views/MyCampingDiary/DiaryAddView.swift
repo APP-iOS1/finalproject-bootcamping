@@ -108,13 +108,22 @@ struct DiaryAddView: View {
                 Text("방문일")
                     .padding(.horizontal)
             }
-            
-            Toggle(isOn: $isOpen) {
-                Text("공개여부")
+            HStack {
+                Text("공개설정")
+                Spacer()
+                VStack {
+                    Image(systemName: "lock.open")
+                    Text("공개")
+                }
+                .padding(.trailing)
+                VStack {
+                    Image(systemName: "lock")
+                    Text("비공개")
+                }
+                
             }
             .padding(.horizontal)
-            
-            
+
             Divider()
             ScrollView {
                 TextField("일기를 작성해주세요", text: $diaryContent)

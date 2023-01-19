@@ -11,6 +11,7 @@ import MapKit
 
 struct CampingSpotDetailView: View {
     @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.5666791, longitude: 126.9782914), span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02))
+    @State private var isBookmark: Bool = false
     
     var body: some View {
         let images = ["10", "9", "8"]
@@ -21,6 +22,7 @@ struct CampingSpotDetailView: View {
                 TabView {
                     ForEach(images, id: \.self) { item in
                         Image(item).resizable().scaledToFill()
+                            
                     }
                 }
                 .tabViewStyle(PageTabViewStyle())
@@ -28,9 +30,23 @@ struct CampingSpotDetailView: View {
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Group {
-                        Text("디노담양힐링파크") // 캠핑장 이름
-                            .font(.title)
-                            .padding(.top, -15)
+                        HStack(alignment: .top) {
+                            Text("디노담양힐링파크") // 캠핑장 이름
+                                .font(.title)
+                                .bold()
+                            Spacer()
+                            
+                            Button {
+                                isBookmark.toggle()
+                            } label: {
+                                Image(systemName: isBookmark ? "bookmark.fill" : "bookmark")
+                                    .font(.title3)
+                                    .foregroundColor(Color("BCGreen"))
+                                }
+                            
+                        }
+                        .padding(.top, -15)
+                        
                         HStack {
                             Image(systemName: "mappin.and.ellipse")
                                 .foregroundColor(.gray)

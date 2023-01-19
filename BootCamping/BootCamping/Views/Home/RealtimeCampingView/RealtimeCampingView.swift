@@ -17,22 +17,20 @@ struct RealtimeCampingView: View {
         ]
 
     var body: some View {
-        List(realtimeCampingSampleDataList, id: \.self) { item in
-            //네비게이션 화살표 없애기
-            VStack {
-                ZStack {
+        ScrollView {
+            ForEach(realtimeCampingSampleDataList, id: \.self) { item in
+                //네비게이션 화살표 없애기
+                VStack {
                     NavigationLink {
                         DiaryDetailView()
                     } label: {
-                        EmptyView()
+                        RealtimeCampingCellView(item: item)
                     }
-                    .opacity(0) //화살표 투명하게 만들기
-                    
-                    RealtimeCampingCellView(item: item)
+                    .foregroundColor(Color("BCBlack"))
                 }
             }
         }
-        .listStyle(.plain)
+        .padding()
     }
 }
 

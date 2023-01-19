@@ -219,8 +219,8 @@
 		63AF45C62977CE0E0014B1E1 /* RealtimeCampingView */ = {
 			isa = PBXGroup;
 			children = (
-				63AF45C72977CE1A0014B1E1 /* RealtimeCampingCellView.swift */,
 				63AF45C82977CE1A0014B1E1 /* RealtimeCampingView.swift */,
+				63AF45C72977CE1A0014B1E1 /* RealtimeCampingCellView.swift */,
 				63AF45CB2977CE220014B1E1 /* RealtimeCampingDetailView.swift */,
 			);
 			path = RealtimeCampingView;

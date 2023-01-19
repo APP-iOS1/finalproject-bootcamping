@@ -31,7 +31,7 @@ class DiaryStore: ObservableObject {
     let database = Firestore.firestore()
     
     //MARK: Create
-    func addData(uid: String, diaryTitle: String, diaryAddress: String, diaryContent: String, diaryImageURL: [String], diaryCreatedDate: Timestamp, diaryVisitedDate: Date, diaryLike: String) {
+    func addData(uid: String, diaryTitle: String, diaryAddress: String, diaryContent: String, diaryImageURL: [String], diaryCreatedDate: Timestamp, diaryVisitedDate: Date, diaryLike: String, diaryIsPrivate: Bool) {
         
         //Add a document to a collection
         database.collection("Diary").addDocument(data: [  //data: document내부 데이터, completion: 완료시 실행됨
@@ -42,7 +42,8 @@ class DiaryStore: ObservableObject {
             "diaryImageURL": diaryImageURL,
             "diaryCreatedDate": diaryCreatedDate,
             "diaryVisitedDate": diaryVisitedDate,
-            "diaryLike": diaryLike]) { error in
+            "diaryLike": diaryLike,
+            "diaryIsPrivate": diaryIsPrivate,]) { error in
             //에러 체크
             if error == nil {
                 //패치
@@ -64,14 +65,15 @@ class DiaryStore: ObservableObject {
                         //document 가져오기
                         self.diaryList = snapshot.documents.map { d in
                             return Diary(id: d.documentID,
-                                  uid: d["uid"] as? String ?? "",
-                                  diaryTitle: d["diaryTitle"] as? String ?? "",
-                                  diaryAddress: d["diaryAddress"] as? String ?? "",
-                                  diaryContent: d["diaryContent"] as? String ?? "",
-                                  diaryImageURL: d["diaryImageURL"] as? [String] ?? [],
-                                  diaryCreatedDate: d["diaryCreatedDate"] as? Timestamp ?? Timestamp(),
-                                  diaryVisitedDate: d["diaryVisitedDate"] as? Date ?? Date(),
-                                  diaryLike: d["diaryLike"] as? String ?? "")
+                                         uid: d["uid"] as? String ?? "",
+                                         diaryTitle: d["diaryTitle"] as? String ?? "",
+                                         diaryAddress: d["diaryAddress"] as? String ?? "",
+                                         diaryContent: d["diaryContent"] as? String ?? "",
+                                         diaryImageURL: d["diaryImageURL"] as? [String] ?? [],
+                                         diaryCreatedDate: d["diaryCreatedDate"] as? Timestamp ?? Timestamp(),
+                                         diaryVisitedDate: d["diaryVisitedDate"] as? Date ?? Date(),
+                                         diaryLike: d["diaryLike"] as? String ?? "",
+                                         diaryIsPrivate: d["diaryIsPrivate"] as? Bool ?? false)
                         }
                     }
                     
@@ -94,7 +96,8 @@ class DiaryStore: ObservableObject {
             "diaryImageURL": diaryToUpdate.diaryImageURL,
             "diaryCreatedDate": diaryToUpdate.diaryCreatedDate,
             "diaryVisitedDate": diaryToUpdate.diaryVisitedDate,
-            "diaryLike": diaryToUpdate.diaryLike], merge: true)  //setData: 이 데이터로 새로 정의되고, 기존 데이터는 삭제됨 /merge하면 재정의하는 대신 합쳐짐
+            "diaryLike": diaryToUpdate.diaryLike,
+             "diaryIsPrivate": diaryToUpdate.diaryIsPrivate,], merge: true)                                                             //setData: 이 데이터로 새로 정의되고, 기존 데이터는 삭제됨 /merge하면 재정의하는 대신 합쳐짐
         { error in
             
             //에러체크

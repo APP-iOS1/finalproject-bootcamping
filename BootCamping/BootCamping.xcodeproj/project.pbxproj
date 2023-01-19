@@ -47,6 +47,10 @@
 		CA729F352979315400CCC3BB /* CustomDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F342979315400CCC3BB /* CustomDatePickerView.swift */; };
 		CA729F372979318700CCC3BB /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F362979318700CCC3BB /* TaskView.swift */; };
 		CA729F392979340600CCC3BB /* Reservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F382979340600CCC3BB /* Reservation.swift */; };
+		790B62D929792A4D0048C110 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62D829792A4D0048C110 /* Comment.swift */; };
+		790B62DB29792B4C0048C110 /* CommentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62DA29792B4C0048C110 /* CommentStore.swift */; };
+		790B62DD297936840048C110 /* DiaryLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62DC297936840048C110 /* DiaryLike.swift */; };
+
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -89,6 +93,10 @@
 		CA729F342979315400CCC3BB /* CustomDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerView.swift; sourceTree = "<group>"; };
 		CA729F362979318700CCC3BB /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
 		CA729F382979340600CCC3BB /* Reservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reservation.swift; sourceTree = "<group>"; };
+		790B62D829792A4D0048C110 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		790B62DA29792B4C0048C110 /* CommentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentStore.swift; sourceTree = "<group>"; };
+		790B62DC297936840048C110 /* DiaryLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryLike.swift; sourceTree = "<group>"; };
+
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +167,8 @@
 			isa = PBXGroup;
 			children = (
 				63AF45B12977CDC60014B1E1 /* User.swift */,
+				790B62D829792A4D0048C110 /* Comment.swift */,
+				790B62DC297936840048C110 /* DiaryLike.swift */,
 				7C715C972977E056009BC678 /* Diary.swift */,
 				CA729F382979340600CCC3BB /* Reservation.swift */,
 			);
@@ -169,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				63AF45B42977CDD20014B1E1 /* AuthStore.swift */,
+				790B62DA29792B4C0048C110 /* CommentStore.swift */,
 				7C715C992977E086009BC678 /* DiaryStore.swift */,
 			);
 			path = ViewModels;
@@ -219,8 +230,8 @@
 		63AF45C62977CE0E0014B1E1 /* RealtimeCampingView */ = {
 			isa = PBXGroup;
 			children = (
-				63AF45C72977CE1A0014B1E1 /* RealtimeCampingCellView.swift */,
 				63AF45C82977CE1A0014B1E1 /* RealtimeCampingView.swift */,
+				63AF45C72977CE1A0014B1E1 /* RealtimeCampingCellView.swift */,
 				63AF45CB2977CE220014B1E1 /* RealtimeCampingDetailView.swift */,
 			);
 			path = RealtimeCampingView;
@@ -366,6 +377,8 @@
 				63AF45D72977CE4C0014B1E1 /* MyPageView.swift in Sources */,
 				CA729F3329792DE000CCC3BB /* CalendarView.swift in Sources */,
 				AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */,
+				790B62DD297936840048C110 /* DiaryLike.swift in Sources */,
+				790B62DB29792B4C0048C110 /* CommentStore.swift in Sources */,
 				63AF45BC2977CDE20014B1E1 /* LoginPasswordView.swift in Sources */,
 				63AF45C02977CDF90014B1E1 /* HomeView.swift in Sources */,
 				63AF45E02977CE5E0014B1E1 /* DiaryAddView.swift in Sources */,
@@ -378,6 +391,7 @@
 				63AF45C42977CE0B0014B1E1 /* WeeklyPopulerCampingView.swift in Sources */,
 				63AF45C52977CE0B0014B1E1 /* WeeklyPopulerCampingDetailView.swift in Sources */,
 				63AF45CC2977CE220014B1E1 /* RealtimeCampingDetailView.swift in Sources */,
+				790B62D929792A4D0048C110 /* Comment.swift in Sources */,
 				630ADB4F2977CC6C000A517B /* BootCampingApp.swift in Sources */,
 				63AF45AD2977CDB40014B1E1 /* UIScreen+Extension.swift in Sources */,
 				63AF45BD2977CDE20014B1E1 /* LoginView.swift in Sources */,

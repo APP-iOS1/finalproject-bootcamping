@@ -11,6 +11,7 @@ import Firebase
 struct Comment{
     let id: String
     let diaryId: String                 // 글
+    let uid: String                     // 유저
     let nickName: String                // 유저 이름
     let profileImage: String            // 유저 프로필 사진
     let commentContent: String          // 댓글

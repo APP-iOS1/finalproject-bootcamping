@@ -32,13 +32,14 @@ class CommentStore: ObservableObject {
                         let docData = document.data()
                         
                         let diaryId: String = docData["diaryId"] as? String ?? ""
+                        let uid: String = docData["uid"] as? String ?? ""
                         let nickName: String = docData["nickName"] as? String ?? ""
                         let profileImage: String = docData["profileImage"] as? String ?? ""
                         let commentContent: String = docData["commentContent"] as? String ?? ""
                         let commentCreatedDate: Timestamp = docData["commentCreatedDate"] as? Timestamp ?? Timestamp(date: Date())
                         let commentLike: [String] = docData["commentLike"] as? [String] ?? []
                         
-                        let comment: Comment = Comment(id: id, diaryId: diaryId, nickName: nickName, profileImage: profileImage, commentContent: commentContent, commentCreatedDate: commentCreatedDate, commentLike: commentLike)
+                        let comment: Comment = Comment(id: id, diaryId: diaryId, uid: uid,  nickName: nickName, profileImage: profileImage, commentContent: commentContent, commentCreatedDate: commentCreatedDate, commentLike: commentLike)
                         
                         self.comments.append(comment)
                         
@@ -52,23 +53,24 @@ class CommentStore: ObservableObject {
         database.collection("Comment")
             .document(comment.id)
             .setData(["diaryId": comment.diaryId,
+                      "uid": comment.uid,
                       "nickName": comment.nickName,
                       "profileImage": comment.profileImage,
                       "commentContent": comment.commentContent,
                       "commentCreatedDate": comment.commentCreatedDate,
-//                      "commentLike": comment.commentLike,
+                      "commentLike": comment.commentLike,
                      ])
         fetchComment()
     }
     
     
-    // MARK: 댓글 좋아요 Add 함수
-    func addCommentLike(_ comment: Comment) {
+    // MARK: 댓글 좋아요 update 함수
+    func updateCommentLike(_ comment: Comment) {
         database.collection("Comment")
             .document(comment.id)
-            .setData([
-                      "commentLike": comment.commentLike,
-                     ])
+            .updateData([
+                "commentLike": FieldValue.arrayUnion([comment.uid])
+            ])
         fetchComment()
     }
     

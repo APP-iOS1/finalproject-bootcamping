@@ -24,19 +24,18 @@ struct DiaryDetailView: View {
             DiaryCommetInputView
         }
     }
-    // MARK: -View : 공개여부 아이콘, 제목
+    // MARK: -View : 프로필사진, 작성자 이름, 수정 삭제버튼
     private var DiaryDetailTitleView : some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Spacer()
-                Image(systemName: "lock")
-            }
-            .padding(.horizontal)
-            Text("충주호 보면서 불멍하기")
-                .font(.title)
-                .padding(.horizontal)
-                .padding(.bottom, 1)
+        HStack{
+            Circle()
+                .frame(width: 25)
+            Text("햄뿡이")
+            Image(systemName: "lock")
+            Spacer()
+            //삭제 수정
+            Image(systemName: "ellipsis")
         }
+        .padding(.horizontal)
     }
 
     // MARK: -View : 캠핑장 사진 탭뷰
@@ -58,26 +57,43 @@ struct DiaryDetailView: View {
     // MARK: -View : 다이어리 상세 정보
     private var DiaryDetailInfoView : some View {
         VStack(alignment: .leading) {
-            Text("충주호 캠핑장")
-                .font(.title2)
-                .foregroundColor(.gray)
-            Text("충북 충주")
-                .font(.title3)
-                .foregroundColor(.gray)
+            Text("충주호 보면서 불멍하기")
+                .font(.system(.title2, weight: .semibold))
                 .padding(.bottom, 1)
+            HStack {
+                Image("1")
+                    .resizable()
+                    .frame(width: 50, height: 50)
+                    
+                VStack(alignment: .leading) {
+                    Text("충주호 캠핑장")
+                        .font(.title3)
+                        .foregroundColor(.gray)
+                    Text("충북 충주")
+                        .font(.title3)
+                        .foregroundColor(.gray)
+                        .padding(.bottom, 1)
+                }
+            }
             Text("방문일: 2023.01.18")
                 .font(.title3)
                 .foregroundColor(.gray)
                 .padding(.bottom, 1)
             HStack {
-                Text("by 햄뿡이")
-                Text("15분 전")
+                Image(systemName: "heart")
+                Text("3")
+                    .padding(.leading, -8)
+                Image(systemName: "bubble.left")
+                Text("8")
+                    .padding(.leading, -8)
                 Spacer()
-                Text("좋아요 3")
-                Text("댓글 8")
-                    .padding(.bottom, 1)
             }
+            .padding(.bottom, 1)
             Text(sampleText)
+                .padding(.bottom, 1)
+            Text("15분 전")
+                .foregroundColor(.gray)
+
         }
         .padding(.horizontal)
     }
@@ -127,7 +143,7 @@ struct DiaryDetailView: View {
 
     // MARK: -View : 댓글 작성
     private var DiaryCommetInputView : some View {
-        
+      
         HStack {
             Circle()
                 .frame(width: 30)
@@ -139,6 +155,7 @@ struct DiaryDetailView: View {
             }
         }
         .padding(.horizontal)
+        .padding(.bottom, 8)
     }
 
 

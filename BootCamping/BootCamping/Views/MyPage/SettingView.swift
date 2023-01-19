@@ -23,6 +23,13 @@ struct SettingView: View {
             NavigationLink(destination: EmptyView()) {
                 Text("알림설정")
             }
+            Button {
+                // TODO: 회원 탈퇴
+                /// 얼럿 띄우고 탈퇴하는 뷰에 연결하기
+            } label: {
+                Text("회원 탈퇴")
+            }
+
         }
         .listStyle(.plain)
     }

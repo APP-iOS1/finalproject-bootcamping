@@ -112,12 +112,6 @@ struct ProfileSettingView: View {
             } label: {
                 Text("로그아웃")
             }
-            Text("|")
-            Button {
-                // TODO: 회원탈퇴
-            } label: {
-                Text("회원탈퇴")
-            }
         }
     }
 }

@@ -42,14 +42,18 @@ struct BootCampingApp: App {
     var body: some Scene {
         WindowGroup {
             if isSignIn {
-//            ContentView()
-//                .environmentObject(AuthStore())
-//                .environmentObject(DiaryStore())
-                kakaoLoginViewTEST()
+            ContentView()
+                .environmentObject(AuthStore())
+                .environmentObject(DiaryStore())
+//                kakaoLoginViewTEST()
             } else {
+                
+                ContentView()
+                    .environmentObject(AuthStore())
+                    .environmentObject(DiaryStore())
 //                LoginView(isSignIn: $isSignIn)
 //                    .environmentObject(AuthStore())
-                kakaoLoginViewTEST()
+//                kakaoLoginViewTEST()
 
             }
             // onOpenURL()을 사용해 커스텀 URL 스킴 처리

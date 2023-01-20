@@ -67,7 +67,8 @@ struct BootCampingApp: App {
 //                    .environmentObject(DiaryStore())
                                 LoginView(isSignIn: $isSignIn)
                                     .environmentObject(AuthStore())
-                                kakaoLoginViewTEST()
+                                    .environmentObject(KakaoAuthStore())
+//                                kakaoLoginViewTEST()
                 
             }
             // onOpenURL()을 사용해 커스텀 URL 스킴 처리

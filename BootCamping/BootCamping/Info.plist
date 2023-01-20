@@ -11,6 +11,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>com.googleusercontent.apps.446099408891-fte31m4bqb4u34a704s0ae8dvi79a900</string>
 				<string>kakao${KAKAO_NATIVE_APP_KEY}</string>
 			</array>
 			<key>LSApplicationQueriesSchemes</key>

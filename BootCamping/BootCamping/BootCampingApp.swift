@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import Firebase
 import FirebaseCore
+import FirebaseAuth
+import GoogleSignIn
 import KakaoSDKCommon
 import KakaoSDKAuth
-
 
 class AppDelegate: NSObject, UIApplicationDelegate/*, UIResponder */{
     func application(_ application: UIApplication,
@@ -18,12 +20,21 @@ class AppDelegate: NSObject, UIApplicationDelegate/*, UIResponder */{
         
         return true
     }
+
+    
+    func application(_ application: UIApplication, open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey: Any])
+      -> Bool {
+      return GIDSignIn.sharedInstance.handle(url)
+
+
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         if (AuthApi.isKakaoTalkLoginUrl(url)) {
             return AuthController.handleOpenUrl(url: url)
         }
         
         return false
+
     }
 }
 
@@ -45,7 +56,9 @@ struct BootCampingApp: App {
             ContentView()
                 .environmentObject(AuthStore())
                 .environmentObject(DiaryStore())
-//                kakaoLoginViewTEST()
+                .onOpenURL { url in
+                          GIDSignIn.sharedInstance.handle(url)
+                        }
             } else {
                 
                 ContentView()

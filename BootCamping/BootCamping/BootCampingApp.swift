@@ -20,21 +20,22 @@ class AppDelegate: NSObject, UIApplicationDelegate/*, UIResponder */{
         
         return true
     }
-
+    
     
     func application(_ application: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any])
-      -> Bool {
-      return GIDSignIn.sharedInstance.handle(url)
-
-
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    -> Bool {
+        return GIDSignIn.sharedInstance.handle(url)
+        
+    }
+    
+    func application(_ app: UIApplication, open url: URL, option: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         if (AuthApi.isKakaoTalkLoginUrl(url)) {
             return AuthController.handleOpenUrl(url: url)
         }
         
         return false
-
+        
     }
 }
 
@@ -45,36 +46,36 @@ struct BootCampingApp: App {
     
     init() {
         let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
-            // Kakao SDK 초기화
-            KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
-
-        }
+        // Kakao SDK 초기화
+        KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
+        
+    }
     
     var body: some Scene {
         WindowGroup {
             if isSignIn {
-            ContentView()
-                .environmentObject(AuthStore())
-                .environmentObject(DiaryStore())
-                .onOpenURL { url in
-                          GIDSignIn.sharedInstance.handle(url)
-                        }
-            } else {
-                
                 ContentView()
                     .environmentObject(AuthStore())
                     .environmentObject(DiaryStore())
-//                LoginView(isSignIn: $isSignIn)
+                    .onOpenURL { url in
+                        GIDSignIn.sharedInstance.handle(url)
+                    }
+            } else {
+                
+//                LoginView(, isSignIn: <#Binding<Bool>#>)
 //                    .environmentObject(AuthStore())
-//                kakaoLoginViewTEST()
-
+//                    .environmentObject(DiaryStore())
+                                LoginView(isSignIn: $isSignIn)
+                                    .environmentObject(AuthStore())
+                                kakaoLoginViewTEST()
+                
             }
             // onOpenURL()을 사용해 커스텀 URL 스킴 처리
-//            ContentView().onOpenURL(perform: { url in
-//                if (AuthApi.isKakaoTalkLoginUrl(url)) {
-//                    AuthController.handleOpenUrl(url: url)
-//                }
-//            })
+            //            ContentView().onOpenURL(perform: { url in
+            //                if (AuthApi.isKakaoTalkLoginUrl(url)) {
+            //                    AuthController.handleOpenUrl(url: url)
+            //                }
+            //            })
             
         }
     }

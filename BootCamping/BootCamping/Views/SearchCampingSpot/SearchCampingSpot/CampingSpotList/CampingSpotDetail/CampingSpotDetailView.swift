@@ -5,9 +5,10 @@
 //  Created by 이소영 on 2023/01/18.
 //
 
-import SwiftUI
 import CoreLocation
 import MapKit
+import SDWebImageSwiftUI
+import SwiftUI
 
 struct CampingSpotDetailView: View {
     @State private var isBookmark: Bool = false
@@ -21,13 +22,17 @@ struct CampingSpotDetailView: View {
         ZStack {
             ScrollView {
                 TabView {
-                    ForEach(images, id: \.self) { item in
-                        Image(item).resizable().scaledToFill()
-                            
-                    }
+//                    ForEach(images, id: \.self) { item in
+//                        Image(item).resizable().scaledToFill()
+//
+//                    }
+                    WebImage(url: URL(string: campingSpot.firstImageUrl))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .scaledToFit()
                 }
                 .tabViewStyle(PageTabViewStyle())
-                .frame(width: UIScreen.screenWidth, height: 300)
+                .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight * 0.3)
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Group {

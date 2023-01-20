@@ -26,7 +26,6 @@ struct ContentView: View {
                 }.tag(1)
                 NavigationStack {
                     SearchCampingSpotView()
-                        .environmentObject(CampingSpotStore())
                 }.tabItem {
                     Label("캠핑장 검색", systemImage: "magnifyingglass")
                 }.tag(2)

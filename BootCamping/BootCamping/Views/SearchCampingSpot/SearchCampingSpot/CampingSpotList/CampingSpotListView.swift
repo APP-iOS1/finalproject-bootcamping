@@ -11,22 +11,22 @@ import SwiftUI
 struct CampingSpotListView: View {
     
     @EnvironmentObject var campingSpotStore: CampingSpotStore
+//    @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
 
     //TODO: 북마크 만들기
     var body: some View {
         List {
             ForEach(campingSpotStore.campingSpotList, id: \.contentId) { campingSpot in
-//                ZStack{
-//                    NavigationLink {
-//                        CampingSpotDetailView(campingSpot: campingSpot)
-//                    } label: {
-//                        CampingSpotListCell(campingSpot: campingSpot)
-//                            .padding(.horizontal, UIScreen.screenWidth*0.1)
-//
-//                    }
+                ZStack{
+                    NavigationLink {
+                        CampingSpotDetailView(campingSpot: campingSpot)
+                    } label: {
+                        CampingSpotListCell(campingSpot: campingSpot)
+                            .padding(.horizontal, UIScreen.screenWidth*0.1)
+                        
+                    }
 //                    .opacity(0)
-//                }
-                Text("test")
+                }
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -35,9 +35,6 @@ struct CampingSpotListView: View {
             ToolbarItem(placement: .principal) {
                 Text("캠핑 모아보기")
             }
-        }
-        .task {
-            campingSpotStore.fetchCampingSpot()
         }
     }
 }

@@ -23,12 +23,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct BootCampingApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
-    
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(AuthStore())
                 .environmentObject(DiaryStore())
+                .environmentObject(CampingSpotStore())
         }
     }
 }

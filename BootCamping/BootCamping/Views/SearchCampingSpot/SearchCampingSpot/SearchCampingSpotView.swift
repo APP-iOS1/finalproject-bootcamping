@@ -34,6 +34,8 @@ struct SearchCampingSpotView: View {
     //MARK: searchable
     @State var searchText = ""
     
+    @EnvironmentObject var campingSpotStore: CampingSpotStore
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading){
@@ -63,7 +65,9 @@ struct SearchCampingSpotView: View {
             //searchable 첫글자 대문자 X, 자동완성 X
             .disableAutocorrection(true)
             .textInputAutocapitalization(.never)
-            
+            .task {
+                campingSpotStore.fetchCampingSpot()
+            }
         }
     }
     
@@ -99,7 +103,6 @@ struct SearchCampingSpotView: View {
                     VStack{
                         NavigationLink {
                             CampingSpotListView()
-                                .environmentObject(CampingSpotStore())
                         } label: {
                             Image(areaImage[index])
                                 .resizable()
@@ -127,7 +130,6 @@ struct SearchCampingSpotView: View {
                     VStack{
                         NavigationLink {
                             CampingSpotListView()
-                                .environmentObject(CampingSpotStore())
                         } label: {
                             Image(viewImage[index])
                                 .resizable()

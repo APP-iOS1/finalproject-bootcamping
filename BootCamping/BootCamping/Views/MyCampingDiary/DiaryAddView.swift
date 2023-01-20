@@ -11,7 +11,7 @@ import Firebase
 
 struct DiaryAddView: View {
     @State private var selectedItems = [PhotosPickerItem]()
-    @State private var selectedImages = [UIImage]()
+    @State private var selectedImages = [Data]()
     @State private var diaryTitle: String = ""
     @State private var locationInfo: String = ""
     @State private var visitDate: String = ""
@@ -48,8 +48,8 @@ struct DiaryAddView: View {
                             Task {
                                 selectedItems = []
                                 for value in newValue {
-                                    if let imageData = try? await value.loadTransferable(type: Data.self), let image = UIImage(data: imageData) {
-                                        selectedImages.append(image)
+                                    if let imageData = try? await value.loadTransferable(type: Data.self) {
+                                        selectedImages.append(imageData)
                                     }
                                 }
                             }
@@ -59,7 +59,7 @@ struct DiaryAddView: View {
                     ScrollView(.horizontal) {
                         HStack {
                             ForEach(selectedImages, id: \.self) { image in
-                                Image(uiImage: image)
+                                Image(uiImage: UIImage(data: image)!)
                                     .resizable()
                                     .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
                             }
@@ -133,12 +133,13 @@ struct DiaryAddView: View {
             HStack {
                 Spacer()
                 Button {
-                    diaryStore.addData(uid: authStore.currentUser?.uid ?? "", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageURL: [""], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "", diaryIsPrivate: isOpen)
+                    diaryStore.createDiary(diary: Diary(id: UUID().uuidString, uid: "", diaryTitle: "", diaryAddress: "", diaryContent: "", diaryImageURL: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "", diaryIsPrivate: false), images: selectedImages)
                 } label: {
                     Text("일기 작성하기")
                         .modifier(GreenButtonModifier())
                 }
                 Spacer()
+
             }
         }
         

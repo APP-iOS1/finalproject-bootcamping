@@ -28,11 +28,11 @@ struct ContentView: View {
                 Label("캠핑장 검색", systemImage: "magnifyingglass")
             }.tag(2)
             NavigationStack {
-//                if diaryStore.diaryList.count == 0 {
-//                    DiaryAddView()
-//                } else {
-//                    MyCampingDiaryView()
-//                }
+                if diaryStore.diaryList.count == 0 {
+                    DiaryAddView()
+                } else {
+                    MyCampingDiaryView()
+                }
             }.tabItem {
                 Label("내 캠핑일기", systemImage: "book")
             }.tag(3)

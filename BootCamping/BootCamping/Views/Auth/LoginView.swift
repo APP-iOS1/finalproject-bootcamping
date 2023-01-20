@@ -11,6 +11,8 @@ import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
 import GoogleSignInSwift
+import KakaoSDKUser
+
 
 struct LoginView: View {
     
@@ -18,7 +20,7 @@ struct LoginView: View {
     @State var userEmail: String = ""
     @Binding var isSignIn: Bool
     @State private var isLogin: Bool = true
-    
+    @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
     
     var body: some View {
         NavigationStack {
@@ -50,8 +52,10 @@ struct LoginView: View {
                     .padding(.vertical, 10)
                 
                 Button {
+                    kakaoAuthStore.handleKakaoLogin()
+                    }
                     
-                } label: {
+                 label: {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(.gray)
                         .frame(width: UIScreen.screenWidth * 0.8, height: 44)

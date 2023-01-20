@@ -14,6 +14,7 @@ struct ProfileSettingView: View {
     @EnvironmentObject var authStore: AuthStore
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
+    @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
 
     @State private var updateNickname: String = ""
     
@@ -111,6 +112,7 @@ struct ProfileSettingView: View {
             Button {
                 authStore.googleSignOut()
                 authStore.authSignOut()
+                kakaoAuthStore.kakaoLogout()
             } label: {
                 Text("로그아웃")
             }

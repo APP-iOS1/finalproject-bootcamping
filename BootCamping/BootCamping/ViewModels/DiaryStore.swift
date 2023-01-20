@@ -10,6 +10,7 @@ import FirebaseAuth
 import FirebaseFirestore
 import Foundation
 import SwiftUI
+import FirebaseStorage
 
 /*
  struct Diary {
@@ -31,28 +32,43 @@ class DiaryStore: ObservableObject {
     let database = Firestore.firestore()
     
     //MARK: Create
-    func addData(uid: String, diaryTitle: String, diaryAddress: String, diaryContent: String, diaryImageURL: [String], diaryCreatedDate: Timestamp, diaryVisitedDate: Date, diaryLike: String, diaryIsPrivate: Bool) {
-        
-        //Add a document to a collection
-        database.collection("Diary").addDocument(data: [  //data: document내부 데이터, completion: 완료시 실행됨
-            "uid": uid,
-            "diaryTitle": diaryTitle,
-            "diaryAddress": diaryAddress,
-            "diaryContent": diaryContent,
-            "diaryImageURL": diaryImageURL,
-            "diaryCreatedDate": diaryCreatedDate,
-            "diaryVisitedDate": diaryVisitedDate,
-            "diaryLike": diaryLike,
-            "diaryIsPrivate": diaryIsPrivate,]) { error in
-            //에러 체크
-            if error == nil {
-                //패치
-                self.getData()
-            } else {
-                //에러처리
+    func createDiary(diary: Diary, images: [Data]) {
+            Task {
+                do {
+                    guard let userUID = Auth.auth().currentUser?.uid else { return }
+                    var diaryImageURLs: [String] = []
+                    var diaryImageNames: [String] = []
+                    let storageRef = Storage.storage().reference().child("DiaryImages")
+                    for image in images {
+                        let imageName = UUID().uuidString
+                        let _ = try await storageRef.child(imageName).putDataAsync(image)
+                        let downlodURL = try await storageRef.child(imageName).downloadURL()
+                        diaryImageURLs.append(downlodURL.absoluteString)
+                        diaryImageNames.append(imageName)
+                    }
+                    
+                    let newDiary = Diary(id: diary.id, uid: userUID, diaryTitle: diary.diaryTitle, diaryAddress: "충북태안", diaryContent: diary.diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
+                    
+                    let _ = try await Firestore.firestore().collection("Diarys").document(diary.id).setData([
+                        "id": newDiary.id,
+                        "uid": newDiary.uid,
+                        "diaryTitle": newDiary.diaryTitle,
+                        "diaryAddress": newDiary.diaryAddress,
+                        "diaryImageNames": newDiary.diaryImageNames,
+                        "diaryImageURLs": newDiary.diaryImageURLs,
+                        "diaryImageURLs": newDiary.diaryImageURLs,
+                        "diaryCreatedDate": newDiary.diaryCreatedDate,
+                        "diaryVisitedDate": newDiary.diaryVisitedDate,
+                        "diaryLike": newDiary.diaryLike,
+                        "diaryIsPrivate": newDiary.diaryIsPrivate,])
+                    getData()
+                } catch {
+                    await MainActor.run(body: {
+                        print("\(error.localizedDescription)")
+                    })
+                }
             }
         }
-    }
     
     //MARK: Read
     func getData() {
@@ -69,7 +85,8 @@ class DiaryStore: ObservableObject {
                                          diaryTitle: d["diaryTitle"] as? String ?? "",
                                          diaryAddress: d["diaryAddress"] as? String ?? "",
                                          diaryContent: d["diaryContent"] as? String ?? "",
-                                         diaryImageURL: d["diaryImageURL"] as? [String] ?? [],
+                                         diaryImageNames: d["diaryImageNames"] as? [String] ?? [],
+                                         diaryImageURLs: d["diaryImageURLs"] as? [String] ?? [],
                                          diaryCreatedDate: d["diaryCreatedDate"] as? Timestamp ?? Timestamp(),
                                          diaryVisitedDate: d["diaryVisitedDate"] as? Date ?? Date(),
                                          diaryLike: d["diaryLike"] as? String ?? "",
@@ -93,7 +110,8 @@ class DiaryStore: ObservableObject {
             "diaryTitle": diaryToUpdate.diaryTitle,
             "diaryAddress": diaryToUpdate.diaryAddress,
             "diaryContent": diaryToUpdate.diaryContent,
-            "diaryImageURL": diaryToUpdate.diaryImageURL,
+            "diaryImageNames": diaryToUpdate.diaryImageNames,
+            "diaryImageURL": diaryToUpdate.diaryImageURLs,
             "diaryCreatedDate": diaryToUpdate.diaryCreatedDate,
             "diaryVisitedDate": diaryToUpdate.diaryVisitedDate,
             "diaryLike": diaryToUpdate.diaryLike,
@@ -112,7 +130,7 @@ class DiaryStore: ObservableObject {
     
     //MARK: Delete
     func deleteData(diaryToDelete: Diary) {
-        database.collection("Diary").document(diaryToDelete.id).delete { error in
+        database.collection("Diarys").document(diaryToDelete.id).delete { error in
             //에러 체크
             if error == nil {
                 //삭제하면 UI가 바뀌므로 메인 스레드에서 업데이트
@@ -127,6 +145,20 @@ class DiaryStore: ObservableObject {
                 //에러처리
             }
             
+        }
+        removeImage(diaryToDelete)
+        getData()
+    }
+    
+    //MARK: Remove Storage
+    func removeImage(_ diary: Diary) {
+        let storageRef = Storage.storage().reference().child("DiaryImages")
+        for diaryImage in diary.diaryImageNames {
+            storageRef.child(diaryImage).delete { error in
+                if let error = error {
+                    print("Error removing image from storage: \(error.localizedDescription)")
+                }
+            }
         }
     }
  

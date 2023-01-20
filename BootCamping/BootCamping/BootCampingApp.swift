@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import Firebase
 import FirebaseCore
-
+import FirebaseAuth
+import GoogleSignIn
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
@@ -15,6 +17,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         FirebaseApp.configure()
         
         return true
+    }
+    
+    func application(_ application: UIApplication, open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey: Any])
+      -> Bool {
+      return GIDSignIn.sharedInstance.handle(url)
     }
 }
 
@@ -30,6 +38,9 @@ struct BootCampingApp: App {
             ContentView()
                 .environmentObject(AuthStore())
                 .environmentObject(DiaryStore())
+                .onOpenURL { url in
+                          GIDSignIn.sharedInstance.handle(url)
+                        }
             } else {
                 LoginView(isSignIn: $isSignIn)
                     .environmentObject(AuthStore())

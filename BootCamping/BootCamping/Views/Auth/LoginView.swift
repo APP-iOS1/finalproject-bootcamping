@@ -6,6 +6,11 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseCore
+import FirebaseAuth
+import GoogleSignIn
+import GoogleSignInSwift
 
 struct LoginView: View {
     
@@ -13,6 +18,7 @@ struct LoginView: View {
     @State var userEmail: String = ""
     @Binding var isSignIn: Bool
     @State private var isLogin: Bool = true
+    
     
     var body: some View {
         NavigationStack {
@@ -54,7 +60,7 @@ struct LoginView: View {
                         }
                 }
                 Button {
-                    
+                    authStore.googleSignIn()
                 } label: {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(.gray)
@@ -90,9 +96,23 @@ struct LoginView: View {
     }
 }
 
+
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView(isSignIn: .constant(true))
             .environmentObject(AuthStore())
     }
 }
+
+////구글 로그인을 위한 rootViewController 정의
+//extension View {
+//    func getRootViewController() -> UIViewController {
+//        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+//            return .init()
+//        }
+//        guard let root = screen.windows.first?.rootViewController else {
+//            return .init()
+//        }
+//        return root
+//    }
+//}

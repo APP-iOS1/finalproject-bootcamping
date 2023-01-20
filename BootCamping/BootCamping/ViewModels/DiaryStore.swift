@@ -36,25 +36,27 @@ class DiaryStore: ObservableObject {
             Task {
                 do {
                     guard let userUID = Auth.auth().currentUser?.uid else { return }
-                    var diaryImageURL: [String] = []
-                    
+                    var diaryImageURLs: [String] = []
+                    var diaryImageNames: [String] = []
                     let storageRef = Storage.storage().reference().child("DiaryImages")
                     for image in images {
                         let imageName = UUID().uuidString
                         let _ = try await storageRef.child(imageName).putDataAsync(image)
                         let downlodURL = try await storageRef.child(imageName).downloadURL()
-                        diaryImageURL.append(downlodURL.absoluteString)
+                        diaryImageURLs.append(downlodURL.absoluteString)
+                        diaryImageNames.append(imageName)
                     }
                     
-                    let newDiary = Diary(id: diary.id, uid: userUID, diaryTitle: diary.diaryTitle, diaryAddress: "충북태안", diaryContent: diary.diaryContent, diaryImageURL: diaryImageURL, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
+                    let newDiary = Diary(id: diary.id, uid: userUID, diaryTitle: diary.diaryTitle, diaryAddress: "충북태안", diaryContent: diary.diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
                     
                     let _ = try await Firestore.firestore().collection("Diarys").document(diary.id).setData([
                         "id": newDiary.id,
                         "uid": newDiary.uid,
                         "diaryTitle": newDiary.diaryTitle,
                         "diaryAddress": newDiary.diaryAddress,
-                        "diaryContent": newDiary.diaryContent,
-                        "diaryImageURL": newDiary.diaryImageURL,
+                        "diaryImageNames": newDiary.diaryImageNames,
+                        "diaryImageURLs": newDiary.diaryImageURLs,
+                        "diaryImageURLs": newDiary.diaryImageURLs,
                         "diaryCreatedDate": newDiary.diaryCreatedDate,
                         "diaryVisitedDate": newDiary.diaryVisitedDate,
                         "diaryLike": newDiary.diaryLike,
@@ -83,7 +85,8 @@ class DiaryStore: ObservableObject {
                                          diaryTitle: d["diaryTitle"] as? String ?? "",
                                          diaryAddress: d["diaryAddress"] as? String ?? "",
                                          diaryContent: d["diaryContent"] as? String ?? "",
-                                         diaryImageURL: d["diaryImageURL"] as? [String] ?? [],
+                                         diaryImageNames: d["diaryImageNames"] as? [String] ?? [],
+                                         diaryImageURLs: d["diaryImageURLs"] as? [String] ?? [],
                                          diaryCreatedDate: d["diaryCreatedDate"] as? Timestamp ?? Timestamp(),
                                          diaryVisitedDate: d["diaryVisitedDate"] as? Date ?? Date(),
                                          diaryLike: d["diaryLike"] as? String ?? "",
@@ -107,7 +110,8 @@ class DiaryStore: ObservableObject {
             "diaryTitle": diaryToUpdate.diaryTitle,
             "diaryAddress": diaryToUpdate.diaryAddress,
             "diaryContent": diaryToUpdate.diaryContent,
-            "diaryImageURL": diaryToUpdate.diaryImageURL,
+            "diaryImageNames": diaryToUpdate.diaryImageNames,
+            "diaryImageURL": diaryToUpdate.diaryImageURLs,
             "diaryCreatedDate": diaryToUpdate.diaryCreatedDate,
             "diaryVisitedDate": diaryToUpdate.diaryVisitedDate,
             "diaryLike": diaryToUpdate.diaryLike,
@@ -149,7 +153,7 @@ class DiaryStore: ObservableObject {
     //MARK: Remove Storage
     func removeImage(_ diary: Diary) {
         let storageRef = Storage.storage().reference().child("DiaryImages")
-        for diaryImage in diary.diaryImageURL {
+        for diaryImage in diary.diaryImageNames {
             storageRef.child(diaryImage).delete { error in
                 if let error = error {
                     print("Error removing image from storage: \(error.localizedDescription)")

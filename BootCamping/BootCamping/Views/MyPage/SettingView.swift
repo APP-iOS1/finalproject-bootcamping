@@ -11,7 +11,7 @@ import SwiftUI
 struct SettingView: View {
     var body: some View {
         List{
-            NavigationLink(destination: EmptyView()) {
+            NavigationLink(destination: CampingSpotView().environmentObject(CampingSpotStore())) {
                 Text("공지사항")
             }
             NavigationLink(destination: EmptyView()) {

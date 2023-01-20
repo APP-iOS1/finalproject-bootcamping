@@ -11,6 +11,7 @@ import PhotosUI
 // FIXME: 현재 기획한 UserInfo 데이터 모델에 따라서 텍스트 필드 변경 필요
 /// 현재 기획 모델 그대로 가면 닉네임이랑 이메일, 비밀번호 변경하는 걸로 바꿔야 할 것 같습니다
 struct ProfileSettingView: View {
+    @EnvironmentObject var authStore: AuthStore
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
 
@@ -108,7 +109,7 @@ struct ProfileSettingView: View {
         HStack{
             Spacer()
             Button {
-                // TODO: 로그아웃
+                authStore.googleSignOut()
             } label: {
                 Text("로그아웃")
             }

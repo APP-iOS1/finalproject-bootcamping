@@ -10,6 +10,7 @@ import FirebaseAuth
 import FirebaseFirestore
 import Foundation
 import SwiftUI
+import GoogleSignIn
 
 class AuthStore: ObservableObject {
     
@@ -27,6 +28,32 @@ class AuthStore: ObservableObject {
     func testFunc(test: String) -> String {
         return test
     }
+    
+    static let shared = AuthStore()
+    
+    //Google 로그인의 로그인 및 로그아웃 상태에 대한 enum
+    enum SignInState {
+        case splash
+        case signIn
+        case signOut
+    }
+    
+    enum LogInState {
+        case success
+        case fail
+        case none
+    }
+    
+    enum LoginPlatform {
+        case email
+        case google
+        case none
+    }
+    
+    //인증 상태를 관리하는 변수
+    @Published var state: SignInState = .splash
+    @Published var loginState: LogInState = .none
+    @Published var loginPlatform: LoginPlatform = .none
     
     // MARK: - fecthUserList 유저리스트 조회
     func fetchUserList() {
@@ -128,5 +155,80 @@ class AuthStore: ObservableObject {
             "bookMarkedDiaries": user.bookMarkedDiaries,
         ])
         fetchUserList()
+    }
+        
+    // MARK: 구글 로그인 함수
+    func googleSignIn() {
+        // 한번 로그인한 적이 있음(previous Sign-In ?)
+        if GIDSignIn.sharedInstance.hasPreviousSignIn() {
+            // 있으면 복원 (yes then restore)
+            GIDSignIn.sharedInstance.restorePreviousSignIn { [unowned self] user, error in
+                authenticateUser(for: user, with: error)
+                
+            }
+        } else {// 처음 로그인
+            guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+            
+            // 3
+            let configuration = GIDConfiguration(clientID: clientID)
+            
+            // 4 .first 맨 위에 뜨게 하도록
+            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+            guard let rootViewController = windowScene.windows.first?.rootViewController else { return }
+            
+            GIDSignIn.sharedInstance.configuration = configuration
+            GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { [unowned self] result, error in
+                guard let user = result?.user else { return }
+                authenticateUser(for: user, with: error)
+                
+            }
+            
+        }
+    }
+    
+    private func authenticateUser(for user: GIDGoogleUser?, with error: Error?) {
+        // 1
+        if let error = error {
+            print(error.localizedDescription)
+            return
+        }
+        
+        // 2 user 인스턴스에서 idToken 과 accessToken을 받아온다
+        // 인증
+        /* 원래
+         guard let authentication = user?.authentication, let idToken = authentication.idToken else { return }
+         
+         let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: authentication.accessToken)
+         */
+        
+        guard let accessToken = user?.accessToken, let idToken = user?.idToken else {return }
+        
+        let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString, accessToken: accessToken.tokenString)
+        
+        // 3
+        Auth.auth().signIn(with: credential) { [unowned self] (result, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                UserDefaults.standard.set(result?.user.uid, forKey: "userIdToken")
+                self.state = .signIn
+            }
+        }
+    }
+    // MARK: 구글 로그아웃 함수
+    func googleSignOut() {
+        // 1
+        GIDSignIn.sharedInstance.signOut()
+        
+        do {
+            // 2
+            try Auth.auth().signOut()
+            
+            state = .signOut
+            loginState = .none
+            
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }

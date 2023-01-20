@@ -10,8 +10,9 @@ import CoreLocation
 import MapKit
 
 struct CampingSpotDetailView: View {
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.5666791, longitude: 126.9782914), span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02))
     @State private var isBookmark: Bool = false
+    var campingSpot: Item
+    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.5666791, longitude: 126.9782914), span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02))
     
     var body: some View {
         let images = ["10", "9", "8"]
@@ -31,7 +32,7 @@ struct CampingSpotDetailView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Group {
                         HStack(alignment: .top) {
-                            Text("디노담양힐링파크") // 캠핑장 이름
+                            Text("\(campingSpot.facltNm)") // 캠핑장 이름
                                 .font(.title)
                                 .bold()
                             Spacer()
@@ -50,14 +51,14 @@ struct CampingSpotDetailView: View {
                         HStack {
                             Image(systemName: "mappin.and.ellipse")
                                 .foregroundColor(.gray)
-                            Text("전남 담양군 봉산면 탄금길 9-26") // 캠핑장 주소
+                            Text("\(campingSpot.addr1)") // 캠핑장 주소
                                 .font(.callout)
                                 .foregroundColor(.gray)
                         }
                     }
                     
                     Group {
-                        Text("보배를 무엇을 눈에 끓는다. 구하지 일월과 얼음 아니한 들어 군영과 뜨고, 크고 가는 약동하다. 위하여 풀밭에 착목한는 그들의 예가 붙잡아 주는 창공에 것이다.보라, 있는가? 새 미묘한 고동을 만물은 새가 때문이다. 이상은 예가 용감하고 이성은 있는 보이는 그들을 못하다 방황 하였으며, 봄바람이다. 더운지라 무엇을 그들의 얼음에 힘차게 열매를 철환하였는가? 가지에 천자만홍이 날카로우나 약동하다. ")
+                        Text("\(campingSpot.intro) ")
                             .lineSpacing(7)
                     }
                     .padding(7)
@@ -69,7 +70,7 @@ struct CampingSpotDetailView: View {
                             .font(.headline)
                             .padding(.bottom, 10)
                         
-                        ServiceIcon()
+                        ServiceIcon(serviceString: campingSpot.glampInnerFclty + campingSpot.caravInnerFclty + campingSpot.posblFcltyCl + campingSpot.eqpmnLendCl + campingSpot.animalCmgCl)
                         
                     }
                     
@@ -125,13 +126,16 @@ struct CampingSpotDetailView: View {
                 }
                 .padding(30)
             }
+            .onAppear {
+                region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: Double(campingSpot.mapY)!, longitude: Double(campingSpot.mapX)!), span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02))
+            }
         }
     }
 }
 
 // 편의시설 및 서비스 아이콘 구조체
 struct ServiceIcon: View {
-    let serviceString = "전기,무선인터넷,장작판매,온수,트렘폴린,물놀이장,놀이터,산책로,운동장,운동시설,마트.편의점"
+    let serviceString: String
     let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())] // 5개 한줄에 띄우려면 5개 넣으면 됨...!
     
     func switchServiceIcon(svc: String) -> String {
@@ -181,6 +185,6 @@ struct ServiceIcon: View {
 
 struct CampingSpotDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        CampingSpotDetailView()
+        CampingSpotDetailView(campingSpot: CampingSpotStore().campingSpotList.first!)
     }
 }

@@ -99,6 +99,7 @@ struct SearchCampingSpotView: View {
                     VStack{
                         NavigationLink {
                             CampingSpotListView()
+                                .environmentObject(CampingSpotStore())
                         } label: {
                             Image(areaImage[index])
                                 .resizable()
@@ -126,6 +127,7 @@ struct SearchCampingSpotView: View {
                     VStack{
                         NavigationLink {
                             CampingSpotListView()
+                                .environmentObject(CampingSpotStore())
                         } label: {
                             Image(viewImage[index])
                                 .resizable()
@@ -151,7 +153,7 @@ struct SearchCampingSpotView: View {
                 ForEach(0..<campingSpotADName.count){ index in
                     VStack(alignment: .leading){
                         NavigationLink {
-                            CampingSpotDetailView()
+//                            CampingSpotDetailView(campingSpot: <#T##Item#>)
                         } label: {
                             ZStack(alignment: .topTrailing){
                                 Image(campingSpotADImage[index])

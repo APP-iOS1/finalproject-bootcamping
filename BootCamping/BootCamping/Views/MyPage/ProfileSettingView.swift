@@ -110,6 +110,7 @@ struct ProfileSettingView: View {
             Spacer()
             Button {
                 authStore.googleSignOut()
+                authStore.authSignOut()
             } label: {
                 Text("로그아웃")
             }

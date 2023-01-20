@@ -96,11 +96,7 @@ struct MyPageView: View {
         VStack {
             switch selectedPicker2 {
             case .myCamping:
-                VStack(spacing: 30){
-                    ForEach(0..<5) { _ in
-                        MyPlanCellView()
-                    }
-                }
+                    CalendarView()
             case .bookmarkedCampingSpot:
                 VStack(spacing: 20){
                     ForEach(0..<5) { _ in

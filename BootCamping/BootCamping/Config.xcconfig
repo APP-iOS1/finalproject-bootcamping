@@ -1,0 +1,12 @@
+//
+//  Config.xcconfig
+//  BootCamping
+//
+//  Created by 차소민 on 2023/01/20.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+
+KAKAO_NATIVE_APP_KEY = e1ad857e5933c98479d0c6069a7b0751

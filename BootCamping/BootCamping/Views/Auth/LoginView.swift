@@ -16,10 +16,12 @@ import KakaoSDKUser
 
 struct LoginView: View {
     
-    @EnvironmentObject var authStore: AuthStore
     @State var userEmail: String = ""
-    @Binding var isSignIn: Bool
     @State private var isLogin: Bool = true
+    
+    @Binding var isSignIn: Bool
+    
+    @EnvironmentObject var authStore: AuthStore
     @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
     
     var body: some View {

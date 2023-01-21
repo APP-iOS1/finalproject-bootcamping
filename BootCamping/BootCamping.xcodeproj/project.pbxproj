@@ -444,7 +444,6 @@
 				63AF45B22977CDC60014B1E1 /* User.swift in Sources */,
 				63AF45E62977CE650014B1E1 /* CampingSpotDetailView.swift in Sources */,
 				639129ED297929A500F6EDD7 /* CampingSpotView.swift in Sources */,
-				63AF45D92977CE4C0014B1E1 /* MyPlanCellView.swift in Sources */,
 				63AF45DB2977CE4C0014B1E1 /* ProfileSettingView.swift in Sources */,
 				63AF45C42977CE0B0014B1E1 /* WeeklyPopulerCampingView.swift in Sources */,
 				63AF45C52977CE0B0014B1E1 /* WeeklyPopulerCampingDetailView.swift in Sources */,
@@ -584,7 +583,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BootCamping/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = QJ9LBR5S7P;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -625,7 +624,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BootCamping/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = QJ9LBR5S7P;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -693,7 +692,7 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 7.0.0;
-       };
+			};
 		};
 		790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -730,7 +729,7 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6E996E7F297A4E290085D914 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
-    };
+		};
 		790B62E1297A28E00048C110 /* KakaoSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;

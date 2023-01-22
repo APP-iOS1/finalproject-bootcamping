@@ -27,17 +27,9 @@ struct LoginView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(.gray)
-                    .frame(width: UIScreen.screenWidth * 0.8, height: 44)
-                    .overlay {
-                        TextField("이메일", text: $userEmail)
-                            .textCase(.lowercase)
-                            .disableAutocorrection(true)
-                            .autocapitalization(.none)
-                            .padding()
-                        
-                    }
+                
+                emailTextField
+                
                 signInAndSignUpButton
                 
                 Divider().padding(.horizontal, UIScreen.screenWidth * 0.05).padding(.vertical, 10)
@@ -57,6 +49,21 @@ struct LoginView: View {
                 }
             }
         }
+    }
+    
+    // 이메일 입력 필드
+    var emailTextField: some View {
+        RoundedRectangle(cornerRadius: 10)
+            .stroke(.gray)
+            .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+            .overlay {
+                TextField("이메일", text: $userEmail)
+                    .textCase(.lowercase)
+                    .disableAutocorrection(true)
+                    .autocapitalization(.none)
+                    .padding()
+                
+            }
     }
     
     // 로그인 혹은 회원가입 버튼

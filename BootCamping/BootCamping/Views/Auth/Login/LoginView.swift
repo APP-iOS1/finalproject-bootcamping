@@ -19,6 +19,12 @@ struct LoginView: View {
     @State var userEmail: String = ""
     @State private var isLogin: Bool = true
     
+    // true : 중복 x
+    // false: 중복 o
+    private var isLogin2: Bool {
+        return authStore.userList.filter { $0.userEmail == userEmail }.isEmpty
+    }
+    
     @Binding var isSignIn: Bool
     
     @EnvironmentObject var authStore: AuthStore
@@ -39,14 +45,13 @@ struct LoginView: View {
                 googleLoginButton
                 
                 appleLoginButton
+                
                 Spacer()
             }
             .foregroundColor(Color("BCBlack"))
             .padding()
-            .task {
-                Task {
-                    isLogin = try await authStore.checkUserEmailDuplicated(userEmail: userEmail)
-                }
+            .onAppear {
+                    authStore.fetchUserList()
             }
         }
     }
@@ -71,7 +76,7 @@ struct LoginView: View {
     /// 이메일 체크 후 중복 없을 시 회원가입 페이지로
     var signInAndSignUpButton: some View {
         NavigationLink {
-            if isLogin {
+            if isLogin2 {
                 AuthSignUpView(userEmail: userEmail)
             } else {
                 LoginPasswordView(userEmail: userEmail, isSignIn: $isSignIn)

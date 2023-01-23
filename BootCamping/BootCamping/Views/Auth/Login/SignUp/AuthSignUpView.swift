@@ -158,7 +158,7 @@ struct AuthSignUpView: View {
     var signUpButton: some View {
         Button {
             Task {
-                try await authStore.authSignUp(userEmail: userEmail, password: password, confirmPassword: confirmPassword)
+                let _ = try await authStore.authSignUp(userEmail: userEmail, password: password, confirmPassword: confirmPassword)
                 try await authStore.authSignIn(userEmail: userEmail, password: password)
                 authStore.addUserList(User(id: String(Auth.auth().currentUser!.uid), profileImage: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: []))
                 authStore.authSignOut()

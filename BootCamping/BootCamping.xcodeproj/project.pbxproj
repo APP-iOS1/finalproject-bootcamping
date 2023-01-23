@@ -187,6 +187,24 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		63665586297CF47D0058622D /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				63AF45BA2977CDE20014B1E1 /* LoginView.swift */,
+				63AF45B92977CDE20014B1E1 /* LoginPasswordView.swift */,
+				63665587297CF4890058622D /* SignUp */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		63665587297CF4890058622D /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				63AF45B82977CDE20014B1E1 /* AuthSignUpView.swift */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
 		63AF45A92977CDA30014B1E1 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -228,8 +246,8 @@
 			children = (
 				630ADB502977CC6C000A517B /* ContentView.swift */,
 				63AF45BE2977CDF00014B1E1 /* Home */,
-				63AF45CE2977CE320014B1E1 /* MyCampingDiary */,
 				63AF45CD2977CE250014B1E1 /* SearchCampingSpot */,
+				63AF45CE2977CE320014B1E1 /* MyCampingDiary */,
 				63AF45CF2977CE3C0014B1E1 /* MyPage */,
 				63AF45B72977CDDA0014B1E1 /* Auth */,
 				790B62DE297A262E0048C110 /* kakaoLoginViewTEST.swift */,
@@ -240,9 +258,7 @@
 		63AF45B72977CDDA0014B1E1 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				63AF45BA2977CDE20014B1E1 /* LoginView.swift */,
-				63AF45B92977CDE20014B1E1 /* LoginPasswordView.swift */,
-				63AF45B82977CDE20014B1E1 /* AuthSignUpView.swift */,
+				63665586297CF47D0058622D /* Login */,
 				639129EC297929A500F6EDD7 /* CampingSpotView.swift */,
 			);
 			path = Auth;
@@ -251,30 +267,30 @@
 		63AF45BE2977CDF00014B1E1 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				63AF45C62977CE0E0014B1E1 /* RealtimeCampingView */,
-				63AF45C12977CE020014B1E1 /* WeeklyPopulerCampingView */,
+				63AF45C62977CE0E0014B1E1 /* RealtimeCamping */,
+				63AF45C12977CE020014B1E1 /* WeeklyPopulerCamping */,
 				63AF45BF2977CDF90014B1E1 /* HomeView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
 		};
-		63AF45C12977CE020014B1E1 /* WeeklyPopulerCampingView */ = {
+		63AF45C12977CE020014B1E1 /* WeeklyPopulerCamping */ = {
 			isa = PBXGroup;
 			children = (
 				63AF45C32977CE0B0014B1E1 /* WeeklyPopulerCampingDetailView.swift */,
 				63AF45C22977CE0B0014B1E1 /* WeeklyPopulerCampingView.swift */,
 			);
-			path = WeeklyPopulerCampingView;
+			path = WeeklyPopulerCamping;
 			sourceTree = "<group>";
 		};
-		63AF45C62977CE0E0014B1E1 /* RealtimeCampingView */ = {
+		63AF45C62977CE0E0014B1E1 /* RealtimeCamping */ = {
 			isa = PBXGroup;
 			children = (
 				63AF45C82977CE1A0014B1E1 /* RealtimeCampingView.swift */,
 				63AF45C72977CE1A0014B1E1 /* RealtimeCampingCellView.swift */,
 				63AF45CB2977CE220014B1E1 /* RealtimeCampingDetailView.swift */,
 			);
-			path = RealtimeCampingView;
+			path = RealtimeCamping;
 			sourceTree = "<group>";
 		};
 		63AF45CD2977CE250014B1E1 /* SearchCampingSpot */ = {

@@ -55,6 +55,7 @@ struct BootCampingApp: App {
                 ContentView()
                     .environmentObject(AuthStore())
                     .environmentObject(DiaryStore())
+                    .environmentObject(KakaoAuthStore())
                     .onOpenURL { url in
                         GIDSignIn.sharedInstance.handle(url)
                     }

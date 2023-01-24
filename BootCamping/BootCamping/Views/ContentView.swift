@@ -5,8 +5,9 @@
 //  Created by Deokhun KIM on 2023/01/17.
 //
 
-import SwiftUI
 import CoreData
+import FirebaseAuth
+import SwiftUI
 
 struct ContentView: View {
     
@@ -44,6 +45,11 @@ struct ContentView: View {
                 }.tabItem {
                     Label("마이 페이지", systemImage: "person")
                 }.tag(4)
+            }
+            .onAppear {
+                if Auth.auth().currentUser?.uid == nil {
+                    isSignIn = false
+                }
             }
         } else {
             LoginView(isSignIn: $isSignIn)

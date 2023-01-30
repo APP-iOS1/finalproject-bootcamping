@@ -6,11 +6,21 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseCore
+import FirebaseAuth
+import GoogleSignIn
+import GoogleSignInSwift
+import KakaoSDKUser
+
 
 struct LoginView: View {
     
     @EnvironmentObject var authStore: AuthStore
     @State var userEmail: String = ""
+    @Binding var isSignIn: Bool
+    @State private var isLogin: Bool = true
+    @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
     
     var body: some View {
         NavigationStack {
@@ -27,10 +37,10 @@ struct LoginView: View {
                      
                     }
                 NavigationLink {
-                    if authStore.testFunc(test: userEmail) != "" {
-                        LoginPasswordView(userEmail: userEmail)
-                    } else {
+                    if isLogin {
                         AuthSignUpView(userEmail: userEmail)
+                    } else {
+                        LoginPasswordView(userEmail: userEmail, isSignIn: $isSignIn)
                     }
                 } label: {
                     Text("계속")
@@ -42,8 +52,10 @@ struct LoginView: View {
                     .padding(.vertical, 10)
                 
                 Button {
+                    kakaoAuthStore.handleKakaoLogin()
+                    }
                     
-                } label: {
+                 label: {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(.gray)
                         .frame(width: UIScreen.screenWidth * 0.8, height: 44)
@@ -52,7 +64,7 @@ struct LoginView: View {
                         }
                 }
                 Button {
-                    
+                    authStore.googleSignIn()
                 } label: {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(.gray)
@@ -79,13 +91,32 @@ struct LoginView: View {
             }
             .foregroundColor(Color("BCBlack"))
             .padding()
+            .task {
+                Task {
+                    isLogin = try await authStore.checkUserEmailDuplicated(userEmail: userEmail)
+                }
+            }
         }
     }
 }
 
+
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
+        LoginView(isSignIn: .constant(true))
             .environmentObject(AuthStore())
     }
 }
+
+////구글 로그인을 위한 rootViewController 정의
+//extension View {
+//    func getRootViewController() -> UIViewController {
+//        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+//            return .init()
+//        }
+//        guard let root = screen.windows.first?.rootViewController else {
+//            return .init()
+//        }
+//        return root
+//    }
+//}

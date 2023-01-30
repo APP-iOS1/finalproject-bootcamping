@@ -11,26 +11,42 @@ import MapKit
 
 struct CampingSpotDetailView: View {
     @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.5666791, longitude: 126.9782914), span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02))
-    
+    @State private var isBookmark: Bool = false
     
     var body: some View {
         let images = ["10", "9", "8"]
+        let diary = ["1", "2", "3"]
         
         ZStack {
             ScrollView {
                 TabView {
                     ForEach(images, id: \.self) { item in
                         Image(item).resizable().scaledToFill()
+                            
                     }
                 }
                 .tabViewStyle(PageTabViewStyle())
-                .frame(width: 400, height: 300)
+                .frame(width: UIScreen.screenWidth, height: 300)
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Group {
-                        Text("디노담양힐링파크") // 캠핑장 이름
-                            .font(.title)
-                            .padding(.top, -15)
+                        HStack(alignment: .top) {
+                            Text("디노담양힐링파크") // 캠핑장 이름
+                                .font(.title)
+                                .bold()
+                            Spacer()
+                            
+                            Button {
+                                isBookmark.toggle()
+                            } label: {
+                                Image(systemName: isBookmark ? "bookmark.fill" : "bookmark")
+                                    .font(.title3)
+                                    .foregroundColor(Color("BCGreen"))
+                                }
+                            
+                        }
+                        .padding(.top, -15)
+                        
                         HStack {
                             Image(systemName: "mappin.and.ellipse")
                                 .foregroundColor(.gray)
@@ -52,9 +68,9 @@ struct CampingSpotDetailView: View {
                         Text("편의시설 및 서비스")
                             .font(.headline)
                             .padding(.bottom, 10)
-                        Image("facilities")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
+                        
+                        ServiceIcon()
+                        
                     }
                     
                     Divider()
@@ -65,9 +81,9 @@ struct CampingSpotDetailView: View {
                             .font(.headline)
                             .padding(.bottom, 10)
                         Map(coordinateRegion: $region, showsUserLocation: true, userTrackingMode: .constant(.follow))
-                            .frame(width: 330, height: 250)
+                            .frame(width: UIScreen.screenWidth * 0.84, height: 250)
                             .cornerRadius(10)
-                     
+                        
                     }
                     
                     Divider()
@@ -90,22 +106,18 @@ struct CampingSpotDetailView: View {
                         }
                         ScrollView(.horizontal) {
                             HStack {
-                                VStack(alignment: .leading) {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 120, height: 120)
-                                    Text("캠핑장 다녀옴")
+                                ForEach(diary, id: \.self) { item in
+                                    VStack(alignment: .leading) {
+                                        Image(item).resizable()
+                                            .frame(width: 120, height: 120)
+                                            .cornerRadius(7)
+                                            .scaledToFill()
+                                        Text("충주호 캠핑장 명당자리 예약하는 방법")
+                                            .font(.callout)
+                                            .frame(width: 120)
+                                            .lineLimit(2)
+                                    }
                                 }
-                                VStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 120, height: 120)
-                                    Text("제목 대충 뭐라고")
-                                }
-                                VStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 120, height: 120)
-                                    Text("지으면 되나")
-                                }
-                                
                             }
                         }
                     }
@@ -117,9 +129,55 @@ struct CampingSpotDetailView: View {
     }
 }
 
-
-
-
+// 편의시설 및 서비스 아이콘 구조체
+struct ServiceIcon: View {
+    let serviceString = "전기,무선인터넷,장작판매,온수,트렘폴린,물놀이장,놀이터,산책로,운동장,운동시설,마트.편의점"
+    let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())] // 5개 한줄에 띄우려면 5개 넣으면 됨...!
+    
+    func switchServiceIcon(svc: String) -> String {
+        switch svc {
+        case "전기":
+            return "plug"
+        case "무선인터넷":
+            return "wifi"
+        case "장작판매":
+            return "firewood"
+        case "온수":
+            return "hotwater"
+        case "트렘폴린":
+            return "trampoline"
+        case "물놀이장":
+            return "swim"
+        case "놀이터":
+            return "playfc"
+        case "산책로":
+            return "walk"
+        case "운동장":
+            return "ground"
+        case "운동시설":
+            return "sportfc"
+        case "마트.편의점":
+            return "store"
+        default:
+            return ""
+        }
+    }
+    
+    var body: some View {
+        LazyVGrid(columns: columns) {
+            ForEach(serviceString.components(separatedBy: ","), id: \.self) { svc in
+                VStack {
+                    Image(switchServiceIcon(svc: svc))
+                        .resizable().frame(width:30, height:30)
+                    Text(svc)
+                        .font(.caption)
+                        .kerning(-1)
+                }
+                .padding(4)
+            }
+        }
+    }
+}
 
 struct CampingSpotDetailView_Previews: PreviewProvider {
     static var previews: some View {

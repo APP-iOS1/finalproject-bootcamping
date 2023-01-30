@@ -16,12 +16,14 @@ struct RealtimeCampingCellView: View {
                 .resizable()
                 .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenWidth * 0.9)
                 .aspectRatio(contentMode: .fill)
+                .padding(.horizontal, UIScreen.screenWidth * 0.05)
             
             Text(item.title)
                 .font(.system(.title3, weight: .semibold))
-                .padding(3)
+                .padding()
             Text(item.content)
-                .padding(3)
+                .padding(.horizontal)
+            
             HStack {
                 Text(item.user)
                 Text(item.date)
@@ -29,7 +31,13 @@ struct RealtimeCampingCellView: View {
                 Text(item.like)
                 Text(item.comment)
             }
-            .padding(3)
+            .font(.system(.subheadline))
+            .padding(.horizontal)
+            .padding(.vertical, 5)
+            
+            Divider()
+                .padding(.horizontal)
+                .padding(.bottom)
 
         }
     }

@@ -23,6 +23,8 @@ struct WeeklyPopulerCampingView: View {
                     } label: {
                         ZStack(alignment: .leading) {
                             PhotoCardFrame(image: item)
+                            LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.3), Color.clear]), startPoint: .top, endPoint: .bottom)
+                                .cornerRadius(20)
                             photoMainStory
                                 .offset(y: -150)
                         }

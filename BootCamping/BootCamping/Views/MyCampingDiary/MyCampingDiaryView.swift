@@ -18,56 +18,48 @@ struct MyCampingDiaryView: View {
         RealtimeCampingSampleData(picture: "4", title: "충주호 보면서 불멍하기", user: "by User", date: "15분 전", like: "좋아요 3", comment: "댓글 8", content: "충주호 캠핑월드 겨우 한자리 잡았는데 후회없네요ㅠㅠ 뷰가 짱이라서 마음에 들...  더 보기"),
         ]
     var body: some View {
-//        List(diaryDatas, id: \.self) { diaryData in
-//            //네비게이션 화살표 없애기
-//            VStack {
-//                ZStack {
-//                    NavigationLink {
-//                        DiaryDetailView()
-//                    } label: {
-//                        EmptyView()
-//                    }
-//                    .opacity(0) //화살표 투명하게 만들기
-//
-//                    DiaryCellView(item: diaryData)
-//                }
-//            }
-//        }
-        List(diaryStore.diaryList) { diaryData in
-            //네비게이션 화살표 없애기
-            VStack {
-                ZStack {
-                    NavigationLink {
-                        DiaryDetailView()
-                    } label: {
-                        EmptyView()
+        ScrollView {
+            ForEach(diaryStore.diaryList) { diaryData in
+                //네비게이션 화살표 없애기
+                VStack {
+                    ZStack {
+                        NavigationLink {
+                            DiaryDetailView(item: diaryData)
+                        } label: {
+                            VStack {
+                                DiaryCellView(item: diaryData)
+                                Divider()
+                            }
+                        }
+                        .foregroundColor(Color("BCBlack"))
+                        .padding(.horizontal, UIScreen.screenWidth * 0.1)
+                        .padding(.vertical, UIScreen.screenHeight * 0.01)
+                        
+
                     }
-//                    .opacity(0) //화살표 투명하게 만들기
-                    
-                    DiaryCellView(item: diaryData)
                 }
             }
-        }
-        .onAppear {
-            diaryStore.getData()
-            print("\(diaryStore.diaryList)")
-        }
-        .listStyle(.plain)
-        .toolbar{
-            ToolbarItem(placement: .navigationBarLeading) {
-                
-                Text("My Camping Diary")
-                    .font(.title.bold())
-                
-                
+            .onAppear {
+                diaryStore.getData()
+                print("\(diaryStore.diaryList)")
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink {
-                        DiaryAddView()
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-            }
+            .listStyle(.plain)
+            .toolbar{
+                ToolbarItem(placement: .navigationBarLeading) {
+                    
+                    Text("My Camping Diary")
+                        .font(.title.bold())
+                    
+                    
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                        NavigationLink {
+                            DiaryAddView()
+                        } label: {
+                            Image(systemName: "plus")
+                        }
+                }
+        }
         }
     }
 }

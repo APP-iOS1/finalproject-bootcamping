@@ -8,7 +8,7 @@
 import Foundation
 import Firebase
 
-struct Diary {
+struct Diary: Hashable, Identifiable {
     let id: String //글
     let uid: String //유저
     let diaryTitle: String //다이어리 제목

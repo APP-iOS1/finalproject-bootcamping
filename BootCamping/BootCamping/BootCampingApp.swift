@@ -42,7 +42,6 @@ class AppDelegate: NSObject, UIApplicationDelegate/*, UIResponder */{
 @main
 struct BootCampingApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @AppStorage("login") var isSignIn: Bool = false
     
     init() {
         let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
@@ -53,31 +52,19 @@ struct BootCampingApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if isSignIn {
                 ContentView()
                     .environmentObject(AuthStore())
                     .environmentObject(DiaryStore())
+                    .environmentObject(KakaoAuthStore())
                     .onOpenURL { url in
                         GIDSignIn.sharedInstance.handle(url)
                     }
-            } else {
-                
-//                LoginView(, isSignIn: <#Binding<Bool>#>)
-//                    .environmentObject(AuthStore())
-//                    .environmentObject(DiaryStore())
-                                LoginView(isSignIn: $isSignIn)
-                                    .environmentObject(AuthStore())
-                                    .environmentObject(KakaoAuthStore())
-//                                kakaoLoginViewTEST()
-                
-            }
             // onOpenURL()을 사용해 커스텀 URL 스킴 처리
             //            ContentView().onOpenURL(perform: { url in
             //                if (AuthApi.isKakaoTalkLoginUrl(url)) {
             //                    AuthController.handleOpenUrl(url: url)
             //                }
             //            })
-            
         }
     }
 }

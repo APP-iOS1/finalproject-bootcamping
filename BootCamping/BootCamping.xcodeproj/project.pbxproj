@@ -54,6 +54,7 @@
 		790B62F2297A28E00048C110 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62F1297A28E00048C110 /* KakaoSDKTemplate */; };
 		790B62F4297A28E00048C110 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62F3297A28E00048C110 /* KakaoSDKUser */; };
 		790B62F7297A36BB0048C110 /* KakaoAuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62F6297A36BB0048C110 /* KakaoAuthStore.swift */; };
+		7C3FC49729877C7200E96A01 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7C3FC49629877C7200E96A01 /* SDWebImageSwiftUI */; };
 		7C715C982977E056009BC678 /* Diary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C715C972977E056009BC678 /* Diary.swift */; };
 		7C715C9A2977E086009BC678 /* DiaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C715C992977E086009BC678 /* DiaryStore.swift */; };
 		7CFCE12A2987549700E196AF /* RealtimeCampingCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE1282987549700E196AF /* RealtimeCampingCellView.swift */; };
@@ -125,6 +126,7 @@
 				63AF45A42977CD9C0014B1E1 /* FirebaseAuth in Frameworks */,
 				6E996E81297A4E290085D914 /* GoogleSignIn in Frameworks */,
 				790B62E2297A28E00048C110 /* KakaoSDK in Frameworks */,
+				7C3FC49729877C7200E96A01 /* SDWebImageSwiftUI in Frameworks */,
 				790B62E8297A28E00048C110 /* KakaoSDKCommonCore in Frameworks */,
 				790B62EE297A28E00048C110 /* KakaoSDKStory in Frameworks */,
 				790B62EA297A28E00048C110 /* KakaoSDKNavi in Frameworks */,
@@ -346,6 +348,7 @@
 				790B62EF297A28E00048C110 /* KakaoSDKTalk */,
 				790B62F1297A28E00048C110 /* KakaoSDKTemplate */,
 				790B62F3297A28E00048C110 /* KakaoSDKUser */,
+				7C3FC49629877C7200E96A01 /* SDWebImageSwiftUI */,
 			);
 			productName = BootCamping;
 			productReference = 630ADB4B2977CC6C000A517B /* BootCamping.app */;
@@ -379,6 +382,7 @@
 				63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				6E996E7F297A4E290085D914 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				7C3FC49529877C7200E96A01 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			productRefGroup = 630ADB4C2977CC6C000A517B /* Products */;
 			projectDirPath = "";
@@ -694,6 +698,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		7C3FC49529877C7200E96A01 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -771,6 +783,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKUser;
+		};
+		7C3FC49629877C7200E96A01 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C3FC49529877C7200E96A01 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

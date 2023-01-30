@@ -133,7 +133,7 @@ struct DiaryAddView: View {
             HStack {
                 Spacer()
                 Button {
-                    diaryStore.createDiary(diary: Diary(id: UUID().uuidString, uid: "", diaryTitle: "", diaryAddress: "", diaryContent: "", diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "", diaryIsPrivate: false), images: selectedImages)
+                    diaryStore.createDiary(diary: Diary(id: UUID().uuidString, uid: "", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "", diaryIsPrivate: false), images: selectedImages)
                 } label: {
                     Text("일기 작성하기")
                         .modifier(GreenButtonModifier())

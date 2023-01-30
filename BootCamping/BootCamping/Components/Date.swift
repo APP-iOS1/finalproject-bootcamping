@@ -8,6 +8,7 @@
 import Foundation
 import Firebase
 
+//MARK: - Date포맷 설정
 extension Date {
     public func getKoreanDate() -> String {
         let dateFormatter = DateFormatter()
@@ -17,6 +18,7 @@ extension Date {
     }
 }
 
+//MARK: - TimeStamp 설정 함수
 class TimestampToString {
     
     //MARK: --분 전 으로 시간 표시 됨

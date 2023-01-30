@@ -1,0 +1,142 @@
+//
+//  LoginView.swift
+//  BootCamping
+//
+//  Created by Donghoon Bae on 2023/01/18.
+//
+
+import Firebase
+import FirebaseAuth
+import FirebaseCore
+import GoogleSignIn
+import GoogleSignInSwift
+import KakaoSDKUser
+import SwiftUI
+
+
+struct LoginView: View {
+    
+    @State var userEmail: String = ""
+    @State private var isLogin: Bool = true
+    
+    // true : 중복 x
+    // false: 중복 o
+    private var isLogin2: Bool {
+        return authStore.userList.filter { $0.userEmail == userEmail }.isEmpty
+    }
+    
+    @Binding var isSignIn: Bool
+    
+    @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
+    
+    var body: some View {
+        NavigationStack {
+            VStack {
+                
+                emailTextField
+                
+                signInAndSignUpButton
+                
+                Divider().padding(.horizontal, UIScreen.screenWidth * 0.05).padding(.vertical, 10)
+                
+                kakaoLoginButton
+                
+                googleLoginButton
+                
+                appleLoginButton
+                
+                Spacer()
+            }
+            .foregroundColor(Color("BCBlack"))
+            .padding()
+            .onAppear {
+                    authStore.fetchUserList()
+            }
+        }
+    }
+    
+    // 이메일 입력 필드
+    var emailTextField: some View {
+        RoundedRectangle(cornerRadius: 10)
+            .stroke(.gray)
+            .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+            .overlay {
+                TextField("이메일", text: $userEmail)
+                    .textCase(.lowercase)
+                    .disableAutocorrection(true)
+                    .autocapitalization(.none)
+                    .padding()
+                
+            }
+    }
+    
+    // 로그인 혹은 회원가입 버튼
+    /// 이메일 체크 후 중복 시 로그인 페이지로
+    /// 이메일 체크 후 중복 없을 시 회원가입 페이지로
+    var signInAndSignUpButton: some View {
+        NavigationLink {
+            if isLogin2 {
+                AuthSignUpView(userEmail: userEmail)
+            } else {
+                LoginPasswordView(userEmail: userEmail, isSignIn: $isSignIn)
+            }
+        } label: {
+            Text("계속")
+                .modifier(GreenButtonModifier())
+        }
+    }
+    
+    // 카카오 로그인 버튼
+    var kakaoLoginButton: some View {
+        Button {
+            kakaoAuthStore.handleKakaoLogin()
+        } label: {
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(.gray)
+                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .overlay {
+                    Text("카카오로 로그인하기")
+                }
+        }
+    }
+    
+    // 구글 로그인 버튼
+    var googleLoginButton: some View {
+        Button {
+            authStore.googleSignIn()
+        } label: {
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(.gray)
+                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .overlay {
+                    Text("Google로 로그인하기")
+                }
+        }
+    }
+    
+    // 애플 로그인 버튼
+    var appleLoginButton: some View {
+        Button {
+            
+        } label: {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundColor(.black)
+                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .overlay {
+                    HStack {
+                        Image(systemName: "applelogo")
+                        Text("Apple로 로그인하기")
+                    }
+                    .foregroundColor(.white)
+                }
+        }
+    }
+}
+
+struct LoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginView(isSignIn: .constant(true))
+            .environmentObject(AuthStore())
+    }
+}

@@ -25,10 +25,6 @@ class AuthStore: ObservableObject {
     
     let database = Firestore.firestore()
     
-    func testFunc(test: String) -> String {
-        return test
-    }
-    
     static let shared = AuthStore()
     
     //Google 로그인의 로그인 및 로그아웃 상태에 대한 enum
@@ -70,7 +66,7 @@ class AuthStore: ObservableObject {
                     let bookMarkedDiaries: [String] = docData["bookMarkedDiaries"] as? [String] ?? []
                     
                     let user: User = User(id: id, profileImage: profileImage, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries)
-                    
+                    print(user)
                     self.userList.append(user)
                 }
             }
@@ -80,7 +76,7 @@ class AuthStore: ObservableObject {
     // MARK: - checkUserEmailDuplicated 이메일 중복 체크
     /// true = 중복됨
     /// false = 중복 안됨
-    func checkUserEmailDuplicated(userEmail: String) async throws -> Bool {
+    func checkUserEmailDuplicated(userEmail: String) async -> Bool {
         do {
             let result = try await database.collection("UserList").whereField("userEmail", isEqualTo: "\(userEmail)").getDocuments()
             print(#function, result)

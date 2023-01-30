@@ -19,12 +19,12 @@ struct HomeView: View {
             mainTapView(mainTap: selectedPicker)
         }
         .toolbar {
-            //TODO: - 앱 로고 위치입니다.
-            ToolbarItem(placement: .navigationBarLeading) {
-                Image("AppIcon")
-                    .resizable()
-                    .frame(width: 30, height: 30)
-            }
+            //TODO: - 상단 왼쪽 앱 로고 위치입니다.
+//            ToolbarItem(placement: .navigationBarLeading) {
+//                Image("appIcon")
+//                    .resizable()
+//                    .frame(width: 30, height: 30)
+//            }
             //MARK: - 홈 상단 피커 애니메이션입니다.
             ToolbarItem(placement: .principal) {
                 animate()
@@ -32,8 +32,37 @@ struct HomeView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
     }
+}
+
+private extension HomeView {
+    //MARK: - 홈 상단 탭 enum입니다.
+    enum tapInfo : String, CaseIterable {
+        case weeklyPopulerCamping = "주간 인기 캠핑"
+        case realtimeCamping = "실시간 캠핑"
+    }
+
+    //MARK: - 홈 상단 탭
+    struct mainTapView : View {
+        var mainTap : tapInfo
+        
+        var body: some View {
+            VStack {
+                switch mainTap {
+                case .weeklyPopulerCamping:
+                    NavigationStack {
+                        WeeklyPopulerCampingView()
+                    }
+                case .realtimeCamping:
+                    NavigationStack {
+                        RealtimeCampingView()
+                    }
+                }
+            }
+            
+        }
+    }
     
-    //MARK: - 홈 상단 피커 애니메이션입니다.
+    //MARK: - 홈 상단 탭 피커 애니메이션 함수입니다.
     @ViewBuilder
     private func animate() -> some View {
         VStack {
@@ -74,32 +103,9 @@ struct HomeView: View {
         }
 
     }
-
 }
 
-enum tapInfo : String, CaseIterable {
-    case weeklyPopulerCamping = "주간 인기 캠핑"
-    case realtimeCamping = "실시간 캠핑"
-}
 
-struct mainTapView : View {
-    var mainTap : tapInfo
-    var body: some View {
-        VStack {
-            switch mainTap {
-            case .weeklyPopulerCamping:
-                NavigationStack {
-                    WeeklyPopulerCampingView()
-                }
-            case .realtimeCamping:
-                NavigationStack {
-                    RealtimeCampingView()
-                }
-            }
-        }
-        
-    }
-}
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {

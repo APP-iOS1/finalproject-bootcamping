@@ -9,6 +9,8 @@ import CoreData
 import FirebaseAuth
 import SwiftUI
 
+//TODO: -버튼 계속 말고 직관적으로 수정하거나 회원가입 따로 빼기
+
 struct ContentView: View {
     
     @AppStorage("login") var isSignIn: Bool = false

@@ -47,15 +47,15 @@ class DiaryStore: ObservableObject {
                         diaryImageNames.append(imageName)
                     }
                     
-                    let newDiary = Diary(id: diary.id, uid: userUID, diaryTitle: diary.diaryTitle, diaryAddress: "충북태안", diaryContent: diary.diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
+                    let newDiary = Diary(id: diary.id, uid: userUID, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
                     
                     let _ = try await Firestore.firestore().collection("Diarys").document(diary.id).setData([
                         "id": newDiary.id,
                         "uid": newDiary.uid,
                         "diaryTitle": newDiary.diaryTitle,
                         "diaryAddress": newDiary.diaryAddress,
+                        "diaryContent": newDiary.diaryContent,
                         "diaryImageNames": newDiary.diaryImageNames,
-                        "diaryImageURLs": newDiary.diaryImageURLs,
                         "diaryImageURLs": newDiary.diaryImageURLs,
                         "diaryCreatedDate": newDiary.diaryCreatedDate,
                         "diaryVisitedDate": newDiary.diaryVisitedDate,
@@ -72,7 +72,7 @@ class DiaryStore: ObservableObject {
     
     //MARK: Read
     func getData() {
-        database.collection("Diary").getDocuments { snapshot, error in
+        database.collection("Diarys").getDocuments { snapshot, error in
             //에러체크
             if error == nil {
                 if let snapshot = snapshot {
@@ -105,7 +105,7 @@ class DiaryStore: ObservableObject {
     
     //MARK: Update
     func updateData(diaryToUpdate: Diary) {
-        database.collection("Diary").document(diaryToUpdate.id).setData([  //data: document내부 데이터, completion: 완료시 실행됨
+        database.collection("Diarys").document(diaryToUpdate.id).setData([  //data: document내부 데이터, completion: 완료시 실행됨
             "uid": diaryToUpdate.uid,
             "diaryTitle": diaryToUpdate.diaryTitle,
             "diaryAddress": diaryToUpdate.diaryAddress,

@@ -50,12 +50,14 @@ struct ContentView: View {
                 if Auth.auth().currentUser?.uid == nil {
                     isSignIn = false
                 }
+                diaryStore.getData()
             }
         } else {
             LoginView(isSignIn: $isSignIn)
                 .environmentObject(AuthStore())
                 .environmentObject(KakaoAuthStore())
         }
+
     }
 }
 

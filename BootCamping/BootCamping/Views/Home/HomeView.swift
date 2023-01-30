@@ -20,11 +20,11 @@ struct HomeView: View {
         }
         .toolbar {
             //TODO: - 앱 로고 위치입니다.
-//            ToolbarItem(placement: .navigationBarLeading) {
-//                Image("appLogo")
-//                    .resizable()
-//                    .frame(width: 30, height: 30)
-//            }
+            ToolbarItem(placement: .navigationBarLeading) {
+                Image("AppIcon")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+            }
             //MARK: - 홈 상단 피커 애니메이션입니다.
             ToolbarItem(placement: .principal) {
                 animate()

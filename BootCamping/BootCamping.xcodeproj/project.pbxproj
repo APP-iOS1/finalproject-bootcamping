@@ -11,6 +11,10 @@
 		630ADB512977CC6C000A517B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630ADB502977CC6C000A517B /* ContentView.swift */; };
 		630ADB532977CC6D000A517B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 630ADB522977CC6D000A517B /* Assets.xcassets */; };
 		630ADB572977CC6D000A517B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 630ADB562977CC6D000A517B /* Preview Assets.xcassets */; };
+		639129E92979291D00F6EDD7 /* Places.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639129E82979291D00F6EDD7 /* Places.swift */; };
+		639129EB2979292500F6EDD7 /* FetchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639129EA2979292500F6EDD7 /* FetchData.swift */; };
+		639129ED297929A500F6EDD7 /* CampingSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639129EC297929A500F6EDD7 /* CampingSpotView.swift */; };
+		639129EF29792CB700F6EDD7 /* CapmingSpotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639129EE29792CB700F6EDD7 /* CapmingSpotStore.swift */; };
 		63AF45A12977CD590014B1E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 63AF45A02977CD590014B1E1 /* GoogleService-Info.plist */; };
 		63AF45A42977CD9C0014B1E1 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 63AF45A32977CD9C0014B1E1 /* FirebaseAuth */; };
 		63AF45A62977CD9C0014B1E1 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 63AF45A52977CD9C0014B1E1 /* FirebaseFirestore */; };
@@ -25,13 +29,10 @@
 		63AF45BD2977CDE20014B1E1 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45BA2977CDE20014B1E1 /* LoginView.swift */; };
 		63AF45C02977CDF90014B1E1 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45BF2977CDF90014B1E1 /* HomeView.swift */; };
 		63AF45C42977CE0B0014B1E1 /* WeeklyPopulerCampingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45C22977CE0B0014B1E1 /* WeeklyPopulerCampingView.swift */; };
-		63AF45C52977CE0B0014B1E1 /* WeeklyPopulerCampingDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45C32977CE0B0014B1E1 /* WeeklyPopulerCampingDetailView.swift */; };
 		63AF45C92977CE1A0014B1E1 /* RealtimeCampingCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45C72977CE1A0014B1E1 /* RealtimeCampingCellView.swift */; };
 		63AF45CA2977CE1A0014B1E1 /* RealtimeCampingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45C82977CE1A0014B1E1 /* RealtimeCampingView.swift */; };
-		63AF45CC2977CE220014B1E1 /* RealtimeCampingDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45CB2977CE220014B1E1 /* RealtimeCampingDetailView.swift */; };
 		63AF45D72977CE4C0014B1E1 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45D12977CE4B0014B1E1 /* MyPageView.swift */; };
 		63AF45D82977CE4C0014B1E1 /* BookmarkCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45D22977CE4B0014B1E1 /* BookmarkCellView.swift */; };
-		63AF45D92977CE4C0014B1E1 /* MyPlanCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45D32977CE4C0014B1E1 /* MyPlanCellView.swift */; };
 		63AF45DA2977CE4C0014B1E1 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45D42977CE4C0014B1E1 /* SettingView.swift */; };
 		63AF45DB2977CE4C0014B1E1 /* ProfileSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45D52977CE4C0014B1E1 /* ProfileSettingView.swift */; };
 		63AF45DF2977CE5E0014B1E1 /* MyCampingDiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45DC2977CE5E0014B1E1 /* MyCampingDiaryView.swift */; };
@@ -40,6 +41,30 @@
 		63AF45E52977CE650014B1E1 /* CampingSpotListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */; };
 		63AF45E62977CE650014B1E1 /* CampingSpotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */; };
 		63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */; };
+		6E996E81297A4E290085D914 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 6E996E80297A4E290085D914 /* GoogleSignIn */; };
+		6E996E83297A4E290085D914 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6E996E82297A4E290085D914 /* GoogleSignInSwift */; };
+		790B62D929792A4D0048C110 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62D829792A4D0048C110 /* Comment.swift */; };
+		790B62DB29792B4C0048C110 /* CommentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62DA29792B4C0048C110 /* CommentStore.swift */; };
+		790B62DD297936840048C110 /* DiaryLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62DC297936840048C110 /* DiaryLike.swift */; };
+		790B62DF297A262E0048C110 /* kakaoLoginViewTEST.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62DE297A262E0048C110 /* kakaoLoginViewTEST.swift */; };
+		790B62E2297A28E00048C110 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E1297A28E00048C110 /* KakaoSDK */; };
+		790B62E4297A28E00048C110 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E3297A28E00048C110 /* KakaoSDKAuth */; };
+		790B62E6297A28E00048C110 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E5297A28E00048C110 /* KakaoSDKCommon */; };
+		790B62E8297A28E00048C110 /* KakaoSDKCommonCore in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E7297A28E00048C110 /* KakaoSDKCommonCore */; };
+		790B62EA297A28E00048C110 /* KakaoSDKNavi in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E9297A28E00048C110 /* KakaoSDKNavi */; };
+		790B62EC297A28E00048C110 /* KakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62EB297A28E00048C110 /* KakaoSDKShare */; };
+		790B62EE297A28E00048C110 /* KakaoSDKStory in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62ED297A28E00048C110 /* KakaoSDKStory */; };
+		790B62F0297A28E00048C110 /* KakaoSDKTalk in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62EF297A28E00048C110 /* KakaoSDKTalk */; };
+		790B62F2297A28E00048C110 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62F1297A28E00048C110 /* KakaoSDKTemplate */; };
+		790B62F4297A28E00048C110 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62F3297A28E00048C110 /* KakaoSDKUser */; };
+		790B62F7297A36BB0048C110 /* KakaoAuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62F6297A36BB0048C110 /* KakaoAuthStore.swift */; };
+		7C715C982977E056009BC678 /* Diary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C715C972977E056009BC678 /* Diary.swift */; };
+		7C715C9A2977E086009BC678 /* DiaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C715C992977E086009BC678 /* DiaryStore.swift */; };
+		AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD373AF92977D68A00E1236A /* DiaryCellView.swift */; };
+		CA729F3329792DE000CCC3BB /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F3229792DE000CCC3BB /* CalendarView.swift */; };
+		CA729F352979315400CCC3BB /* CustomDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F342979315400CCC3BB /* CustomDatePickerView.swift */; };
+		CA729F392979340600CCC3BB /* Reservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F382979340600CCC3BB /* Reservation.swift */; };
+		CA729F3C297A6C4B00CCC3BB /* AddScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F3B297A6C4B00CCC3BB /* AddScheduleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +74,10 @@
 		630ADB522977CC6D000A517B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		630ADB542977CC6D000A517B /* BootCamping.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BootCamping.entitlements; sourceTree = "<group>"; };
 		630ADB562977CC6D000A517B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		639129E82979291D00F6EDD7 /* Places.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Places.swift; sourceTree = "<group>"; };
+		639129EA2979292500F6EDD7 /* FetchData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchData.swift; sourceTree = "<group>"; };
+		639129EC297929A500F6EDD7 /* CampingSpotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampingSpotView.swift; sourceTree = "<group>"; };
+		639129EE29792CB700F6EDD7 /* CapmingSpotStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapmingSpotStore.swift; sourceTree = "<group>"; };
 		63AF45A02977CD590014B1E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		63AF45AA2977CDB40014B1E1 /* UIScreen+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
 		63AF45AB2977CDB40014B1E1 /* ViewModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
@@ -60,13 +89,10 @@
 		63AF45BA2977CDE20014B1E1 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		63AF45BF2977CDF90014B1E1 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		63AF45C22977CE0B0014B1E1 /* WeeklyPopulerCampingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeeklyPopulerCampingView.swift; sourceTree = "<group>"; };
-		63AF45C32977CE0B0014B1E1 /* WeeklyPopulerCampingDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeeklyPopulerCampingDetailView.swift; sourceTree = "<group>"; };
 		63AF45C72977CE1A0014B1E1 /* RealtimeCampingCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealtimeCampingCellView.swift; sourceTree = "<group>"; };
 		63AF45C82977CE1A0014B1E1 /* RealtimeCampingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealtimeCampingView.swift; sourceTree = "<group>"; };
-		63AF45CB2977CE220014B1E1 /* RealtimeCampingDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealtimeCampingDetailView.swift; sourceTree = "<group>"; };
 		63AF45D12977CE4B0014B1E1 /* MyPageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		63AF45D22977CE4B0014B1E1 /* BookmarkCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkCellView.swift; sourceTree = "<group>"; };
-		63AF45D32977CE4C0014B1E1 /* MyPlanCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPlanCellView.swift; sourceTree = "<group>"; };
 		63AF45D42977CE4C0014B1E1 /* SettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		63AF45D52977CE4C0014B1E1 /* ProfileSettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSettingView.swift; sourceTree = "<group>"; };
 		63AF45DC2977CE5E0014B1E1 /* MyCampingDiaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCampingDiaryView.swift; sourceTree = "<group>"; };
@@ -75,6 +101,19 @@
 		63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CampingSpotListView.swift; sourceTree = "<group>"; };
 		63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CampingSpotDetailView.swift; sourceTree = "<group>"; };
 		63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCampingSpotView.swift; sourceTree = "<group>"; };
+		790B62D829792A4D0048C110 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		790B62DA29792B4C0048C110 /* CommentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentStore.swift; sourceTree = "<group>"; };
+		790B62DC297936840048C110 /* DiaryLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryLike.swift; sourceTree = "<group>"; };
+		790B62DE297A262E0048C110 /* kakaoLoginViewTEST.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kakaoLoginViewTEST.swift; sourceTree = "<group>"; };
+		790B62F5297A2D710048C110 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		790B62F6297A36BB0048C110 /* KakaoAuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthStore.swift; sourceTree = "<group>"; };
+		7C715C972977E056009BC678 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
+		7C715C992977E086009BC678 /* DiaryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryStore.swift; sourceTree = "<group>"; };
+		AD373AF92977D68A00E1236A /* DiaryCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCellView.swift; sourceTree = "<group>"; };
+		CA729F3229792DE000CCC3BB /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		CA729F342979315400CCC3BB /* CustomDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerView.swift; sourceTree = "<group>"; };
+		CA729F382979340600CCC3BB /* Reservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reservation.swift; sourceTree = "<group>"; };
+		CA729F3B297A6C4B00CCC3BB /* AddScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,9 +121,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E996E83297A4E290085D914 /* GoogleSignInSwift in Frameworks */,
 				63AF45A42977CD9C0014B1E1 /* FirebaseAuth in Frameworks */,
+				6E996E81297A4E290085D914 /* GoogleSignIn in Frameworks */,
+				790B62E2297A28E00048C110 /* KakaoSDK in Frameworks */,
+				790B62E8297A28E00048C110 /* KakaoSDKCommonCore in Frameworks */,
+				790B62EE297A28E00048C110 /* KakaoSDKStory in Frameworks */,
+				790B62EA297A28E00048C110 /* KakaoSDKNavi in Frameworks */,
+				790B62F2297A28E00048C110 /* KakaoSDKTemplate in Frameworks */,
 				63AF45A62977CD9C0014B1E1 /* FirebaseFirestore in Frameworks */,
 				63AF45A82977CD9C0014B1E1 /* FirebaseStorage in Frameworks */,
+				790B62F4297A28E00048C110 /* KakaoSDKUser in Frameworks */,
+				790B62F0297A28E00048C110 /* KakaoSDKTalk in Frameworks */,
+				790B62E6297A28E00048C110 /* KakaoSDKCommon in Frameworks */,
+				790B62E4297A28E00048C110 /* KakaoSDKAuth in Frameworks */,
+				790B62EC297A28E00048C110 /* KakaoSDKShare in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +170,7 @@
 				630ADB522977CC6D000A517B /* Assets.xcassets */,
 				630ADB542977CC6D000A517B /* BootCamping.entitlements */,
 				630ADB552977CC6D000A517B /* Preview Content */,
+				790B62F5297A2D710048C110 /* Config.xcconfig */,
 			);
 			path = BootCamping;
 			sourceTree = "<group>";
@@ -144,7 +196,12 @@
 		63AF45B02977CDBC0014B1E1 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				639129E82979291D00F6EDD7 /* Places.swift */,
 				63AF45B12977CDC60014B1E1 /* User.swift */,
+				790B62D829792A4D0048C110 /* Comment.swift */,
+				790B62DC297936840048C110 /* DiaryLike.swift */,
+				7C715C972977E056009BC678 /* Diary.swift */,
+				CA729F382979340600CCC3BB /* Reservation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -152,7 +209,12 @@
 		63AF45B32977CDC90014B1E1 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				639129EA2979292500F6EDD7 /* FetchData.swift */,
 				63AF45B42977CDD20014B1E1 /* AuthStore.swift */,
+				790B62DA29792B4C0048C110 /* CommentStore.swift */,
+				7C715C992977E086009BC678 /* DiaryStore.swift */,
+				790B62F6297A36BB0048C110 /* KakaoAuthStore.swift */,
+				639129EE29792CB700F6EDD7 /* CapmingSpotStore.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -166,6 +228,7 @@
 				63AF45CD2977CE250014B1E1 /* SearchCampingSpot */,
 				63AF45CF2977CE3C0014B1E1 /* MyPage */,
 				63AF45B72977CDDA0014B1E1 /* Auth */,
+				790B62DE297A262E0048C110 /* kakaoLoginViewTEST.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -173,9 +236,10 @@
 		63AF45B72977CDDA0014B1E1 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				63AF45B82977CDE20014B1E1 /* AuthSignUpView.swift */,
-				63AF45B92977CDE20014B1E1 /* LoginPasswordView.swift */,
 				63AF45BA2977CDE20014B1E1 /* LoginView.swift */,
+				63AF45B92977CDE20014B1E1 /* LoginPasswordView.swift */,
+				63AF45B82977CDE20014B1E1 /* AuthSignUpView.swift */,
+				639129EC297929A500F6EDD7 /* CampingSpotView.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -193,7 +257,6 @@
 		63AF45C12977CE020014B1E1 /* WeeklyPopulerCampingView */ = {
 			isa = PBXGroup;
 			children = (
-				63AF45C32977CE0B0014B1E1 /* WeeklyPopulerCampingDetailView.swift */,
 				63AF45C22977CE0B0014B1E1 /* WeeklyPopulerCampingView.swift */,
 			);
 			path = WeeklyPopulerCampingView;
@@ -202,9 +265,8 @@
 		63AF45C62977CE0E0014B1E1 /* RealtimeCampingView */ = {
 			isa = PBXGroup;
 			children = (
-				63AF45C72977CE1A0014B1E1 /* RealtimeCampingCellView.swift */,
 				63AF45C82977CE1A0014B1E1 /* RealtimeCampingView.swift */,
-				63AF45CB2977CE220014B1E1 /* RealtimeCampingDetailView.swift */,
+				63AF45C72977CE1A0014B1E1 /* RealtimeCampingCellView.swift */,
 			);
 			path = RealtimeCampingView;
 			sourceTree = "<group>";
@@ -212,9 +274,9 @@
 		63AF45CD2977CE250014B1E1 /* SearchCampingSpot */ = {
 			isa = PBXGroup;
 			children = (
-				63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */,
-				63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */,
 				63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */,
+				63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */,
+				63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */,
 			);
 			path = SearchCampingSpot;
 			sourceTree = "<group>";
@@ -222,9 +284,10 @@
 		63AF45CE2977CE320014B1E1 /* MyCampingDiary */ = {
 			isa = PBXGroup;
 			children = (
-				63AF45DD2977CE5E0014B1E1 /* DiaryAddView.swift */,
-				63AF45DE2977CE5E0014B1E1 /* DiaryDetailView.swift */,
 				63AF45DC2977CE5E0014B1E1 /* MyCampingDiaryView.swift */,
+				63AF45DE2977CE5E0014B1E1 /* DiaryDetailView.swift */,
+				AD373AF92977D68A00E1236A /* DiaryCellView.swift */,
+				63AF45DD2977CE5E0014B1E1 /* DiaryAddView.swift */,
 			);
 			path = MyCampingDiary;
 			sourceTree = "<group>";
@@ -232,13 +295,23 @@
 		63AF45CF2977CE3C0014B1E1 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
-				63AF45D22977CE4B0014B1E1 /* BookmarkCellView.swift */,
-				63AF45D12977CE4B0014B1E1 /* MyPageView.swift */,
-				63AF45D32977CE4C0014B1E1 /* MyPlanCellView.swift */,
 				63AF45D52977CE4C0014B1E1 /* ProfileSettingView.swift */,
 				63AF45D42977CE4C0014B1E1 /* SettingView.swift */,
+				CA729F3029792D7200CCC3BB /* MyPageView */,
 			);
 			path = MyPage;
+			sourceTree = "<group>";
+		};
+		CA729F3029792D7200CCC3BB /* MyPageView */ = {
+			isa = PBXGroup;
+			children = (
+				63AF45D22977CE4B0014B1E1 /* BookmarkCellView.swift */,
+				63AF45D12977CE4B0014B1E1 /* MyPageView.swift */,
+				CA729F3229792DE000CCC3BB /* CalendarView.swift */,
+				CA729F3B297A6C4B00CCC3BB /* AddScheduleView.swift */,
+				CA729F342979315400CCC3BB /* CustomDatePickerView.swift */,
+			);
+			path = MyPageView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -261,6 +334,18 @@
 				63AF45A32977CD9C0014B1E1 /* FirebaseAuth */,
 				63AF45A52977CD9C0014B1E1 /* FirebaseFirestore */,
 				63AF45A72977CD9C0014B1E1 /* FirebaseStorage */,
+				6E996E80297A4E290085D914 /* GoogleSignIn */,
+				6E996E82297A4E290085D914 /* GoogleSignInSwift */,
+				790B62E1297A28E00048C110 /* KakaoSDK */,
+				790B62E3297A28E00048C110 /* KakaoSDKAuth */,
+				790B62E5297A28E00048C110 /* KakaoSDKCommon */,
+				790B62E7297A28E00048C110 /* KakaoSDKCommonCore */,
+				790B62E9297A28E00048C110 /* KakaoSDKNavi */,
+				790B62EB297A28E00048C110 /* KakaoSDKShare */,
+				790B62ED297A28E00048C110 /* KakaoSDKStory */,
+				790B62EF297A28E00048C110 /* KakaoSDKTalk */,
+				790B62F1297A28E00048C110 /* KakaoSDKTemplate */,
+				790B62F3297A28E00048C110 /* KakaoSDKUser */,
 			);
 			productName = BootCamping;
 			productReference = 630ADB4B2977CC6C000A517B /* BootCamping.app */;
@@ -292,6 +377,8 @@
 			mainGroup = 630ADB422977CC6C000A517B;
 			packageReferences = (
 				63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				6E996E7F297A4E290085D914 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
 			productRefGroup = 630ADB4C2977CC6C000A517B /* Products */;
 			projectDirPath = "";
@@ -326,23 +413,36 @@
 				63AF45AF2977CDB40014B1E1 /* Date.swift in Sources */,
 				63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */,
 				63AF45DA2977CE4C0014B1E1 /* SettingView.swift in Sources */,
+				7C715C9A2977E086009BC678 /* DiaryStore.swift in Sources */,
+				CA729F352979315400CCC3BB /* CustomDatePickerView.swift in Sources */,
 				63AF45BB2977CDE20014B1E1 /* AuthSignUpView.swift in Sources */,
+				CA729F392979340600CCC3BB /* Reservation.swift in Sources */,
+				7C715C982977E056009BC678 /* Diary.swift in Sources */,
 				63AF45E52977CE650014B1E1 /* CampingSpotListView.swift in Sources */,
 				63AF45B52977CDD20014B1E1 /* AuthStore.swift in Sources */,
 				63AF45D72977CE4C0014B1E1 /* MyPageView.swift in Sources */,
+				CA729F3329792DE000CCC3BB /* CalendarView.swift in Sources */,
+				AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */,
+				790B62F7297A36BB0048C110 /* KakaoAuthStore.swift in Sources */,
+				639129E92979291D00F6EDD7 /* Places.swift in Sources */,
+				639129EB2979292500F6EDD7 /* FetchData.swift in Sources */,
+				790B62DD297936840048C110 /* DiaryLike.swift in Sources */,
+				CA729F3C297A6C4B00CCC3BB /* AddScheduleView.swift in Sources */,
+				790B62DB29792B4C0048C110 /* CommentStore.swift in Sources */,
 				63AF45BC2977CDE20014B1E1 /* LoginPasswordView.swift in Sources */,
 				63AF45C02977CDF90014B1E1 /* HomeView.swift in Sources */,
 				63AF45E02977CE5E0014B1E1 /* DiaryAddView.swift in Sources */,
+				790B62DF297A262E0048C110 /* kakaoLoginViewTEST.swift in Sources */,
 				63AF45E12977CE5E0014B1E1 /* DiaryDetailView.swift in Sources */,
 				63AF45D82977CE4C0014B1E1 /* BookmarkCellView.swift in Sources */,
 				63AF45B22977CDC60014B1E1 /* User.swift in Sources */,
 				63AF45E62977CE650014B1E1 /* CampingSpotDetailView.swift in Sources */,
-				63AF45D92977CE4C0014B1E1 /* MyPlanCellView.swift in Sources */,
+				639129ED297929A500F6EDD7 /* CampingSpotView.swift in Sources */,
 				63AF45DB2977CE4C0014B1E1 /* ProfileSettingView.swift in Sources */,
 				63AF45C42977CE0B0014B1E1 /* WeeklyPopulerCampingView.swift in Sources */,
-				63AF45C52977CE0B0014B1E1 /* WeeklyPopulerCampingDetailView.swift in Sources */,
-				63AF45CC2977CE220014B1E1 /* RealtimeCampingDetailView.swift in Sources */,
+				790B62D929792A4D0048C110 /* Comment.swift in Sources */,
 				630ADB4F2977CC6C000A517B /* BootCampingApp.swift in Sources */,
+				639129EF29792CB700F6EDD7 /* CapmingSpotStore.swift in Sources */,
 				63AF45AD2977CDB40014B1E1 /* UIScreen+Extension.swift in Sources */,
 				63AF45BD2977CDE20014B1E1 /* LoginView.swift in Sources */,
 				63AF45AE2977CDB40014B1E1 /* ViewModifiers.swift in Sources */,
@@ -355,6 +455,7 @@
 /* Begin XCBuildConfiguration section */
 		630ADB582977CC6D000A517B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 790B62F5297A2D710048C110 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -413,6 +514,7 @@
 		};
 		630ADB592977CC6D000A517B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 790B62F5297A2D710048C110 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -464,17 +566,20 @@
 		};
 		630ADB5B2977CC6D000A517B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 790B62F5297A2D710048C110 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = BootCamping/BootCamping.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BootCamping/Preview Content\"";
-				DEVELOPMENT_TEAM = QJ9LBR5S7P;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BootCamping/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -490,7 +595,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCamping.BootCamping;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCamping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -502,17 +607,20 @@
 		};
 		630ADB5C2977CC6D000A517B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 790B62F5297A2D710048C110 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = BootCamping/BootCamping.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BootCamping/Preview Content\"";
-				DEVELOPMENT_TEAM = QJ9LBR5S7P;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BootCamping/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -528,7 +636,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCamping.BootCamping;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCamping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -570,6 +678,22 @@
 				kind = branch;
 			};
 		};
+		6E996E7F297A4E290085D914 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -587,6 +711,66 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		6E996E80297A4E290085D914 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6E996E7F297A4E290085D914 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		6E996E82297A4E290085D914 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6E996E7F297A4E290085D914 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		790B62E1297A28E00048C110 /* KakaoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDK;
+		};
+		790B62E3297A28E00048C110 /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
+		};
+		790B62E5297A28E00048C110 /* KakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommon;
+		};
+		790B62E7297A28E00048C110 /* KakaoSDKCommonCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommonCore;
+		};
+		790B62E9297A28E00048C110 /* KakaoSDKNavi */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKNavi;
+		};
+		790B62EB297A28E00048C110 /* KakaoSDKShare */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKShare;
+		};
+		790B62ED297A28E00048C110 /* KakaoSDKStory */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKStory;
+		};
+		790B62EF297A28E00048C110 /* KakaoSDKTalk */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKTalk;
+		};
+		790B62F1297A28E00048C110 /* KakaoSDKTemplate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKTemplate;
+		};
+		790B62F3297A28E00048C110 /* KakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKUser;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

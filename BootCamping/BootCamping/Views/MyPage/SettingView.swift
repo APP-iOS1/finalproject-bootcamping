@@ -11,18 +11,25 @@ import SwiftUI
 struct SettingView: View {
     var body: some View {
         List{
-            NavigationLink(destination: EmptyView()) {
-                Text("내 정보 관리")
+            NavigationLink(destination: CampingSpotView().environmentObject(CampingSpotStore())) {
+                Text("공지사항")
             }
             NavigationLink(destination: EmptyView()) {
-                Text("서비스 이용 약관")
+                Text("자주 묻는 질문")
             }
             NavigationLink(destination: EmptyView()) {
-                Text("개인정보 처리방침")
+                Text("앱 정보")
             }
             NavigationLink(destination: EmptyView()) {
-                Text("라이선스")
+                Text("알림설정")
             }
+            Button {
+                // TODO: 회원 탈퇴
+                /// 얼럿 띄우고 탈퇴하는 뷰에 연결하기
+            } label: {
+                Text("회원 탈퇴")
+            }
+
         }
         .listStyle(.plain)
     }

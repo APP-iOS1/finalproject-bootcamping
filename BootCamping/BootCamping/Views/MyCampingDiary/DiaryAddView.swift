@@ -7,15 +7,19 @@
 
 import SwiftUI
 import PhotosUI
+import Firebase
 
 struct DiaryAddView: View {
     @State private var selectedItems = [PhotosPickerItem]()
-    @State private var selectedImages = [UIImage]()
-    @State private var diaryTilte: String = ""
+    @State private var selectedImages = [Data]()
+    @State private var diaryTitle: String = ""
     @State private var locationInfo: String = ""
     @State private var visitDate: String = ""
     @State private var isOpen: Bool = false
     @State private var diaryContent: String = ""
+    
+    @EnvironmentObject var diaryStore: DiaryStore
+    @EnvironmentObject var authStore: AuthStore
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -44,8 +48,8 @@ struct DiaryAddView: View {
                             Task {
                                 selectedItems = []
                                 for value in newValue {
-                                    if let imageData = try? await value.loadTransferable(type: Data.self), let image = UIImage(data: imageData) {
-                                        selectedImages.append(image)
+                                    if let imageData = try? await value.loadTransferable(type: Data.self) {
+                                        selectedImages.append(imageData)
                                     }
                                 }
                             }
@@ -55,7 +59,7 @@ struct DiaryAddView: View {
                     ScrollView(.horizontal) {
                         HStack {
                             ForEach(selectedImages, id: \.self) { image in
-                                Image(uiImage: image)
+                                Image(uiImage: UIImage(data: image)!)
                                     .resizable()
                                     .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
                             }
@@ -66,7 +70,7 @@ struct DiaryAddView: View {
             }
             .padding()
             Section {
-                TextField("제목을 입력해주세요(최대 10자)", text: $diaryTilte)
+                TextField("제목을 입력해주세요(최대 10자)", text: $diaryTitle)
                     .padding(6)
                     .background {
                         RoundedRectangle(cornerRadius: 2, style: .continuous)
@@ -104,17 +108,38 @@ struct DiaryAddView: View {
                 Text("방문일")
                     .padding(.horizontal)
             }
-            
-            Toggle(isOn: $isOpen) {
-                Text("공개여부")
+            HStack {
+                Text("공개설정")
+                Spacer()
+                VStack {
+                    Image(systemName: "lock.open")
+                    Text("공개")
+                }
+                .padding(.trailing)
+                VStack {
+                    Image(systemName: "lock")
+                    Text("비공개")
+                }
+                
             }
             .padding(.horizontal)
-            
-            
+
             Divider()
             ScrollView {
                 TextField("일기를 작성해주세요", text: $diaryContent)
                     .padding()
+            }
+
+            HStack {
+                Spacer()
+                Button {
+                    diaryStore.createDiary(diary: Diary(id: UUID().uuidString, uid: "", diaryTitle: "", diaryAddress: "", diaryContent: "", diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "", diaryIsPrivate: false), images: selectedImages)
+                } label: {
+                    Text("일기 작성하기")
+                        .modifier(GreenButtonModifier())
+                }
+                Spacer()
+
             }
         }
         

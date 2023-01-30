@@ -9,8 +9,10 @@ import SwiftUI
 
 struct LoginPasswordView: View {
     
+    @EnvironmentObject var authStore: AuthStore
     var userEmail: String
     @State var password: String = ""
+    @Binding var isSignIn: Bool
     
     var body: some View {
         VStack {
@@ -26,7 +28,14 @@ struct LoginPasswordView: View {
                  
                 }
             Button {
-                
+                Task {
+                    try await authStore.authSignIn(userEmail: userEmail, password: password)
+                    if authStore.isLogin {
+                        isSignIn = true
+                    } else {
+                        print("Login Failed")
+                    }
+                }
             } label: {
                 Text("계속")
                     .modifier(GreenButtonModifier())
@@ -41,6 +50,6 @@ struct LoginPasswordView: View {
 
 struct LoginPasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginPasswordView(userEmail: "")
+        LoginPasswordView(userEmail: "", isSignIn: .constant(true))
     }
 }

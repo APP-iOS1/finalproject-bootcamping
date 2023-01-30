@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct WeeklyPopulerCampingView: View {
     //예시 포토카드 사진
@@ -13,13 +14,18 @@ struct WeeklyPopulerCampingView: View {
     //예시 포토카드 글
     var photoCardTestData = [PhotoCardTestData(date: "2023.01.17", campingPlace: "충주호 캠핑월드", title: "충주호 보면서 불멍하기", user: "by User")]
     
+    var diarySample = [
+        Diary(id: "", uid: "", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "내용", diaryImageNames: [""], diaryImageURLs: [
+            "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "", diaryIsPrivate: true)
+        ]
+    
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false){
             HStack {
                 
                 ForEach(homePhotoCards, id: \.self) { item in
                     NavigationLink {
-                        DiaryDetailView()
+                        DiaryDetailView(item: diarySample[0])
                     } label: {
                         ZStack(alignment: .leading) {
                             PhotoCardFrame(image: item)

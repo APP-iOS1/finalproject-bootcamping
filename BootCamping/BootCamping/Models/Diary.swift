@@ -7,7 +7,7 @@
 
 import Foundation
 import Firebase
-
+//TODO: -닉네임 추가
 struct Diary: Hashable, Identifiable {
     let id: String //글
     let uid: String //유저

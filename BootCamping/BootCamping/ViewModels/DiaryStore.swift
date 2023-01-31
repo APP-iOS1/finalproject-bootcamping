@@ -11,6 +11,7 @@ import FirebaseFirestore
 import Foundation
 import SwiftUI
 import FirebaseStorage
+import Combine
 
 class DiaryStore: ObservableObject {
     //저장된 다이어리 리스트
@@ -18,8 +19,11 @@ class DiaryStore: ObservableObject {
     //파베 기본 경로
     let database = Firestore.firestore()
     
+    //
+    private var cancellables = Set<AnyCancellable>()
+    
     //MARK: Create
-    func createDiary(diary: Diary, images: [Data]) {
+    func createDiary1(diary: Diary, images: [Data]) {
             Task {
                 do {
                     guard let userUID = Auth.auth().currentUser?.uid else { return }
@@ -136,20 +140,91 @@ class DiaryStore: ObservableObject {
             }
             
         }
-        removeImage(diaryToDelete)
         getData()
     }
-    
-    //MARK: Remove Storage
-    func removeImage(_ diary: Diary) {
-        let storageRef = Storage.storage().reference().child("DiaryImages")
-        for diaryImage in diary.diaryImageNames {
-            storageRef.child(diaryImage).delete { error in
-                if let error = error {
-                    print("Error removing image from storage: \(error.localizedDescription)")
+
+    //MARK: Read Diary Combine
+    func getDiarys() {
+        FirebaseService().getDiarysService()
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed get Diarys")
+                        return
+                case .finished:
+                    print("Finished get Diarys")
+                    return
                 }
+            } receiveValue: { [weak self] diarys in
+                self?.diaryList = diarys
             }
-        }
+            .store(in: &cancellables)
     }
- 
+    
+
+    //MARK: Create Diary Combine
+
+    func createDiary(diary: Diary, images: [Data]) {
+        FirebaseService().createDiaryService(diary: diary, images: images)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Create Diary")
+                    return
+                case .finished:
+                    print("Finished Create Diary")
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
+    
+    //MARK: Update Diary Combine
+    func updateDiary(diary: Diary, images: [Data]) {
+        FirebaseService().createDiaryService(diary: diary, images: images)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Update Diary")
+                    return
+                case .finished:
+                    print("Finished Update Diary")
+                    self.getDiarys()
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
+    
+    //MARK: Delete Diary Combine
+    func deletDiary(diary: Diary) {
+        FirebaseService().deleteDiaryService(diary: diary)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Delete Diary")
+                    return
+                case .finished:
+                    self.getDiarys()
+                    print("Finished Delete Diary")
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+
+    }
+    
 }

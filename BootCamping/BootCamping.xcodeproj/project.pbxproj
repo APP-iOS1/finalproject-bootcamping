@@ -56,7 +56,8 @@
 		790B62F7297A36BB0048C110 /* KakaoAuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62F6297A36BB0048C110 /* KakaoAuthStore.swift */; };
 		7C3FC49729877C7200E96A01 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7C3FC49629877C7200E96A01 /* SDWebImageSwiftUI */; };
 		7C715C982977E056009BC678 /* Diary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C715C972977E056009BC678 /* Diary.swift */; };
-		7C715C9A2977E086009BC678 /* DiaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C715C992977E086009BC678 /* DiaryStore.swift */; };
+		7CC3AD4E29890970002EF992 /* DiaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3AD4D29890970002EF992 /* DiaryStore.swift */; };
+		7CC3AD5029890974002EF992 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3AD4F29890974002EF992 /* FirebaseService.swift */; };
 		7CFCE12A2987549700E196AF /* RealtimeCampingCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE1282987549700E196AF /* RealtimeCampingCellView.swift */; };
 		7CFCE12B2987549700E196AF /* RealtimeCampingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE1292987549700E196AF /* RealtimeCampingView.swift */; };
 		7CFCE12D2987549F00E196AF /* WeeklyPopulerCampingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE12C2987549F00E196AF /* WeeklyPopulerCampingView.swift */; };
@@ -64,8 +65,9 @@
 		AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD373AF92977D68A00E1236A /* DiaryCellView.swift */; };
 		CA729F3329792DE000CCC3BB /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F3229792DE000CCC3BB /* CalendarView.swift */; };
 		CA729F352979315400CCC3BB /* CustomDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F342979315400CCC3BB /* CustomDatePickerView.swift */; };
-		CA729F392979340600CCC3BB /* Reservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F382979340600CCC3BB /* Reservation.swift */; };
+		CA729F392979340600CCC3BB /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F382979340600CCC3BB /* Schedule.swift */; };
 		CA729F3C297A6C4B00CCC3BB /* AddScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F3B297A6C4B00CCC3BB /* AddScheduleView.swift */; };
+		CA729F432988FCBA00CCC3BB /* ScheduleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F422988FCBA00CCC3BB /* ScheduleStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -105,7 +107,8 @@
 		790B62F5297A2D710048C110 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		790B62F6297A36BB0048C110 /* KakaoAuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthStore.swift; sourceTree = "<group>"; };
 		7C715C972977E056009BC678 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
-		7C715C992977E086009BC678 /* DiaryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryStore.swift; sourceTree = "<group>"; };
+		7CC3AD4D29890970002EF992 /* DiaryStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryStore.swift; sourceTree = "<group>"; };
+		7CC3AD4F29890974002EF992 /* FirebaseService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		7CFCE1282987549700E196AF /* RealtimeCampingCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealtimeCampingCellView.swift; sourceTree = "<group>"; };
 		7CFCE1292987549700E196AF /* RealtimeCampingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealtimeCampingView.swift; sourceTree = "<group>"; };
 		7CFCE12C2987549F00E196AF /* WeeklyPopulerCampingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeeklyPopulerCampingView.swift; sourceTree = "<group>"; };
@@ -113,8 +116,9 @@
 		AD373AF92977D68A00E1236A /* DiaryCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCellView.swift; sourceTree = "<group>"; };
 		CA729F3229792DE000CCC3BB /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		CA729F342979315400CCC3BB /* CustomDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerView.swift; sourceTree = "<group>"; };
-		CA729F382979340600CCC3BB /* Reservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reservation.swift; sourceTree = "<group>"; };
+		CA729F382979340600CCC3BB /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		CA729F3B297A6C4B00CCC3BB /* AddScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleView.swift; sourceTree = "<group>"; };
+		CA729F422988FCBA00CCC3BB /* ScheduleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +169,7 @@
 			children = (
 				630ADB4E2977CC6C000A517B /* BootCampingApp.swift */,
 				63AF45B02977CDBC0014B1E1 /* Models */,
+				ADF535D22988B3980003AD13 /* Service */,
 				63AF45B32977CDC90014B1E1 /* ViewModels */,
 				63AF45B62977CDD50014B1E1 /* Views */,
 				63AF45A92977CDA30014B1E1 /* Components */,
@@ -221,7 +226,7 @@
 				790B62D829792A4D0048C110 /* Comment.swift */,
 				790B62DC297936840048C110 /* DiaryLike.swift */,
 				7C715C972977E056009BC678 /* Diary.swift */,
-				CA729F382979340600CCC3BB /* Reservation.swift */,
+				CA729F382979340600CCC3BB /* Schedule.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -232,9 +237,10 @@
 				639129EA2979292500F6EDD7 /* FetchData.swift */,
 				63AF45B42977CDD20014B1E1 /* AuthStore.swift */,
 				790B62DA29792B4C0048C110 /* CommentStore.swift */,
-				7C715C992977E086009BC678 /* DiaryStore.swift */,
 				790B62F6297A36BB0048C110 /* KakaoAuthStore.swift */,
 				639129EE29792CB700F6EDD7 /* CapmingSpotStore.swift */,
+				CA729F422988FCBA00CCC3BB /* ScheduleStore.swift */,
+				7CC3AD4D29890970002EF992 /* DiaryStore.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -302,6 +308,14 @@
 				CA729F3029792D7200CCC3BB /* MyPageView */,
 			);
 			path = MyPage;
+			sourceTree = "<group>";
+		};
+		ADF535D22988B3980003AD13 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				7CC3AD4F29890974002EF992 /* FirebaseService.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 		CA729F3029792D7200CCC3BB /* MyPageView */ = {
@@ -414,14 +428,15 @@
 				630ADB512977CC6C000A517B /* ContentView.swift in Sources */,
 				7CFCE12F2987551F00E196AF /* LoginPasswordView.swift in Sources */,
 				63AF45DF2977CE5E0014B1E1 /* MyCampingDiaryView.swift in Sources */,
+				7CC3AD4E29890970002EF992 /* DiaryStore.swift in Sources */,
+				7CC3AD5029890974002EF992 /* FirebaseService.swift in Sources */,
 				63AF45AF2977CDB40014B1E1 /* Date.swift in Sources */,
 				63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */,
 				63AF45DA2977CE4C0014B1E1 /* SettingView.swift in Sources */,
-				7C715C9A2977E086009BC678 /* DiaryStore.swift in Sources */,
 				7CFCE12B2987549700E196AF /* RealtimeCampingView.swift in Sources */,
 				CA729F352979315400CCC3BB /* CustomDatePickerView.swift in Sources */,
 				63AF45BB2977CDE20014B1E1 /* AuthSignUpView.swift in Sources */,
-				CA729F392979340600CCC3BB /* Reservation.swift in Sources */,
+				CA729F392979340600CCC3BB /* Schedule.swift in Sources */,
 				7C715C982977E056009BC678 /* Diary.swift in Sources */,
 				63AF45E52977CE650014B1E1 /* CampingSpotListView.swift in Sources */,
 				63AF45B52977CDD20014B1E1 /* AuthStore.swift in Sources */,
@@ -444,6 +459,7 @@
 				63AF45E62977CE650014B1E1 /* CampingSpotDetailView.swift in Sources */,
 				639129ED297929A500F6EDD7 /* CampingSpotView.swift in Sources */,
 				63AF45DB2977CE4C0014B1E1 /* ProfileSettingView.swift in Sources */,
+				CA729F432988FCBA00CCC3BB /* ScheduleStore.swift in Sources */,
 				790B62D929792A4D0048C110 /* Comment.swift in Sources */,
 				630ADB4F2977CC6C000A517B /* BootCampingApp.swift in Sources */,
 				639129EF29792CB700F6EDD7 /* CapmingSpotStore.swift in Sources */,

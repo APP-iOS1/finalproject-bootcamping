@@ -10,15 +10,9 @@ import SwiftUI
 struct MyCampingDiaryView: View {
     
     @EnvironmentObject var diaryStore: DiaryStore
-    
-    var diaryDatas = [
-        RealtimeCampingSampleData(picture: "1", title: "충주호 보면서 불멍하기", user: "by User", date: "15분 전", like: "좋아요 3", comment: "댓글 8", content: "충주호 캠핑월드 겨우 한자리 잡았는데 후회없네요ㅠㅠ 뷰가 짱이라서 마음에 들...  더 보기"),
-        RealtimeCampingSampleData(picture: "2", title: "충주호 보면서 불멍하기", user: "by User", date: "15분 전", like: "좋아요 3", comment: "댓글 8", content: "충주호 캠핑월드 겨우 한자리 잡았는데 후회없네요ㅠㅠ 뷰가 짱이라서 마음에 들...  더 보기"),
-        RealtimeCampingSampleData(picture: "3", title: "충주호 보면서 불멍하기", user: "by User", date: "15분 전", like: "좋아요 3", comment: "댓글 8", content: "충주호 캠핑월드 겨우 한자리 잡았는데 후회없네요ㅠㅠ 뷰가 짱이라서 마음에 들...  더 보기"),
-        RealtimeCampingSampleData(picture: "4", title: "충주호 보면서 불멍하기", user: "by User", date: "15분 전", like: "좋아요 3", comment: "댓글 8", content: "충주호 캠핑월드 겨우 한자리 잡았는데 후회없네요ㅠㅠ 뷰가 짱이라서 마음에 들...  더 보기"),
-        ]
+
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             ForEach(diaryStore.diaryList) { diaryData in
                 //네비게이션 화살표 없애기
                 VStack {
@@ -31,7 +25,7 @@ struct MyCampingDiaryView: View {
                                 Divider()
                             }
                         }
-                        .foregroundColor(Color("BCBlack"))
+                        .foregroundColor(.bcBlack)
                         .padding(.horizontal, UIScreen.screenWidth * 0.1)
                         .padding(.vertical, UIScreen.screenHeight * 0.01)
                         
@@ -68,5 +62,6 @@ struct MyCampingDiaryView: View {
 //struct MyCampingDiaryView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        MyCampingDiaryView()
+//            .environmentObject(DiaryStore())
 //    }
 //}

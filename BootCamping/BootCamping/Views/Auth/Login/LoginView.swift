@@ -13,17 +13,7 @@ import GoogleSignInSwift
 import KakaoSDKUser
 import SwiftUI
 
-
 struct LoginView: View {
-    
-    @State var userEmail: String = ""
-    @State private var isLogin: Bool = true
-    
-    // true : 중복 x
-    // false: 중복 o
-    private var isLogin2: Bool {
-        return authStore.userList.filter { $0.userEmail == userEmail }.isEmpty
-    }
     
     @Binding var isSignIn: Bool
     
@@ -32,58 +22,46 @@ struct LoginView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                
-                emailTextField
-                
-                signInAndSignUpButton
-                
-                Divider().padding(.horizontal, UIScreen.screenWidth * 0.05).padding(.vertical, 10)
-                
-                kakaoLoginButton
-                
-                googleLoginButton
-                
-                appleLoginButton
-                
-                Spacer()
-            }
-            .foregroundColor(Color("BCBlack"))
-            .padding()
-            .onAppear {
-                    authStore.fetchUserList()
-            }
+            ZStack {
+                Color.bcGreen
+                VStack(spacing: 10) {
+                    
+                    Spacer()
+                    
+                    loginIcon
+                    
+                    Spacer()
+                    
+                    kakaoLoginButton
+                    
+                    googleLoginButton
+                    
+                    appleLoginButton
+                    
+                    emailSignUpButton
+                        .padding(.vertical, 10)
+                    
+                }
+                .foregroundColor(.bcBlack)
+                .padding()
+            }.ignoresSafeArea()
         }
     }
+}
+
+extension LoginView {
     
-    // 이메일 입력 필드
-    var emailTextField: some View {
-        RoundedRectangle(cornerRadius: 10)
-            .stroke(.gray)
-            .frame(width: UIScreen.screenWidth * 0.8, height: 44)
-            .overlay {
-                TextField("이메일", text: $userEmail)
-                    .textCase(.lowercase)
-                    .disableAutocorrection(true)
-                    .autocapitalization(.none)
-                    .padding()
-                
-            }
-    }
-    
-    // 로그인 혹은 회원가입 버튼
-    /// 이메일 체크 후 중복 시 로그인 페이지로
-    /// 이메일 체크 후 중복 없을 시 회원가입 페이지로
-    var signInAndSignUpButton: some View {
-        NavigationLink {
-            if isLogin2 {
-                AuthSignUpView(userEmail: userEmail)
-            } else {
-                LoginPasswordView(userEmail: userEmail, isSignIn: $isSignIn)
-            }
-        } label: {
-            Text("계속")
-                .modifier(GreenButtonModifier())
+    // 로그인 아이콘 및 앱 이름
+    var loginIcon: some View {
+        VStack {
+            Image("loginImg")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 200)
+            Image("loginName")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 200)
         }
     }
     
@@ -93,10 +71,15 @@ struct LoginView: View {
             kakaoAuthStore.handleKakaoLogin()
         } label: {
             RoundedRectangle(cornerRadius: 10)
-                .stroke(.gray)
+                .foregroundColor(.yellow)
                 .frame(width: UIScreen.screenWidth * 0.8, height: 44)
                 .overlay {
-                    Text("카카오로 로그인하기")
+                    HStack {
+                        Spacer()
+                        Image(systemName: "message.fill")
+                        Text("  카카오로 로그인하기")
+                        Spacer()
+                    }
                 }
         }
     }
@@ -107,10 +90,15 @@ struct LoginView: View {
             authStore.googleSignIn()
         } label: {
             RoundedRectangle(cornerRadius: 10)
-                .stroke(.gray)
+                .foregroundColor(.white)
                 .frame(width: UIScreen.screenWidth * 0.8, height: 44)
                 .overlay {
-                    Text("Google로 로그인하기")
+                    HStack {
+                        Spacer()
+                        Image(systemName: "g.circle.fill")
+                        Text("Google로 로그인하기")
+                        Spacer()
+                    }
                 }
         }
     }
@@ -125,11 +113,25 @@ struct LoginView: View {
                 .frame(width: UIScreen.screenWidth * 0.8, height: 44)
                 .overlay {
                     HStack {
+                        Spacer()
                         Image(systemName: "applelogo")
-                        Text("Apple로 로그인하기")
+                        Text("  Apple로 로그인하기")
+                        Spacer()
                     }
                     .foregroundColor(.white)
                 }
+        }
+    }
+    
+    // 이메일로 회원가입 버튼
+    var emailSignUpButton: some View {
+        NavigationLink {
+            LoginPasswordView(isSignIn: $isSignIn)
+        } label: {
+            Text("이메일로 로그인 | 회원가입")
+                .underline()
+                .font(.subheadline)
+                .foregroundColor(.white)
         }
     }
 }

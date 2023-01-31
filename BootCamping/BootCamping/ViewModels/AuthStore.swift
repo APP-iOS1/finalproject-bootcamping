@@ -66,7 +66,6 @@ class AuthStore: ObservableObject {
                     let bookMarkedDiaries: [String] = docData["bookMarkedDiaries"] as? [String] ?? []
                     
                     let user: User = User(id: id, profileImage: profileImage, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries)
-                    print(user)
                     self.userList.append(user)
                 }
             }
@@ -82,7 +81,7 @@ class AuthStore: ObservableObject {
             print(#function, result)
             return !(result.isEmpty)
         } catch {
-            print(error)
+            print(#function, error)
             return false
         }
     }
@@ -100,7 +99,7 @@ class AuthStore: ObservableObject {
         if password == confirmPassword {
             return password.range(of: passwordRegex, options: .regularExpression) != nil
         } else {
-            print(password, confirmPassword)
+            print(#function, password, confirmPassword)
             return false
         }
     }
@@ -110,11 +109,11 @@ class AuthStore: ObservableObject {
         
         do {
             let result = try await Auth.auth().signIn(withEmail: userEmail, password: password)
-            print("Successfully logged in as user: \(result.user.uid)")
+            print(#function, "Successfully logged in as user: \(result.user.uid)")
             self.currentUser = result.user
             self.isLogin = true
         } catch {
-            print(error)
+            print(#function, error)
         }
     }
     
@@ -181,11 +180,11 @@ class AuthStore: ObservableObject {
             
         }
     }
-    
+    //TODO: -함수 이름 써주세요~
     private func authenticateUser(for user: GIDGoogleUser?, with error: Error?) {
         // 1
         if let error = error {
-            print(error.localizedDescription)
+            print(#function, error.localizedDescription)
             return
         }
         
@@ -204,7 +203,7 @@ class AuthStore: ObservableObject {
         // 3
         Auth.auth().signIn(with: credential) { [unowned self] (result, error) in
             if let error = error {
-                print(error.localizedDescription)
+                print(#function, error.localizedDescription)
             } else {
                 UserDefaults.standard.set(result?.user.uid, forKey: "userIdToken")
                 self.state = .signIn
@@ -224,7 +223,7 @@ class AuthStore: ObservableObject {
             loginState = .none
             
         } catch {
-            print(error.localizedDescription)
+            print(#function, error.localizedDescription)
         }
     }
 }

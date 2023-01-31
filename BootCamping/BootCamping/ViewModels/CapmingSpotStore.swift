@@ -10,6 +10,7 @@ import FirebaseFirestore
 
 //MARK: - 캠핑리스트 추가/ 업데이트 함수입니다.
 class CampingSpotStore: ObservableObject {
+    var searchResult: [Item] = []
     @Published var campingSpotList: [Item] = []
     
     let database = Firestore.firestore()

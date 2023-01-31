@@ -11,6 +11,7 @@ import Firebase
 struct Diary: Hashable, Identifiable {
     let id: String //글
     let uid: String //유저
+    let diaryUserNickName: String
     let diaryTitle: String //다이어리 제목
     let diaryAddress: String //장소
     let diaryContent: String //다이어리 내용

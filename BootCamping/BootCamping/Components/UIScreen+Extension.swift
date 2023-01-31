@@ -34,3 +34,9 @@ extension Color {
     static let bcYellow = Color(hex: "FCF6E6")
     static let bcGreen = Color(hex: "156838")
 }
+
+//extension View {
+//  func hideKeyboard() {
+//    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+//  }
+//}

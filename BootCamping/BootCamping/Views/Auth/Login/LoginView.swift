@@ -22,14 +22,16 @@ struct LoginView: View {
     
     var body: some View {
         NavigationStack {
+            
             VStack {
                 
                 Spacer()
                 
-                Image("loginIcon")
+                Image("iconImg")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 300)
+                    .shadow(radius: 5)
                 
                 Spacer()
                 
@@ -45,11 +47,8 @@ struct LoginView: View {
             }
             .foregroundColor(.bcBlack)
             .padding()
-
         }
     }
-
-    
 }
 
 extension LoginView {

@@ -42,6 +42,7 @@ struct CampingSpotListView: View {
 struct campingSpotListCell : View{
     var item: Item
 
+    
     var body: some View{
         VStack(alignment: .leading){
             
@@ -49,19 +50,27 @@ struct campingSpotListCell : View{
             WebImage(url: URL(string: item.firstImageUrl))
                 .resizable()
                 .frame(width: UIScreen.screenWidth*0.9, height: UIScreen.screenWidth*0.9)
-            
                 .padding(.bottom, 5)
-            
+            if item.firstImageUrl.isEmpty {
+                // 이미지 없는 것도 있어서 어떻게 할 지 고민 중~
+            }
             
             // 전망 알려주는 라벨
-            RoundedRectangle(cornerRadius: 10)
-                .frame(width: 35, height: 20)
-                .foregroundColor(Color("BCGreen"))
-                .overlay{
-                    Text(item.lctCl)
-                        .font(.caption2)
-                        .foregroundColor(.white)
+            if !item.lctCl.isEmpty {
+                HStack {
+                    ForEach(item.lctCl.components(separatedBy: ","), id: \.self) { view in
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 35, height: 20)
+                            .foregroundColor(Color("BCGreen"))
+                            .overlay{
+                                Text(view)
+                                    .font(.caption2)
+                                    .foregroundColor(.white)
+                            }
+                    }
                 }
+            }
+            
             
             // 캠핑장 이름
             Text(item.facltNm)

@@ -195,27 +195,33 @@ extension SearchCampingSpotView {
                         NavigationLink {
                        //     CampingSpotDetailView()
                         } label: {
-                            ZStack(alignment: .topTrailing){
-                                Image(campingSpotADImage[index])
-                                    .resizable()
-                                    .cornerRadius(10)
-                                    .frame(width: 150, height: 150)
-                                    .aspectRatio(contentMode: .fit)
-                                //MARK: 추천 캠핑장 제일 첫번째 거 광고 표시
-                                if index == 0 {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .foregroundColor(.white)
-                                        .opacity(0.2)
-                                        .frame(width: 25, height: 15)
-                                        .overlay{
-                                            Text("AD")
-                                                .font(.caption2)
-                                        }
-                                        .padding(3)
-                                }
-                            }
+                            Image(campingSpotADImage[index])
+                                .resizable()
+                                .cornerRadius(10)
+                                .frame(height: 150)
+                                .aspectRatio(contentMode: .fit)
+                            
                         }
-                        Text(campingSpotADName[index])
+                        
+                        HStack{
+
+                            //MARK: 추천 캠핑장 제일 첫번째 거 광고 표시
+                            if index == 0 {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(Color.gray)
+                                    .opacity(0.5)
+                                    .frame(width: 25, height: 15)
+                                    .overlay{
+                                        Text("AD")
+                                            .font(.caption2)
+                                            .foregroundColor(.white)
+                                    }
+                            }
+
+                            Text(campingSpotADName[index])
+                        }
+                        .frame(height: 8)
+                        .padding(.top, 6)
                         HStack{
                             Image(systemName: "mappin.and.ellipse")
                                 .font(.caption)

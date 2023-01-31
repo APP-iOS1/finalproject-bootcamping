@@ -16,6 +16,8 @@ enum TapMypage : String, CaseIterable {
 struct MyPageView: View {
     @State private var nickname: String = "민콩"
     @State private var selectedPicker2: TapMypage = .myCamping
+    //로그인 유무 함수
+    @Binding var isSignIn: Bool
     
     @Namespace private var animation
     
@@ -50,7 +52,7 @@ struct MyPageView: View {
                 .frame(width: 60, height: 60)
             Text("\(nickname) 님")
             NavigationLink {
-                ProfileSettingView()
+                ProfileSettingView(isSignIn: $isSignIn)
             } label: {
                 Image(systemName: "chevron.right")
                     .bold()
@@ -111,6 +113,6 @@ struct MyPageView: View {
 
 struct MyPageView_Previews: PreviewProvider {
     static var previews: some View {
-        MyPageView()
+        MyPageView(isSignIn: .constant(true))
     }
 }

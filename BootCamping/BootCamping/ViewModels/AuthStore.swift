@@ -181,7 +181,7 @@ class AuthStore: ObservableObject {
             
         }
     }
-    
+    //TODO: -함수 이름 써주세요~
     private func authenticateUser(for user: GIDGoogleUser?, with error: Error?) {
         // 1
         if let error = error {

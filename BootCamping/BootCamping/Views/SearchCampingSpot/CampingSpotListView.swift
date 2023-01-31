@@ -55,7 +55,6 @@ struct campingSpotListCell : View{
                 // 이미지 없는 것도 있어서 어떻게 할 지 고민 중~
             }
             
-            // 전망 알려주는 라벨
             if !item.lctCl.isEmpty {
                 HStack {
                     ForEach(item.lctCl.components(separatedBy: ","), id: \.self) { view in

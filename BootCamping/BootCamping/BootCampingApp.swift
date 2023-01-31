@@ -13,6 +13,8 @@ import GoogleSignIn
 import KakaoSDKCommon
 import KakaoSDKAuth
 
+//TODO: -구글, 카카오 로그인 연동 완료하기
+
 class AppDelegate: NSObject, UIApplicationDelegate/*, UIResponder */{
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
@@ -52,13 +54,14 @@ struct BootCampingApp: App {
     
     var body: some Scene {
         WindowGroup {
-                ContentView()
-                    .environmentObject(AuthStore())
-                    .environmentObject(DiaryStore())
-                    .environmentObject(KakaoAuthStore())
-                    .onOpenURL { url in
-                        GIDSignIn.sharedInstance.handle(url)
-                    }
+            ContentView()
+                .environmentObject(TabSelector())
+                .environmentObject(AuthStore())
+                .environmentObject(DiaryStore())
+                .environmentObject(KakaoAuthStore())
+                .onOpenURL { url in
+                    GIDSignIn.sharedInstance.handle(url)
+                }
             // onOpenURL()을 사용해 커스텀 URL 스킴 처리
             //            ContentView().onOpenURL(perform: { url in
             //                if (AuthApi.isKakaoTalkLoginUrl(url)) {

@@ -15,6 +15,10 @@ struct ProfileSettingView: View {
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
     @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
+    //로그아웃 시 탭 변경하기 위한 변수
+    @EnvironmentObject var tabSelection: TabSelector
+    //로그아웃시 isSignIn을 false로 변경
+    @Binding var isSignIn: Bool
 
     @State private var updateNickname: String = ""
     
@@ -113,6 +117,8 @@ struct ProfileSettingView: View {
                 authStore.googleSignOut()
                 authStore.authSignOut()
                 kakaoAuthStore.kakaoLogout()
+                isSignIn = false
+                tabSelection.change(to: .one)
             } label: {
                 Text("로그아웃")
             }
@@ -122,6 +128,6 @@ struct ProfileSettingView: View {
 
 struct ProfileSettingView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileSettingView()
+        ProfileSettingView(isSignIn: .constant(true))
     }
 }

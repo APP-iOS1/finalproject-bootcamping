@@ -10,8 +10,7 @@ import SwiftUI
 
 struct AuthSignUpView: View {
     
-    var userEmail: String
-    
+    @State var userEmail: String = ""
     @State var nickName: String = ""
     @State var password: String = ""
     @State var confirmPassword: String = ""
@@ -82,6 +81,9 @@ struct AuthSignUpView: View {
         }
         .foregroundColor(Color("BCBlack"))
     }
+}
+
+extension AuthSignUpView {
     
     // 닉네임 입력
     var nickNameSection: some View {
@@ -117,7 +119,10 @@ struct AuthSignUpView: View {
                 .frame(width: UIScreen.screenWidth * 0.8, height: 44)
                 .overlay {
                     HStack {
-                        Text("\(userEmail)")
+                        TextField("이메일", text: $userEmail)
+                            .textCase(.lowercase)
+                            .disableAutocorrection(true)
+                            .autocapitalization(.none)
                         Spacer()
                     }.padding()
                 }

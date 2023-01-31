@@ -16,15 +16,6 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @State var userEmail: String = ""
-    @State private var isLogin: Bool = true
-    
-    // true : 중복 x
-    // false: 중복 o
-    private var isLogin2: Bool {
-        return authStore.userList.filter { $0.userEmail == userEmail }.isEmpty
-    }
-    
     @Binding var isSignIn: Bool
     
     @EnvironmentObject var authStore: AuthStore
@@ -34,11 +25,7 @@ struct LoginView: View {
         NavigationStack {
             VStack {
                 
-                emailTextField
-                
-                signInAndSignUpButton
-                
-                Divider().padding(.horizontal, UIScreen.screenWidth * 0.05).padding(.vertical, 10)
+                Spacer()
                 
                 kakaoLoginButton
                 
@@ -46,46 +33,19 @@ struct LoginView: View {
                 
                 appleLoginButton
                 
-                Spacer()
+                emailSignUpButton
+                
             }
             .foregroundColor(Color("BCBlack"))
             .padding()
-            .onAppear {
-                    authStore.fetchUserList()
-            }
+
         }
     }
+
     
-    // 이메일 입력 필드
-    var emailTextField: some View {
-        RoundedRectangle(cornerRadius: 10)
-            .stroke(.gray)
-            .frame(width: UIScreen.screenWidth * 0.8, height: 44)
-            .overlay {
-                TextField("이메일", text: $userEmail)
-                    .textCase(.lowercase)
-                    .disableAutocorrection(true)
-                    .autocapitalization(.none)
-                    .padding()
-                
-            }
-    }
-    
-    // 로그인 혹은 회원가입 버튼
-    /// 이메일 체크 후 중복 시 로그인 페이지로
-    /// 이메일 체크 후 중복 없을 시 회원가입 페이지로
-    var signInAndSignUpButton: some View {
-        NavigationLink {
-            if isLogin2 {
-                AuthSignUpView(userEmail: userEmail)
-            } else {
-                LoginPasswordView(userEmail: userEmail, isSignIn: $isSignIn)
-            }
-        } label: {
-            Text("계속")
-                .modifier(GreenButtonModifier())
-        }
-    }
+}
+
+extension LoginView {
     
     // 카카오 로그인 버튼
     var kakaoLoginButton: some View {
@@ -130,6 +90,18 @@ struct LoginView: View {
                     }
                     .foregroundColor(.white)
                 }
+        }
+    }
+    
+    // 이메일로 회원가입 버튼
+    var emailSignUpButton: some View {
+        NavigationLink {
+            LoginPasswordView(isSignIn: $isSignIn)
+        } label: {
+            Text("이메일로 로그인 | 이메일로 회원가입")
+                .underline()
+                .font(.subheadline)
+                .foregroundColor(.secondary)
         }
     }
 }

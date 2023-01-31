@@ -33,6 +33,24 @@ struct RealtimeCampingCellView: View {
             diaryImage
             diaryTitle
             diaryContent
+            
+            HStack {
+                Image("1")
+                    .resizable()
+                    .frame(width: 50, height: 50)
+                
+                VStack(alignment: .leading) {
+                    Text(item.diaryAddress)
+                        .font(.title3)
+                        .foregroundColor(.gray)
+                    Text(item.diaryAddress + "대구시 수성구") //TODO: -앞에 -시 -구 까지 짜르기
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
+                
+            }
+            .padding(3)
+            
             diaryInfo
             Divider()
                 .padding(.horizontal)
@@ -45,8 +63,7 @@ struct RealtimeCampingCellView: View {
 private extension RealtimeCampingCellView {
     //MARK: - 메인 이미지
     var diaryImage: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
+        TabView{
                 ForEach(item.diaryImageURLs, id: \.self) { url in
                     WebImage(url: URL(string: url))
                         .resizable()
@@ -54,8 +71,11 @@ private extension RealtimeCampingCellView {
                         .aspectRatio(contentMode: .fill)
                     
                 }
-            }
         }
+        .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenWidth * 0.9)
+        .tabViewStyle(PageTabViewStyle())
+        // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
+        .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
         .padding(.horizontal, UIScreen.screenWidth * 0.01)
     }
     
@@ -79,7 +99,7 @@ private extension RealtimeCampingCellView {
             Text("좋아요 \(item.diaryLike)")
             Text("댓글 8")
             Spacer()
-            Text("by \(userNickName ?? "닉네임")")
+            Text("by \(item.uid)")
             Text("|")
             Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
         }

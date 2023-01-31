@@ -84,7 +84,7 @@ struct CustomDatePickerView: View {
                         .font(.title2.bold())
                         .padding(.top, 25)
                     
-                    ScrollView {
+                    ScrollView(showsIndicators: false) {
                         //MARK: 일정 디테일
                         if let schedule = schedules.first(where: { schedule in
                             return isSameDay(date1: schedule.scheduleDate, date2: currentDate)

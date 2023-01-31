@@ -18,7 +18,7 @@ struct CampingSpotDetailView: View {
         let diary = ["1", "2", "3"]
         
         ZStack {
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 TabView {
                     ForEach(images, id: \.self) { item in
                         Image(item).resizable().scaledToFill()
@@ -104,7 +104,7 @@ struct CampingSpotDetailView: View {
                                     .padding(.trailing, 10)
                             }
                         }
-                        ScrollView(.horizontal) {
+                        ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
                                 ForEach(diary, id: \.self) { item in
                                     VStack(alignment: .leading) {

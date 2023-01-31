@@ -47,12 +47,17 @@ struct campingSpotListCell : View{
         VStack(alignment: .leading){
             
             // 캠핑장 사진
-            WebImage(url: URL(string: item.firstImageUrl))
-                .resizable()
-                .frame(width: UIScreen.screenWidth*0.9, height: UIScreen.screenWidth*0.9)
-                .padding(.bottom, 5)
             if item.firstImageUrl.isEmpty {
                 // 이미지 없는 것도 있어서 어떻게 할 지 고민 중~
+                Image("noImage")
+                    .resizable()
+                    .frame(width: UIScreen.screenWidth*0.9, height: UIScreen.screenWidth*0.9)
+                    .padding(.bottom, 5)
+            } else {
+                WebImage(url: URL(string: item.firstImageUrl))
+                    .resizable()
+                    .frame(width: UIScreen.screenWidth*0.9, height: UIScreen.screenWidth*0.9)
+                    .padding(.bottom, 5)
             }
             
             if !item.lctCl.isEmpty {
@@ -88,9 +93,10 @@ struct campingSpotListCell : View{
             .padding(.bottom, 5)
             
             // 캠핑장 설명 3줄
-            Text(item.lineIntro)
-                .font(.callout)
-                .padding(.bottom)
+            if item.lineIntro != "" {
+                Text(item.lineIntro)
+                    .font(.callout)
+            }
             //                        .lineLimit(3)//optional
             //                        .expandButton(TextSet(text: "more", font: .body, color: .blue))//optional
             //                        .collapseButton(TextSet(text: "less", font: .body, color: .blue))//optional

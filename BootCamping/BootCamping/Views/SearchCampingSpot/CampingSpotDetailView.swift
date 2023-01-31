@@ -50,7 +50,7 @@ struct CampingSpotDetailView: View {
                             } label: {
                                 Image(systemName: isBookmark ? "bookmark.fill" : "bookmark")
                                     .font(.title3)
-                                    .foregroundColor(Color("BCGreen"))
+                                    .foregroundColor(.bcGreen)
                                 }
                             
                         }

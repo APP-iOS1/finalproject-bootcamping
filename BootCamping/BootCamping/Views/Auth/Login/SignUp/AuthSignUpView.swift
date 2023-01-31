@@ -10,8 +10,7 @@ import SwiftUI
 
 struct AuthSignUpView: View {
     
-    var userEmail: String
-    
+    @State var userEmail: String = ""
     @State var nickName: String = ""
     @State var password: String = ""
     @State var confirmPassword: String = ""
@@ -33,55 +32,20 @@ struct AuthSignUpView: View {
             
             Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
             
-            VStack {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("개인정보 수집 및 이용에 동의합니다")
-                        Spacer()
-                        Button {
-                            isAgree1.toggle()
-                        } label: {
-                            Image(systemName: isAgree1 ? "checkmark.square" : "square")
-                        }
-                    }
-                    Text("1. 부트캠핑이 수집하는 개인정보 부트캠핑 플랫폼을 이용하는 데 필요한 정보 당사는 회원님이 부트캠핑 플랫폼을 이용할 때...\n").font(.subheadline)
-                    NavigationLink {
-                        Agree1View
-                    } label: {
-                        Text("더보기")
-                            .font(.subheadline)
-                            .underline()
-                    }
-                }
-                Divider()
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("마케팅 이메일 수신을 원합니다(선택).")
-                        Spacer()
-                        Button {
-                            isAgree2.toggle()
-                        } label: {
-                            Image(systemName: isAgree2 ? "checkmark.square" : "square")
-                        }
-                    }
-                    Text("부트캠핑 회원 전용 할인, 추천 여행정보, 마케팅 이메일, 푸시 알림을 보내드립니다. 계정 설정 또는 마케팅...\n").font(.subheadline)
-                    NavigationLink {
-                        Agree2View
-                    } label: {
-                        Text("더보기")
-                            .font(.subheadline)
-                            .underline()
-                    }
-                }
-            }.padding(.horizontal, UIScreen.screenWidth * 0.1)
+            AgreeView
             
             Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
             
             signUpButton
             
+            Spacer()
+            
         }
-        .foregroundColor(Color("BCBlack"))
+        .foregroundColor(.bcBlack)
     }
+}
+
+extension AuthSignUpView {
     
     // 닉네임 입력
     var nickNameSection: some View {
@@ -117,7 +81,10 @@ struct AuthSignUpView: View {
                 .frame(width: UIScreen.screenWidth * 0.8, height: 44)
                 .overlay {
                     HStack {
-                        Text("\(userEmail)")
+                        TextField("이메일", text: $userEmail)
+                            .textCase(.lowercase)
+                            .disableAutocorrection(true)
+                            .autocapitalization(.none)
                         Spacer()
                     }.padding()
                 }
@@ -171,6 +138,51 @@ struct AuthSignUpView: View {
         .disabled(!authStore.checkPasswordFormat(password: password, confirmPassword: confirmPassword) && !isAgree1)
     }
     
+    // 개인정보 수집 여부 뷰
+    var AgreeView: some View {
+        
+        VStack {
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("개인정보 수집 및 이용에 동의합니다")
+                    Spacer()
+                    Button {
+                        isAgree1.toggle()
+                    } label: {
+                        Image(systemName: isAgree1 ? "checkmark.square" : "square")
+                    }
+                }
+                Text("1. 부트캠핑이 수집하는 개인정보 부트캠핑 플랫폼을 이용하는 데 필요한 정보 당사는 회원님이 부트캠핑 플랫폼을 이용할 때...\n").font(.subheadline)
+                NavigationLink {
+                    Agree1View
+                } label: {
+                    Text("더보기")
+                        .font(.subheadline)
+                        .underline()
+                }
+            }
+            Divider()
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("마케팅 이메일 수신을 원합니다(선택).")
+                    Spacer()
+                    Button {
+                        isAgree2.toggle()
+                    } label: {
+                        Image(systemName: isAgree2 ? "checkmark.square" : "square")
+                    }
+                }
+                Text("부트캠핑 회원 전용 할인, 추천 여행정보, 마케팅 이메일, 푸시 알림을 보내드립니다. 계정 설정 또는 마케팅...\n").font(.subheadline)
+                NavigationLink {
+                    Agree2View
+                } label: {
+                    Text("더보기")
+                        .font(.subheadline)
+                        .underline()
+                }
+            }
+        }.padding(.horizontal, UIScreen.screenWidth * 0.1)
+    }
     // 개인정보 수집 뷰
     var Agree1View: some View {
         Text("""

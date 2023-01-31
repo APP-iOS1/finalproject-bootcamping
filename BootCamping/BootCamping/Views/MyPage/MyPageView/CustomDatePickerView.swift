@@ -86,10 +86,10 @@ struct CustomDatePickerView: View {
                     
                     ScrollView(showsIndicators: false) {
                         //MARK: 일정 디테일
-                        if let schedule = schedules.first(where: { schedule in
-                            return isSameDay(date1: schedule.scheduleDate, date2: currentDate)
-                        }){
-                            ForEach(schedule.schedule) { schedule in
+                        if schedules.first(where: { schedule in
+                            return isSameDay(date1: schedule.date, date2: currentDate)
+                        }) != nil{
+                            ForEach(schedules) { schedule in
                                 Text("\(schedule.title)")
                             }
                         } else {
@@ -126,15 +126,16 @@ struct CustomDatePickerView: View {
         VStack {
             if value.day != -1 {
                 
-                if let schedule = schedules.first(where: { schedule in
-                    return isSameDay(date1: schedule.scheduleDate, date2: value.date)
-                }){
+                if schedules.first(where: { schedule in
+                    return isSameDay(date1: schedule.date, date2: value.date)
+                }) != nil{
                     Text("\(value.day)")
                         .font(.body.bold())
                     Spacer()
                     
                     HStack(spacing: 8) {
-                        ForEach(schedule.schedule) {_ in
+                        // 스케줄 개수만큼 점으로 표시하기
+                        ForEach(schedules) {_ in
                             Circle()
                                 .fill(Color.red)
                                 .frame(width: 7, height: 7)
@@ -175,7 +176,7 @@ struct CustomDatePickerView: View {
     func extraData_MonthDay() -> [String] {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko")
-        formatter.dateFormat = "MM DD EEEE"
+        formatter.dateFormat = "MM dd EEEE"
         
         let date = formatter.string(from: currentDate)
         

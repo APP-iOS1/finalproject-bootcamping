@@ -12,7 +12,7 @@ struct MyCampingDiaryView: View {
     @EnvironmentObject var diaryStore: DiaryStore
 
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             ForEach(diaryStore.diaryList) { diaryData in
                 //네비게이션 화살표 없애기
                 VStack {
@@ -62,5 +62,6 @@ struct MyCampingDiaryView: View {
 //struct MyCampingDiaryView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        MyCampingDiaryView()
+//            .environmentObject(DiaryStore())
 //    }
 //}

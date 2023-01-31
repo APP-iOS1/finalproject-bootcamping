@@ -64,8 +64,9 @@
 		AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD373AF92977D68A00E1236A /* DiaryCellView.swift */; };
 		CA729F3329792DE000CCC3BB /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F3229792DE000CCC3BB /* CalendarView.swift */; };
 		CA729F352979315400CCC3BB /* CustomDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F342979315400CCC3BB /* CustomDatePickerView.swift */; };
-		CA729F392979340600CCC3BB /* Reservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F382979340600CCC3BB /* Reservation.swift */; };
+		CA729F392979340600CCC3BB /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F382979340600CCC3BB /* Schedule.swift */; };
 		CA729F3C297A6C4B00CCC3BB /* AddScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F3B297A6C4B00CCC3BB /* AddScheduleView.swift */; };
+		CA729F432988FCBA00CCC3BB /* ScheduleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F422988FCBA00CCC3BB /* ScheduleStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,8 +114,9 @@
 		AD373AF92977D68A00E1236A /* DiaryCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCellView.swift; sourceTree = "<group>"; };
 		CA729F3229792DE000CCC3BB /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		CA729F342979315400CCC3BB /* CustomDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerView.swift; sourceTree = "<group>"; };
-		CA729F382979340600CCC3BB /* Reservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reservation.swift; sourceTree = "<group>"; };
+		CA729F382979340600CCC3BB /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		CA729F3B297A6C4B00CCC3BB /* AddScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleView.swift; sourceTree = "<group>"; };
+		CA729F422988FCBA00CCC3BB /* ScheduleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,7 +223,7 @@
 				790B62D829792A4D0048C110 /* Comment.swift */,
 				790B62DC297936840048C110 /* DiaryLike.swift */,
 				7C715C972977E056009BC678 /* Diary.swift */,
-				CA729F382979340600CCC3BB /* Reservation.swift */,
+				CA729F382979340600CCC3BB /* Schedule.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -235,6 +237,7 @@
 				7C715C992977E086009BC678 /* DiaryStore.swift */,
 				790B62F6297A36BB0048C110 /* KakaoAuthStore.swift */,
 				639129EE29792CB700F6EDD7 /* CapmingSpotStore.swift */,
+				CA729F422988FCBA00CCC3BB /* ScheduleStore.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -421,7 +424,7 @@
 				7CFCE12B2987549700E196AF /* RealtimeCampingView.swift in Sources */,
 				CA729F352979315400CCC3BB /* CustomDatePickerView.swift in Sources */,
 				63AF45BB2977CDE20014B1E1 /* AuthSignUpView.swift in Sources */,
-				CA729F392979340600CCC3BB /* Reservation.swift in Sources */,
+				CA729F392979340600CCC3BB /* Schedule.swift in Sources */,
 				7C715C982977E056009BC678 /* Diary.swift in Sources */,
 				63AF45E52977CE650014B1E1 /* CampingSpotListView.swift in Sources */,
 				63AF45B52977CDD20014B1E1 /* AuthStore.swift in Sources */,
@@ -444,6 +447,7 @@
 				63AF45E62977CE650014B1E1 /* CampingSpotDetailView.swift in Sources */,
 				639129ED297929A500F6EDD7 /* CampingSpotView.swift in Sources */,
 				63AF45DB2977CE4C0014B1E1 /* ProfileSettingView.swift in Sources */,
+				CA729F432988FCBA00CCC3BB /* ScheduleStore.swift in Sources */,
 				790B62D929792A4D0048C110 /* Comment.swift in Sources */,
 				630ADB4F2977CC6C000A517B /* BootCampingApp.swift in Sources */,
 				639129EF29792CB700F6EDD7 /* CapmingSpotStore.swift in Sources */,

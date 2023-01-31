@@ -41,7 +41,8 @@ struct SearchCampingSpotView: View {
     //MARK: 검색할때 필터링하여 저장
     var filterCamping: [Item] {
         if searchText == "" { return campingSpotStore.campingSpotList }
-        return campingSpotStore.campingSpotList.filter{$0.facltNm.lowercased().contains(searchText.lowercased()) || $0.addr1.lowercased().contains(searchText.lowercased())}
+        //MARK: 검색 조건 정하기 - 현재: "캠핑장 이름, 주소, 전망" 검색 가능. -> 좋은 조건 생각나면 더 추가해주세용
+        return campingSpotStore.campingSpotList.filter{$0.facltNm.lowercased().contains(searchText.lowercased()) || $0.addr1.lowercased().contains(searchText.lowercased()) || $0.lctCl.lowercased().contains(searchText.lowercased())}
     }
     
     var body: some View {

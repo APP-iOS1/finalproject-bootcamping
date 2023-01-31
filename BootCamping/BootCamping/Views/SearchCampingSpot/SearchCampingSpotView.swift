@@ -193,7 +193,7 @@ extension SearchCampingSpotView {
                 ForEach(0..<campingSpotADName.count){ index in
                     VStack(alignment: .leading){
                         NavigationLink {
-                            CampingSpotDetailView()
+                       //     CampingSpotDetailView()
                         } label: {
                             ZStack(alignment: .topTrailing){
                                 Image(campingSpotADImage[index])
@@ -231,8 +231,6 @@ extension SearchCampingSpotView {
         }
     }
 }
-
-
 
 struct SearchCampingSpotView_Previews: PreviewProvider {
     static var previews: some View {

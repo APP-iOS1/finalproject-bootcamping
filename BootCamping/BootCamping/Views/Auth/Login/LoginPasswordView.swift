@@ -29,7 +29,7 @@ struct LoginPasswordView: View {
             
             Spacer()
         }
-        .foregroundColor(Color("BCBlack"))
+        .foregroundColor(.bcBlack)
         .padding(.horizontal, UIScreen.screenWidth * 0.05)
         .padding(.vertical, 10)
     }

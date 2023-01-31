@@ -14,7 +14,7 @@ struct GreenButtonModifier: ViewModifier {
             .font(.headline)
             .frame(width: UIScreen.screenWidth * 0.8, height: UIScreen.screenHeight * 0.07)
             .foregroundColor(.white)
-            .background(Color("BCGreen"))
+            .foregroundColor(.bcGreen)
             .cornerRadius(10)
     }
 }

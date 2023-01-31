@@ -13,7 +13,6 @@ import GoogleSignInSwift
 import KakaoSDKUser
 import SwiftUI
 
-
 struct LoginView: View {
     
     @Binding var isSignIn: Bool
@@ -27,6 +26,13 @@ struct LoginView: View {
                 
                 Spacer()
                 
+                Image("loginIcon")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 300)
+                
+                Spacer()
+                
                 kakaoLoginButton
                 
                 googleLoginButton
@@ -34,9 +40,10 @@ struct LoginView: View {
                 appleLoginButton
                 
                 emailSignUpButton
+                    .padding(.vertical, 10)
                 
             }
-            .foregroundColor(Color("BCBlack"))
+            .foregroundColor(.bcBlack)
             .padding()
 
         }
@@ -53,10 +60,15 @@ extension LoginView {
             kakaoAuthStore.handleKakaoLogin()
         } label: {
             RoundedRectangle(cornerRadius: 10)
-                .stroke(.gray)
+                .foregroundColor(.yellow)
                 .frame(width: UIScreen.screenWidth * 0.8, height: 44)
                 .overlay {
-                    Text("카카오로 로그인하기")
+                    HStack {
+                        Spacer()
+                        Image(systemName: "message.fill")
+                        Text("  카카오로 로그인하기")
+                        Spacer()
+                    }
                 }
         }
     }
@@ -70,7 +82,12 @@ extension LoginView {
                 .stroke(.gray)
                 .frame(width: UIScreen.screenWidth * 0.8, height: 44)
                 .overlay {
-                    Text("Google로 로그인하기")
+                    HStack {
+                        Spacer()
+                        Image(systemName: "g.circle.fill")
+                        Text("Google로 로그인하기")
+                        Spacer()
+                    }
                 }
         }
     }
@@ -85,8 +102,10 @@ extension LoginView {
                 .frame(width: UIScreen.screenWidth * 0.8, height: 44)
                 .overlay {
                     HStack {
+                        Spacer()
                         Image(systemName: "applelogo")
-                        Text("Apple로 로그인하기")
+                        Text("  Apple로 로그인하기")
+                        Spacer()
                     }
                     .foregroundColor(.white)
                 }
@@ -98,7 +117,7 @@ extension LoginView {
         NavigationLink {
             LoginPasswordView(isSignIn: $isSignIn)
         } label: {
-            Text("이메일로 로그인 | 이메일로 회원가입")
+            Text("이메일로 로그인 | 회원가입")
                 .underline()
                 .font(.subheadline)
                 .foregroundColor(.secondary)

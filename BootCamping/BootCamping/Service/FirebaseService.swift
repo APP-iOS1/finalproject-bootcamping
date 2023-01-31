@@ -34,6 +34,7 @@ struct FirebaseService {
                     diarys = snapshot.documents.map { d in
                         return Diary(id: d.documentID,
                                      uid: d["uid"] as? String ?? "",
+                                     diaryUserNickName: d["diaryUserNickName"] as? String ?? "",
                                      diaryTitle: d["diaryTitle"] as? String ?? "",
                                      diaryAddress: d["diaryAddress"] as? String ?? "",
                                      diaryContent: d["diaryContent"] as? String ?? "",
@@ -63,11 +64,12 @@ struct FirebaseService {
                 getDownloadURL(imageNames: imageNames) { imgURLs in
                     imageURLs.append(contentsOf: imgURLs)
                     
-                    let newDiary = Diary(id: diary.id, uid: "", diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
+                    let newDiary = Diary(id: diary.id, uid: "", diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
                     
                     self.database.collection("Diarys").document(diary.id).setData([
                         "id": newDiary.id,
                         "uid": newDiary.uid,
+                        "diaryUserNickName": newDiary.diaryUserNickName,
                         "diaryTitle": newDiary.diaryTitle,
                         "diaryAddress": newDiary.diaryAddress,
                         "diaryContent": newDiary.diaryContent,
@@ -190,11 +192,12 @@ struct FirebaseService {
                 getDownloadURL(imageNames: imageNames) { imgURLs in
                     imageURLs.append(contentsOf: imgURLs)
                     
-                    let newDiary = Diary(id: diary.id, uid: "", diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
+                    let newDiary = Diary(id: diary.id, uid: "", diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
                     
                     self.database.collection("Diarys").document(diary.id).setData([
                         "id": newDiary.id,
                         "uid": newDiary.uid,
+                        "diaryUserNickName": newDiary.diaryUserNickName,
                         "diaryTitle": newDiary.diaryTitle,
                         "diaryAddress": newDiary.diaryAddress,
                         "diaryContent": newDiary.diaryContent,

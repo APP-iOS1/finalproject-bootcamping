@@ -13,7 +13,7 @@ extension Date {
     public func getKoreanDate() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko-KR")
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        dateFormatter.dateFormat = "yyyy년 MM월 dd일"
         return dateFormatter.string(from: self)
     }
 }

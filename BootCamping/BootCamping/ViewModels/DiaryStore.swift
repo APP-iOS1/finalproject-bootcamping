@@ -12,19 +12,6 @@ import Foundation
 import SwiftUI
 import FirebaseStorage
 
-/*
- struct Diary {
-     let id: String //글
-     let uid: String //유저
-     let diaryTitle: String //다이어리 제목
-     let diaryAddress: String //장소
-     let diaryContent: String //다이어리 내용
-     let diaryImageURL: [String] //사진
-     let diaryCreatedDate: Timestamp //작성날짜
-     let diaryVisitedDate: Date //방문날짜 (피커로..?)
-     let diaryLike: String //다이어리 좋아요
- }
- */
 class DiaryStore: ObservableObject {
     //저장된 다이어리 리스트
     @Published var diaryList: [Diary] = []
@@ -47,11 +34,12 @@ class DiaryStore: ObservableObject {
                         diaryImageNames.append(imageName)
                     }
                     
-                    let newDiary = Diary(id: diary.id, uid: userUID, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
+                    let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
                     
                     let _ = try await Firestore.firestore().collection("Diarys").document(diary.id).setData([
                         "id": newDiary.id,
                         "uid": newDiary.uid,
+                        "diaryUserNickName": newDiary.diaryUserNickName,
                         "diaryTitle": newDiary.diaryTitle,
                         "diaryAddress": newDiary.diaryAddress,
                         "diaryContent": newDiary.diaryContent,
@@ -82,6 +70,7 @@ class DiaryStore: ObservableObject {
                         self.diaryList = snapshot.documents.map { d in
                             return Diary(id: d.documentID,
                                          uid: d["uid"] as? String ?? "",
+                                         diaryUserNickName: d["diaryUserNickName"] as? String ?? "",
                                          diaryTitle: d["diaryTitle"] as? String ?? "",
                                          diaryAddress: d["diaryAddress"] as? String ?? "",
                                          diaryContent: d["diaryContent"] as? String ?? "",
@@ -107,6 +96,7 @@ class DiaryStore: ObservableObject {
     func updateData(diaryToUpdate: Diary) {
         database.collection("Diarys").document(diaryToUpdate.id).setData([  //data: document내부 데이터, completion: 완료시 실행됨
             "uid": diaryToUpdate.uid,
+            "diaryUserNickName": diaryToUpdate.diaryUserNickName,
             "diaryTitle": diaryToUpdate.diaryTitle,
             "diaryAddress": diaryToUpdate.diaryAddress,
             "diaryContent": diaryToUpdate.diaryContent,

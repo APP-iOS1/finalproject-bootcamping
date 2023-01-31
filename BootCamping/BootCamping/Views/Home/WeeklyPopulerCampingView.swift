@@ -15,7 +15,7 @@ struct WeeklyPopulerCampingView: View {
     var photoCardTestData = [PhotoCardTestData(date: "2023.01.17", campingPlace: "충주호 캠핑월드", title: "충주호 보면서 불멍하기", user: "by User")]
     
     var diarySample = [
-        Diary(id: "", uid: "", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "내용", diaryImageNames: [""], diaryImageURLs: [
+        Diary(id: "", uid: "", diaryUserNickName: "닉네임", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "내용", diaryImageNames: [""], diaryImageURLs: [
             "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "", diaryIsPrivate: true)
         ]
     

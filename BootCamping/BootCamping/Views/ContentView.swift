@@ -56,7 +56,7 @@ struct ContentView: View {
                 }.tag(TabViewScreen.four)
             }
             //MARK: - 유저 로그인 여부에 따라 로그인 뷰 구현
-            .onAppear {
+            .task {
                 if Auth.auth().currentUser?.uid == nil {
                     isSignIn = false
                 }
@@ -64,8 +64,12 @@ struct ContentView: View {
             }
         } else {
             LoginView(isSignIn: $isSignIn)
+                .task {
+                    if Auth.auth().currentUser?.uid != nil {
+                        isSignIn = true
+                    }
+                }
         }
-
     }
 }
 

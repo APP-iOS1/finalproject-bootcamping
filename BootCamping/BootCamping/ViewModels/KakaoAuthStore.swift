@@ -132,9 +132,8 @@ class KakaoAuthStore: ObservableObject {
                             } else {
                                 self.currentUser = result?.user
                             }
-                            
+
                         }
-                       
                     } else {
                         print("파이어베이스 사용자 생성 성공")
                     }

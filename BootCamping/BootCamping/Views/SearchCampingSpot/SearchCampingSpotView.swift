@@ -8,6 +8,12 @@
 import SwiftUI
 
 struct SearchCampingSpotView: View {
+    var fecthData: FetchData = FetchData()
+    @EnvironmentObject var campingSpotStore: CampingSpotStore
+    
+    @State var page: Int = 1
+    @State private var isLoading: Bool = false
+
     //MARK: 광고 사진 - 수정 필요
     var adImage = ["back", "camp", "car", "gl"]
     let timer = Timer.publish(every: 4, on: .main, in: .common).autoconnect()
@@ -35,35 +41,69 @@ struct SearchCampingSpotView: View {
     @State var searchText = ""
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading){
-                
-                // 광고 부분
-                adCamping
-                
-                // 지역 선택
-                areaSelect
-                
-                // 전망 선택
-                viewSelect
-               
-                // 추천 캠핑장
-                recommendCampingSpot
-                
-            }//VStack 끝
-            .padding(.horizontal, UIScreen.screenWidth*0.1)
-            .toolbar{
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Text("BOOTCAMPING")
-                        .font(.title.bold())
+        NavigationView {
+            if searchText == "" {
+                ScrollView {
+                    VStack(alignment: .leading){
+                        
+                        // 광고 부분
+                        adCamping
+                        
+                        // 지역 선택
+                        areaSelect
+                        
+                        // 전망 선택
+                        viewSelect
+                        
+                        // 추천 캠핑장
+                        recommendCampingSpot
+                        
+                    }//VStack 끝
+                    .padding(.horizontal, UIScreen.screenWidth*0.1)
+                    .toolbar{
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Text("BOOTCAMPING")
+                                .font(.title.bold())
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                if campingSpotStore.searchResult == [] {
+                    Text("해당되는 캠핑장이 없습니다.")
+                } else{
+                    ScrollView {
+                        ForEach(campingSpotStore.searchResult, id: \.self) { campingSpot in
+                            campingSpotListCell(item: campingSpot)
+                        }
+                        .padding(.horizontal, UIScreen.screenWidth*0.1)
+                        .toolbar{
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                Text("BOOTCAMPING")
+                                    .font(.title.bold())
+                            }
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "캠핑장, 지역 등을 검색해보세요") //위치 제일 위만 되는듯
-
-            //searchable 첫글자 대문자 X, 자동완성 X
-            .disableAutocorrection(true)
-            .textInputAutocapitalization(.never)
-            
+        }
+        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "캠핑장, 지역 등을 검색해보세요")
+        .disableAutocorrection(true)
+        .textInputAutocapitalization(.never)
+        .onChange(of: searchText) { searchText in
+            campingSpotStore.searchResult = campingSpotStore.campingSpotList.filter{$0.facltNm.localizedStandardContains(searchText)}
+        }
+        .onSubmit(of: .search) {
+//            hideKeyboard()
+        }
+        .onAppear{
+            Task {
+                page += 1
+                isLoading = true
+                campingSpotStore.campingSpotList.append(contentsOf: try await fecthData.fetchData(page: page))
+                isLoading = false
+            }
         }
     }
     

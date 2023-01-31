@@ -25,7 +25,7 @@ struct MyCampingDiaryView: View {
                                 Divider()
                             }
                         }
-                        .foregroundColor(Color("BCBlack"))
+                        .foregroundColor(.bcBlack)
                         .padding(.horizontal, UIScreen.screenWidth * 0.1)
                         .padding(.vertical, UIScreen.screenHeight * 0.01)
                         

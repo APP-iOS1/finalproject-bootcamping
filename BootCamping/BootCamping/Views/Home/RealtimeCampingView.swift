@@ -21,7 +21,7 @@ struct RealtimeCampingView: View {
                     } label: {
                         RealtimeCampingCellView(item: item)
                     }
-                    .foregroundColor(Color("BCBlack"))
+                    .foregroundColor(.bcBlack)
                 }
             }
         }

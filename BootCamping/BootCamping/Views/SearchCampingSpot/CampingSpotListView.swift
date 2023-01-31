@@ -51,7 +51,7 @@ struct CampingSpotListView: View {
             // 전망 알려주는 라벨
             RoundedRectangle(cornerRadius: 10)
                 .frame(width: 35, height: 20)
-                .foregroundColor(Color("BCGreen"))
+                .foregroundColor(.bcGreen)
                 .overlay{
                     Text("바다")
                         .font(.caption2)

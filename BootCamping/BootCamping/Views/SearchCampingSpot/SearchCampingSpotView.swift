@@ -79,7 +79,7 @@ struct SearchCampingSpotView: View {
                         ForEach(filterCamping, id: \.self) { campingSpot in
                             ZStack{
                                 NavigationLink {
-                                    CampingSpotDetailView()
+                                    CampingSpotDetailView(places: campingSpot)
                                 } label: {
                                     campingSpotListCell(item: campingSpot)
                                 }

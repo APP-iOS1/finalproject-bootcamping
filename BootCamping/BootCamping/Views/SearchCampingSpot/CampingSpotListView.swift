@@ -18,7 +18,7 @@ struct CampingSpotListView: View {
             ForEach(campingSpotStore.campingSpotList, id: \.self) { camping in
                 ZStack{
                     NavigationLink {
-                        CampingSpotDetailView()
+                        CampingSpotDetailView(places: camping)
                     } label: {
                         campingSpotListCell(item: camping)
                     }
@@ -93,10 +93,10 @@ struct campingSpotListCell : View{
 }
 
 
-struct CampingSpotListView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack{
-            CampingSpotListView()
-        }
-    }
-}
+//struct CampingSpotListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationStack{
+//            CampingSpotListView()
+//        }
+//    }
+//}

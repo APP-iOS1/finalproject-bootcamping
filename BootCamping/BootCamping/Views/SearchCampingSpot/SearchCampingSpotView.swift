@@ -13,7 +13,7 @@ struct SearchCampingSpotView: View {
     
     @State var page: Int = 1
     @State private var isLoading: Bool = false
-
+    
     //MARK: 광고 사진 - 수정 필요
     var adImage = ["back", "camp", "car", "gl"]
     let timer = Timer.publish(every: 4, on: .main, in: .common).autoconnect()
@@ -191,7 +191,7 @@ struct SearchCampingSpotView: View {
                 ForEach(0..<campingSpotADName.count){ index in
                     VStack(alignment: .leading){
                         NavigationLink {
-                            CampingSpotDetailView()
+                       //     CampingSpotDetailView()
                         } label: {
                             ZStack(alignment: .topTrailing){
                                 Image(campingSpotADImage[index])
@@ -231,10 +231,10 @@ struct SearchCampingSpotView: View {
 }
 
 
-struct SearchCampingSpotView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack{
-            SearchCampingSpotView()
-        }
-    }
-}
+//struct SearchCampingSpotView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationStack{
+//            SearchCampingSpotView()
+//        }
+//    }
+//}

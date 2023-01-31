@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 import FirebaseFirestore
 
 //MARK: - 캠핑리스트 추가/ 업데이트 함수입니다.

@@ -26,6 +26,7 @@ struct LoginPasswordView: View {
             loginButton
             
             signUpButton
+                .padding(.vertical, 10)
             
             Spacer()
         }

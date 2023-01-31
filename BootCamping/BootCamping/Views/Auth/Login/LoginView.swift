@@ -22,36 +22,48 @@ struct LoginView: View {
     
     var body: some View {
         NavigationStack {
-            
-            VStack {
-                
-                Spacer()
-                
-                Image("iconImg")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 300)
-                    .shadow(radius: 5)
-                
-                Spacer()
-                
-                kakaoLoginButton
-                
-                googleLoginButton
-                
-                appleLoginButton
-                
-                emailSignUpButton
-                    .padding(.vertical, 10)
-                
-            }
-            .foregroundColor(.bcBlack)
-            .padding()
+            ZStack {
+                Color.bcGreen
+                VStack(spacing: 10) {
+                    
+                    Spacer()
+                    
+                    loginIcon
+                    
+                    Spacer()
+                    
+                    kakaoLoginButton
+                    
+                    googleLoginButton
+                    
+                    appleLoginButton
+                    
+                    emailSignUpButton
+                        .padding(.vertical, 10)
+                    
+                }
+                .foregroundColor(.bcBlack)
+                .padding()
+            }.ignoresSafeArea()
         }
     }
 }
 
 extension LoginView {
+    
+    // 로그인 아이콘 및 앱 이름
+    var loginIcon: some View {
+        VStack {
+            Image("loginImg")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 200)
+            Image("loginName")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 200)
+        }
+    }
     
     // 카카오 로그인 버튼
     var kakaoLoginButton: some View {
@@ -78,7 +90,7 @@ extension LoginView {
             authStore.googleSignIn()
         } label: {
             RoundedRectangle(cornerRadius: 10)
-                .stroke(.gray)
+                .foregroundColor(.white)
                 .frame(width: UIScreen.screenWidth * 0.8, height: 44)
                 .overlay {
                     HStack {
@@ -119,7 +131,7 @@ extension LoginView {
             Text("이메일로 로그인 | 회원가입")
                 .underline()
                 .font(.subheadline)
-                .foregroundColor(.secondary)
+                .foregroundColor(.white)
         }
     }
 }

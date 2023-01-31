@@ -9,16 +9,25 @@ import SwiftUI
 import CoreLocation
 import MapKit
 
+struct AnnotatedItem: Identifiable {
+    let id = UUID()
+    var name: String
+    var coordinate: CLLocationCoordinate2D
+}
+
 struct CampingSpotDetailView: View {
     @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.5666791, longitude: 126.9782914), span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02))
     @State private var isBookmark: Bool = false
+    @State var annotatedItem: [AnnotatedItem] = []
+    
+    var places: Item
     
     var body: some View {
         let images = ["10", "9", "8"]
         let diary = ["1", "2", "3"]
         
         ZStack {
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 TabView {
                     ForEach(images, id: \.self) { item in
                         Image(item).resizable().scaledToFill()
@@ -31,7 +40,7 @@ struct CampingSpotDetailView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Group {
                         HStack(alignment: .top) {
-                            Text("디노담양힐링파크") // 캠핑장 이름
+                            Text("\(places.facltNm)") // 캠핑장 이름
                                 .font(.title)
                                 .bold()
                             Spacer()
@@ -50,14 +59,14 @@ struct CampingSpotDetailView: View {
                         HStack {
                             Image(systemName: "mappin.and.ellipse")
                                 .foregroundColor(.gray)
-                            Text("전남 담양군 봉산면 탄금길 9-26") // 캠핑장 주소
+                            Text("\(places.addr1)") // 캠핑장 주소
                                 .font(.callout)
                                 .foregroundColor(.gray)
                         }
                     }
                     
                     Group {
-                        Text("보배를 무엇을 눈에 끓는다. 구하지 일월과 얼음 아니한 들어 군영과 뜨고, 크고 가는 약동하다. 위하여 풀밭에 착목한는 그들의 예가 붙잡아 주는 창공에 것이다.보라, 있는가? 새 미묘한 고동을 만물은 새가 때문이다. 이상은 예가 용감하고 이성은 있는 보이는 그들을 못하다 방황 하였으며, 봄바람이다. 더운지라 무엇을 그들의 얼음에 힘차게 열매를 철환하였는가? 가지에 천자만홍이 날카로우나 약동하다. ")
+                        Text("\(places.intro)")
                             .lineSpacing(7)
                     }
                     .padding(7)
@@ -104,7 +113,7 @@ struct CampingSpotDetailView: View {
                                     .padding(.trailing, 10)
                             }
                         }
-                        ScrollView(.horizontal) {
+                        ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
                                 ForEach(diary, id: \.self) { item in
                                     VStack(alignment: .leading) {
@@ -181,6 +190,6 @@ struct ServiceIcon: View {
 
 struct CampingSpotDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        CampingSpotDetailView()
+        CampingSpotDetailView(places: Item(contentId: "", facltNm: "", lineIntro: "", intro: "", allar: "", insrncAt: "", trsagntNo: "", bizrno: "", facltDivNm: "", mangeDivNm: "", mgcDiv: "", manageSttus: "", hvofBgnde: "", hvofEnddle: "", featureNm: "", induty: "", lctCl: "", doNm: "", sigunguNm: "", zipcode: "", addr1: "", addr2: "", mapX: "", mapY: "", direction: "", tel: "", homepage: "", resveUrl: "", resveCl: "", manageNmpr: "", gnrlSiteCo: "", autoSiteCo: "", glampSiteCo: "", caravSiteCo: "", indvdlCaravSiteCo: "", sitedStnc: "", siteMg1Width: "", siteMg2Width: "", siteMg3Width: "", siteMg1Vrticl: "", siteMg2Vrticl: "", siteMg3Vrticl: "", siteMg1Co: "", siteMg2Co: "", siteMg3Co: "", siteBottomCl1: "", siteBottomCl2: "", siteBottomCl3: "", siteBottomCl4: "", siteBottomCl5: "", tooltip: "", glampInnerFclty: "", caravInnerFclty: "", prmisnDe: "", operPdCl: "", operDeCl: "", trlerAcmpnyAt: "", caravAcmpnyAt: "", toiletCo: "", swrmCo: "", wtrplCo: "", brazierCl: "", sbrsCl: "", sbrsEtc: "", posblFcltyCl: "", posblFcltyEtc: "", clturEventAt: "", clturEvent: "", exprnProgrmAt: "", exprnProgrm: "", extshrCo: "", frprvtWrppCo: "", frprvtSandCo: "", fireSensorCo: "", themaEnvrnCl: "", eqpmnLendCl: "", animalCmgCl: "", tourEraCl: "", firstImageUrl: "", createdtime: "", modifiedtime: ""))
     }
 }

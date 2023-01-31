@@ -15,42 +15,12 @@ struct RealtimeCampingCellView: View {
     //선택한 다이어리 정보 변수입니다.
     var item: Diary
     
-    //TODO: - 닉네임 필터링 변수 작동시키기...왜 안돼..
-    //글 작성 유저 닉네임 필터링 변수입니다.
-    var userNickName: String? {
-        get {
-            for user in authStore.userList {
-                if user.id == item.uid {
-                    return user.nickName
-                }
-            }
-            return nil
-        }
-    }
-    
     var body: some View {
         VStack(alignment: .leading) {
             diaryImage
             diaryTitle
             diaryContent
-            
-            HStack {
-                Image("1")
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                
-                VStack(alignment: .leading) {
-                    Text(item.diaryAddress)
-                        .font(.title3)
-                        .foregroundColor(.gray)
-                    Text(item.diaryAddress + "대구시 수성구") //TODO: -앞에 -시 -구 까지 짜르기
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                }
-                
-            }
-            .padding(3)
-            
+            diaryCampingLink
             diaryInfo
             Divider()
                 .padding(.horizontal)
@@ -90,8 +60,44 @@ private extension RealtimeCampingCellView {
     var diaryContent: some View {
         Text(item.diaryContent)
             .lineLimit(3)
+            .multilineTextAlignment(.leading)
             .padding(.horizontal)
     }
+    
+    //MARK: - 캠핑장 이동
+    var diaryCampingLink: some View {
+        HStack {
+            Image("1") //TODO: -캠핑장 사진 연동
+                .resizable()
+                .frame(width: 50, height: 50)
+            
+            VStack(alignment: .leading, spacing: 1) {
+                Text(item.diaryAddress)
+                    .font(.headline)
+                HStack {
+                    Text(item.diaryAddress + "(대구시 수성구)") //TODO: -앞에 -시 -구 까지 짜르기
+                    Spacer()
+                    //방문일
+                    Text("\(item.diaryVisitedDate.getKoreanDate())")
+                        .font(.footnote)
+                }
+                .font(.subheadline)
+            }
+            .foregroundColor(Color("BCBlack"))
+
+        }
+        .padding()
+        .background {
+            RoundedRectangle(cornerRadius: 20)
+                .foregroundColor(.gray)
+                .opacity(0.2)
+                .shadow(color: .gray, radius: 3)
+
+        }
+        .foregroundColor(.clear)
+        .padding()
+    }
+
     
     //MARK: - 좋아요, 댓글, 유저 닉네임, 타임스탬프
     var diaryInfo: some View {
@@ -99,7 +105,7 @@ private extension RealtimeCampingCellView {
             Text("좋아요 \(item.diaryLike)")
             Text("댓글 8")
             Spacer()
-            Text("by \(item.uid)")
+            Text("by \(item.diaryUserNickName)")
             Text("|")
             Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
         }
@@ -111,7 +117,7 @@ private extension RealtimeCampingCellView {
 
 struct RealtimeCampingCellView_Previews: PreviewProvider {
     static var previews: some View {
-        RealtimeCampingCellView(item: Diary(id: "", uid: "", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "내용", diaryImageNames: [""], diaryImageURLs: [
+        RealtimeCampingCellView(item: Diary(id: "", uid: "", diaryUserNickName: "닉네임", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "내용", diaryImageNames: [""], diaryImageURLs: [
             "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "", diaryIsPrivate: true))
         .environmentObject(AuthStore())
         

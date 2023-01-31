@@ -22,7 +22,7 @@ struct AuthSignUpView: View {
     @EnvironmentObject var authStore: AuthStore
     
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             
             nickNameSection
             

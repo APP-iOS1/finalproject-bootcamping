@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct SearchCampingSpotView: View {
+    var fecthData: FetchData = FetchData()
+    @EnvironmentObject var campingSpotStore: CampingSpotStore
+    @State var page: Int = 2
+    
     //MARK: 광고 사진 - 수정 필요
     var adImage = ["back", "camp", "car", "gl"]
     let timer = Timer.publish(every: 4, on: .main, in: .common).autoconnect()
@@ -32,40 +36,78 @@ struct SearchCampingSpotView: View {
     let columns2 = Array(repeating: GridItem(.flexible()), count: 2)
     
     //MARK: searchable
-    @State var searchText = ""
+    @State var searchText: String = ""
+    
+    //MARK: 검색할때 필터링하여 저장
+    var filterCamping: [Item] {
+        if searchText == "" { return campingSpotStore.campingSpotList }
+        return campingSpotStore.campingSpotList.filter{$0.facltNm.lowercased().contains(searchText.lowercased()) || $0.addr1.lowercased().contains(searchText.lowercased())}
+    }
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading){
-                
-                // 광고 부분
-                adCamping
-                
-                // 지역 선택
-                areaSelect
-                
-                // 전망 선택
-                viewSelect
-               
-                // 추천 캠핑장
-                recommendCampingSpot
-                
-            }//VStack 끝
-            .padding(.horizontal, UIScreen.screenWidth*0.1)
-            .toolbar{
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Text("BOOTCAMPING")
-                        .font(.title.bold())
+        NavigationView {
+            if searchText == "" {
+                ScrollView {
+                    VStack(alignment: .leading){
+                        
+                        // 광고 부분
+                        adCamping
+                        
+                        // 지역 선택
+                        areaSelect
+                        
+                        // 전망 선택
+                        viewSelect
+                        
+                        // 추천 캠핑장
+                        recommendCampingSpot
+                        
+                    }//VStack 끝
+                    .padding(.horizontal, UIScreen.screenWidth*0.1)
+                    .toolbar{
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Text("BOOTCAMPING")
+                                .font(.title.bold())
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            else {
+                if !filterCamping.isEmpty {
+                    List {
+                        ForEach(filterCamping, id: \.self) { campingSpot in
+                            ZStack{
+                                NavigationLink {
+                                    CampingSpotDetailView()
+                                } label: {
+                                    campingSpotListCell(item: campingSpot)
+                                }
+                                .opacity(0)
+                                campingSpotListCell(item: campingSpot)
+                                    .padding(.horizontal, UIScreen.screenWidth*0.1)
+                            }
+                        }
+                    }
+                    .listStyle(.plain)
+                } else {
+                    Text("해당되는 캠핑장이 없습니다.")
+
                 }
             }
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "캠핑장, 지역 등을 검색해보세요") //위치 제일 위만 되는듯
-
-            //searchable 첫글자 대문자 X, 자동완성 X
-            .disableAutocorrection(true)
-            .textInputAutocapitalization(.never)
-            
+        }
+        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "캠핑장, 지역 등을 검색해보세요")
+        .disableAutocorrection(true)
+        .textInputAutocapitalization(.never)
+        .onAppear{
+            Task {
+                campingSpotStore.campingSpotList.append(contentsOf: try await fecthData.fetchData(page: page))
+            }
         }
     }
+}
+
+extension SearchCampingSpotView {
     
     //MARK: 광고 부분
     private var adCamping: some View {
@@ -151,7 +193,7 @@ struct SearchCampingSpotView: View {
                 ForEach(0..<campingSpotADName.count){ index in
                     VStack(alignment: .leading){
                         NavigationLink {
-                            CampingSpotDetailView()
+                       //     CampingSpotDetailView()
                         } label: {
                             ZStack(alignment: .topTrailing){
                                 Image(campingSpotADImage[index])
@@ -189,7 +231,6 @@ struct SearchCampingSpotView: View {
         }
     }
 }
-
 
 struct SearchCampingSpotView_Previews: PreviewProvider {
     static var previews: some View {

@@ -18,6 +18,21 @@ extension Date {
     }
 }
 
+
+// MARK: - String을 Date포맷으로 변경
+extension String {
+    func toDate() -> Date? { //"yyyy-MM-dd HH:mm:ss"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        if let date = dateFormatter.date(from: self) {
+            return date
+        } else {
+            return nil
+        }
+    }
+}
+
 //MARK: - TimeStamp 설정 함수
 class TimestampToString {
     

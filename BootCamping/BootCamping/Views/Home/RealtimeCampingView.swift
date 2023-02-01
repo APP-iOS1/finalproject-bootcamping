@@ -21,6 +21,7 @@ struct RealtimeCampingView: View {
                             DiaryDetailView(item: item)
                         } label: {
                             RealtimeCampingCellView(item: item)
+                                .padding(.bottom,40)
                         }
                         .foregroundColor(.bcBlack)
                     }

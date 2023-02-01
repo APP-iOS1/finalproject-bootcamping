@@ -10,6 +10,7 @@ import SwiftUI
 struct AddScheduleView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var scheduleStore: ScheduleStore
+    @Environment(\.dismiss) private var dismiss
     
     @State var startDate = Date()
     @State var endDate = Date()
@@ -85,6 +86,7 @@ extension AddScheduleView {
             } else {
                 scheduleStore.addSchedule(Schedule(id: UUID().uuidString, title: campingSpot, date: startDate))
             }
+            dismiss()
         } label: {
             Text("등록")
                 .modifier(GreenButtonModifier())

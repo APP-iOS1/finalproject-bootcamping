@@ -44,7 +44,7 @@ struct LoginView: View {
                         .padding(.vertical, 10)
                     
                 }
-                .foregroundColor(.bcBlack)
+                .foregroundColor(.black)
                 .padding(UIScreen.screenWidth * 0.05)
             }.ignoresSafeArea()
         }

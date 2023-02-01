@@ -23,6 +23,7 @@ struct MyCampingDiaryView: View {
                             } label: {
                                 VStack {
                                     DiaryCellView(item: diaryData)
+                                        .padding(.bottom,40)
                                 }
                             }
                             .foregroundColor(.bcBlack)
@@ -32,7 +33,7 @@ struct MyCampingDiaryView: View {
                 }
                 .onAppear {
 //                    diaryStore.getData()
-                    diaryStore.getDiarys()
+                    diaryStore.getDiarysCombine()
                     print("\(diaryStore.diaryList)")
                 }
                 .toolbar{

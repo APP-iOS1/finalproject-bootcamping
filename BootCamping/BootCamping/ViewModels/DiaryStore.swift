@@ -227,4 +227,22 @@ class DiaryStore: ObservableObject {
 
     }
     
+    func createDiaryFinal(diary: Diary, images: [Data]) {
+        FirebaseDiaryService().createDiaryService(diary: diary, images: images)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Create Diary")
+                    return
+                case .finished:
+                    print("Finished Create Diary")
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
 }

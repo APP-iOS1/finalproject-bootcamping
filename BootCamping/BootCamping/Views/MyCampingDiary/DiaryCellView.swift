@@ -61,22 +61,37 @@ private extension DiaryCellView {
     //MARK: - 캠핑장 이동
     var diaryCampingLink: some View {
         HStack {
-            Image("1")
+            Image("1") //TODO: -캠핑장 사진 연동
                 .resizable()
                 .frame(width: 50, height: 50)
             
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 1) {
                 Text(item.diaryAddress)
-                    .font(.title3)
-                    .foregroundColor(.gray)
-                Text(item.diaryAddress + "대구시 수성구") //TODO: -앞에 -시 -구 까지 짜르기
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
+                    .font(.headline)
+                HStack {
+                    Text(item.diaryAddress + "(대구시 수성구)") //TODO: -앞에 -시 -구 까지 짜르기
+                    Spacer()
+                    //방문일
+                    Text("\(item.diaryVisitedDate.getKoreanDate())")
+                        .font(.footnote)
+                }
+                .font(.subheadline)
             }
-            
+            .foregroundColor(.bcBlack)
         }
         .padding()
+        .background {
+            RoundedRectangle(cornerRadius: 20)
+                .foregroundColor(.gray)
+                .opacity(0.2)
+                .shadow(color: .gray, radius: 3)
+            
+        }
+        .foregroundColor(.clear)
+        .padding()
     }
+
+
     
     //MARK: - 좋아요, 댓글, 유저 닉네임, 타임스탬프
     var diaryInfo: some View {

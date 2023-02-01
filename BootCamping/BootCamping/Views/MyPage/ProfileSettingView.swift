@@ -82,7 +82,7 @@ extension ProfileSettingView {
     }
     // MARK: -View : updateNicknameTextField
     private var updateNicknameTextField : some View {
-        TextField("민콩콩콩", text: $updateNickname)
+        TextField("닉네임을 입력해주세요", text: $updateNickname)
     }
     
     // MARK: -View : updateUserNameTextField

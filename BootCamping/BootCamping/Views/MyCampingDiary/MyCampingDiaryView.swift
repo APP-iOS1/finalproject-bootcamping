@@ -21,10 +21,8 @@ struct MyCampingDiaryView: View {
                             NavigationLink {
                                 DiaryDetailView(item: diaryData)
                             } label: {
-                                VStack {
-                                    DiaryCellView(item: diaryData)
-                                        .padding(.bottom,40)
-                                }
+                                DiaryCellView(item: diaryData)
+                                    .padding(.bottom,40)
                             }
                             .foregroundColor(.bcBlack)
                             .padding(.vertical, UIScreen.screenHeight * 0.01)

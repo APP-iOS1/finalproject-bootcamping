@@ -14,7 +14,21 @@ import FirebaseAuth
 enum FirebaseCommentServiceError: Error {
     case badSnapshot
     case createCommentError
-    case commentUpdateError
+    case updateCommentError
+    case deleteCommentError
+    
+    var errorDescription: String? {
+        switch self {
+        case .badSnapshot:
+            return "댓글 가져오기 실패"
+        case .createCommentError:
+            return "댓글 작성 실패"
+        case .updateCommentError:
+            return "좋아요 실패"
+        case .deleteCommentError:
+            return "댓글 삭제 실패"
+        }
+    }
 }
 
 struct FirebaseCommentService {
@@ -94,7 +108,7 @@ struct FirebaseCommentService {
                 ]) { error in
                     if let error = error {
                         print(error)
-                        promise(.failure(FirebaseCommentServiceError.commentUpdateError))
+                        promise(.failure(FirebaseCommentServiceError.updateCommentError))
                     } else {
                         promise(.success(()))
                     }
@@ -112,7 +126,7 @@ struct FirebaseCommentService {
             { error in
                 if let error = error {
                     print(error)
-                    promise(.failure(FirebaseCommentServiceError.createCommentError))
+                    promise(.failure(FirebaseCommentServiceError.deleteCommentError))
                 } else {
                     promise(.success(()))
                 }

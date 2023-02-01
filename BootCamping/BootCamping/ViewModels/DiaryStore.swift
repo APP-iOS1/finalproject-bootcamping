@@ -23,7 +23,7 @@ class DiaryStore: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     //MARK: Create
-    func createDiary1(diary: Diary, images: [Data]) {
+    func createDiary(diary: Diary, images: [Data]) {
             Task {
                 do {
                     guard let userUID = Auth.auth().currentUser?.uid else { return }
@@ -145,7 +145,7 @@ class DiaryStore: ObservableObject {
 
     //MARK: Read Diary Combine
     
-    func getDiarys() {
+    func getDiarysCombine() {
         FirebaseDiaryService().getDiarysService()
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -167,7 +167,7 @@ class DiaryStore: ObservableObject {
 
     //MARK: Create Diary Combine
 
-    func createDiary(diary: Diary, images: [Data]) {
+    func createDiaryCombine(diary: Diary, images: [Data]) {
         FirebaseDiaryService().createDiaryService(diary: diary, images: images)
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -178,7 +178,7 @@ class DiaryStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Create Diary")
-                    self.getDiarys()
+                    self.getDiarysCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -189,7 +189,7 @@ class DiaryStore: ObservableObject {
     
     //MARK: Update Diary Combine
     
-    func updateDiary(diary: Diary, images: [Data]) {
+    func updateDiaryCombine(diary: Diary, images: [Data]) {
         FirebaseDiaryService().createDiaryService(diary: diary, images: images)
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -200,7 +200,7 @@ class DiaryStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Update Diary")
-                    self.getDiarys()
+                    self.getDiarysCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -211,7 +211,7 @@ class DiaryStore: ObservableObject {
     
     //MARK: Delete Diary Combine
     
-    func deletDiary(diary: Diary) {
+    func deleteDiaryCombine(diary: Diary) {
         FirebaseDiaryService().deleteDiaryService(diary: diary)
             .sink { completion in
                 switch completion {
@@ -220,7 +220,7 @@ class DiaryStore: ObservableObject {
                     print("Failed Delete Diary")
                     return
                 case .finished:
-                    self.getDiarys()
+                    self.getDiarysCombine()
                     print("Finished Delete Diary")
                     return
                 }

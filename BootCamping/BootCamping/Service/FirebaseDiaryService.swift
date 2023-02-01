@@ -13,10 +13,22 @@ import FirebaseAuth
 
 enum FirebaseDiaryServiceError: Error {
     case badSnapshot
-    case authError
-    case imageUploadError
-    case imageDownloadURLError
-    case imageDeleteError
+    case createDiaryError
+    case updateDiaryError
+    case deleteDiaryError
+    
+    var errorDescription: String? {
+        switch self {
+        case .badSnapshot:
+            return "게시물 가져오기 실패"
+        case .createDiaryError:
+            return "게시물 작성 실패"
+        case .updateDiaryError:
+            return "게시물 업데이트 실패"
+        case .deleteDiaryError:
+            return "게시물 삭제 실패"
+        }
+    }
 }
 
 
@@ -91,19 +103,19 @@ struct FirebaseDiaryService {
                   if let error = snapshot.error as? NSError {
                     switch (StorageErrorCode(rawValue: error.code)!) {
                     case .objectNotFound:
-                        promise(.failure(FirebaseDiaryServiceError.imageUploadError))
+                        promise(.failure(FirebaseDiaryServiceError.createDiaryError))
                        print("File doesn't exist")
                     case .unauthorized:
-                        promise(.failure(FirebaseDiaryServiceError.imageUploadError))
+                        promise(.failure(FirebaseDiaryServiceError.createDiaryError))
                        print("User doesn't have permission to access file")
                     case .cancelled:
-                        promise(.failure(FirebaseDiaryServiceError.imageUploadError))
+                        promise(.failure(FirebaseDiaryServiceError.createDiaryError))
                        print("User canceled the upload")
                     case .unknown:
-                        promise(.failure(FirebaseDiaryServiceError.imageUploadError))
+                        promise(.failure(FirebaseDiaryServiceError.createDiaryError))
                        print("Unknown error occurred, inspect the server response")
                     default:
-                        promise(.failure(FirebaseDiaryServiceError.imageUploadError))
+                        promise(.failure(FirebaseDiaryServiceError.createDiaryError))
                        print("A separate error occurred. This is a good place to retry the upload.")
                     }
                   }
@@ -116,7 +128,7 @@ struct FirebaseDiaryService {
                 storageRef.child(imageName).downloadURL { url, error in
                     if let error = error {
                         print(error)
-                        promise(.failure(FirebaseDiaryServiceError.imageDownloadURLError))
+                        promise(.failure(FirebaseDiaryServiceError.createDiaryError))
                     } else {
                         imageURLs.append(url!.absoluteString)
                         group.leave()
@@ -143,7 +155,7 @@ struct FirebaseDiaryService {
                     "diaryIsPrivate": newDiary.diaryIsPrivate,]) { error in
                         if let error = error {
                             print(error)
-                            promise(.failure(FirebaseDiaryServiceError.badSnapshot))
+                            promise(.failure(FirebaseDiaryServiceError.createDiaryError))
                         } else {
                             promise(.success(()))
                         }
@@ -182,19 +194,19 @@ struct FirebaseDiaryService {
                     if let error = snapshot.error as? NSError {
                         switch (StorageErrorCode(rawValue: error.code)!) {
                         case .objectNotFound:
-                            promise(.failure(FirebaseDiaryServiceError.imageUploadError))
+                            promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
                             print("File doesn't exist")
                         case .unauthorized:
-                            promise(.failure(FirebaseDiaryServiceError.imageUploadError))
+                            promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
                             print("User doesn't have permission to access file")
                         case .cancelled:
-                            promise(.failure(FirebaseDiaryServiceError.imageUploadError))
+                            promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
                             print("User canceled the upload")
                         case .unknown:
-                            promise(.failure(FirebaseDiaryServiceError.imageUploadError))
+                            promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
                             print("Unknown error occurred, inspect the server response")
                         default:
-                            promise(.failure(FirebaseDiaryServiceError.imageUploadError))
+                            promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
                             print("A separate error occurred. This is a good place to retry the upload.")
                         }
                     }
@@ -207,7 +219,7 @@ struct FirebaseDiaryService {
                 storageRef.child(imageName).downloadURL { url, error in
                     if let error = error {
                         print(error)
-                        promise(.failure(FirebaseDiaryServiceError.imageDownloadURLError))
+                        promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
                     } else {
                         imageURLs.append(url!.absoluteString)
                         group.leave()
@@ -232,7 +244,8 @@ struct FirebaseDiaryService {
                     "diaryLike": newDiary.diaryLike,
                     "diaryIsPrivate": newDiary.diaryIsPrivate,]) { error in
                         if let error = error {
-                            promise(.failure(error))
+                            print(error)
+                            promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
                         } else {
                             promise(.success(()))
                         }
@@ -259,7 +272,7 @@ struct FirebaseDiaryService {
                 storageRef.child(diaryImage).delete { error in
                     if let error = error {
                         print("Error removing image from storage: \(error.localizedDescription)")
-                        promise(.failure(FirebaseDiaryServiceError.imageDeleteError))
+                        promise(.failure(FirebaseDiaryServiceError.deleteDiaryError))
                     } else {
                         group.leave()
                     }
@@ -271,7 +284,7 @@ struct FirebaseDiaryService {
                     .document(diary.id).delete() { error in
                     if let error = error {
                         print(error)
-                        promise(.failure(FirebaseDiaryServiceError.imageDeleteError))
+                        promise(.failure(FirebaseDiaryServiceError.deleteDiaryError))
                     } else {
                         promise(.success(()))
                     }

@@ -162,7 +162,7 @@ extension CustomDatePickerView{
                     .background (
                         Rectangle()
                             .frame(width: 50, height: 50)
-                            .foregroundColor(Color.gray)
+                            .foregroundColor(Color.secondary)
                             .opacity((isSameDay(date1: value.date, date2: currentDate) && value.day != -1) ? 1 : 0)
                     )
                     .onTapGesture {
@@ -179,23 +179,23 @@ extension CustomDatePickerView{
                     .font(.title2.bold())
                     .padding(.top, 25)
                 
-                ScrollView(showsIndicators: false) {
-                    //MARK: 일정 디테일
-                    if scheduleStore.scheduleList.first(where: { schedule in
-                        return isSameDay(date1: schedule.date, date2: currentDate)
-                    }) != nil{
+                //MARK: 일정 디테일
+                if scheduleStore.scheduleList.first(where: { schedule in
+                    return isSameDay(date1: schedule.date, date2: currentDate)
+                }) != nil{
+                    ScrollView(showsIndicators: false) {
                         ForEach(scheduleStore.scheduleList.filter{ schedule in
                             return isSameDay(date1: schedule.date, date2: currentDate)
                         }) { schedule in
-                            Text("\(schedule.title)")
+                            TaskCellView(title: schedule.title)
                         }
-                    } else {
-                        Text("No schedule")
                     }
+                } else {
+                    Text("No schedule")
                 }
-                .padding(.horizontal,30)
                 Spacer()
             }
+            Spacer()
         }
     }
     
@@ -265,15 +265,18 @@ struct ExDivider: View {
 }
 
 struct TaskCellView: View{
-    let color: UIColor
+    let title: String
     var body: some View {
-        HStack(spacing: 30) {
+        HStack {
             ExDivider(color: Color.red)
+                .padding(.trailing, UIScreen.screenWidth*0.05)
             VStack(alignment: .leading, spacing: 5) {
-                Text("캠핑장 이름")
+                Text("\(title)")
                     .font(.body.bold())
             }
+            Spacer()
         }
+        .frame(maxWidth: UIScreen.screenWidth)
         .padding(.bottom, 10)
         .padding(.top, 20)
     }

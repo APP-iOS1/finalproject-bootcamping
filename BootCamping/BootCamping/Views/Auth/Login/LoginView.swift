@@ -14,11 +14,13 @@ import KakaoSDKUser
 import SwiftUI
 
 struct LoginView: View {
-    
     @Binding var isSignIn: Bool
     
     @EnvironmentObject var authStore: AuthStore
     @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
+    
+    @Environment(\.window) var window: UIWindow?
+    @State private var appleLoginCoordinator: AppleAuthCoordinator?
     
     var body: some View {
         NavigationStack {
@@ -106,6 +108,7 @@ extension LoginView {
     // 애플 로그인 버튼
     var appleLoginButton: some View {
         Button {
+            appleLogin()
             
         } label: {
             RoundedRectangle(cornerRadius: 10)
@@ -121,6 +124,11 @@ extension LoginView {
                     .foregroundColor(.white)
                 }
         }
+    }
+    //애풀 로그인 함수
+    func appleLogin() {
+      appleLoginCoordinator = AppleAuthCoordinator(window: window)
+      appleLoginCoordinator?.startAppleLogin()
     }
     
     // 이메일로 회원가입 버튼

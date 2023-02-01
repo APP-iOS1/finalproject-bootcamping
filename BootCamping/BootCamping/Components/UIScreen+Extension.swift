@@ -30,7 +30,7 @@ extension Color {
 
 extension Color {
     static let bcDarkGray = Color(hex: "2E2E2E")
-    static let bcBlack = Color(hex: "1A1A1A")
+    static let bcBlack = Color("BCBlack")
     static let bcYellow = Color(hex: "FCF6E6")
     static let bcGreen = Color(hex: "156838")
 }

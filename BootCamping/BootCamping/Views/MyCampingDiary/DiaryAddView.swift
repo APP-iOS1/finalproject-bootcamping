@@ -42,23 +42,27 @@ struct DiaryAddView: View {
     @State private var selectedDate: Date = .now
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading) {
-                photoPicker
-                addViewTitle
-                addViewLocationInfo
-                addViewVisitDate
-                addViewIsPrivate
-                Divider()
-                addViewDiaryContent
-                addViewAddButton
+        VStack {
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading) {
+                    photoPicker
+                    addViewTitle
+                    addViewLocationInfo
+                    addViewVisitDate
+                    addViewIsPrivate
+                    Divider()
+                    addViewDiaryContent
+                    addViewAddButton
+                }
+                
             }
-        }
-        //MARK: - 키보드 옵션입니다.
-        .disableAutocorrection(true) //자동 수정 비활성화
-        .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
-        .submitLabel(.done) //작성 완료하면 키보드 return 버튼이 파란색 done으로 바뀜
-        .onSubmit(of: .text, submit) //done 누르면 submit 함수가 실행됨
+            //MARK: - 키보드 옵션입니다.
+            .disableAutocorrection(true) //자동 수정 비활성화
+            .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
+            .submitLabel(.done) //작성 완료하면 키보드 return 버튼이 파란색 done으로 바뀜
+        .onSubmit(of: .text, submit)
+        .padding(.horizontal, UIScreen.screenWidth*0.1)
+        } //done 누르면 submit 함수가 실행됨
     }
 }
 
@@ -158,7 +162,7 @@ private extension DiaryAddView {
             DatePicker("방문일자 등록하기",
                        selection: $selectedDate,
                        displayedComponents: [.date])
-            .padding(.horizontal)
+//            .padding(.horizontal)
             .padding(.bottom)
         }
     }
@@ -177,7 +181,7 @@ private extension DiaryAddView {
                     Text(isOpen ? "공개" : "비공개")
                 }
             }
-            .foregroundColor(Color("BCBlack"))
+            .foregroundColor(.bcBlack)
         }
         .padding(.horizontal)
         .padding(.bottom)

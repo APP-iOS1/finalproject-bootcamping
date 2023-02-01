@@ -41,7 +41,8 @@ struct SearchCampingSpotView: View {
     //MARK: 검색할때 필터링하여 저장
     var filterCamping: [Item] {
         if searchText == "" { return campingSpotStore.campingSpotList }
-        return campingSpotStore.campingSpotList.filter{$0.facltNm.lowercased().contains(searchText.lowercased()) || $0.addr1.lowercased().contains(searchText.lowercased())}
+        //MARK: 검색 조건 정하기 - 현재: "캠핑장 이름, 주소, 전망" 검색 가능. -> 좋은 조건 생각나면 더 추가해주세용
+        return campingSpotStore.campingSpotList.filter{$0.facltNm.lowercased().contains(searchText.lowercased()) || $0.addr1.lowercased().contains(searchText.lowercased()) || $0.lctCl.lowercased().contains(searchText.lowercased())}
     }
     
     var body: some View {
@@ -101,7 +102,7 @@ struct SearchCampingSpotView: View {
         .textInputAutocapitalization(.never)
         .onAppear{
             Task {
-                campingSpotStore.campingSpotList.append(contentsOf: try await fecthData.fetchData(page: page))
+                campingSpotStore.campingSpotList = try await fecthData.fetchData(page: page)
             }
         }
     }
@@ -195,27 +196,33 @@ extension SearchCampingSpotView {
                         NavigationLink {
                        //     CampingSpotDetailView()
                         } label: {
-                            ZStack(alignment: .topTrailing){
-                                Image(campingSpotADImage[index])
-                                    .resizable()
-                                    .cornerRadius(10)
-                                    .frame(width: 150, height: 150)
-                                    .aspectRatio(contentMode: .fit)
-                                //MARK: 추천 캠핑장 제일 첫번째 거 광고 표시
-                                if index == 0 {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .foregroundColor(.white)
-                                        .opacity(0.2)
-                                        .frame(width: 25, height: 15)
-                                        .overlay{
-                                            Text("AD")
-                                                .font(.caption2)
-                                        }
-                                        .padding(3)
-                                }
-                            }
+                            Image(campingSpotADImage[index])
+                                .resizable()
+                                .cornerRadius(10)
+                                .frame(height: 150)
+                                .aspectRatio(contentMode: .fit)
+                            
                         }
-                        Text(campingSpotADName[index])
+                        
+                        HStack{
+
+                            //MARK: 추천 캠핑장 제일 첫번째 거 광고 표시
+                            if index == 0 {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(Color.gray)
+                                    .opacity(0.5)
+                                    .frame(width: 25, height: 15)
+                                    .overlay{
+                                        Text("AD")
+                                            .font(.caption2)
+                                            .foregroundColor(.white)
+                                    }
+                            }
+
+                            Text(campingSpotADName[index])
+                        }
+                        .frame(height: 8)
+                        .padding(.top, 6)
                         HStack{
                             Image(systemName: "mappin.and.ellipse")
                                 .font(.caption)

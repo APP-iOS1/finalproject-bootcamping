@@ -17,12 +17,13 @@ struct SearchCampingSpotView: View {
     let timer = Timer.publish(every: 4, on: .main, in: .common).autoconnect()
     @State var selection = 0
     
+    //TODO: 강원, 충청 이미지 찾아야함, 나머지 지역은 저작권 없는 이미지로 교체 완료
     //MARK: 지역 사진 및 이름
-    var areaImage = ["2", "Gyeonggi", "gangwon", "5", "busan", "jeju"]
+    var areaImage = ["seoul", "incheon", "gangwon", "5", "busan", "jeju"]
     var areaName = ["서울", "경기 / 인천", "강원", "충청", "경상 / 부산", "전라 / 제주"]
     
     //MARK: 전망 사진 및 이름
-    var viewImage = ["7", "8", "l", "12", "1", "9"]
+    var viewImage = ["mountain", "ocean", "river", "forest", "lake", "island"]
     var viewName = ["산", "바다 / 해변", "강", "숲", "호수", "섬"]
     
     //MARK: 추천 캠핑장 사진 및 이름

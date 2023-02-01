@@ -21,6 +21,18 @@ struct AuthSignUpView: View {
     
     @EnvironmentObject var authStore: AuthStore
     
+    var trimUserEmail: String {
+        userEmail.trimmingCharacters(in: .whitespaces)
+    }
+    
+    var trimnickName: String {
+        nickName.trimmingCharacters(in: .whitespaces)
+    }
+    
+    var isSignUpButtonAvailable: Bool {
+        return !trimUserEmail.isEmpty && !trimnickName.isEmpty && authStore.checkAuthFormat(userEmail: userEmail) && isAgree1
+    }
+    
     var body: some View {
         VStack {
             ScrollView(showsIndicators: false) {
@@ -31,11 +43,11 @@ struct AuthSignUpView: View {
                 
                 passwordSection
                 
-                Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
+                Divider().padding(.vertical, 10)
                 
                 AgreeView
                 
-                Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
+                Divider().padding(.vertical, 10)
                 
                 signUpButton
                 
@@ -44,6 +56,7 @@ struct AuthSignUpView: View {
             }
         }
         .foregroundColor(.bcBlack)
+        .padding(.horizontal, UIScreen.screenWidth * 0.05)
     }
 }
 
@@ -55,10 +68,10 @@ extension AuthSignUpView {
             HStack {
                 Text("닉네임").font(.subheadline)
                 Spacer()
-            }.padding(.leading, UIScreen.screenWidth * 0.1)
+            }
             RoundedRectangle(cornerRadius: 10)
                 .stroke(.gray)
-                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .frame(width: UIScreen.screenWidth * 0.9, height: 44)
                 .overlay {
                     TextField("닉네임", text: $nickName)
                         .textCase(.lowercase)
@@ -67,7 +80,7 @@ extension AuthSignUpView {
                         .padding()
                     
                 }
-                .padding(.bottom, UIScreen.screenHeight * 0.05)
+                .padding(.bottom, 10)
         }
     }
     
@@ -77,10 +90,10 @@ extension AuthSignUpView {
             HStack {
                 Text("이메일").font(.subheadline)
                 Spacer()
-            }.padding(.leading, UIScreen.screenWidth * 0.1)
+            }
             RoundedRectangle(cornerRadius: 10)
                 .stroke(.gray)
-                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .frame(width: UIScreen.screenWidth * 0.9, height: 44)
                 .overlay {
                     HStack {
                         TextField("이메일", text: $userEmail)
@@ -90,7 +103,7 @@ extension AuthSignUpView {
                         Spacer()
                     }.padding()
                 }
-                .padding(.bottom, UIScreen.screenHeight * 0.05)
+                .padding(.bottom, 10)
         }
     }
     
@@ -100,10 +113,10 @@ extension AuthSignUpView {
             HStack {
                 Text("비밀번호").font(.subheadline)
                 Spacer()
-            }.padding(.leading, UIScreen.screenWidth * 0.1)
+            }
             RoundedRectangle(cornerRadius: 10)
                 .stroke(.gray)
-                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .frame(width: UIScreen.screenWidth * 0.9, height: 44)
                 .overlay {
                     SecureField("비밀번호", text: $password)
                         .disableAutocorrection(true)
@@ -113,7 +126,7 @@ extension AuthSignUpView {
                 }
             RoundedRectangle(cornerRadius: 10)
                 .stroke(.gray)
-                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .frame(width: UIScreen.screenWidth * 0.9, height: 44)
                 .overlay {
                     SecureField("비밀번호 확인", text: $confirmPassword)
                         .disableAutocorrection(true)
@@ -135,9 +148,13 @@ extension AuthSignUpView {
             self.presentationMode.wrappedValue.dismiss()
         } label: {
             Text("동의하고 계속하기")
-                .modifier(GreenButtonModifier())
+                .font(.headline)
+                .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)
+                .foregroundColor(.white)
+                .background(isSignUpButtonAvailable ? Color.bcGreen : Color.secondary)
+                .cornerRadius(10)
         }
-        .disabled(!authStore.checkPasswordFormat(password: password, confirmPassword: confirmPassword) && !isAgree1)
+        .disabled(!isSignUpButtonAvailable)
     }
     
     // 개인정보 수집 여부 뷰
@@ -183,7 +200,7 @@ extension AuthSignUpView {
                         .underline()
                 }
             }
-        }.padding(.horizontal, UIScreen.screenWidth * 0.1)
+        }
     }
     // 개인정보 수집 뷰
     var Agree1View: some View {

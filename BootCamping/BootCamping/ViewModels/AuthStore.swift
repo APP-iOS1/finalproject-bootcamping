@@ -140,9 +140,9 @@ class AuthStore: ObservableObject {
     }
     
     // MARK: - 유저리스트에 추가하는 함수
-    func addUserList(_ user: User) {
+    func addUserList(_ user: User) async throws {
 
-        Firestore.firestore().collection("UserList").document(user.id).setData([
+        try await database.collection("UserList").document(user.id).setData([
             "id": user.id,
             "profileImage": user.profileImage,
             "nickName": user.nickName,

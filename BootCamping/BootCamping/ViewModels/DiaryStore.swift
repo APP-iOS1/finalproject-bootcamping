@@ -16,6 +16,8 @@ import Combine
 class DiaryStore: ObservableObject {
     //저장된 다이어리 리스트
     @Published var diaryList: [Diary] = []
+    @Published var firebaseDiaryServiceError: FirebaseDiaryServiceError = .badSnapshot
+    @Published var showErrorAlertMessage: String = "오류"
     //파베 기본 경로
     let database = Firestore.firestore()
     
@@ -153,6 +155,8 @@ class DiaryStore: ObservableObject {
                 case .failure(let error):
                     print(error)
                     print("Failed get Diarys")
+                    self.firebaseDiaryServiceError = .badSnapshot
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
                         return
                 case .finished:
                     print("Finished get Diarys")
@@ -175,6 +179,8 @@ class DiaryStore: ObservableObject {
                 case .failure(let error):
                     print(error)
                     print("Failed Create Diary")
+                    self.firebaseDiaryServiceError = .createDiaryError
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
                     return
                 case .finished:
                     print("Finished Create Diary")
@@ -197,6 +203,8 @@ class DiaryStore: ObservableObject {
                 case .failure(let error):
                     print(error)
                     print("Failed Update Diary")
+                    self.firebaseDiaryServiceError = .updateDiaryError
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
                     return
                 case .finished:
                     print("Finished Update Diary")
@@ -218,6 +226,8 @@ class DiaryStore: ObservableObject {
                 case .failure(let error):
                     print(error)
                     print("Failed Delete Diary")
+                    self.firebaseDiaryServiceError = .deleteDiaryError
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
                     return
                 case .finished:
                     self.getDiarysCombine()

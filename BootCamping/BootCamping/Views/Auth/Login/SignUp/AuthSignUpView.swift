@@ -86,7 +86,7 @@ extension AuthSignUpView {
     
     // 이메일 입력
     var emailSection: some View {
-        VStack {
+        VStack(alignment: .leading) {
             HStack {
                 Text("이메일").font(.subheadline)
                 Spacer()
@@ -103,8 +103,16 @@ extension AuthSignUpView {
                         Spacer()
                     }.padding()
                 }
-                .padding(.bottom, 10)
+            if authStore.checkAuthFormat(userEmail: userEmail) {
+                Text("회원가입이 가능한 이메일 형식 입니다.").font(.subheadline).foregroundColor(.green)
+            } else if userEmail == "" {
+                Text(" ").font(.subheadline)
+            } else if !authStore.checkAuthFormat(userEmail: userEmail) {
+                Text("이메일을 확인해주세요.").font(.subheadline).foregroundColor(.red)
+            }
+            
         }
+        .padding(.bottom, 10)
     }
     
     // 패스워드 입력 및 확인

@@ -12,27 +12,29 @@ import SDWebImageSwiftUI
 struct CampingSpotListView: View {
     //TODO: 북마크 만들기
     @EnvironmentObject var campingSpotStore: CampingSpotStore
-
+    
     var body: some View {
-        List{
-            ForEach(campingSpotStore.campingSpotList, id: \.self) { camping in
-                ZStack{
+        VStack{
+            ScrollView{
+                ForEach(campingSpotStore.campingSpotList, id: \.self) { camping in
                     NavigationLink {
                         CampingSpotDetailView(places: camping)
                     } label: {
-                        campingSpotListCell(item: camping)
+                        VStack{
+                            campingSpotListCell(item: camping)
+                                .padding(.bottom, 10)
+                            Divider()
+                                .padding(.bottom, 10)
+                        }
                     }
-                    .opacity(0)
-                    campingSpotListCell(item: camping)
-                        .padding(.horizontal, UIScreen.screenWidth*0.1)
+                    .padding(.horizontal, UIScreen.screenWidth*0.1)
                 }
             }
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .listStyle(.plain)
-        .toolbar{
-            ToolbarItem(placement: .principal) {
-                Text("캠핑 모아보기")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar{
+                ToolbarItem(placement: .principal) {
+                    Text("캠핑 모아보기")
+                }
             }
         }
     }
@@ -79,6 +81,7 @@ struct campingSpotListCell : View{
             // 캠핑장 이름
             Text(item.facltNm)
                 .font(.title3.bold())
+                .foregroundColor(.bcBlack)
             
             // 캠핑장 간단 주소
             HStack {
@@ -96,6 +99,10 @@ struct campingSpotListCell : View{
             if item.lineIntro != "" {
                 Text(item.lineIntro)
                     .font(.callout)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(.bcBlack)
+
+                    
             }
             //                        .lineLimit(3)//optional
             //                        .expandButton(TextSet(text: "more", font: .body, color: .blue))//optional

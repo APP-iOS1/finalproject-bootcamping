@@ -124,6 +124,7 @@ class CommentStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Create Comment")
+                    self.getComments()
                     return
                 }
             } receiveValue: { _ in
@@ -145,6 +146,7 @@ class CommentStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Update CommentLike")
+                    self.getComments()
                     return
                 }
             } receiveValue: { _ in
@@ -166,6 +168,7 @@ class CommentStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Delete Comment")
+                    self.getComments()
                     return
                 }
             } receiveValue: { _ in

@@ -8,12 +8,13 @@
 import Combine
 import FirebaseFirestore
 import FirebaseStorage
+import FirebaseAuth
 
-struct FirebaseService {
+struct FirebaseDiaryService {
     
     let database = Firestore.firestore()
     
-    //MARK: Read FirebaseService
+    //MARK: Read FirebaseDiaryService
     
     func getDiarysService() -> AnyPublisher<[Diary], Error> {
         Future<[Diary], Error> { promise in
@@ -52,7 +53,7 @@ struct FirebaseService {
         .eraseToAnyPublisher()
     }
     
-    //MARK: Create FirebaseService
+    //MARK: Create FirebaseDiaryService
 
     func createDiaryService(diary: Diary, images: [Data]) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
@@ -63,8 +64,10 @@ struct FirebaseService {
                 imageNames.append(contentsOf: imgNames)
                 getDownloadURL(imageNames: imageNames) { imgURLs in
                     imageURLs.append(contentsOf: imgURLs)
-                    
-                    let newDiary = Diary(id: diary.id, uid: "", diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
+                    guard let userUID = Auth.auth().currentUser?.uid else { return
+                    }
+
+                    let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
                     
                     self.database.collection("Diarys").document(diary.id).setData([
                         "id": newDiary.id,
@@ -180,7 +183,7 @@ struct FirebaseService {
         }
     }
     
-    //MARK: Update FirebaseService
+    //MARK: Update FirebaseDiaryService
     
     func updateDiarysService(diary: Diary, images: [Data]) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
@@ -220,7 +223,7 @@ struct FirebaseService {
         .eraseToAnyPublisher()
     }
     
-    //MARK: Delete FirebaseService
+    //MARK: Delete FirebaseDiaryService
     func deleteDiaryService(diary: Diary) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
             removeImage(diary: diary) {
@@ -265,4 +268,5 @@ struct FirebaseService {
 
 enum FirebaseError: Error {
     case badSnapshot
+    case authError
 }

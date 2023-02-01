@@ -11,10 +11,20 @@ struct LoginPasswordView: View {
     
     @State var userEmail: String = ""
     @State var password: String = ""
+    @State var isShowingAlert: Bool = false
+    
     
     @Binding var isSignIn: Bool
     
     @EnvironmentObject var authStore: AuthStore
+    
+    var trimUserEmail: String {
+        userEmail.trimmingCharacters(in: .whitespaces)
+    }
+    
+    var trimUserPassword: String {
+        password.trimmingCharacters(in: .whitespaces)
+    }
     
     var body: some View {
         VStack {
@@ -33,6 +43,9 @@ struct LoginPasswordView: View {
         .foregroundColor(.bcBlack)
         .padding(.horizontal, UIScreen.screenWidth * 0.05)
         .padding(.vertical, 10)
+        .alert("이메일, 비밀번호를 확인하세요", isPresented: $isShowingAlert) {
+            Button("확인", role: .cancel) {  }
+        }
     }
 }
 
@@ -41,7 +54,7 @@ extension LoginPasswordView {
     var emailTextField: some View {
         RoundedRectangle(cornerRadius: 10)
             .stroke(.gray)
-            .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+            .frame(width: UIScreen.screenWidth * 0.9, height: 44)
             .overlay {
                 TextField("이메일", text: $userEmail)
                     .textCase(.lowercase)
@@ -56,7 +69,7 @@ extension LoginPasswordView {
     var passwordTextField: some View {
         RoundedRectangle(cornerRadius: 10)
             .stroke(.gray)
-            .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+            .frame(width: UIScreen.screenWidth * 0.9, height: 44)
             .overlay {
                 SecureField("비밀번호", text: $password)
                     .textCase(.lowercase)
@@ -74,13 +87,17 @@ extension LoginPasswordView {
                 if authStore.isLogin {
                     isSignIn = true
                 } else {
-                    print("Login Failed")
+                    isShowingAlert.toggle()
                 }
             }
         } label: {
             Text("계속")
-                .modifier(GreenButtonModifier())
-        }
+                .font(.headline)
+                .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)
+                .foregroundColor(.white)
+                .background(trimUserEmail.count == 0 || trimUserPassword.count == 0  ? Color.secondary : Color.bcGreen)
+                .cornerRadius(10)
+        }.disabled(trimUserEmail.count == 0 || trimUserPassword.count == 0 ? true : false)
     }
     
     var signUpButton: some View {

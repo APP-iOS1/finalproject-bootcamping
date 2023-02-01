@@ -15,8 +15,8 @@ struct DateValue: Identifiable {
 
 //MARK: 샘플 일정 데이터
 struct Schedule: Identifiable {
-    var id = UUID().uuidString
-    var campingSpotId: String // 캠핑장 고유 id <- json에서는 contentId
+    var id: String
+//    var campingSpotId: String // 캠핑장 고유 id <- json에서는 contentId
     var title: String
     var date: Date
 }
@@ -29,8 +29,8 @@ struct Schedule: Identifiable {
 //}
 
 var schedules: [Schedule] = [
-    Schedule(campingSpotId: "캠핑장이름", title: "샘플1", date: Date()),
-    Schedule(campingSpotId: "캠핑장이름", title: "샘플2", date: Date()),
-    Schedule(campingSpotId: "캠핑장이름", title: "샘플3", date: Date())
+    Schedule(id: UUID().uuidString, title: "샘플1", date: Date()),
+    Schedule(id: UUID().uuidString, title: "샘플2", date: Date()),
+    Schedule(id: UUID().uuidString, title: "샘플3", date: Date())
 ]
 

@@ -64,8 +64,9 @@ class AuthStore: ObservableObject {
                     let nickName: String = docData["nickName"] as? String ?? ""
                     let userEmail: String = docData["userEmail"] as? String ?? ""
                     let bookMarkedDiaries: [String] = docData["bookMarkedDiaries"] as? [String] ?? []
+                    let bookMarkedSpot: [String] = docData["bookMarkedSpot"] as? [String] ?? []
                     
-                    let user: User = User(id: id, profileImage: profileImage, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries)
+                    let user: User = User(id: id, profileImage: profileImage, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries, bookMarkedSpot: bookMarkedSpot)
                     self.userList.append(user)
                 }
             }
@@ -148,6 +149,7 @@ class AuthStore: ObservableObject {
             "nickName": user.nickName,
             "userEmail": user.userEmail,
             "bookMarkedDiaries": user.bookMarkedDiaries,
+            "bookMarkedSpot": user.bookMarkedSpot,
         ])
         fetchUserList()
     }

@@ -22,7 +22,7 @@ struct MyPageView: View {
     @Namespace private var animation
     
     var body: some View {
-        VStack{
+        VStack {
             ScrollView(showsIndicators: false) {
                 userProfileSection
                 animate()
@@ -37,11 +37,11 @@ struct MyPageView: View {
                     NavigationLink {
                         SettingView()
                     } label: {
-                        Image(systemName: "gearshape").foregroundColor(.black)
+                        Image(systemName: "gearshape").foregroundColor(.bcBlack)
                     }
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(.inline)
         }
     }
     
@@ -75,16 +75,16 @@ extension MyPageView{
                     Text(item.rawValue)
                         .font(.callout)
                         .kerning(-1)
-                        .foregroundColor(selectedPicker2 == item ? .black : .gray)
+                        .foregroundColor(selectedPicker2 == item ? .bcBlack : .gray)
                     
                     if selectedPicker2 == item {
                         Capsule()
-                            .foregroundColor(.black)
+                            .foregroundColor(.bcBlack)
                             .frame(height: 2)
                             .matchedGeometryEffect(id: "info", in: animation)
                     } else if selectedPicker2 != item {
                         Capsule()
-                            .foregroundColor(.white)
+                            .foregroundColor(.clear)
                             .frame(height: 2)
                     }
                 }

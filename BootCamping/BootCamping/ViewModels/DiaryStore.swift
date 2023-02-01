@@ -111,7 +111,7 @@ class DiaryStore: ObservableObject {
             "diaryCreatedDate": diaryToUpdate.diaryCreatedDate,
             "diaryVisitedDate": diaryToUpdate.diaryVisitedDate,
             "diaryLike": diaryToUpdate.diaryLike,
-             "diaryIsPrivate": diaryToUpdate.diaryIsPrivate,], merge: true)                                                             //setData: 이 데이터로 새로 정의되고, 기존 데이터는 삭제됨 /merge하면 재정의하는 대신 합쳐짐
+            "diaryIsPrivate": diaryToUpdate.diaryIsPrivate,], merge: true)                                                             //setData: 이 데이터로 새로 정의되고, 기존 데이터는 삭제됨 /merge하면 재정의하는 대신 합쳐짐
         { error in
             
             //에러체크

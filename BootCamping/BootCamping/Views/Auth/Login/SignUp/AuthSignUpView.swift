@@ -356,6 +356,7 @@ extension AuthSignUpView {
 
 struct AuthSignUpView_Previews: PreviewProvider {
     static var previews: some View {
-        AuthSignUpView()
+        AuthSignUpView(userEmail: "erun9414@gmail.com")
+            .environmentObject(AuthStore())
     }
 }

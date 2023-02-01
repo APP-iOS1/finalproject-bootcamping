@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>446099408891-fte31m4bqb4u34a704s0ae8dvi79a900.apps.googleusercontent.com</string>
+	<string>446099408891-3odasg5m4dbl2uatm42ktcmrrjetqovo.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.446099408891-fte31m4bqb4u34a704s0ae8dvi79a900</string>
+	<string>com.googleusercontent.apps.446099408891-3odasg5m4dbl2uatm42ktcmrrjetqovo</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCvecmVIYEmtI7grvo0fDhbbZPnJ_y4TKw</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.thekoon.BootCamping</string>
+	<string>com.thekoon.BootCampingDev</string>
 	<key>PROJECT_ID</key>
 	<string>bootcamping-280fc</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:446099408891:ios:2092cf1a83ec76d2e92d5e</string>
+	<string>1:446099408891:ios:1577fff08bed4c02e92d5e</string>
 </dict>
 </plist>

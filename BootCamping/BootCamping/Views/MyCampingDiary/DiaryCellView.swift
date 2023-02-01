@@ -37,16 +37,15 @@ private extension DiaryCellView {
                 ForEach(item.diaryImageURLs, id: \.self) { url in
                     WebImage(url: URL(string: url))
                         .resizable()
-                        .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenWidth * 0.9)
+                        .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                         .aspectRatio(contentMode: .fill)
                     
                 }
         }
-        .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenWidth * 0.9)
+        .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
         .tabViewStyle(PageTabViewStyle())
         // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
-        .padding(.horizontal, UIScreen.screenWidth * 0.01)
     }
     
     //MARK: - 제목

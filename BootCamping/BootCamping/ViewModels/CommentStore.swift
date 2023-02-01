@@ -13,6 +13,9 @@ import Combine
 
 class CommentStore: ObservableObject {
     @Published var comments: [Comment] = []
+    @Published var firebaseCommentServiceError: FirebaseCommentServiceError = .badSnapshot
+    @Published var showErrorAlertMessage: String = "오류"
+    
     
     let database = Firestore.firestore()
     private var cancellables = Set<AnyCancellable>()
@@ -92,7 +95,7 @@ class CommentStore: ObservableObject {
     
     //MARK: Read Comment Combine
     
-    func getComments() {
+    func getCommentsCobine() {
         FirebaseCommentService().getCommentsService()
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -100,6 +103,8 @@ class CommentStore: ObservableObject {
                 case .failure(let error):
                     print(error)
                     print("Failed get Comments")
+                    self.firebaseCommentServiceError = .badSnapshot
+                    self.showErrorAlertMessage = self.firebaseCommentServiceError.errorDescription!
                         return
                 case .finished:
                     print("Finished get Comments")
@@ -113,7 +118,7 @@ class CommentStore: ObservableObject {
     
     //MARK: Create Comment Combine
     
-    func createComment(comment: Comment) {
+    func createCommentCombine(comment: Comment) {
         FirebaseCommentService().createCommentService(comment: comment)
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -121,10 +126,13 @@ class CommentStore: ObservableObject {
                 case .failure(let error):
                     print(error)
                     print("Failed Create Comment")
+                    self.firebaseCommentServiceError = .createCommentError
+                    self.showErrorAlertMessage = self.firebaseCommentServiceError.errorDescription!
+
                     return
                 case .finished:
                     print("Finished Create Comment")
-                    self.getComments()
+                    self.getCommentsCobine()
                     return
                 }
             } receiveValue: { _ in
@@ -135,7 +143,7 @@ class CommentStore: ObservableObject {
     
     //MARK: Update CommentLike Combine
     
-    func updateCommentLike(comment: Comment) {
+    func updateCommentLikeCombine(comment: Comment) {
         FirebaseCommentService().updateCommentLikeService(comment: comment)
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -143,10 +151,13 @@ class CommentStore: ObservableObject {
                 case .failure(let error):
                     print(error)
                     print("Failed Update CommentLike")
+                    self.firebaseCommentServiceError = .updateCommentError
+                    self.showErrorAlertMessage = self.firebaseCommentServiceError.errorDescription!
+
                     return
                 case .finished:
                     print("Finished Update CommentLike")
-                    self.getComments()
+                    self.getCommentsCobine()
                     return
                 }
             } receiveValue: { _ in
@@ -157,7 +168,7 @@ class CommentStore: ObservableObject {
 
     //MARK: Delete Comment Combine
     
-    func deleteComment(comment: Comment) {
+    func deleteCommentCombine(comment: Comment) {
         FirebaseCommentService().deleteCommentService(comment: comment)
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -165,10 +176,12 @@ class CommentStore: ObservableObject {
                 case .failure(let error):
                     print(error)
                     print("Failed Delete Comment")
+                    self.firebaseCommentServiceError = .deleteCommentError
+                    self.showErrorAlertMessage = self.firebaseCommentServiceError.errorDescription!
                     return
                 case .finished:
                     print("Finished Delete Comment")
-                    self.getComments()
+                    self.getCommentsCobine()
                     return
                 }
             } receiveValue: { _ in

@@ -13,7 +13,7 @@ struct SearchCampingSpotView: View {
     @State var page: Int = 2
     
     //MARK: 광고 사진 - 수정 필요
-    var adImage = ["back", "camp", "car", "gl"]
+    var adImage = ["ad1", "ad2", "ad3", "ad4"]
     let timer = Timer.publish(every: 4, on: .main, in: .common).autoconnect()
     @State var selection = 0
     
@@ -121,7 +121,7 @@ extension SearchCampingSpotView {
                     .cornerRadius(10)
             }
         }
-        .frame(width: UIScreen.screenWidth*0.9, height: UIScreen.screenHeight*0.13)
+        .frame(width: UIScreen.screenWidth*0.9, height: UIScreen.screenHeight*0.09)
         .tabViewStyle(.page(indexDisplayMode: .never))
         .onReceive(timer, perform: { t in
             selection += 1

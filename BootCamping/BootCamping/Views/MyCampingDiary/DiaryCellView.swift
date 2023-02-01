@@ -21,11 +21,6 @@ struct DiaryCellView: View {
             diaryTitle
             diaryContent
             diaryCampingLink
-            diaryInfo
-            Divider()
-                .padding(.horizontal)
-                .padding(.bottom)
-
         }
     }
 }

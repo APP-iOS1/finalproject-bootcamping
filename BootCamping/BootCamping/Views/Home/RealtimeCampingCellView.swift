@@ -22,10 +22,6 @@ struct RealtimeCampingCellView: View {
             diaryContent
             diaryCampingLink
             diaryInfo
-            Divider()
-                .padding(.horizontal)
-                .padding(.bottom)
-
         }
     }
 }

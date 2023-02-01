@@ -71,7 +71,7 @@ struct campingSpotListCell : View{
                         RoundedRectangle(cornerRadius: 10)
 //                            .frame(width: 35, height: 20)
                             .frame(width: 40 ,height: 20)
-                            .foregroundColor(Color("BCGreen"))
+                            .foregroundColor(.bcGreen)
                             .overlay{
                                 Text(view)
                                     .font(.caption2.bold())

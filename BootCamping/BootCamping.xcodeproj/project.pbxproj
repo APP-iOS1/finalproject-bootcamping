@@ -63,6 +63,7 @@
 		7CFCE12D2987549F00E196AF /* WeeklyPopulerCampingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE12C2987549F00E196AF /* WeeklyPopulerCampingView.swift */; };
 		7CFCE12F2987551F00E196AF /* LoginPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE12E2987551F00E196AF /* LoginPasswordView.swift */; };
 		AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD373AF92977D68A00E1236A /* DiaryCellView.swift */; };
+		CA27A6252989FCD700A6AEE5 /* SearchCampingSpotListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A6242989FCD700A6AEE5 /* SearchCampingSpotListView.swift */; };
 		CA729F3329792DE000CCC3BB /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F3229792DE000CCC3BB /* CalendarView.swift */; };
 		CA729F352979315400CCC3BB /* CustomDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F342979315400CCC3BB /* CustomDatePickerView.swift */; };
 		CA729F392979340600CCC3BB /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F382979340600CCC3BB /* Schedule.swift */; };
@@ -114,6 +115,7 @@
 		7CFCE12C2987549F00E196AF /* WeeklyPopulerCampingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeeklyPopulerCampingView.swift; sourceTree = "<group>"; };
 		7CFCE12E2987551F00E196AF /* LoginPasswordView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginPasswordView.swift; sourceTree = "<group>"; };
 		AD373AF92977D68A00E1236A /* DiaryCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCellView.swift; sourceTree = "<group>"; };
+		CA27A6242989FCD700A6AEE5 /* SearchCampingSpotListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCampingSpotListView.swift; sourceTree = "<group>"; };
 		CA729F3229792DE000CCC3BB /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		CA729F342979315400CCC3BB /* CustomDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerView.swift; sourceTree = "<group>"; };
 		CA729F382979340600CCC3BB /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 				63AF45D12977CE4B0014B1E1 /* MyPageView.swift */,
 				CA729F3229792DE000CCC3BB /* CalendarView.swift */,
 				CA729F3B297A6C4B00CCC3BB /* AddScheduleView.swift */,
+				CA27A6242989FCD700A6AEE5 /* SearchCampingSpotListView.swift */,
 				CA729F342979315400CCC3BB /* CustomDatePickerView.swift */,
 			);
 			path = MyPageView;
@@ -453,6 +456,7 @@
 				63AF45E02977CE5E0014B1E1 /* DiaryAddView.swift in Sources */,
 				790B62DF297A262E0048C110 /* kakaoLoginViewTEST.swift in Sources */,
 				63AF45E12977CE5E0014B1E1 /* DiaryDetailView.swift in Sources */,
+				CA27A6252989FCD700A6AEE5 /* SearchCampingSpotListView.swift in Sources */,
 				7CFCE12D2987549F00E196AF /* WeeklyPopulerCampingView.swift in Sources */,
 				63AF45D82977CE4C0014B1E1 /* BookmarkCellView.swift in Sources */,
 				63AF45B22977CDC60014B1E1 /* User.swift in Sources */,

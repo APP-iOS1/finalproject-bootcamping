@@ -19,7 +19,7 @@ struct ProfileSettingView: View {
     @EnvironmentObject var tabSelection: TabSelector
     //로그아웃시 isSignIn을 false로 변경
     @Binding var isSignIn: Bool
-
+    
     @State private var updateNickname: String = ""
     
     var body: some View {
@@ -39,6 +39,9 @@ struct ProfileSettingView: View {
         .padding(.horizontal, UIScreen.screenWidth * 0.1)
     }
     
+}
+
+extension ProfileSettingView {
     // MARK: -View : PhotoPicker
     private var photoPicker : some View {
         VStack{

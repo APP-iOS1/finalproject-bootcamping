@@ -22,27 +22,32 @@ struct MyPageView: View {
     @Namespace private var animation
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            userProfileSection
-            animate()
-            myPageTap
-        }
-        .padding(.horizontal, UIScreen.screenWidth * 0.1)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("마이페이지")
+        VStack{
+            ScrollView(showsIndicators: false) {
+                userProfileSection
+                animate()
+                myPageTap
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink {
-                    SettingView()
-                } label: {
-                    Image(systemName: "gearshape").foregroundColor(.black)
+            .padding(.horizontal, UIScreen.screenWidth * 0.1)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("마이페이지")
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink {
+                        SettingView()
+                    } label: {
+                        Image(systemName: "gearshape").foregroundColor(.black)
+                    }
                 }
             }
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .navigationBarTitleDisplayMode(.inline)
     }
     
+}
+
+extension MyPageView{
     // MARK: -View : 유저 프로필이미지, 닉네임 표시
     private var userProfileSection : some View {
         HStack{
@@ -98,7 +103,7 @@ struct MyPageView: View {
         VStack {
             switch selectedPicker2 {
             case .myCamping:
-                    CalendarView()
+                CalendarView()
             case .bookmarkedCampingSpot:
                 VStack(spacing: 20){
                     ForEach(0..<5) { _ in

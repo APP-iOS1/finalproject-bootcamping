@@ -126,11 +126,12 @@ extension SearchCampingSpotView {
             ForEach(0..<adImage.count, id: \.self) { index in
                 Image(adImage[index])
                     .resizable()
-                    .cornerRadius(10)
+                    
             }
         }
         .frame(width: UIScreen.screenWidth*0.9, height: UIScreen.screenHeight*0.09)
         .tabViewStyle(.page(indexDisplayMode: .never))
+        .cornerRadius(10)
         .onReceive(timer, perform: { t in
             selection += 1
             

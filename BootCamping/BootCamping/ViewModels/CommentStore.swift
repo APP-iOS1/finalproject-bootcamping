@@ -9,12 +9,17 @@ import Foundation
 import FirebaseFirestore
 import Firebase
 import SwiftUI
+import Combine
 
 class CommentStore: ObservableObject {
     @Published var comments: [Comment] = []
+    @Published var firebaseCommentServiceError: FirebaseCommentServiceError = .badSnapshot
+    @Published var showErrorAlertMessage: String = "오류"
+    
     
     let database = Firestore.firestore()
-    
+    private var cancellables = Set<AnyCancellable>()
+
     init(){
         comments = []
     }
@@ -88,4 +93,100 @@ class CommentStore: ObservableObject {
         }
     }
     
+    //MARK: Read Comment Combine
+    
+    func getCommentsCobine() {
+        FirebaseCommentService().getCommentsService()
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed get Comments")
+                    self.firebaseCommentServiceError = .badSnapshot
+                    self.showErrorAlertMessage = self.firebaseCommentServiceError.errorDescription!
+                        return
+                case .finished:
+                    print("Finished get Comments")
+                    return
+                }
+            } receiveValue: { [weak self] commentsValue in
+                self?.comments = commentsValue
+            }
+            .store(in: &cancellables)
+    }
+    
+    //MARK: Create Comment Combine
+    
+    func createCommentCombine(comment: Comment) {
+        FirebaseCommentService().createCommentService(comment: comment)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Create Comment")
+                    self.firebaseCommentServiceError = .createCommentError
+                    self.showErrorAlertMessage = self.firebaseCommentServiceError.errorDescription!
+
+                    return
+                case .finished:
+                    print("Finished Create Comment")
+                    self.getCommentsCobine()
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
+    
+    //MARK: Update CommentLike Combine
+    
+    func updateCommentLikeCombine(comment: Comment) {
+        FirebaseCommentService().updateCommentLikeService(comment: comment)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Update CommentLike")
+                    self.firebaseCommentServiceError = .updateCommentError
+                    self.showErrorAlertMessage = self.firebaseCommentServiceError.errorDescription!
+
+                    return
+                case .finished:
+                    print("Finished Update CommentLike")
+                    self.getCommentsCobine()
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
+
+    //MARK: Delete Comment Combine
+    
+    func deleteCommentCombine(comment: Comment) {
+        FirebaseCommentService().deleteCommentService(comment: comment)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Delete Comment")
+                    self.firebaseCommentServiceError = .deleteCommentError
+                    self.showErrorAlertMessage = self.firebaseCommentServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished Delete Comment")
+                    self.getCommentsCobine()
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
 }

@@ -15,14 +15,14 @@ struct CampingSpotListView: View {
     
     var body: some View {
         VStack{
-            ScrollView{
+            ScrollView(showsIndicators: false){
                 ForEach(campingSpotStore.campingSpotList, id: \.self) { camping in
                     NavigationLink {
                         CampingSpotDetailView(places: camping)
                     } label: {
                         VStack{
                             campingSpotListCell(item: camping)
-                                .padding(.bottom)
+                                .padding(.bottom,40)
 //                            Divider()
 //                                .padding(.bottom, 10)
                             ///Divider() 없어도 구분 잘 되나요??
@@ -37,6 +37,7 @@ struct CampingSpotListView: View {
                 }
             }
         }
+
     }
 }
 

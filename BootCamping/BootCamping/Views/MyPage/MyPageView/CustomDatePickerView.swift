@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct CustomDatePickerView: View {
+    
+    @EnvironmentObject var scheduleStore: ScheduleStore
    
     @Binding var currentDate: Date
     
     //화살표 누르면 달(month) 업데이트
     @Binding var currentMonth: Int
-    
-    @State private var isShowingAddModal = false
     
     var body: some View {
         VStack(spacing: 25) {
@@ -42,7 +42,6 @@ struct CustomDatePickerView: View {
                     Image(systemName: "chevron.right")
                         .font(.title2)
                 }
-                Spacer(minLength: 0)
                 
                 addScheduleButton
             }
@@ -90,10 +89,12 @@ struct CustomDatePickerView: View {
                     
                     ScrollView(showsIndicators: false) {
                         //MARK: 일정 디테일
-                        if schedules.first(where: { schedule in
+                        if scheduleStore.scheduleList.first(where: { schedule in
                             return isSameDay(date1: schedule.date, date2: currentDate)
                         }) != nil{
-                            ForEach(schedules) { schedule in
+                            ForEach(scheduleStore.scheduleList.filter{ schedule in
+                                return isSameDay(date1: schedule.date, date2: currentDate)
+                            }) { schedule in
                                 Text("\(schedule.title)")
                             }
                         } else {
@@ -113,13 +114,14 @@ struct CustomDatePickerView: View {
 
     // MARK: -Button : 나의 캠핑 일정 추가하기 버튼
     private var addScheduleButton : some View {
-        Button {
-            isShowingAddModal = true
+        NavigationLink {
+            AddScheduleView()
         } label: {
             Text("일정 추가")
-        }
-        .sheet(isPresented: $isShowingAddModal) {
-            AddScheduleView()
+                .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenHeight * 0.05)
+                .foregroundColor(.white)
+                .background(Color.bcGreen)
+                .cornerRadius(10)
         }
     }
     
@@ -130,16 +132,18 @@ struct CustomDatePickerView: View {
         VStack {
             if value.day != -1 {
                 
-                if schedules.first(where: { schedule in
+                if scheduleStore.scheduleList.first(where: { schedule in
                     return isSameDay(date1: schedule.date, date2: value.date)
-                }) != nil{
+                }) != nil {
                     Text("\(value.day)")
                         .font(.body.bold())
                     Spacer()
                     
                     HStack(spacing: 8) {
                         // 스케줄 개수만큼 점으로 표시하기
-                        ForEach(schedules) {_ in
+                        ForEach(scheduleStore.scheduleList.filter{ schedule in
+                            return isSameDay(date1: schedule.date, date2: value.date)
+                        }) {_ in
                             Circle()
                                 .fill(Color.red)
                                 .frame(width: 7, height: 7)

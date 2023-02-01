@@ -104,11 +104,11 @@ extension AuthSignUpView {
                     }.padding()
                 }
             if authStore.checkAuthFormat(userEmail: userEmail) {
-                Text("회원가입이 가능한 이메일 형식 입니다.").font(.subheadline).foregroundColor(.green)
+                Text("사용 가능").font(.footnote).foregroundColor(.green)
             } else if userEmail == "" {
-                Text(" ").font(.subheadline)
+                Text(" ").font(.footnote)
             } else if !authStore.checkAuthFormat(userEmail: userEmail) {
-                Text("이메일을 확인해주세요.").font(.subheadline).foregroundColor(.red)
+                Text("사용 불가능").font(.footnote).foregroundColor(.red)
             }
             
         }
@@ -117,7 +117,7 @@ extension AuthSignUpView {
     
     // 패스워드 입력 및 확인
     var passwordSection: some View {
-        VStack {
+        VStack(alignment: .leading) {
             HStack {
                 Text("비밀번호").font(.subheadline)
                 Spacer()
@@ -141,6 +141,13 @@ extension AuthSignUpView {
                         .autocapitalization(.none)
                         .padding()
                 }
+            if authStore.checkPasswordFormat(password: password, confirmPassword: confirmPassword) {
+                Text("일치").font(.footnote).foregroundColor(.green)
+            } else if password == "" || confirmPassword == "" {
+                Text("패스워드 양식은 영어 + 숫자 + 특수문자 최소 8자 이상입니다.\nex) password123!").font(.footnote).foregroundColor(.secondary)
+            } else if !authStore.checkPasswordFormat(password: password, confirmPassword: confirmPassword) {
+                Text("확인 필요").font(.footnote).foregroundColor(.red)
+            }
         }
     }
     

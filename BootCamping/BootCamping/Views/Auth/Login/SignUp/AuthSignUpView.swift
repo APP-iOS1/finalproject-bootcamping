@@ -174,7 +174,7 @@ extension AuthSignUpView {
                 isProgressing = true
                 let _ = try await authStore.authSignUp(userEmail: userEmail, password: password, confirmPassword: confirmPassword)
                 try await authStore.authSignIn(userEmail: userEmail, password: password)
-                authStore.addUserList(User(id: String(Auth.auth().currentUser!.uid), profileImage: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: []))
+                let _ = authStore.addUserList(User(id: String(Auth.auth().currentUser!.uid), profileImage: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: []))
                 authStore.authSignOut()
                 isProgressing = false
                 isShowingAlertForSignUp.toggle()

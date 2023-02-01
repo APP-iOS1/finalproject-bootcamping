@@ -178,6 +178,7 @@ class DiaryStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Create Diary")
+                    self.getDiarys()
                     return
                 }
             } receiveValue: { _ in

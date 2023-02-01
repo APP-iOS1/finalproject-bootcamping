@@ -9,12 +9,14 @@ import Foundation
 import FirebaseFirestore
 import Firebase
 import SwiftUI
+import Combine
 
 class CommentStore: ObservableObject {
     @Published var comments: [Comment] = []
     
     let database = Firestore.firestore()
-    
+    private var cancellables = Set<AnyCancellable>()
+
     init(){
         comments = []
     }
@@ -88,4 +90,83 @@ class CommentStore: ObservableObject {
         }
     }
     
+    //MARK: Read Comment Combine
+    func getComments() {
+        FirebaseCommentService().getCommentsService()
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed get Comments")
+                        return
+                case .finished:
+                    print("Finished get Comments")
+                    return
+                }
+            } receiveValue: { [weak self] commentsValue in
+                self?.comments = commentsValue
+            }
+            .store(in: &cancellables)
+    }
+    
+    //MARK: Create Comment Combine
+    func createComment(comment: Comment) {
+        FirebaseCommentService().createCommentService(comment: comment)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Create Comment")
+                    return
+                case .finished:
+                    print("Finished Create Comment")
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
+    
+    //MARK: Update CommentLike Combine
+    func updateCommentLike(comment: Comment) {
+        FirebaseCommentService().updateCommentLikeService(comment: comment)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Update CommentLike")
+                    return
+                case .finished:
+                    print("Finished Update CommentLike")
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
+
+    //MARK: Delete Comment Combine
+    func deleteComment(comment: Comment) {
+        FirebaseCommentService().deleteCommentService(comment: comment)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Delete Comment")
+                    return
+                case .finished:
+                    print("Finished Delete Comment")
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
 }

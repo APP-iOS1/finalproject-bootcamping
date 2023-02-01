@@ -71,10 +71,14 @@ struct CustomDatePickerView: View {
                             Rectangle()
                                 .frame(width: 50, height: 50)
                                 .foregroundColor(Color.gray)
-                                .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
+                                .opacity((isSameDay(date1: value.date, date2: currentDate) && value.day != -1) ? 1 : 0)
                         )
                         .onTapGesture {
                             currentDate = value.date
+                            // FIXME: - value.date를 확인해보면 표시되는 날짜보다 하루씩 늦음
+                            /// 2월 1일 데이터는 1월 31일 date형식인 걸 확인할 수 있다,, 수정하기,,
+//                            print(value.date)
+//                            print(currentDate)
                         }
                 }
             }

@@ -16,6 +16,8 @@ import Combine
 class DiaryStore: ObservableObject {
     //저장된 다이어리 리스트
     @Published var diaryList: [Diary] = []
+    @Published var firebaseDiaryServiceError: FirebaseDiaryServiceError = .badSnapshot
+    @Published var showErrorAlertMessage: String = "오류"
     //파베 기본 경로
     let database = Firestore.firestore()
     
@@ -23,7 +25,7 @@ class DiaryStore: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     //MARK: Create
-    func createDiary1(diary: Diary, images: [Data]) {
+    func createDiary(diary: Diary, images: [Data]) {
             Task {
                 do {
                     guard let userUID = Auth.auth().currentUser?.uid else { return }
@@ -144,14 +146,17 @@ class DiaryStore: ObservableObject {
     }
 
     //MARK: Read Diary Combine
-    func getDiarys() {
-        FirebaseService().getDiarysService()
+    
+    func getDiarysCombine() {
+        FirebaseDiaryService().getDiarysService()
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
                 case .failure(let error):
                     print(error)
                     print("Failed get Diarys")
+                    self.firebaseDiaryServiceError = .badSnapshot
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
                         return
                 case .finished:
                     print("Finished get Diarys")
@@ -166,17 +171,20 @@ class DiaryStore: ObservableObject {
 
     //MARK: Create Diary Combine
 
-    func createDiary(diary: Diary, images: [Data]) {
-        FirebaseService().createDiaryService(diary: diary, images: images)
+    func createDiaryCombine(diary: Diary, images: [Data]) {
+        FirebaseDiaryService().createDiaryService(diary: diary, images: images)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
                 case .failure(let error):
                     print(error)
                     print("Failed Create Diary")
+                    self.firebaseDiaryServiceError = .createDiaryError
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
                     return
                 case .finished:
                     print("Finished Create Diary")
+                    self.getDiarysCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -186,18 +194,21 @@ class DiaryStore: ObservableObject {
     }
     
     //MARK: Update Diary Combine
-    func updateDiary(diary: Diary, images: [Data]) {
-        FirebaseService().createDiaryService(diary: diary, images: images)
+    
+    func updateDiaryCombine(diary: Diary, images: [Data]) {
+        FirebaseDiaryService().createDiaryService(diary: diary, images: images)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
                 case .failure(let error):
                     print(error)
                     print("Failed Update Diary")
+                    self.firebaseDiaryServiceError = .updateDiaryError
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
                     return
                 case .finished:
                     print("Finished Update Diary")
-                    self.getDiarys()
+                    self.getDiarysCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -207,16 +218,19 @@ class DiaryStore: ObservableObject {
     }
     
     //MARK: Delete Diary Combine
-    func deletDiary(diary: Diary) {
-        FirebaseService().deleteDiaryService(diary: diary)
+    
+    func deleteDiaryCombine(diary: Diary) {
+        FirebaseDiaryService().deleteDiaryService(diary: diary)
             .sink { completion in
                 switch completion {
                 case .failure(let error):
                     print(error)
                     print("Failed Delete Diary")
+                    self.firebaseDiaryServiceError = .deleteDiaryError
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
                     return
                 case .finished:
-                    self.getDiarys()
+                    self.getDiarysCombine()
                     print("Finished Delete Diary")
                     return
                 }

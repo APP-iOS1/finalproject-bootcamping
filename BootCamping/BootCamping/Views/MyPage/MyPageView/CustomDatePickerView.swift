@@ -8,150 +8,36 @@
 import SwiftUI
 
 struct CustomDatePickerView: View {
-   
-    @Binding var currentDate: Date
     
-    //화살표 누르면 달(month) 업데이트
+    @EnvironmentObject var scheduleStore: ScheduleStore
+    
+    @Binding var currentDate: Date
     @Binding var currentMonth: Int
     
-    @State private var isShowingAddModal = false
+    let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
+    //lazy grid columns
+    let columns = Array(repeating: GridItem(.flexible()), count: 7)
     
     var body: some View {
         VStack(spacing: 25) {
-            //요일 array
-            let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
-            
-            //MARK: 라벨(연도, 달, 화살표)
-            HStack(spacing: 20) {
-                Text("\(extraData_YearMonth()[0]).\(extraData_YearMonth()[1])")
-                    .font(.title.bold())
-                
-                Button {
-                    withAnimation {
-                        currentMonth -= 1
-                    }
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.title2)
-                }
-                Button {
-                    withAnimation {
-                        currentMonth += 1
-                    }
-                } label: {
-                    Image(systemName: "chevron.right")
-                        .font(.title2)
-                }
-                Spacer(minLength: 0)
-                
+            HStack(spacing: 20){
+                // 2023.02 < >
+                calendarLabelView
+                // 일정 추가 버튼
                 addScheduleButton
             }
-            .padding(.horizontal)
-            
+            // 일 월 화 수 목 금 토
+            dayLabelView
             Divider()
-            
-            // MARK: - 요일뷰
-            HStack(spacing: 0) {
-                ForEach(days, id: \.self) { day in
-                    Text(day)
-                        .font(.callout)
-                        .fontWeight(.semibold)
-                        .frame(maxWidth: .infinity)
-                }
-            }
-            
-            // MARK: - 날짜뷰
-            //lazy grid
-            let columns = Array(repeating: GridItem(.flexible()), count: 7)
-            
-            LazyVGrid(columns: columns, spacing: 5) {
-                ForEach(extractDate()) { value in
-                    CardView(value: value)
-                        .background (
-                            Rectangle()
-                                .frame(width: 50, height: 50)
-                                .foregroundColor(Color.gray)
-                                .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
-                        )
-                        .onTapGesture {
-                            currentDate = value.date
-                        }
-                }
-            }
-            HStack {
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("\(extraData_MonthDay()[0]).\(extraData_MonthDay()[1]) \(extraData_MonthDay()[2])")
-                        .font(.title2.bold())
-                        .padding(.top, 25)
-                    
-                    ScrollView(showsIndicators: false) {
-                        //MARK: 일정 디테일
-                        if schedules.first(where: { schedule in
-                            return isSameDay(date1: schedule.date, date2: currentDate)
-                        }) != nil{
-                            ForEach(schedules) { schedule in
-                                Text("\(schedule.title)")
-                            }
-                        } else {
-                            Text("No schedule")
-                        }
-                    }
-                    .padding(.horizontal,30)
-                    Spacer()
-                }
-            }
+            calendarView
+            taskView
         }
         .onChange(of: currentMonth) { newValue in
             //updating Month
             currentDate = getCurrentMonth()
         }
     }
-
-    // MARK: -Button : 나의 캠핑 일정 추가하기 버튼
-    private var addScheduleButton : some View {
-        Button {
-            isShowingAddModal = true
-        } label: {
-            Text("일정 추가")
-        }
-        .sheet(isPresented: $isShowingAddModal) {
-            AddScheduleView()
-        }
-    }
     
-    // MARK: - 달력 디테일 뷰 생성
-    ///달력 디테일 뷰(day 데이터) 구성하는 함수
-    @ViewBuilder
-    func CardView(value: DateValue) -> some View {
-        VStack {
-            if value.day != -1 {
-                
-                if schedules.first(where: { schedule in
-                    return isSameDay(date1: schedule.date, date2: value.date)
-                }) != nil{
-                    Text("\(value.day)")
-                        .font(.body.bold())
-                    Spacer()
-                    
-                    HStack(spacing: 8) {
-                        // 스케줄 개수만큼 점으로 표시하기
-                        ForEach(schedules) {_ in
-                            Circle()
-                                .fill(Color.red)
-                                .frame(width: 7, height: 7)
-                        }
-                    }
-                } else {
-                    Text("\(value.day)")
-                        .font(.body.bold())
-                    Spacer()
-                }
-            }
-        }
-        .padding(.vertical, 5)
-        .frame(height: 50, alignment: .top)
-    }
-
     // MARK: - 날짜 비교
     func isSameDay(date1: Date, date2: Date) -> Bool {
         let calendar = Calendar.current
@@ -182,7 +68,7 @@ struct CustomDatePickerView: View {
         
         return date.components(separatedBy: " ")
     }
-
+    
     // MARK: - Month GET
     ///현재 달(month) 받아오는 함수
     func getCurrentMonth() -> Date {
@@ -192,7 +78,7 @@ struct CustomDatePickerView: View {
         
         return currentMonth
     }
-
+    
     // MARK: - 날짜 GET
     ///날짜 추출해주는 함수. DateValue 배열로 반환한다.
     func extractDate() -> [DateValue] {
@@ -217,7 +103,139 @@ struct CustomDatePickerView: View {
     }
 }
 
-    //MARK: - extension: 현재 달(month) 날짜들을 Date 타입으로 Get
+extension CustomDatePickerView{
+    //MARK: - 라벨(연도, 달, 화살표)
+    private var calendarLabelView: some View{
+        HStack(spacing: 20) {
+            Text("\(extraData_YearMonth()[0]).\(extraData_YearMonth()[1])")
+                .font(.title.bold())
+            
+            Button {
+                withAnimation {
+                    currentMonth -= 1
+                }
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.title2)
+            }
+            Button {
+                withAnimation {
+                    currentMonth += 1
+                }
+            } label: {
+                Image(systemName: "chevron.right")
+                    .font(.title2)
+            }
+        }
+    }
+    
+    // MARK: - 요일뷰(일,월,화,...,토)
+    private var dayLabelView: some View {
+        HStack(spacing: 0) {
+            ForEach(days, id: \.self) { day in
+                Text(day)
+                    .font(.callout)
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity)
+            }
+        }
+    }
+    
+    // MARK: -Button : 나의 캠핑 일정 추가하기 버튼
+    private var addScheduleButton : some View {
+        NavigationLink {
+            AddScheduleView()
+        } label: {
+            Text("일정 추가")
+                .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenHeight * 0.05)
+                .foregroundColor(.white)
+                .background(Color.bcGreen)
+                .cornerRadius(10)
+        }
+    }
+    
+    // MARK: - 날짜 그리드 뷰
+    private var calendarView: some View{
+        LazyVGrid(columns: columns, spacing: 5) {
+            ForEach(extractDate()) { value in
+                CardView(value: value)
+                    .background (
+                        Rectangle()
+                            .frame(width: 50, height: 50)
+                            .foregroundColor(Color.secondary)
+                            .opacity((isSameDay(date1: value.date, date2: currentDate) && value.day != -1) ? 1 : 0)
+                    )
+                    .onTapGesture {
+                        currentDate = value.date
+                    }
+            }
+        }
+    }
+    // MARK: - 일정 뷰
+    private var taskView: some View{
+        HStack {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("\(extraData_MonthDay()[0]).\(extraData_MonthDay()[1]) \(extraData_MonthDay()[2])")
+                    .font(.title2.bold())
+                    .padding(.top, 25)
+                
+                //MARK: 일정 디테일
+                if scheduleStore.scheduleList.first(where: { schedule in
+                    return isSameDay(date1: schedule.date, date2: currentDate)
+                }) != nil{
+                    ScrollView(showsIndicators: false) {
+                        ForEach(scheduleStore.scheduleList.filter{ schedule in
+                            return isSameDay(date1: schedule.date, date2: currentDate)
+                        }) { schedule in
+                            TaskCellView(title: schedule.title)
+                        }
+                    }
+                } else {
+                    Text("No schedule")
+                }
+                Spacer()
+            }
+            Spacer()
+        }
+    }
+    
+    // MARK: - 달력 디테일 뷰 생성
+    ///달력 디테일 뷰(day 데이터) 구성하는 함수
+    @ViewBuilder
+    func CardView(value: DateValue) -> some View {
+        VStack {
+            if value.day != -1 {
+                
+                if scheduleStore.scheduleList.first(where: { schedule in
+                    return isSameDay(date1: schedule.date, date2: value.date)
+                }) != nil {
+                    Text("\(value.day)")
+                        .font(.body.bold())
+                    Spacer()
+                    
+                    HStack(spacing: 8) {
+                        // 스케줄 개수만큼 점으로 표시하기
+                        ForEach(scheduleStore.scheduleList.filter{ schedule in
+                            return isSameDay(date1: schedule.date, date2: value.date)
+                        }) {_ in
+                            Circle()
+                                .fill(Color.red)
+                                .frame(width: 7, height: 7)
+                        }
+                    }
+                } else {
+                    Text("\(value.day)")
+                        .font(.body.bold())
+                    Spacer()
+                }
+            }
+        }
+        .padding(.vertical, 5)
+        .frame(height: 50, alignment: .top)
+    }
+}
+
+//MARK: - extension: 현재 달(month) 날짜들을 Date 타입으로 Get
 extension Date {
     func getAllDates() -> [Date] {
         let calendar = Calendar.current
@@ -247,15 +265,18 @@ struct ExDivider: View {
 }
 
 struct TaskCellView: View{
-    let color: UIColor
+    let title: String
     var body: some View {
-        HStack(spacing: 30) {
+        HStack {
             ExDivider(color: Color.red)
+                .padding(.trailing, UIScreen.screenWidth*0.05)
             VStack(alignment: .leading, spacing: 5) {
-                Text("캠핑장 이름")
+                Text("\(title)")
                     .font(.body.bold())
             }
+            Spacer()
         }
+        .frame(maxWidth: UIScreen.screenWidth)
         .padding(.bottom, 10)
         .padding(.top, 20)
     }

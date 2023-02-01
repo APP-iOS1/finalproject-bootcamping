@@ -42,7 +42,6 @@
 		790B62D929792A4D0048C110 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62D829792A4D0048C110 /* Comment.swift */; };
 		790B62DB29792B4C0048C110 /* CommentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62DA29792B4C0048C110 /* CommentStore.swift */; };
 		790B62DD297936840048C110 /* DiaryLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62DC297936840048C110 /* DiaryLike.swift */; };
-		790B62DF297A262E0048C110 /* kakaoLoginViewTEST.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62DE297A262E0048C110 /* kakaoLoginViewTEST.swift */; };
 		790B62E2297A28E00048C110 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E1297A28E00048C110 /* KakaoSDK */; };
 		790B62E4297A28E00048C110 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E3297A28E00048C110 /* KakaoSDKAuth */; };
 		790B62E6297A28E00048C110 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E5297A28E00048C110 /* KakaoSDKCommon */; };
@@ -105,7 +104,6 @@
 		790B62D829792A4D0048C110 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		790B62DA29792B4C0048C110 /* CommentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentStore.swift; sourceTree = "<group>"; };
 		790B62DC297936840048C110 /* DiaryLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryLike.swift; sourceTree = "<group>"; };
-		790B62DE297A262E0048C110 /* kakaoLoginViewTEST.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kakaoLoginViewTEST.swift; sourceTree = "<group>"; };
 		790B62F5297A2D710048C110 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		790B62F6297A36BB0048C110 /* KakaoAuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthStore.swift; sourceTree = "<group>"; };
 		7C715C972977E056009BC678 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
@@ -258,7 +256,6 @@
 				63AF45CE2977CE320014B1E1 /* MyCampingDiary */,
 				63AF45CF2977CE3C0014B1E1 /* MyPage */,
 				63AF45B72977CDDA0014B1E1 /* Auth */,
-				790B62DE297A262E0048C110 /* kakaoLoginViewTEST.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -458,7 +455,6 @@
 				63AF45C02977CDF90014B1E1 /* HomeView.swift in Sources */,
 				AD21BAE32989F28C007ED6B7 /* FirebaseCommentService.swift in Sources */,
 				63AF45E02977CE5E0014B1E1 /* DiaryAddView.swift in Sources */,
-				790B62DF297A262E0048C110 /* kakaoLoginViewTEST.swift in Sources */,
 				63AF45E12977CE5E0014B1E1 /* DiaryDetailView.swift in Sources */,
 				CA27A6252989FCD700A6AEE5 /* SearchCampingSpotListView.swift in Sources */,
 				7CFCE12D2987549F00E196AF /* WeeklyPopulerCampingView.swift in Sources */,

@@ -11,6 +11,12 @@ import FirebaseFirestore
 import FirebaseAuth
 
 
+enum FirebaseCommentServiceError: Error {
+    case badSnapshot
+    case createCommentError
+    case commentUpdateError
+}
+
 struct FirebaseCommentService {
     
     let database = Firestore.firestore()
@@ -115,10 +121,4 @@ struct FirebaseCommentService {
         }
         .eraseToAnyPublisher()
     }
-}
-
-enum FirebaseCommentServiceError: Error {
-    case badSnapshot
-    case createCommentError
-    case commentUpdateError
 }

@@ -91,6 +91,7 @@ class CommentStore: ObservableObject {
     }
     
     //MARK: Read Comment Combine
+    
     func getComments() {
         FirebaseCommentService().getCommentsService()
             .receive(on: DispatchQueue.main)
@@ -111,6 +112,7 @@ class CommentStore: ObservableObject {
     }
     
     //MARK: Create Comment Combine
+    
     func createComment(comment: Comment) {
         FirebaseCommentService().createCommentService(comment: comment)
             .receive(on: DispatchQueue.main)
@@ -131,6 +133,7 @@ class CommentStore: ObservableObject {
     }
     
     //MARK: Update CommentLike Combine
+    
     func updateCommentLike(comment: Comment) {
         FirebaseCommentService().updateCommentLikeService(comment: comment)
             .receive(on: DispatchQueue.main)
@@ -151,6 +154,7 @@ class CommentStore: ObservableObject {
     }
 
     //MARK: Delete Comment Combine
+    
     func deleteComment(comment: Comment) {
         FirebaseCommentService().deleteCommentService(comment: comment)
             .receive(on: DispatchQueue.main)

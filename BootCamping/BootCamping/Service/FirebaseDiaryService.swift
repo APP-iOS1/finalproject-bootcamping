@@ -10,6 +10,16 @@ import FirebaseFirestore
 import FirebaseStorage
 import FirebaseAuth
 
+
+enum FirebaseDiaryServiceError: Error {
+    case badSnapshot
+    case authError
+    case imageUploadError
+    case imageDownloadURLError
+    case imageDeleteError
+}
+
+
 struct FirebaseDiaryService {
     
     let database = Firestore.firestore()
@@ -54,6 +64,7 @@ struct FirebaseDiaryService {
     }
     
     //MARK: Create FirebaseDiaryService
+    
     func createDiaryService(diary: Diary, images: [Data]) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
             //첫번째 비동기 통신
@@ -236,6 +247,7 @@ struct FirebaseDiaryService {
     
     
     //MARK: Delete FirebaseDiaryService
+    
     func deleteDiaryService(diary: Diary) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
             let storageRef = Storage.storage().reference().child("DiaryImages")
@@ -271,14 +283,6 @@ struct FirebaseDiaryService {
     
 }
 
-
-enum FirebaseDiaryServiceError: Error {
-    case badSnapshot
-    case authError
-    case imageUploadError
-    case imageDownloadURLError
-    case imageDeleteError
-}
 
 
 

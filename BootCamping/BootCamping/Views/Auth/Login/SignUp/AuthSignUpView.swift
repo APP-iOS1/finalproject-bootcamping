@@ -64,7 +64,7 @@ extension AuthSignUpView {
     
     // 닉네임 입력
     var nickNameSection: some View {
-        VStack {
+        VStack(spacing: 4) {
             HStack {
                 Text("닉네임").font(.subheadline)
                 Spacer()
@@ -86,7 +86,7 @@ extension AuthSignUpView {
     
     // 이메일 입력
     var emailSection: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text("이메일").font(.subheadline)
                 Spacer()
@@ -117,7 +117,7 @@ extension AuthSignUpView {
     
     // 패스워드 입력 및 확인
     var passwordSection: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text("비밀번호").font(.subheadline)
                 Spacer()
@@ -131,7 +131,7 @@ extension AuthSignUpView {
                         .autocapitalization(.none)
                         .padding()
                     
-                }
+                }.padding(.bottom, 6)
             RoundedRectangle(cornerRadius: 10)
                 .stroke(.gray)
                 .frame(width: UIScreen.screenWidth * 0.9, height: 44)
@@ -144,7 +144,7 @@ extension AuthSignUpView {
             if authStore.checkPasswordFormat(password: password, confirmPassword: confirmPassword) {
                 Text("일치").font(.footnote).foregroundColor(.green)
             } else if password == "" || confirmPassword == "" {
-                Text("패스워드 양식은 영어 + 숫자 + 특수문자 최소 8자 이상입니다.\nex) password123!").font(.footnote).foregroundColor(.secondary)
+                Text("* 패스워드 양식은 영어 + 숫자 + 특수문자 최소 8자 이상입니다.\nex) password123!").font(.footnote).foregroundColor(.secondary)
             } else if !authStore.checkPasswordFormat(password: password, confirmPassword: confirmPassword) {
                 Text("확인 필요").font(.footnote).foregroundColor(.red)
             }
@@ -188,7 +188,9 @@ extension AuthSignUpView {
                 }
                 Text("1. 부트캠핑이 수집하는 개인정보 부트캠핑 플랫폼을 이용하는 데 필요한 정보 당사는 회원님이 부트캠핑 플랫폼을 이용할 때...\n").font(.subheadline)
                 NavigationLink {
-                    Agree1View
+                    ScrollView {
+                        Agree1View
+                    }.padding(.horizontal, UIScreen.screenWidth * 0.05)
                 } label: {
                     Text("더보기")
                         .font(.subheadline)
@@ -208,7 +210,9 @@ extension AuthSignUpView {
                 }
                 Text("부트캠핑 회원 전용 할인, 추천 여행정보, 마케팅 이메일, 푸시 알림을 보내드립니다. 계정 설정 또는 마케팅...\n").font(.subheadline)
                 NavigationLink {
-                    Agree2View
+                    ScrollView {
+                        Agree2View
+                    }.padding(.horizontal, UIScreen.screenWidth * 0.05)
                 } label: {
                     Text("더보기")
                         .font(.subheadline)
@@ -309,7 +313,7 @@ extension AuthSignUpView {
 하와이주 카우아이
 부트캠핑를 통한 호스팅에 관심이 있으신가요? 거주 도시의 호스팅 관련 법규를 이해하는 데 도움이 되는 정보를 아래에서 확인해보세요.
 
-""")
+""").font(.subheadline)
     }
     
     // 마케팅 이메일 수신 뷰
@@ -328,12 +332,12 @@ extension AuthSignUpView {
 본
 부트캠핑 호스팅에 관심이 있으신가요? 호스팅할 도시의 호스팅 관련 법규를 이해하는 데 도움이 되는 정보를 아래에서 확인해보세요.
 
-""")
+""").font(.subheadline)
     }
 }
 
 struct AuthSignUpView_Previews: PreviewProvider {
     static var previews: some View {
-        AuthSignUpView(userEmail: "erun9414@gmail.com")
+        AuthSignUpView()
     }
 }

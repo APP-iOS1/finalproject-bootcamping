@@ -178,7 +178,7 @@ extension AuthSignUpView {
         VStack {
             VStack(alignment: .leading) {
                 HStack {
-                    Text("개인정보 수집 및 이용에 동의합니다")
+                    Text("개인정보 수집 및 이용에 동의합니다(필수).")
                     Spacer()
                     Button {
                         isAgree1.toggle()

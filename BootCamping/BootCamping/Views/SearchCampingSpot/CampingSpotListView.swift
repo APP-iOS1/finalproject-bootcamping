@@ -25,6 +25,7 @@ struct CampingSpotListView: View {
                                 .padding(.bottom)
 //                            Divider()
 //                                .padding(.bottom, 10)
+                            ///Divider() 없어도 구분 잘 되나요??
                         }
                     }
                 }
@@ -71,7 +72,7 @@ struct campingSpotListCell : View{
                             .foregroundColor(Color("BCGreen"))
                             .overlay{
                                 Text(view)
-                                    .font(.caption2)
+                                    .font(.caption2.bold())
                                     .foregroundColor(.white)
                             }
                     }

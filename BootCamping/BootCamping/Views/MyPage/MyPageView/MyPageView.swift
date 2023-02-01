@@ -22,25 +22,27 @@ struct MyPageView: View {
     @Namespace private var animation
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            userProfileSection
-            animate()
-            myPageTap
-        }
-        .padding(.horizontal, UIScreen.screenWidth * 0.1)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("마이페이지")
+        VStack {
+            ScrollView(showsIndicators: false) {
+                userProfileSection
+                animate()
+                myPageTap
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink {
-                    SettingView()
-                } label: {
-                    Image(systemName: "gearshape").foregroundColor(.black)
+            .padding(.horizontal, UIScreen.screenWidth * 0.1)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("마이페이지")
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink {
+                        SettingView()
+                    } label: {
+                        Image(systemName: "gearshape").foregroundColor(.bcBlack)
+                    }
                 }
             }
-        }
         .navigationBarTitleDisplayMode(.inline)
+        }
     }
     
     // MARK: -View : 유저 프로필이미지, 닉네임 표시
@@ -70,16 +72,16 @@ struct MyPageView: View {
                     Text(item.rawValue)
                         .font(.callout)
                         .kerning(-1)
-                        .foregroundColor(selectedPicker2 == item ? .black : .gray)
+                        .foregroundColor(selectedPicker2 == item ? .bcBlack : .gray)
                     
                     if selectedPicker2 == item {
                         Capsule()
-                            .foregroundColor(.black)
+                            .foregroundColor(.bcBlack)
                             .frame(height: 2)
                             .matchedGeometryEffect(id: "info", in: animation)
                     } else if selectedPicker2 != item {
                         Capsule()
-                            .foregroundColor(.white)
+                            .foregroundColor(.clear)
                             .frame(height: 2)
                     }
                 }

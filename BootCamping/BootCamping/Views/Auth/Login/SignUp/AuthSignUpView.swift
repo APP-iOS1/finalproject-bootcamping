@@ -22,26 +22,28 @@ struct AuthSignUpView: View {
     @EnvironmentObject var authStore: AuthStore
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            
-            nickNameSection
-            
-            emailSection
-            
-            passwordSection
-            
-            Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
-            
-            AgreeView
-            
-            Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
-            
-            signUpButton
-            
-            Spacer()
-            
+        VStack {
+            ScrollView(showsIndicators: false) {
+                
+                nickNameSection
+                
+                emailSection
+                
+                passwordSection
+                
+                Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
+                
+                AgreeView
+                
+                Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
+                
+                signUpButton
+                
+                Spacer()
+                
+            }
+            .foregroundColor(.bcBlack)
         }
-        .foregroundColor(.bcBlack)
     }
 }
 
@@ -301,5 +303,6 @@ extension AuthSignUpView {
 struct AuthSignUpView_Previews: PreviewProvider {
     static var previews: some View {
         AuthSignUpView(userEmail: "erun9414@gmail.com")
+            .environmentObject(AuthStore())
     }
 }

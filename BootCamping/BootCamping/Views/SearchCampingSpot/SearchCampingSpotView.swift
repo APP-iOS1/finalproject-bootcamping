@@ -22,7 +22,7 @@ struct SearchCampingSpotView: View {
     var areaImage = ["seoul", "incheon", "gangwon", "5", "busan", "jeju"]
     var areaName = ["서울", "경기 / 인천", "강원", "충청", "경상 / 부산", "전라 / 제주"]
     
-    //MARK: 전망 사진 및 이름
+    //MARK: 전망 사진 및 이름 - 저작권 없는 이미지로 교체 완료
     var viewImage = ["mountain", "ocean", "river", "forest", "lake", "island"]
     var viewName = ["산", "바다 / 해변", "강", "숲", "호수", "섬"]
     
@@ -77,14 +77,14 @@ struct SearchCampingSpotView: View {
             else {
                 if !filterCamping.isEmpty {
                     VStack{
-                        ScrollView {
+                        ScrollView(showsIndicators: false) {
                             ForEach(filterCamping, id: \.self) { campingSpot in
                                 NavigationLink {
                                     CampingSpotDetailView(places: campingSpot)
                                 } label: {
                                     VStack{
                                         campingSpotListCell(item: campingSpot)
-                                            .padding(.bottom)
+                                            .padding(.bottom,40)
 //                                        Divider()
 //                                            .padding(.bottom, 10)
                                     }

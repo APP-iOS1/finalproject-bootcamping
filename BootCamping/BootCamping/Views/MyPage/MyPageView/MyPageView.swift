@@ -45,6 +45,9 @@ struct MyPageView: View {
         }
     }
     
+}
+
+extension MyPageView{
     // MARK: -View : 유저 프로필이미지, 닉네임 표시
     private var userProfileSection : some View {
         HStack{
@@ -100,7 +103,7 @@ struct MyPageView: View {
         VStack {
             switch selectedPicker2 {
             case .myCamping:
-                    CalendarView()
+                CalendarView()
             case .bookmarkedCampingSpot:
                 VStack(spacing: 20){
                     ForEach(0..<5) { _ in

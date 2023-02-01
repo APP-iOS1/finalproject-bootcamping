@@ -45,7 +45,7 @@ struct LoginView: View {
                     
                 }
                 .foregroundColor(.bcBlack)
-                .padding()
+                .padding(UIScreen.screenWidth * 0.05)
             }.ignoresSafeArea()
         }
     }
@@ -74,7 +74,7 @@ extension LoginView {
         } label: {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(.yellow)
-                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .frame(width: UIScreen.screenWidth * 0.9, height: 44)
                 .overlay {
                     HStack {
                         Spacer()
@@ -93,7 +93,7 @@ extension LoginView {
         } label: {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(.white)
-                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .frame(width: UIScreen.screenWidth * 0.9, height: 44)
                 .overlay {
                     HStack {
                         Spacer()
@@ -112,8 +112,8 @@ extension LoginView {
             
         } label: {
             RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(.bcBlack)
-                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .foregroundColor(.black)
+                .frame(width: UIScreen.screenWidth * 0.9, height: 44)
                 .overlay {
                     HStack {
                         Spacer()

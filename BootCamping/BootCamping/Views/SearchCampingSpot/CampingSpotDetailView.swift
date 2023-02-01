@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreLocation
 import MapKit
+import SDWebImageSwiftUI
 
 struct AnnotatedItem: Identifiable {
     let id = UUID()
@@ -16,9 +17,13 @@ struct AnnotatedItem: Identifiable {
 }
 
 struct CampingSpotDetailView: View {
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.5666791, longitude: 126.9782914), span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02))
-    @State private var isBookmark: Bool = false
+    //    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.5666791, longitude: 126.9782914), span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02))
+    @State var region: MKCoordinateRegion = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 37.5, longitude: 126.9),
+        span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+    )
     @State var annotatedItem: [AnnotatedItem] = []
+    @State private var isBookmark: Bool = false
     
     var places: Item
     
@@ -30,8 +35,8 @@ struct CampingSpotDetailView: View {
             ScrollView(showsIndicators: false) {
                 TabView {
                     ForEach(images, id: \.self) { item in
-                        Image(item).resizable().scaledToFill()
-                            
+                        WebImage(url: URL(string: places.firstImageUrl))
+                            .resizable().scaledToFill()
                     }
                 }
                 .tabViewStyle(PageTabViewStyle())
@@ -51,7 +56,7 @@ struct CampingSpotDetailView: View {
                                 Image(systemName: isBookmark ? "bookmark.fill" : "bookmark")
                                     .font(.title3)
                                     .foregroundColor(.bcGreen)
-                                }
+                            }
                             
                         }
                         .padding(.top, -15)
@@ -78,8 +83,7 @@ struct CampingSpotDetailView: View {
                             .font(.headline)
                             .padding(.bottom, 10)
                         
-                        ServiceIcon()
-                        
+                        ServiceIcon(places: places)
                     }
                     
                     Divider()
@@ -89,9 +93,16 @@ struct CampingSpotDetailView: View {
                         Text("위치 보기")
                             .font(.headline)
                             .padding(.bottom, 10)
-                        Map(coordinateRegion: $region, showsUserLocation: true, userTrackingMode: .constant(.follow))
+                        NavigationLink {
+                            FullMapView(annotatedItem: annotatedItem, region: region, places: places)
+                        } label: {
+                            Map(coordinateRegion: $region, interactionModes: [], annotationItems: annotatedItem) { item in
+                                MapMarker(coordinate: item.coordinate, tint: Color.bcGreen)
+                            }
                             .frame(width: UIScreen.screenWidth * 0.84, height: 250)
                             .cornerRadius(10)
+                        }
+                        
                         
                     }
                     
@@ -130,9 +141,12 @@ struct CampingSpotDetailView: View {
                             }
                         }
                     }
-                    
                 }
                 .padding(30)
+            }
+            .onAppear {
+                region.center = CLLocationCoordinate2D(latitude: Double(places.mapY)!, longitude: Double(places.mapX)!)
+                annotatedItem.append(AnnotatedItem(name: places.facltNm, coordinate: CLLocationCoordinate2D(latitude: Double(places.mapY)!, longitude: Double(places.mapX)!)))
             }
         }
     }
@@ -140,10 +154,12 @@ struct CampingSpotDetailView: View {
 
 // 편의시설 및 서비스 아이콘 구조체
 struct ServiceIcon: View {
-    let serviceString = "전기,무선인터넷,장작판매,온수,트렘폴린,물놀이장,놀이터,산책로,운동장,운동시설,마트.편의점"
+    var places: Item
+    
     let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())] // 5개 한줄에 띄우려면 5개 넣으면 됨...!
     
     func switchServiceIcon(svc: String) -> String {
+        
         switch svc {
         case "전기":
             return "plug"
@@ -174,7 +190,7 @@ struct ServiceIcon: View {
     
     var body: some View {
         LazyVGrid(columns: columns) {
-            ForEach(serviceString.components(separatedBy: ","), id: \.self) { svc in
+            ForEach(places.sbrsCl.components(separatedBy: ","), id: \.self) { svc in
                 VStack {
                     Image(switchServiceIcon(svc: svc))
                         .resizable().frame(width:30, height:30)

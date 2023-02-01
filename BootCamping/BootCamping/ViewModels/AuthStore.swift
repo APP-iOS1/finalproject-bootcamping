@@ -119,9 +119,9 @@ class AuthStore: ObservableObject {
     
     // MARK: - authSignOut 로그아웃 함수
     func authSignOut() {
-        self.currentUser = nil
-        self.isLogin = false
         try? Auth.auth().signOut()
+        self.isLogin = false
+        self.currentUser = Auth.auth().currentUser
     }
     
     // MARK: - authSignUp 회원가입 함수

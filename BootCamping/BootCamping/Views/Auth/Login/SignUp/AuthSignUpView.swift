@@ -16,6 +16,8 @@ struct AuthSignUpView: View {
     @State var confirmPassword: String = ""
     @State var isAgree1: Bool = false
     @State var isAgree2: Bool = false
+    @State var isShowingAlertForSignUp: Bool = false
+    @State var isProgressing: Bool = false
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -34,29 +36,43 @@ struct AuthSignUpView: View {
     }
     
     var body: some View {
-        VStack {
-            ScrollView(showsIndicators: false) {
-                
-                nickNameSection
-                
-                emailSection
-                
-                passwordSection
-                
-                Divider().padding(.vertical, 10)
-                
-                AgreeView
-                
-                Divider().padding(.vertical, 10)
-                
-                signUpButton
-                
-                Spacer()
-                
+        ZStack {
+            VStack {
+                ScrollView(showsIndicators: false) {
+                    
+                    nickNameSection
+                    
+                    emailSection
+                    
+                    passwordSection
+                    
+                    Divider().padding(.vertical, 10)
+                    
+                    AgreeView
+                    
+                    Divider().padding(.vertical, 10)
+                    
+                    signUpButton
+                    
+                    Spacer()
+                    
+                }
+            }
+            .foregroundColor(.bcBlack)
+            .padding(.horizontal, UIScreen.screenWidth * 0.05)
+            .alert("회원가입이 완료되었습니다.", isPresented: $isShowingAlertForSignUp) {
+                Button("확인", role: .cancel) {
+                    self.presentationMode.wrappedValue.dismiss()
+                }
+            }
+            if isProgressing {
+                ZStack {
+                    Color.bcDarkGray
+                        .opacity(0.5)
+                    ProgressView()
+                }
             }
         }
-        .foregroundColor(.bcBlack)
-        .padding(.horizontal, UIScreen.screenWidth * 0.05)
     }
 }
 
@@ -155,12 +171,14 @@ extension AuthSignUpView {
     var signUpButton: some View {
         Button {
             Task {
+                isProgressing = true
                 let _ = try await authStore.authSignUp(userEmail: userEmail, password: password, confirmPassword: confirmPassword)
                 try await authStore.authSignIn(userEmail: userEmail, password: password)
                 authStore.addUserList(User(id: String(Auth.auth().currentUser!.uid), profileImage: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: []))
                 authStore.authSignOut()
+                isProgressing = false
+                isShowingAlertForSignUp.toggle()
             }
-            self.presentationMode.wrappedValue.dismiss()
         } label: {
             Text("동의하고 계속하기")
                 .font(.headline)

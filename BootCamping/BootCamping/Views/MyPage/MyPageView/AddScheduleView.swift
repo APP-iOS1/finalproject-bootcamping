@@ -49,6 +49,9 @@ struct AddScheduleView: View {
         }
         .padding(.horizontal)
     }
+}
+
+extension AddScheduleView {
     
     // MARK: -View : 캠핑장 이름 titleTextField
     private var titleTextField : some View {

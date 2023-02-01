@@ -7,11 +7,11 @@
 
 import Foundation
 import Firebase
-//TODO: -닉네임 추가
+
 struct Diary: Hashable, Identifiable {
     let id: String //글
     let uid: String //유저
-    let diaryUserNickName: String
+    let diaryUserNickName: String //다이어리 작성 유저 닉네임
     let diaryTitle: String //다이어리 제목
     let diaryAddress: String //장소
     let diaryContent: String //다이어리 내용

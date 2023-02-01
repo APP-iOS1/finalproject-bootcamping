@@ -15,7 +15,7 @@ import FirebaseFirestore
 
 class KakaoAuthStore: ObservableObject {
     
-    @Published var userInfo: User = User(id: UUID().uuidString, profileImage: "", nickName: "", userEmail: "", bookMarkedDiaries: [])
+    @Published var userInfo: User = User(id: UUID().uuidString, profileImage: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [])
     // 로그인 상태 저장
     @Published var currentUser: Firebase.User?
     

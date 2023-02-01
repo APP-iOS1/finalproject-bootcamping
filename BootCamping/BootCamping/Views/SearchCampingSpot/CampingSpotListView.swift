@@ -12,29 +12,33 @@ import SDWebImageSwiftUI
 struct CampingSpotListView: View {
     //TODO: 북마크 만들기
     @EnvironmentObject var campingSpotStore: CampingSpotStore
+//    var item: [Item]
 
     var body: some View {
-        List{
-            ForEach(campingSpotStore.campingSpotList, id: \.self) { camping in
-                ZStack{
+        VStack{
+            ScrollView(showsIndicators: false){
+                ForEach(campingSpotStore.campingSpotList, id: \.self) { camping in
                     NavigationLink {
                         CampingSpotDetailView(places: camping)
                     } label: {
-                        campingSpotListCell(item: camping)
+                        VStack{
+                            campingSpotListCell(item: camping)
+                                .padding(.bottom,40)
+//                            Divider()
+//                                .padding(.bottom, 10)
+                            ///Divider() 없어도 구분 잘 되나요??
+                        }
                     }
-                    .opacity(0)
-                    campingSpotListCell(item: camping)
-                        .padding(.horizontal, UIScreen.screenWidth*0.1)
+                }
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar{
+                ToolbarItem(placement: .principal) {
+                    Text("캠핑 모아보기")
                 }
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .listStyle(.plain)
-        .toolbar{
-            ToolbarItem(placement: .principal) {
-                Text("캠핑 모아보기")
-            }
-        }
+
     }
 }
 
@@ -47,34 +51,44 @@ struct campingSpotListCell : View{
         VStack(alignment: .leading){
             
             // 캠핑장 사진
-            WebImage(url: URL(string: item.firstImageUrl))
-                .resizable()
-                .frame(width: UIScreen.screenWidth*0.9, height: UIScreen.screenWidth*0.9)
-                .padding(.bottom, 5)
             if item.firstImageUrl.isEmpty {
                 // 이미지 없는 것도 있어서 어떻게 할 지 고민 중~
+                Image("noImage")
+                    .resizable()
+                    .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
+                    .padding(.bottom, 5)
+            } else {
+                WebImage(url: URL(string: item.firstImageUrl))
+                    .resizable()
+                    .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
+                    .padding(.bottom, 5)
             }
             
+            // 전망
             if !item.lctCl.isEmpty {
                 HStack {
                     ForEach(item.lctCl.components(separatedBy: ","), id: \.self) { view in
                         RoundedRectangle(cornerRadius: 10)
-                            .frame(width: 35, height: 20)
-                            .foregroundColor(Color("BCGreen"))
+//                            .frame(width: 35, height: 20)
+                            .frame(width: 40 ,height: 20)
+                            .foregroundColor(.bcGreen)
                             .overlay{
                                 Text(view)
-                                    .font(.caption2)
+                                    .font(.caption2.bold())
                                     .foregroundColor(.white)
                             }
                     }
                 }
+                .padding(.horizontal, UIScreen.screenWidth*0.05)
             }
             
             
             // 캠핑장 이름
             Text(item.facltNm)
                 .font(.title3.bold())
-            
+                .foregroundColor(.bcBlack)
+                .padding(.horizontal, UIScreen.screenWidth*0.05)
+
             // 캠핑장 간단 주소
             HStack {
                 Image(systemName: "mappin.and.ellipse")
@@ -86,11 +100,16 @@ struct campingSpotListCell : View{
                     .foregroundColor(.gray)
             }
             .padding(.bottom, 5)
-            
+            .padding(.horizontal, UIScreen.screenWidth*0.05)
+
             // 캠핑장 설명 3줄
-            Text(item.lineIntro)
-                .font(.callout)
-                .padding(.bottom)
+            if item.lineIntro != "" {
+                Text(item.lineIntro)
+                    .font(.callout)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(.bcBlack)
+                    .padding(.horizontal, UIScreen.screenWidth*0.05)
+            }
             //                        .lineLimit(3)//optional
             //                        .expandButton(TextSet(text: "more", font: .body, color: .blue))//optional
             //                        .collapseButton(TextSet(text: "less", font: .body, color: .blue))//optional

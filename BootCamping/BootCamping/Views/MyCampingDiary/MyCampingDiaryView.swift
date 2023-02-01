@@ -12,48 +12,45 @@ struct MyCampingDiaryView: View {
     @EnvironmentObject var diaryStore: DiaryStore
 
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            ForEach(diaryStore.diaryList) { diaryData in
-                //네비게이션 화살표 없애기
-                VStack {
-                    ZStack {
-                        NavigationLink {
-                            DiaryDetailView(item: diaryData)
-                        } label: {
-                            VStack {
-                                DiaryCellView(item: diaryData)
-                                Divider()
+        VStack {
+            ScrollView(showsIndicators: false) {
+                ForEach(diaryStore.diaryList) { diaryData in
+                    //네비게이션 화살표 없애기
+                    VStack {
+                        ZStack {
+                            NavigationLink {
+                                DiaryDetailView(item: diaryData)
+                            } label: {
+                                VStack {
+                                    DiaryCellView(item: diaryData)
+                                        .padding(.bottom,40)
+                                }
                             }
+                            .foregroundColor(.bcBlack)
+                            .padding(.vertical, UIScreen.screenHeight * 0.01)
                         }
-                        .foregroundColor(.bcBlack)
-                        .padding(.horizontal, UIScreen.screenWidth * 0.1)
-                        .padding(.vertical, UIScreen.screenHeight * 0.01)
-                        
-
                     }
                 }
-            }
-            .onAppear {
-                diaryStore.getData()
-                print("\(diaryStore.diaryList)")
-            }
-            .listStyle(.plain)
-            .toolbar{
-                ToolbarItem(placement: .navigationBarLeading) {
-                    
-                    Text("My Camping Diary")
-                        .font(.title.bold())
-                    
-                    
+                .onAppear {
+//                    diaryStore.getData()
+                    diaryStore.getDiarysCombine()
+                    print("\(diaryStore.diaryList)")
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                        NavigationLink {
-                            DiaryAddView()
-                        } label: {
-                            Image(systemName: "plus")
-                        }
-                }
-        }
+                .toolbar{
+                    ToolbarItem(placement: .navigationBarLeading) {
+                
+                        Text("My Camping Diary")
+                            .font(.title.bold())
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                            NavigationLink {
+                                DiaryAddView()
+                            } label: {
+                                Image(systemName: "plus")
+                            }
+                    }
+            }
+            }
         }
     }
 }

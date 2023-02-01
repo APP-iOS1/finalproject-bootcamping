@@ -13,21 +13,24 @@ struct RealtimeCampingView: View {
     @EnvironmentObject var diaryStore: DiaryStore
 
     var body: some View {
-        ScrollView {
-            ForEach(diaryStore.diaryList) { item in
-                VStack {
-                    NavigationLink {
-                        DiaryDetailView(item: item)
-                    } label: {
-                        RealtimeCampingCellView(item: item)
+        VStack {
+            ScrollView {
+                ForEach(diaryStore.diaryList) { item in
+                    VStack {
+                        NavigationLink {
+                            DiaryDetailView(item: item)
+                        } label: {
+                            RealtimeCampingCellView(item: item)
+                                .padding(.bottom,40)
+                        }
+                        .foregroundColor(.bcBlack)
                     }
-                    .foregroundColor(.bcBlack)
                 }
             }
+            .padding()
+            .onAppear {
+                diaryStore.getData()
         }
-        .padding()
-        .onAppear {
-            diaryStore.getData()
         }
     }
 }

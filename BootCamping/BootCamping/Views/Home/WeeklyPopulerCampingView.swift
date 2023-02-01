@@ -20,24 +20,25 @@ struct WeeklyPopulerCampingView: View {
         ]
     
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false){
-            HStack {
-                
-                ForEach(homePhotoCards, id: \.self) { item in
-                    NavigationLink {
-                        DiaryDetailView(item: diarySample[0])
-                    } label: {
-                        ZStack(alignment: .leading) {
-                            PhotoCardFrame(image: item)
-                            LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.3), Color.clear]), startPoint: .top, endPoint: .bottom)
-                                .cornerRadius(20)
-                            photoMainStory
-                                .offset(y: -150)
+        VStack {
+            ScrollView(.horizontal, showsIndicators: false){
+                HStack {
+                    ForEach(homePhotoCards, id: \.self) { item in
+                        NavigationLink {
+                            DiaryDetailView(item: diarySample[0])
+                        } label: {
+                            ZStack(alignment: .leading) {
+                                PhotoCardFrame(image: item)
+                                LinearGradient(gradient: Gradient(colors: [Color.bcBlack.opacity(0.3), Color.clear]), startPoint: .top, endPoint: .bottom)
+                                    .cornerRadius(20)
+                                photoMainStory
+                                    .offset(y: -150)
+                            }
+                            .modifier(PhotoCardModifier())
                         }
-                        .modifier(PhotoCardModifier())
                     }
+                    
                 }
-                
             }
         }
     }

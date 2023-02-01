@@ -16,32 +16,63 @@ struct AuthSignUpView: View {
     @State var confirmPassword: String = ""
     @State var isAgree1: Bool = false
     @State var isAgree2: Bool = false
+    @State var isShowingAlertForSignUp: Bool = false
+    @State var isProgressing: Bool = false
     
     @Environment(\.presentationMode) var presentationMode
-
+    
     @EnvironmentObject var authStore: AuthStore
     
+    var trimUserEmail: String {
+        userEmail.trimmingCharacters(in: .whitespaces)
+    }
+    
+    var trimnickName: String {
+        nickName.trimmingCharacters(in: .whitespaces)
+    }
+    
+    var isSignUpButtonAvailable: Bool {
+        return !trimUserEmail.isEmpty && !trimnickName.isEmpty && authStore.checkAuthFormat(userEmail: userEmail) && isAgree1
+    }
+    
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            
-            nickNameSection
-            
-            emailSection
-            
-            passwordSection
-            
-            Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
-            
-            AgreeView
-            
-            Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
-            
-            signUpButton
-            
-            Spacer()
-            
+        ZStack {
+            VStack {
+                ScrollView(showsIndicators: false) {
+                    
+                    nickNameSection
+                    
+                    emailSection
+                    
+                    passwordSection
+                    
+                    Divider().padding(.vertical, 10)
+                    
+                    AgreeView
+                    
+                    Divider().padding(.vertical, 10)
+                    
+                    signUpButton
+                    
+                    Spacer()
+                    
+                }
+            }
+            .foregroundColor(.bcBlack)
+            .padding(.horizontal, UIScreen.screenWidth * 0.05)
+            .alert("회원가입이 완료되었습니다.", isPresented: $isShowingAlertForSignUp) {
+                Button("확인", role: .cancel) {
+                    self.presentationMode.wrappedValue.dismiss()
+                }
+            }
+            if isProgressing {
+                ZStack {
+                    Color.bcDarkGray
+                        .opacity(0.5)
+                    ProgressView()
+                }
+            }
         }
-        .foregroundColor(.bcBlack)
     }
 }
 
@@ -49,14 +80,14 @@ extension AuthSignUpView {
     
     // 닉네임 입력
     var nickNameSection: some View {
-        VStack {
+        VStack(spacing: 4) {
             HStack {
                 Text("닉네임").font(.subheadline)
                 Spacer()
-            }.padding(.leading, UIScreen.screenWidth * 0.1)
+            }
             RoundedRectangle(cornerRadius: 10)
                 .stroke(.gray)
-                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .frame(width: UIScreen.screenWidth * 0.9, height: 44)
                 .overlay {
                     TextField("닉네임", text: $nickName)
                         .textCase(.lowercase)
@@ -65,20 +96,20 @@ extension AuthSignUpView {
                         .padding()
                     
                 }
-                .padding(.bottom, UIScreen.screenHeight * 0.05)
+                .padding(.bottom, 10)
         }
     }
     
     // 이메일 입력
     var emailSection: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text("이메일").font(.subheadline)
                 Spacer()
-            }.padding(.leading, UIScreen.screenWidth * 0.1)
+            }
             RoundedRectangle(cornerRadius: 10)
                 .stroke(.gray)
-                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .frame(width: UIScreen.screenWidth * 0.9, height: 44)
                 .overlay {
                     HStack {
                         TextField("이메일", text: $userEmail)
@@ -88,36 +119,51 @@ extension AuthSignUpView {
                         Spacer()
                     }.padding()
                 }
-                .padding(.bottom, UIScreen.screenHeight * 0.05)
+            if authStore.checkAuthFormat(userEmail: userEmail) {
+                Text("사용 가능").font(.footnote).foregroundColor(.green)
+            } else if userEmail == "" {
+                Text(" ").font(.footnote)
+            } else if !authStore.checkAuthFormat(userEmail: userEmail) {
+                Text("사용 불가능").font(.footnote).foregroundColor(.red)
+            }
+            
         }
+        .padding(.bottom, 10)
     }
     
     // 패스워드 입력 및 확인
     var passwordSection: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text("비밀번호").font(.subheadline)
                 Spacer()
-            }.padding(.leading, UIScreen.screenWidth * 0.1)
+            }
             RoundedRectangle(cornerRadius: 10)
                 .stroke(.gray)
-                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .frame(width: UIScreen.screenWidth * 0.9, height: 44)
                 .overlay {
                     SecureField("비밀번호", text: $password)
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
                         .padding()
                     
-                }
+                }.padding(.bottom, 6)
             RoundedRectangle(cornerRadius: 10)
                 .stroke(.gray)
-                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .frame(width: UIScreen.screenWidth * 0.9, height: 44)
                 .overlay {
                     SecureField("비밀번호 확인", text: $confirmPassword)
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
                         .padding()
                 }
+            if authStore.checkPasswordFormat(password: password, confirmPassword: confirmPassword) {
+                Text("일치").font(.footnote).foregroundColor(.green)
+            } else if password == "" || confirmPassword == "" {
+                Text("* 패스워드 양식은 영어 + 숫자 + 특수문자 최소 8자 이상입니다.\nex) password123!").font(.footnote).foregroundColor(.secondary)
+            } else if !authStore.checkPasswordFormat(password: password, confirmPassword: confirmPassword) {
+                Text("확인 필요").font(.footnote).foregroundColor(.red)
+            }
         }
     }
     
@@ -125,17 +171,23 @@ extension AuthSignUpView {
     var signUpButton: some View {
         Button {
             Task {
+                isProgressing = true
                 let _ = try await authStore.authSignUp(userEmail: userEmail, password: password, confirmPassword: confirmPassword)
                 try await authStore.authSignIn(userEmail: userEmail, password: password)
-                authStore.addUserList(User(id: String(Auth.auth().currentUser!.uid), profileImage: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: []))
+                let _ = try await authStore.addUserList(User(id: String(Auth.auth().currentUser!.uid), profileImage: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: [], bookMarkedSpot: [""]))
                 authStore.authSignOut()
+                isProgressing = false
+                isShowingAlertForSignUp.toggle()
             }
-            self.presentationMode.wrappedValue.dismiss()
         } label: {
             Text("동의하고 계속하기")
-                .modifier(GreenButtonModifier())
+                .font(.headline)
+                .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)
+                .foregroundColor(.white)
+                .background(isSignUpButtonAvailable ? Color.bcGreen : Color.secondary)
+                .cornerRadius(10)
         }
-        .disabled(!authStore.checkPasswordFormat(password: password, confirmPassword: confirmPassword) && !isAgree1)
+        .disabled(!isSignUpButtonAvailable)
     }
     
     // 개인정보 수집 여부 뷰
@@ -144,7 +196,7 @@ extension AuthSignUpView {
         VStack {
             VStack(alignment: .leading) {
                 HStack {
-                    Text("개인정보 수집 및 이용에 동의합니다")
+                    Text("개인정보 수집 및 이용에 동의합니다(필수).")
                     Spacer()
                     Button {
                         isAgree1.toggle()
@@ -154,7 +206,9 @@ extension AuthSignUpView {
                 }
                 Text("1. 부트캠핑이 수집하는 개인정보 부트캠핑 플랫폼을 이용하는 데 필요한 정보 당사는 회원님이 부트캠핑 플랫폼을 이용할 때...\n").font(.subheadline)
                 NavigationLink {
-                    Agree1View
+                    ScrollView {
+                        Agree1View
+                    }.padding(.horizontal, UIScreen.screenWidth * 0.05)
                 } label: {
                     Text("더보기")
                         .font(.subheadline)
@@ -174,14 +228,16 @@ extension AuthSignUpView {
                 }
                 Text("부트캠핑 회원 전용 할인, 추천 여행정보, 마케팅 이메일, 푸시 알림을 보내드립니다. 계정 설정 또는 마케팅...\n").font(.subheadline)
                 NavigationLink {
-                    Agree2View
+                    ScrollView {
+                        Agree2View
+                    }.padding(.horizontal, UIScreen.screenWidth * 0.05)
                 } label: {
                     Text("더보기")
                         .font(.subheadline)
                         .underline()
                 }
             }
-        }.padding(.horizontal, UIScreen.screenWidth * 0.1)
+        }
     }
     // 개인정보 수집 뷰
     var Agree1View: some View {
@@ -275,7 +331,7 @@ extension AuthSignUpView {
 하와이주 카우아이
 부트캠핑를 통한 호스팅에 관심이 있으신가요? 거주 도시의 호스팅 관련 법규를 이해하는 데 도움이 되는 정보를 아래에서 확인해보세요.
 
-""")
+""").font(.subheadline)
     }
     
     // 마케팅 이메일 수신 뷰
@@ -294,12 +350,13 @@ extension AuthSignUpView {
 본
 부트캠핑 호스팅에 관심이 있으신가요? 호스팅할 도시의 호스팅 관련 법규를 이해하는 데 도움이 되는 정보를 아래에서 확인해보세요.
 
-""")
+""").font(.subheadline)
     }
 }
 
 struct AuthSignUpView_Previews: PreviewProvider {
     static var previews: some View {
         AuthSignUpView(userEmail: "erun9414@gmail.com")
+            .environmentObject(AuthStore())
     }
 }

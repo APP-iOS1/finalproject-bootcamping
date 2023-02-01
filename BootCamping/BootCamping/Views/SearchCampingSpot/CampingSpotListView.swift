@@ -22,12 +22,11 @@ struct CampingSpotListView: View {
                     } label: {
                         VStack{
                             campingSpotListCell(item: camping)
-                                .padding(.bottom, 10)
-                            Divider()
-                                .padding(.bottom, 10)
+                                .padding(.bottom)
+//                            Divider()
+//                                .padding(.bottom, 10)
                         }
                     }
-                    .padding(.horizontal, UIScreen.screenWidth*0.1)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -53,20 +52,22 @@ struct campingSpotListCell : View{
                 // 이미지 없는 것도 있어서 어떻게 할 지 고민 중~
                 Image("noImage")
                     .resizable()
-                    .frame(width: UIScreen.screenWidth*0.9, height: UIScreen.screenWidth*0.9)
+                    .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
                     .padding(.bottom, 5)
             } else {
                 WebImage(url: URL(string: item.firstImageUrl))
                     .resizable()
-                    .frame(width: UIScreen.screenWidth*0.9, height: UIScreen.screenWidth*0.9)
+                    .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
                     .padding(.bottom, 5)
             }
             
+            // 전망
             if !item.lctCl.isEmpty {
                 HStack {
                     ForEach(item.lctCl.components(separatedBy: ","), id: \.self) { view in
                         RoundedRectangle(cornerRadius: 10)
-                            .frame(width: 35, height: 20)
+//                            .frame(width: 35, height: 20)
+                            .frame(width: 40 ,height: 20)
                             .foregroundColor(Color("BCGreen"))
                             .overlay{
                                 Text(view)
@@ -75,6 +76,7 @@ struct campingSpotListCell : View{
                             }
                     }
                 }
+                .padding(.horizontal, UIScreen.screenWidth*0.05)
             }
             
             
@@ -82,7 +84,8 @@ struct campingSpotListCell : View{
             Text(item.facltNm)
                 .font(.title3.bold())
                 .foregroundColor(.bcBlack)
-            
+                .padding(.horizontal, UIScreen.screenWidth*0.05)
+
             // 캠핑장 간단 주소
             HStack {
                 Image(systemName: "mappin.and.ellipse")
@@ -94,15 +97,15 @@ struct campingSpotListCell : View{
                     .foregroundColor(.gray)
             }
             .padding(.bottom, 5)
-            
+            .padding(.horizontal, UIScreen.screenWidth*0.05)
+
             // 캠핑장 설명 3줄
             if item.lineIntro != "" {
                 Text(item.lineIntro)
                     .font(.callout)
                     .multilineTextAlignment(.leading)
                     .foregroundColor(.bcBlack)
-
-                    
+                    .padding(.horizontal, UIScreen.screenWidth*0.05)
             }
             //                        .lineLimit(3)//optional
             //                        .expandButton(TextSet(text: "more", font: .body, color: .blue))//optional

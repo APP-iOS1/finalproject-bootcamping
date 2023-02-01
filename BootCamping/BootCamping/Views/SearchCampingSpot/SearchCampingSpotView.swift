@@ -64,7 +64,7 @@ struct SearchCampingSpotView: View {
                         recommendCampingSpot
                         
                     }//VStack 끝
-                    .padding(.horizontal, UIScreen.screenWidth*0.1)
+                    .padding(.horizontal, UIScreen.screenWidth*0.05)
                     .toolbar{
                         ToolbarItem(placement: .navigationBarLeading) {
                             Text("BOOTCAMPING")
@@ -72,7 +72,6 @@ struct SearchCampingSpotView: View {
                         }
                     }
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             else {
                 if !filterCamping.isEmpty {
@@ -84,12 +83,11 @@ struct SearchCampingSpotView: View {
                                 } label: {
                                     VStack{
                                         campingSpotListCell(item: campingSpot)
-                                            .padding(.bottom, 10)
-                                        Divider()
-                                            .padding(.bottom, 10)
+                                            .padding(.bottom)
+//                                        Divider()
+//                                            .padding(.bottom, 10)
                                     }
                                 }
-                                .padding(.horizontal, UIScreen.screenWidth*0.1)
                             }
                         }
                     }

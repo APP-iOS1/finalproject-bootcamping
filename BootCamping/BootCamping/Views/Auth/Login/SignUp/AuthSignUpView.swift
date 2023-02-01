@@ -18,28 +18,30 @@ struct AuthSignUpView: View {
     @State var isAgree2: Bool = false
     
     @Environment(\.presentationMode) var presentationMode
-
+    
     @EnvironmentObject var authStore: AuthStore
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            
-            nickNameSection
-            
-            emailSection
-            
-            passwordSection
-            
-            Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
-            
-            AgreeView
-            
-            Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
-            
-            signUpButton
-            
-            Spacer()
-            
+        VStack {
+            ScrollView(showsIndicators: false) {
+                
+                nickNameSection
+                
+                emailSection
+                
+                passwordSection
+                
+                Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
+                
+                AgreeView
+                
+                Divider().padding(.horizontal, UIScreen.screenWidth * 0.1).padding(.vertical, 10)
+                
+                signUpButton
+                
+                Spacer()
+                
+            }
         }
         .foregroundColor(.bcBlack)
     }

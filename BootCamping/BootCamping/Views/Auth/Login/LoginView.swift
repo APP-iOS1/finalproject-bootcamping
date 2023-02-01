@@ -43,7 +43,7 @@ struct LoginView: View {
                     
                 }
                 .foregroundColor(.bcBlack)
-                .padding()
+                .padding(UIScreen.screenWidth * 0.1)
             }.ignoresSafeArea()
         }
     }

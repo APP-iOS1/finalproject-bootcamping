@@ -25,7 +25,7 @@ struct FirebaseCommentService {
                         return
                     }
                     guard let snapshot = snapshot else {
-                        promise(.failure(FirebaseError.badSnapshot))
+                        promise(.failure(FirebaseCommentServiceError.badSnapshot))
                         return
                     }
                     
@@ -64,7 +64,9 @@ struct FirebaseCommentService {
                 "commentLike": comment.commentLike,
             ]) { error in
                     if let error = error {
-                        promise(.failure(error))
+                        print(error)
+                        promise(.failure(FirebaseCommentServiceError.createCommentError))
+
                     } else {
                         promise(.success(()))
                     }
@@ -85,7 +87,8 @@ struct FirebaseCommentService {
                     "commentLike": FieldValue.arrayUnion([comment.uid])
                 ]) { error in
                     if let error = error {
-                        promise(.failure(error))
+                        print(error)
+                        promise(.failure(FirebaseCommentServiceError.commentUpdateError))
                     } else {
                         promise(.success(()))
                     }
@@ -102,7 +105,8 @@ struct FirebaseCommentService {
                 .document(comment.id).delete()
             { error in
                 if let error = error {
-                    promise(.failure(error))
+                    print(error)
+                    promise(.failure(FirebaseCommentServiceError.createCommentError))
                 } else {
                     promise(.success(()))
                 }
@@ -111,4 +115,10 @@ struct FirebaseCommentService {
         }
         .eraseToAnyPublisher()
     }
+}
+
+enum FirebaseCommentServiceError: Error {
+    case badSnapshot
+    case createCommentError
+    case commentUpdateError
 }

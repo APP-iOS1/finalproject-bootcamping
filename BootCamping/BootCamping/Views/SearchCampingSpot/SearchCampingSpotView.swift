@@ -76,21 +76,23 @@ struct SearchCampingSpotView: View {
             }
             else {
                 if !filterCamping.isEmpty {
-                    List {
-                        ForEach(filterCamping, id: \.self) { campingSpot in
-                            ZStack{
+                    VStack{
+                        ScrollView {
+                            ForEach(filterCamping, id: \.self) { campingSpot in
                                 NavigationLink {
                                     CampingSpotDetailView(places: campingSpot)
                                 } label: {
-                                    campingSpotListCell(item: campingSpot)
+                                    VStack{
+                                        campingSpotListCell(item: campingSpot)
+                                            .padding(.bottom, 10)
+                                        Divider()
+                                            .padding(.bottom, 10)
+                                    }
                                 }
-                                .opacity(0)
-                                campingSpotListCell(item: campingSpot)
-                                    .padding(.horizontal, UIScreen.screenWidth*0.1)
+                                .padding(.horizontal, UIScreen.screenWidth*0.1)
                             }
                         }
                     }
-                    .listStyle(.plain)
                 } else {
                     Text("해당되는 캠핑장이 없습니다.")
 

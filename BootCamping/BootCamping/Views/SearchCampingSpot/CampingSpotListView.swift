@@ -12,7 +12,8 @@ import SDWebImageSwiftUI
 struct CampingSpotListView: View {
     //TODO: 북마크 만들기
     @EnvironmentObject var campingSpotStore: CampingSpotStore
-    
+//    var item: [Item]
+
     var body: some View {
         VStack{
             ScrollView(showsIndicators: false){

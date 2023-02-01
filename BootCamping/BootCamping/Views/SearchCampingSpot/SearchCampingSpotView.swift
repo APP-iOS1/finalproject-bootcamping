@@ -46,6 +46,15 @@ struct SearchCampingSpotView: View {
         return campingSpotStore.campingSpotList.filter{$0.facltNm.lowercased().contains(searchText.lowercased()) || $0.addr1.lowercased().contains(searchText.lowercased()) || $0.lctCl.lowercased().contains(searchText.lowercased())}
     }
     
+    //TODO: 필터링
+//    func Areafilter(index: Int) -> [Item]{
+//        return campingSpotStore.campingSpotList.filter{$0.doNm.contains(String(viewName[index].components(separatedBy: " ")[0])) || $0.doNm.contains( String(viewName[index].components(separatedBy: " ")[2]))}
+//    }
+//
+//    func viewfilter(index: Int) -> [Item] {
+//        return  campingSpotStore.campingSpotList.filter{$0.lctCl.contains(String(viewName[index].components(separatedBy: " ")[0])) || $0.lctCl.contains( String(viewName[index].components(separatedBy: " ")[2]))}
+//    }
+    
     var body: some View {
         NavigationView {
             if searchText == "" {
@@ -133,7 +142,8 @@ extension SearchCampingSpotView {
         .padding(.bottom, 20)
     }
     
-    //MARK: 지역 선택 부분
+
+    //MARK: 지역 선택 부분 doNm
     private var areaSelect: some View {
         VStack(alignment: .leading){
             Text("지역 선택")
@@ -150,17 +160,32 @@ extension SearchCampingSpotView {
                                 .frame(width: 90, height: 90)
                                 .aspectRatio(contentMode: .fit)
                         }
-                        
+
                         Text(areaName[index])
                     }
                 }
+                
             }
+//            HStack{
+//                NavigationLink {
+//                    CampingSpotListView(item: Areafilter(index: index))
+//                } label: {
+//                    Image("seoul")
+//                        .resizable()
+//                        .cornerRadius(50)
+//                        .frame(width: 90, height: 90)
+//                        .aspectRatio(contentMode: .fit)
+//                }
+//            }
+//            HStack{
+//
+//            }
             .padding(.bottom, 30)
             
         }
     }
     
-    //MARK: 전망 선택 부분
+    //MARK: 전망 선택 부분 lctCl
     private var viewSelect: some View {
         VStack(alignment: .leading){
             Text("전망 선택")

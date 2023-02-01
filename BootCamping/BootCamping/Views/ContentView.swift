@@ -19,6 +19,7 @@ struct ContentView: View {
     @EnvironmentObject var tabSelection: TabSelector
     //diaryStore.getData() 위한 변수
     @EnvironmentObject var diaryStore: DiaryStore
+    @EnvironmentObject var scheduleStore: ScheduleStore
     
     var body: some View {
         if isSignIn {
@@ -61,6 +62,7 @@ struct ContentView: View {
                     isSignIn = false
                 }
                 diaryStore.getData()
+                scheduleStore.fetchSchedule()
             }
         } else {
             LoginView(isSignIn: $isSignIn)

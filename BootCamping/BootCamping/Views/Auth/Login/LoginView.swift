@@ -14,11 +14,13 @@ import KakaoSDKUser
 import SwiftUI
 
 struct LoginView: View {
-    
     @Binding var isSignIn: Bool
     
     @EnvironmentObject var authStore: AuthStore
     @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
+    
+    @Environment(\.window) var window: UIWindow?
+    @State private var appleLoginCoordinator: AppleAuthCoordinator?
     
     var body: some View {
         NavigationStack {
@@ -42,8 +44,8 @@ struct LoginView: View {
                         .padding(.vertical, 10)
                     
                 }
-                .foregroundColor(.bcBlack)
-                .padding()
+                .foregroundColor(.black)
+                .padding(UIScreen.screenWidth * 0.05)
             }.ignoresSafeArea()
         }
     }
@@ -72,7 +74,7 @@ extension LoginView {
         } label: {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(.yellow)
-                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .frame(width: UIScreen.screenWidth * 0.9, height: 44)
                 .overlay {
                     HStack {
                         Spacer()
@@ -91,7 +93,7 @@ extension LoginView {
         } label: {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(.white)
-                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .frame(width: UIScreen.screenWidth * 0.9, height: 44)
                 .overlay {
                     HStack {
                         Spacer()
@@ -106,11 +108,12 @@ extension LoginView {
     // 애플 로그인 버튼
     var appleLoginButton: some View {
         Button {
+            appleLogin()
             
         } label: {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(.black)
-                .frame(width: UIScreen.screenWidth * 0.8, height: 44)
+                .frame(width: UIScreen.screenWidth * 0.9, height: 44)
                 .overlay {
                     HStack {
                         Spacer()
@@ -121,6 +124,11 @@ extension LoginView {
                     .foregroundColor(.white)
                 }
         }
+    }
+    //애풀 로그인 함수
+    func appleLogin() {
+      appleLoginCoordinator = AppleAuthCoordinator(window: window)
+      appleLoginCoordinator?.startAppleLogin()
     }
     
     // 이메일로 회원가입 버튼

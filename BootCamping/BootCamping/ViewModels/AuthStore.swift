@@ -64,9 +64,11 @@ class AuthStore: ObservableObject {
                     let nickName: String = docData["nickName"] as? String ?? ""
                     let userEmail: String = docData["userEmail"] as? String ?? ""
                     let bookMarkedDiaries: [String] = docData["bookMarkedDiaries"] as? [String] ?? []
+                    let bookMarkedSpot: [String] = docData["bookMarkedSpot"] as? [String] ?? []
                     
-                    let user: User = User(id: id, profileImage: profileImage, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries)
+                    let user: User = User(id: id, profileImage: profileImage, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries, bookMarkedSpot: bookMarkedSpot)
                     self.userList.append(user)
+                    print(self.userList)
                 }
             }
         }
@@ -99,7 +101,6 @@ class AuthStore: ObservableObject {
         if password == confirmPassword {
             return password.range(of: passwordRegex, options: .regularExpression) != nil
         } else {
-            print(#function, password, confirmPassword)
             return false
         }
     }
@@ -119,9 +120,9 @@ class AuthStore: ObservableObject {
     
     // MARK: - authSignOut 로그아웃 함수
     func authSignOut() {
-        self.currentUser = nil
-        self.isLogin = false
         try? Auth.auth().signOut()
+        self.isLogin = false
+        self.currentUser = Auth.auth().currentUser
     }
     
     // MARK: - authSignUp 회원가입 함수
@@ -130,7 +131,6 @@ class AuthStore: ObservableObject {
         if checkPasswordFormat(password: password, confirmPassword: confirmPassword) && checkAuthFormat(userEmail: userEmail) {
             do {
                 try await Auth.auth().createUser(withEmail: userEmail, password: password)
-                print(#function, "password: \(password), confirmPassword: \(confirmPassword), email: \(userEmail)")
                 return true
             } catch {
                 return false
@@ -141,14 +141,17 @@ class AuthStore: ObservableObject {
     }
     
     // MARK: - 유저리스트에 추가하는 함수
-    func addUserList(_ user: User) {
-        database.collection("UserList").document(user.id).setData([
+    func addUserList(_ user: User) async throws {
+
+        try await database.collection("UserList").document(user.id).setData([
             "id": user.id,
             "profileImage": user.profileImage,
             "nickName": user.nickName,
             "userEmail": user.userEmail,
             "bookMarkedDiaries": user.bookMarkedDiaries,
+            "bookMarkedSpot": user.bookMarkedSpot,
         ])
+        print(#function, user)
         fetchUserList()
     }
         

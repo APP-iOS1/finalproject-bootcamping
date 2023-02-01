@@ -75,17 +75,17 @@ private extension HomeView {
                             .font(.system(.title3, weight: .heavy))
                             .kerning(-1)
                             .frame(maxWidth: 200, maxHeight: 30)
-                            .foregroundColor(selectedPicker == item ? .black : .gray)
+                            .foregroundColor(selectedPicker == item ? .bcBlack : .gray)
                             .padding(.top, 10)
                         
                         if selectedPicker == item {
                             Capsule()
-                                .foregroundColor(.black)
+                                .foregroundColor(.bcBlack)
                                 .frame(height: 2)
                                 .matchedGeometryEffect(id: "info", in: animation)
                         } else {
                             Capsule()
-                                .foregroundColor(.white)
+                                .foregroundColor(.clear)
                                 .frame(height: 2)
                         }
                     }

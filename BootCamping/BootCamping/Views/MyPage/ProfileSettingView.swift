@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import FirebaseAuth
 
 // FIXME: 현재 기획한 UserInfo 데이터 모델에 따라서 텍스트 필드 변경 필요
 /// 현재 기획 모델 그대로 가면 닉네임이랑 이메일, 비밀번호 변경하는 걸로 바꿔야 할 것 같습니다
@@ -19,7 +20,7 @@ struct ProfileSettingView: View {
     @EnvironmentObject var tabSelection: TabSelector
     //로그아웃시 isSignIn을 false로 변경
     @Binding var isSignIn: Bool
-
+    
     @State private var updateNickname: String = ""
     
     var body: some View {
@@ -39,6 +40,9 @@ struct ProfileSettingView: View {
         .padding(.horizontal, UIScreen.screenWidth * 0.1)
     }
     
+}
+
+extension ProfileSettingView {
     // MARK: -View : PhotoPicker
     private var photoPicker : some View {
         VStack{
@@ -61,7 +65,7 @@ struct ProfileSettingView: View {
                     photoLibrary: .shared()) {
                         Image(systemName: "pencil.circle")
                             .font(.title)
-                            .foregroundColor(.black)
+                            .foregroundColor(.bcBlack)
                             .offset(x: 40, y: 40)
                             .frame(width: 100, height: 100)
                     }

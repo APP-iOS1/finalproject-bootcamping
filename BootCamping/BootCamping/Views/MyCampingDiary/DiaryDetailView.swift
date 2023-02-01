@@ -54,16 +54,15 @@ private extension DiaryDetailView {
             ForEach(item.diaryImageURLs, id: \.self) { url in
                 WebImage(url: URL(string: url))
                     .resizable()
-                    .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenWidth * 0.9)
+                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     .aspectRatio(contentMode: .fill)
                 
             }
         }
-        .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenWidth * 0.9)
+        .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
         .tabViewStyle(PageTabViewStyle())
         // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
-        .padding(.horizontal, UIScreen.screenWidth * 0.05)
     }
     
     // MARK: -View : 다이어리 제목
@@ -103,7 +102,7 @@ private extension DiaryDetailView {
                     }
                     .font(.subheadline)
                 }
-                .foregroundColor(Color("BCBlack"))
+                .foregroundColor(.bcBlack)
             }
             .padding()
             .background {
@@ -140,7 +139,7 @@ private extension DiaryDetailView {
             Text("|")
             Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
         }
-        .foregroundColor(Color("BCBlack"))
+        .foregroundColor(.bcBlack)
         .font(.system(.subheadline))
         .padding(.horizontal)
         .padding(.vertical, 5)

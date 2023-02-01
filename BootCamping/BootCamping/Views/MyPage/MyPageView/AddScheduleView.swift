@@ -9,6 +9,8 @@ import SwiftUI
 
 struct AddScheduleView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject var scheduleStore: ScheduleStore
+    @Environment(\.dismiss) private var dismiss
     
     @State var startDate = Date()
     @State var endDate = Date()
@@ -27,6 +29,7 @@ struct AddScheduleView: View {
     var body: some View {
         // FIXME: 여행 일정의 첫 날과 마지막 날을 선택하면 범위 선택이 가능해야 함
         VStack{
+            Spacer()
             titleTextField
             DatePicker(
                 "캠핑 시작일",
@@ -41,36 +44,52 @@ struct AddScheduleView: View {
                 displayedComponents: [.date]
             )
             .datePickerStyle(.automatic)
-            Group {
-                HStack{
-                    Button(action: {
-                        // TODO: 시작일부터 종료일까지 각각의 날짜에 대해 캠핑 스케줄 추가해주어야 함
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Text("등록")
-                    }
-                    Spacer()
-                        .frame(width: UIScreen.screenWidth*0.2)
-                    Button(action: {
-                        
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Text("닫기")
-                    }
-                }
-            }
+            Spacer()
+            addScheduleButton
+                .padding(.bottom, 50)
         }
         .padding(.horizontal)
     }
+}
+
+extension AddScheduleView {
     
-    // MARK: -View : updateUserPhoneNumberTextField
+    // MARK: -View : 캠핑장 이름 titleTextField
     private var titleTextField : some View {
         VStack(alignment: .leading, spacing: 10){
-            Text("캠핑장 이름")
-                .font(.title3)
-                .bold()
-            // TODO: autocomplete textfield,,? T^T
-            TextField("캠핑장이름", text: $campingSpot)
+            NavigationLink {
+                SearchCampingSpotListView()
+            } label: {
+                HStack{
+                    Text("캠핑장 이름 검색하기")
+                        .font(.title3)
+                        .bold()
+                    Image(systemName: "magnifyingglass")
+                }
+            }
+            
+            TextField("캠핑장 이름 직접 입력하기", text: $campingSpot)
+                .textFieldStyle(.roundedBorder)
+        }
+    }
+    // MARK: -View : addScheduleButton
+    private var addScheduleButton : some View {
+        Button {
+            let calendar = Calendar.current
+            if endDate.timeIntervalSince(startDate) > 0 {
+                let interval = endDate.timeIntervalSince(startDate)
+                let days = Int(interval / 86400)
+                for day in 0...days {
+                    print(day)
+                    scheduleStore.addSchedule(Schedule(id: UUID().uuidString, title: campingSpot, date: calendar.date(byAdding: .day, value: day, to: startDate) ?? Date()))
+                }
+            } else {
+                scheduleStore.addSchedule(Schedule(id: UUID().uuidString, title: campingSpot, date: startDate))
+            }
+            dismiss()
+        } label: {
+            Text("등록")
+                .modifier(GreenButtonModifier())
         }
     }
 }

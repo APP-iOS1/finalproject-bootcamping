@@ -145,7 +145,7 @@ class DiaryStore: ObservableObject {
 
     //MARK: Read Diary Combine
     func getDiarys() {
-        FirebaseService().getDiarysService()
+        FirebaseDiaryService().getDiarysService()
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -167,7 +167,7 @@ class DiaryStore: ObservableObject {
     //MARK: Create Diary Combine
 
     func createDiary(diary: Diary, images: [Data]) {
-        FirebaseService().createDiaryService(diary: diary, images: images)
+        FirebaseDiaryService().createDiaryService(diary: diary, images: images)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -187,7 +187,7 @@ class DiaryStore: ObservableObject {
     
     //MARK: Update Diary Combine
     func updateDiary(diary: Diary, images: [Data]) {
-        FirebaseService().createDiaryService(diary: diary, images: images)
+        FirebaseDiaryService().createDiaryService(diary: diary, images: images)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -208,7 +208,7 @@ class DiaryStore: ObservableObject {
     
     //MARK: Delete Diary Combine
     func deletDiary(diary: Diary) {
-        FirebaseService().deleteDiaryService(diary: diary)
+        FirebaseDiaryService().deleteDiaryService(diary: diary)
             .sink { completion in
                 switch completion {
                 case .failure(let error):

@@ -20,9 +20,7 @@ class ScheduleStore: ObservableObject {
     // MARK: Add Schedule
     func addSchedule(_ schedule: Schedule) {
         guard let userUID = Auth.auth().currentUser?.uid else { return }
-        
-        let newSchedule = Schedule(id: schedule.id, title: schedule.title, date: schedule.date)
-        
+       
         database.collection("UserList")
             .document(userUID)
             .collection("Schedule")

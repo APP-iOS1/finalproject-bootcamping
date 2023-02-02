@@ -149,38 +149,114 @@ extension SearchCampingSpotView {
         VStack(alignment: .leading){
             Text("지역 선택")
                 .font(.title.bold())
-            LazyVGrid(columns: columns) {
-                ForEach(0..<areaName.count) { index in
-                    VStack{
-                        NavigationLink {
-                            CampingSpotListView()
-                        } label: {
-                            Image(areaImage[index])
-                                .resizable()
-                                .cornerRadius(50)
-                                .frame(width: 90, height: 90)
-                                .aspectRatio(contentMode: .fit)
-                        }
-
-                        Text(areaName[index])
-                    }
-                }
-                
-            }
-//            HStack{
-//                NavigationLink {
-//                    CampingSpotListView(item: Areafilter(index: index))
-//                } label: {
-//                    Image("seoul")
-//                        .resizable()
-//                        .cornerRadius(50)
-//                        .frame(width: 90, height: 90)
-//                        .aspectRatio(contentMode: .fit)
+//            LazyVGrid(columns: columns) {
+//                ForEach(0..<areaName.count) { index in
+//                    VStack{
+//                        NavigationLink {
+//                            CampingSpotListView()
+//                        } label: {
+//                            Image(areaImage[index])
+//                                .resizable()
+//                                .cornerRadius(50)
+//                                .frame(width: 90, height: 90)
+//                                .aspectRatio(contentMode: .fit)
+//                        }
+//
+//                        Text(areaName[index])
+//                    }
 //                }
-//            }
-//            HStack{
 //
 //            }
+            HStack{
+                VStack{
+                    NavigationLink {
+                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("서울") })
+                    } label: {
+                        Image("seoul")
+                            .resizable()
+                            .cornerRadius(50)
+                            .frame(width: 90, height: 90)
+                            .aspectRatio(contentMode: .fit)
+                    }
+                    Text("서울")
+                }
+                Spacer()
+
+                VStack{
+                    NavigationLink {
+                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("경기") || $0.doNm.contains("인천")})
+                    } label: {
+                        Image("incheon")
+                            .resizable()
+                            .cornerRadius(50)
+                            .frame(width: 90, height: 90)
+                            .aspectRatio(contentMode: .fit)
+                    }
+                    Text("경기 / 인천")
+                }
+                Spacer()
+
+                VStack{
+                    NavigationLink {
+                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("강원") })
+                    } label: {
+                        Image("gangwon")
+                            .resizable()
+                            .cornerRadius(50)
+                            .frame(width: 90, height: 90)
+                            .aspectRatio(contentMode: .fit)
+                    }
+                    Text("강원")
+
+                }
+
+            }
+            .frame(maxWidth: .infinity)
+            HStack{
+                VStack{
+                    NavigationLink {
+                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("충청") })
+                    } label: {
+                        Image("5")
+                            .resizable()
+                            .cornerRadius(50)
+                            .frame(width: 90, height: 90)
+                            .aspectRatio(contentMode: .fit)
+                    }
+                    Text("충청")
+                }
+                Spacer()
+
+                VStack{
+                    NavigationLink {
+                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("경상") || $0.doNm.contains("부산") })
+                    } label: {
+                        Image("busan")
+                            .resizable()
+                            .cornerRadius(50)
+                            .frame(width: 90, height: 90)
+                            .aspectRatio(contentMode: .fit)
+                    }
+                    Text("경상 / 부산")
+                }
+                Spacer()
+
+                VStack{
+                    NavigationLink {
+                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("전라") || $0.doNm.contains("제주") })
+                    } label: {
+                        Image("jeju")
+                            .resizable()
+                            .cornerRadius(50)
+                            .frame(width: 90, height: 90)
+                            .aspectRatio(contentMode: .fit)
+                    }
+                    Text("전라 / 제주")
+                }
+
+            }
+            .frame(maxWidth: .infinity)
+
             .padding(.bottom, 30)
             
         }
@@ -195,7 +271,7 @@ extension SearchCampingSpotView {
                 ForEach(0..<viewName.count) { index in
                     VStack{
                         NavigationLink {
-                            CampingSpotListView()
+//                            CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("") })
                         } label: {
                             Image(viewImage[index])
                                 .resizable()

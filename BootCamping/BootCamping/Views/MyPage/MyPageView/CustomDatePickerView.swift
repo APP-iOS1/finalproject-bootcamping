@@ -62,7 +62,7 @@ struct CustomDatePickerView: View {
     func extraData_MonthDay() -> [String] {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko")
-        formatter.dateFormat = "MM dd EEEE"
+        formatter.dateFormat = "MM dd"
         
         let date = formatter.string(from: currentDate)
         
@@ -175,7 +175,7 @@ extension CustomDatePickerView{
     private var taskView: some View{
         HStack {
             VStack(alignment: .leading, spacing: 10) {
-                Text("\(extraData_MonthDay()[0]).\(extraData_MonthDay()[1]) \(extraData_MonthDay()[2])")
+                Text("\(extraData_MonthDay()[0]).\(extraData_MonthDay()[1])")
                     .font(.title2.bold())
                     .padding(.top, 25)
                 

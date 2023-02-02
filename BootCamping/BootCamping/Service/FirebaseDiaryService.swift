@@ -85,62 +85,65 @@ struct FirebaseDiaryService {
             var imageNames: [String] = []
             var imageURLs: [String] = []
             
-            //
-            let group1 = DispatchGroup()
-            let group2 = DispatchGroup()
+            let myQueue = DispatchQueue(label: "creatework",attributes: .concurrent)
+            let group = DispatchGroup()
 
             guard let userUID = Auth.auth().currentUser?.uid else { return }
-
+            
             for image in images {
-                group1.enter()
-                let storageRef = Storage.storage().reference().child("DiaryImages")
-                let imageName = UUID().uuidString
-                let metadata = StorageMetadata()
-                metadata.contentType = "image/jpeg"
-                let uploadTask = storageRef.child(imageName).putData(image, metadata: metadata)
-                uploadTask.observe(.success) { snapshot in
-                    imageNames.append(imageName)
-                    group1.leave()
-                }
-                uploadTask.observe(.failure) { snapshot in
-                  if let error = snapshot.error as? NSError {
-                    switch (StorageErrorCode(rawValue: error.code)!) {
-                    case .objectNotFound:
-                        promise(.failure(FirebaseDiaryServiceError.createDiaryError))
-                       print("File doesn't exist")
-                    case .unauthorized:
-                        promise(.failure(FirebaseDiaryServiceError.createDiaryError))
-                       print("User doesn't have permission to access file")
-                    case .cancelled:
-                        promise(.failure(FirebaseDiaryServiceError.createDiaryError))
-                       print("User canceled the upload")
-                    case .unknown:
-                        promise(.failure(FirebaseDiaryServiceError.createDiaryError))
-                       print("Unknown error occurred, inspect the server response")
-                    default:
-                        promise(.failure(FirebaseDiaryServiceError.createDiaryError))
-                       print("A separate error occurred. This is a good place to retry the upload.")
+                group.enter()
+                myQueue.sync {
+                    let storageRef = Storage.storage().reference().child("DiaryImages")
+                    let imageName = UUID().uuidString
+                    let metadata = StorageMetadata()
+                    metadata.contentType = "image/jpeg"
+                    let uploadTask = storageRef.child(imageName).putData(image, metadata: metadata)
+                    uploadTask.observe(.success) { snapshot in
+                        imageNames.append(imageName)
+                        group.leave()
                     }
-                  }
+                    uploadTask.observe(.failure) { snapshot in
+                        if let error = snapshot.error as? NSError {
+                            switch (StorageErrorCode(rawValue: error.code)!) {
+                            case .objectNotFound:
+                                promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                print("File doesn't exist")
+                            case .unauthorized:
+                                promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                print("User doesn't have permission to access file")
+                            case .cancelled:
+                                promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                print("User canceled the upload")
+                            case .unknown:
+                                promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                print("Unknown error occurred, inspect the server response")
+                            default:
+                                promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                print("A separate error occurred. This is a good place to retry the upload.")
+                            }
+                        }
+                    }
                 }
             }
-            group1.notify(queue: .main) {
+            group.notify(queue: myQueue) {
                 
                 for imageName in imageNames {
-                    group2.enter()
-                    let storageRef = Storage.storage().reference().child("DiaryImages")
-                    storageRef.child(imageName).downloadURL { url, error in
-                        if let error = error {
-                            print(error)
-                            promise(.failure(FirebaseDiaryServiceError.createDiaryError))
-                        } else {
-                            imageURLs.append(url!.absoluteString)
-                            group2.leave()
+                    group.enter()
+                    myQueue.sync {
+                        let storageRef = Storage.storage().reference().child("DiaryImages")
+                        storageRef.child(imageName).downloadURL { url, error in
+                            if let error = error {
+                                print(error)
+                                promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                            } else {
+                                imageURLs.append(url!.absoluteString)
+                                group.leave()
+                            }
                         }
                     }
                 }
                 
-                group2.notify(queue: .main) {
+                group.notify(queue: myQueue) {
                     
                     let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
                     
@@ -179,60 +182,64 @@ struct FirebaseDiaryService {
             var imageURLs: [String] = []
             
             guard let userUID = Auth.auth().currentUser?.uid else { return }
-
             
-            let group1 = DispatchGroup()
-            let group2 = DispatchGroup()
-
+            let myQueue = DispatchQueue(label: "updatework",attributes: .concurrent)
+            
+            let group = DispatchGroup()
+            
             for image in images {
-                group1.enter()
-                let storageRef = Storage.storage().reference().child("DiaryImages")
-                let imageName = UUID().uuidString
-                let metadata = StorageMetadata()
-                metadata.contentType = "image/jpeg"
-                let uploadTask = storageRef.child(imageName).putData(image, metadata: metadata)
-                uploadTask.observe(.success) { snapshot in
-                    imageNames.append(imageName)
-                    group1.leave()
-                }
-                uploadTask.observe(.failure) { snapshot in
-                    if let error = snapshot.error as? NSError {
-                        switch (StorageErrorCode(rawValue: error.code)!) {
-                        case .objectNotFound:
-                            promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
-                            print("File doesn't exist")
-                        case .unauthorized:
-                            promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
-                            print("User doesn't have permission to access file")
-                        case .cancelled:
-                            promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
-                            print("User canceled the upload")
-                        case .unknown:
-                            promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
-                            print("Unknown error occurred, inspect the server response")
-                        default:
-                            promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
-                            print("A separate error occurred. This is a good place to retry the upload.")
+                group.enter()
+                myQueue.sync {
+                    let storageRef = Storage.storage().reference().child("DiaryImages")
+                    let imageName = UUID().uuidString
+                    let metadata = StorageMetadata()
+                    metadata.contentType = "image/jpeg"
+                    let uploadTask = storageRef.child(imageName).putData(image, metadata: metadata)
+                    uploadTask.observe(.success) { snapshot in
+                        imageNames.append(imageName)
+                        group.leave()
+                    }
+                    uploadTask.observe(.failure) { snapshot in
+                        if let error = snapshot.error as? NSError {
+                            switch (StorageErrorCode(rawValue: error.code)!) {
+                            case .objectNotFound:
+                                promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
+                                print("File doesn't exist")
+                            case .unauthorized:
+                                promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
+                                print("User doesn't have permission to access file")
+                            case .cancelled:
+                                promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
+                                print("User canceled the upload")
+                            case .unknown:
+                                promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
+                                print("Unknown error occurred, inspect the server response")
+                            default:
+                                promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
+                                print("A separate error occurred. This is a good place to retry the upload.")
+                            }
                         }
                     }
                 }
             }
-            group1.notify(queue: .main) {
-
-            for imageName in imageNames {
-                group2.enter()
-                let storageRef = Storage.storage().reference().child("DiaryImages")
-                storageRef.child(imageName).downloadURL { url, error in
-                    if let error = error {
-                        print(error)
-                        promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
-                    } else {
-                        imageURLs.append(url!.absoluteString)
-                        group2.leave()
+            group.notify(queue: myQueue) {
+                
+                for imageName in imageNames {
+                    group.enter()
+                    myQueue.sync {
+                        let storageRef = Storage.storage().reference().child("DiaryImages")
+                        storageRef.child(imageName).downloadURL { url, error in
+                            if let error = error {
+                                print(error)
+                                promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
+                            } else {
+                                imageURLs.append(url!.absoluteString)
+                                group.leave()
+                            }
+                        }
                     }
                 }
-            }
-                group2.notify(queue: .main) {
+                group.notify(queue: myQueue) {
                     
                     let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
                     
@@ -272,20 +279,23 @@ struct FirebaseDiaryService {
         Future<Void, Error> { promise in
             let storageRef = Storage.storage().reference().child("DiaryImages")
             
+            let myQueue = DispatchQueue(label: "updatework",attributes: .concurrent)
             let group = DispatchGroup()
 
             for diaryImage in diary.diaryImageNames {
                 group.enter()
-                storageRef.child(diaryImage).delete { error in
-                    if let error = error {
-                        print("Error removing image from storage: \(error.localizedDescription)")
-                        promise(.failure(FirebaseDiaryServiceError.deleteDiaryError))
-                    } else {
-                        group.leave()
+                myQueue.sync {
+                    storageRef.child(diaryImage).delete { error in
+                        if let error = error {
+                            print("Error removing image from storage: \(error.localizedDescription)")
+                            promise(.failure(FirebaseDiaryServiceError.deleteDiaryError))
+                        } else {
+                            group.leave()
+                        }
                     }
                 }
             }
-            group.notify(queue: .main) {
+            group.notify(queue: myQueue) {
                 
                 self.database.collection("Diarys")
                     .document(diary.id).delete() { error in

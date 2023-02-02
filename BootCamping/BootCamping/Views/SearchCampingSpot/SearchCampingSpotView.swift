@@ -17,22 +17,11 @@ struct SearchCampingSpotView: View {
     let timer = Timer.publish(every: 4, on: .main, in: .common).autoconnect()
     @State var selection = 0
     
-    //TODO: 강원, 충청 이미지 찾아야함, 나머지 지역은 저작권 없는 이미지로 교체 완료
-    //MARK: 지역 사진 및 이름
-    var areaImage = ["seoul", "incheon", "gangwon", "5", "busan", "jeju"]
-    var areaName = ["서울", "경기 / 인천", "강원", "충청", "경상 / 부산", "전라 / 제주"]
-    
-    //MARK: 전망 사진 및 이름 - 저작권 없는 이미지로 교체 완료
-    var viewImage = ["mountain", "ocean", "river", "forest", "lake", "island"]
-    var viewName = ["산", "바다 / 해변", "강", "숲", "호수", "섬"]
-    
     //MARK: 추천 캠핑장 사진 및 이름
     var campingSpotADImage = ["e", "a", "g", "d"]
     var campingSpotADName = ["쿠니 캠핑장", "후니 글램핑", "미니즈 캠핑장", "소영 카라반"]
     var campingSpotADAddress = ["대구광역시 달서구", "서울특별시 마포구", "경기도 광명시", "경기도 하남시"]
     
-    //MARK: 지역, 전망 그리드
-    let columns = Array(repeating: GridItem(.flexible()), count: 3)
     //MARK: 추천 캠핑장 그리드
     let columns2 = Array(repeating: GridItem(.flexible()), count: 2)
     
@@ -46,14 +35,7 @@ struct SearchCampingSpotView: View {
         return campingSpotStore.campingSpotList.filter{$0.facltNm.lowercased().contains(searchText.lowercased()) || $0.addr1.lowercased().contains(searchText.lowercased()) || $0.lctCl.lowercased().contains(searchText.lowercased())}
     }
     
-    //TODO: 필터링
-//    func Areafilter(index: Int) -> [Item]{
-//        return campingSpotStore.campingSpotList.filter{$0.doNm.contains(String(viewName[index].components(separatedBy: " ")[0])) || $0.doNm.contains( String(viewName[index].components(separatedBy: " ")[2]))}
-//    }
-//
-//    func viewfilter(index: Int) -> [Item] {
-//        return  campingSpotStore.campingSpotList.filter{$0.lctCl.contains(String(viewName[index].components(separatedBy: " ")[0])) || $0.lctCl.contains( String(viewName[index].components(separatedBy: " ")[2]))}
-//    }
+
     
     var body: some View {
         NavigationView {
@@ -94,8 +76,6 @@ struct SearchCampingSpotView: View {
                                     VStack{
                                         campingSpotListCell(item: campingSpot)
                                             .padding(.bottom,40)
-//                                        Divider()
-//                                            .padding(.bottom, 10)
                                     }
                                 }
                             }
@@ -149,24 +129,6 @@ extension SearchCampingSpotView {
         VStack(alignment: .leading){
             Text("지역 선택")
                 .font(.title.bold())
-//            LazyVGrid(columns: columns) {
-//                ForEach(0..<areaName.count) { index in
-//                    VStack{
-//                        NavigationLink {
-//                            CampingSpotListView()
-//                        } label: {
-//                            Image(areaImage[index])
-//                                .resizable()
-//                                .cornerRadius(50)
-//                                .frame(width: 90, height: 90)
-//                                .aspectRatio(contentMode: .fit)
-//                        }
-//
-//                        Text(areaName[index])
-//                    }
-//                }
-//
-//            }
             HStack{
                 VStack{
                     NavigationLink {
@@ -217,7 +179,7 @@ extension SearchCampingSpotView {
                     NavigationLink {
                         CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("충청") })
                     } label: {
-                        Image("5")
+                        Image("Chungcheong")
                             .resizable()
                             .cornerRadius(50)
                             .frame(width: 90, height: 90)
@@ -267,23 +229,6 @@ extension SearchCampingSpotView {
         VStack(alignment: .leading){
             Text("전망 선택")
                 .font(.title.bold())
-//            LazyVGrid(columns: columns) {
-//                ForEach(0..<viewName.count) { index in
-//                    VStack{
-//                        NavigationLink {
-////                            CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("") })
-//                        } label: {
-//                            Image(viewImage[index])
-//                                .resizable()
-//                                .cornerRadius(50)
-//                                .frame(width: 90, height: 90)
-//                                .aspectRatio(contentMode: .fit)
-//                        }
-//
-//                        Text(viewName[index])
-//                    }
-//                }
-//            }
             HStack{
                 VStack{
                     NavigationLink {
@@ -396,7 +341,6 @@ extension SearchCampingSpotView {
                                 .cornerRadius(10)
                                 .frame(height: 150)
                                 .aspectRatio(contentMode: .fit)
-                            
                         }
                         
                         HStack{

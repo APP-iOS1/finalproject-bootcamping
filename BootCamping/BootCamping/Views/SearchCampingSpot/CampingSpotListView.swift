@@ -12,12 +12,12 @@ import SDWebImageSwiftUI
 struct CampingSpotListView: View {
     //TODO: 북마크 만들기
     @EnvironmentObject var campingSpotStore: CampingSpotStore
-//    var item: [Item]
+    var item: [Item]
 
     var body: some View {
         VStack{
             ScrollView(showsIndicators: false){
-                ForEach(campingSpotStore.campingSpotList, id: \.self) { camping in
+                ForEach(item, id: \.self) { camping in
                     NavigationLink {
                         CampingSpotDetailView(places: camping)
                     } label: {

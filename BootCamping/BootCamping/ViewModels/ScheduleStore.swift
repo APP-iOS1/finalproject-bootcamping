@@ -27,12 +27,15 @@ class ScheduleStore: ObservableObject {
     func addSchedule(_ schedule: Schedule) {
         guard let userUID = Auth.auth().currentUser?.uid else { return }
        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
         database.collection("UserList")
             .document(userUID)
             .collection("Schedule")
             .addDocument(data: ["id": schedule.id,
                                 "title": schedule.title,
-                                "date": schedule.date.toString()
+                                "date": dateFormatter.string(from: schedule.date)
                                ])
         fetchSchedule()
     }
@@ -55,7 +58,7 @@ class ScheduleStore: ObservableObject {
                         let date: String = docData["date"] as? String ?? ""
                         
                         let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ssSSS"
+                        dateFormatter.dateFormat = "yyyy-MM-dd"
                         
                         let schedule: Schedule = Schedule(id: id, title: title, date: dateFormatter.date(from: date) ?? Date())
                         self.scheduleList.append(schedule)

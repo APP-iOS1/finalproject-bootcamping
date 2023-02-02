@@ -72,16 +72,17 @@ struct CampingSpotDetailView: View {
                                 .font(.callout)
                                 .foregroundColor(.gray)
                         }
+                        .padding(.bottom, 15)
                     }
                     
                     Group {
                         Text("\(places.intro)")
                             .lineSpacing(7)
                     }
-                    .padding(7)
+                    
                     
                     Divider()
-                        .padding()
+                        .padding(.vertical)
                     Group {
                         Text("편의시설 및 서비스")
                             .font(.headline)
@@ -91,7 +92,7 @@ struct CampingSpotDetailView: View {
                     }
                     
                     Divider()
-                        .padding()
+                        .padding(.vertical)
                     
                     Group {
                         Text("위치 보기")
@@ -111,7 +112,7 @@ struct CampingSpotDetailView: View {
                     }
                     
                     Divider()
-                        .padding()
+                        .padding(.vertical)
                     
                     Group {
                         HStack {
@@ -202,7 +203,7 @@ struct ServiceIcon: View {
                         .font(.caption)
                         .kerning(-1)
                 }
-                .padding(4)
+               // .padding(4)
             }
         }
     }

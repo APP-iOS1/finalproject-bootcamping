@@ -41,7 +41,7 @@ struct LoginView: View {
                     appleLoginButton
                     
                     emailSignUpButton
-                        .padding(.vertical, 10)
+                        .padding(.vertical, UIScreen.screenHeight * 0.05)
                     
                 }
                 .foregroundColor(.black)
@@ -136,7 +136,7 @@ extension LoginView {
         NavigationLink {
             LoginPasswordView(isSignIn: $isSignIn)
         } label: {
-            Text("이메일로 로그인 | 회원가입")
+            Text("이메일로 로그인  |  회원가입")
                 .underline()
                 .font(.subheadline)
                 .foregroundColor(.white)

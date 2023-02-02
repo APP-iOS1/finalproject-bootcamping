@@ -44,8 +44,8 @@ struct SearchCampingSpotListView: View {
     }
 }
 
-struct SearchCampingSpotListView_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchCampingSpotListView()
-    }
-}
+//struct SearchCampingSpotListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SearchCampingSpotListView()
+//    }
+//}

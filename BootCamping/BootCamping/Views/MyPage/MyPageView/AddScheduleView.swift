@@ -15,6 +15,7 @@ struct AddScheduleView: View {
     @State var startDate = Date()
     @State var endDate = Date()
     @State private var campingSpot: String = ""
+    @State private var isAddingDisable = true
     
     // 캠핑 종료일이 시작일보다 늦어야 하므로 종료일 날짜 선택 범위를 제한해준다.
     var dateRange: ClosedRange<Date> {
@@ -44,11 +45,35 @@ struct AddScheduleView: View {
                 displayedComponents: [.date]
             )
             .datePickerStyle(.automatic)
+            .onChange(of: startDate) { newStartDate in
+                if endDate < newStartDate {
+                    endDate = newStartDate
+                }
+            }
             Spacer()
             addScheduleButton
                 .padding(.bottom, 50)
         }
+        .onAppear{
+            isAddingDisable = checkSchedule(startDate: startDate, endDate: endDate)
+        }
+        .onChange(of: [self.startDate, self.endDate]) { newvalues in
+            isAddingDisable = checkSchedule(startDate: newvalues[0], endDate: newvalues[1])
+            print("isAddingDisable \(isAddingDisable)")
+        }
         .padding(.horizontal)
+    }
+    
+    func checkSchedule(startDate: Date, endDate: Date) -> Bool {
+        if startDate > endDate {  return true }
+        for schedule in scheduleStore.scheduleList{
+            if (startDate ... endDate).contains(schedule.date) {
+                print("check Schedule returns true")
+                return true
+            }
+        }
+        print("check Schedule returns false")
+        return true
     }
 }
 
@@ -80,7 +105,6 @@ extension AddScheduleView {
                 let interval = endDate.timeIntervalSince(startDate)
                 let days = Int(interval / 86400)
                 for day in 0...days {
-                    print(day)
                     scheduleStore.addSchedule(Schedule(id: UUID().uuidString, title: campingSpot, date: calendar.date(byAdding: .day, value: day, to: startDate) ?? Date()))
                 }
             } else {
@@ -89,15 +113,17 @@ extension AddScheduleView {
             dismiss()
         } label: {
             Text("등록")
-                .modifier(GreenButtonModifier())
+                .bold()
+            //                    .modifier(GreenButtonModifier())
         }
+        .disabled(campingSpot == "" || isAddingDisable)
     }
 }
 
 
 
-struct AddScheduleView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddScheduleView()
-    }
-}
+//struct AddScheduleView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AddScheduleView()
+//    }
+//}

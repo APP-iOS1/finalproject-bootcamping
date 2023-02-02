@@ -13,6 +13,7 @@ import FirebaseAuth
 
 enum FirebaseCommentServiceError: Error {
     case badSnapshot
+    case readCommentError
     case createCommentError
     case updateCommentError
     case deleteCommentError
@@ -36,9 +37,10 @@ struct FirebaseCommentService {
     let database = Firestore.firestore()
     
     //MARK: Read FirebaseCommentService
-    func getCommentsService() -> AnyPublisher<[Comment], Error> {
+    func readCommentsService() -> AnyPublisher<[Comment], Error> {
         Future<[Comment], Error> { promise in
             database.collection("Comments")
+                .order(by: "commentCreatedDate", descending: true)
                 .getDocuments { snapshot, error in
                     if let error = error {
                         promise(.failure(error))

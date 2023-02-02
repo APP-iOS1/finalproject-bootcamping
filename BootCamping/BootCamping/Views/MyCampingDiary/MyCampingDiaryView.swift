@@ -31,7 +31,7 @@ struct MyCampingDiaryView: View {
                 }
                 .onAppear {
 //                    diaryStore.getData()
-                    diaryStore.getDiarysCombine()
+                    diaryStore.readDiarysCombine()
                     print("\(diaryStore.diaryList)")
                 }
                 .toolbar{

@@ -36,7 +36,11 @@ struct CampingSpotDetailView: View {
                 TabView {
                     ForEach(images, id: \.self) { item in
                         WebImage(url: URL(string: places.firstImageUrl))
-                            .resizable().scaledToFill()
+                            .resizable()
+                            .placeholder {
+                                Rectangle().foregroundColor(.gray)
+                            }
+                            .scaledToFill()
                     }
                 }
                 .tabViewStyle(PageTabViewStyle())

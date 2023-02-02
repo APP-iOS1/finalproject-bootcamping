@@ -15,7 +15,7 @@ struct DiaryAddView: View {
     @State private var diaryTitle: String = ""
     @State private var locationInfo: String = ""
     @State private var visitDate: String = ""
-    @State private var isOpen: Bool = true
+    @State private var diaryIsPrivate: Bool = false //false가 공개
     @State private var diaryContent: String = ""
     
     @EnvironmentObject var diaryStore: DiaryStore
@@ -101,6 +101,12 @@ private extension DiaryAddView {
                             }
                         }
                 }
+
+                Text(selectedImages.isEmpty ? "사진을 추가해주세요" : "")
+                    .foregroundColor(.secondary)
+                    .opacity(0.5)
+                    .padding(.leading, UIScreen.screenWidth * 0.05)
+                
                 if selectedImages.count > 0 {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
@@ -156,7 +162,6 @@ private extension DiaryAddView {
     }
     
     //MARK: - 방문일자 등록하기
-    //TODO: - DatePicker로 수정하기 - 완료
     var addViewVisitDate: some View {
         Section {
             DatePicker("방문일자 등록하기",
@@ -168,17 +173,16 @@ private extension DiaryAddView {
     }
     
     //MARK: - 글 공개 여부
-    //TODO: - 버튼 + 애니매이션으로 수정
     var addViewIsPrivate: some View {
         HStack {
             Text("공개설정")
             Spacer()
             Button {
-                isOpen.toggle()
+                diaryIsPrivate.toggle()
             } label: {
                 VStack {
-                    Image(systemName: isOpen ? "lock.open" : "lock")
-                    Text(isOpen ? "공개" : "비공개")
+                    Image(systemName: diaryIsPrivate ? "lock" : "lock.open" )
+                    Text(diaryIsPrivate ? "비공개": "공개")
                 }
             }
             .foregroundColor(.bcBlack)
@@ -189,29 +193,32 @@ private extension DiaryAddView {
     
     //MARK: - 일기 작성 뷰
     var addViewDiaryContent: some View {
-        TextEditor(text: $diaryContent)
-            .overlay(alignment: .topLeading) {
-                Text(diaryContent == "" ? "일기를 작성해주세요" : "")
-                    .foregroundColor(.secondary)
-                    .opacity(0.5)
-            }
-            .multilineTextAlignment(.leading)
-            .frame(minHeight: 180)
-            .focused($inputFocused)
-            .padding()
+        ZStack {
+            TextEditor(text: $diaryContent)
+                .multilineTextAlignment(.leading)
+                .frame(minHeight: 180)
+                .focused($inputFocused)
+            Text(diaryContent == "" ? "일기를 작성해주세요" : "")
+                .foregroundColor(.secondary)
+                .opacity(0.5)
+                .position(x: 73, y: 19)
+        }
+        .padding()
     }
 
     //MARK: - 추가버튼
+    //TODO: - disable 시 회색버튼으로 만들기
     var addViewAddButton: some View {
         HStack {
             Spacer()
             Button {
-                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: "", diaryIsPrivate: false), images: selectedImages)
+                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: "", diaryIsPrivate: diaryIsPrivate), images: selectedImages)
                 dismiss()
             } label: {
                 Text("일기 작성하기")
-                    .modifier(GreenButtonModifier())
             }
+            .modifier(GreenButtonModifier())
+            .disabled(selectedImages.isEmpty)
             Spacer()
         }
     }

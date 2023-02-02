@@ -13,7 +13,6 @@ import FirebaseAuth
 
 enum FirebaseCommentServiceError: Error {
     case badSnapshot
-    case readCommentError
     case createCommentError
     case updateCommentError
     case deleteCommentError

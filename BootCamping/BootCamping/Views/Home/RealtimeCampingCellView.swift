@@ -18,37 +18,82 @@ struct RealtimeCampingCellView: View {
     var body: some View {
         VStack(alignment: .leading) {
             diaryImage
-            diaryTitle
-            diaryContent
-            diaryCampingLink
-            diaryInfo
+            diaryUserProfile
+            NavigationLink {
+                DiaryDetailView(item: item)
+            } label: {
+                VStack(alignment: .leading) {
+                    HStack {
+                        diaryTitle
+                        Spacer()
+                        diaryIsPrivate
+                    }
+                    diaryContent
+                    diaryCampingLink
+                    diaryInfo
+                }
+            }
+            .foregroundColor(.bcBlack)
         }
     }
 }
 
 private extension RealtimeCampingCellView {
+    var diaryUserNickName: some View {
+        Text("\(item.diaryUserNickName)")
+    }
+    
     //MARK: - 메인 이미지
     var diaryImage: some View {
         TabView{
-                ForEach(item.diaryImageURLs, id: \.self) { url in
-                    WebImage(url: URL(string: url))
-                        .resizable()
-                        .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
-                        .aspectRatio(contentMode: .fill)
-                    
-                }
+            ForEach(item.diaryImageURLs, id: \.self) { url in
+                WebImage(url: URL(string: url))
+                    .resizable()
+                    .placeholder {
+                        Rectangle().foregroundColor(.gray)
+                    }
+                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
+                    .aspectRatio(contentMode: .fill)
+                
+            }
         }
         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
         .tabViewStyle(PageTabViewStyle())
         // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
-//        .padding(.horizontal, UIScreen.screenWidth * 0.01)
+//        .padding(.vertical, 3)
+    }
+    //MARK: - 다이어리 작성자 프로필
+    var diaryUserProfile: some View {
+        
+        HStack {
+            //TODO: -유저 프로필 사진
+//            WebImage(url: URL(string: url))
+//                .resizable()
+//                .placeholder {
+//                    Rectangle().foregroundColor(.gray)
+//                }
+//                .frame(width: UIScreen.screenWidth * 0.01)
+//                .clipShape(Circle())
+            Image(systemName: "person")
+                .frame(width: 35)
+            //유저 닉네임
+            Text(item.diaryUserNickName)
+            Spacer()
+        }
+        .padding(.horizontal)
     }
     
     //MARK: - 제목
     var diaryTitle: some View {
         Text(item.diaryTitle)
             .font(.system(.title3, weight: .semibold))
+            .padding(.horizontal)
+    }
+    
+    //MARK: - 다이어리 공개 여부 - 잠금 했을때만 자물쇠 나오도록 설정
+    var diaryIsPrivate: some View {
+        Image(systemName: item.diaryIsPrivate ? "lock" : "" )
             .padding()
     }
     
@@ -95,14 +140,12 @@ private extension RealtimeCampingCellView {
     }
 
     
-    //MARK: - 좋아요, 댓글, 유저 닉네임, 타임스탬프
+    //MARK: - 좋아요, 댓글, 타임스탬프
     var diaryInfo: some View {
         HStack {
             Text("좋아요 \(item.diaryLike)")
             Text("댓글 8")
             Spacer()
-            Text("by \(item.diaryUserNickName)")
-            Text("|")
             Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
         }
         .font(.system(.subheadline))
@@ -114,8 +157,7 @@ private extension RealtimeCampingCellView {
 struct RealtimeCampingCellView_Previews: PreviewProvider {
     static var previews: some View {
         RealtimeCampingCellView(item: Diary(id: "", uid: "", diaryUserNickName: "닉네임", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "내용", diaryImageNames: [""], diaryImageURLs: [
-            "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "", diaryIsPrivate: true))
+            "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "", diaryIsPrivate: false))
         .environmentObject(AuthStore())
-        
     }
 }

@@ -95,8 +95,8 @@ class CommentStore: ObservableObject {
     
     //MARK: Read Comment Combine
     
-    func getCommentsCobine() {
-        FirebaseCommentService().getCommentsService()
+    func readCommentsCombine() {
+        FirebaseCommentService().readCommentsService()
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -132,7 +132,7 @@ class CommentStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Create Comment")
-                    self.getCommentsCobine()
+                    self.readCommentsCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -157,7 +157,7 @@ class CommentStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Update CommentLike")
-                    self.getCommentsCobine()
+                    self.readCommentsCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -181,7 +181,7 @@ class CommentStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Delete Comment")
-                    self.getCommentsCobine()
+                    self.readCommentsCombine()
                     return
                 }
             } receiveValue: { _ in

@@ -65,6 +65,7 @@
 		7CFCE12B2987549700E196AF /* RealtimeCampingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE1292987549700E196AF /* RealtimeCampingView.swift */; };
 		7CFCE12D2987549F00E196AF /* WeeklyPopulerCampingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE12C2987549F00E196AF /* WeeklyPopulerCampingView.swift */; };
 		7CFCE12F2987551F00E196AF /* LoginPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE12E2987551F00E196AF /* LoginPasswordView.swift */; };
+		AD1FED36298B930F001FB3E5 /* FirebaseScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1FED35298B930F001FB3E5 /* FirebaseScheduleService.swift */; };
 		AD21BAE32989F28C007ED6B7 /* FirebaseCommentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD21BAE22989F28C007ED6B7 /* FirebaseCommentService.swift */; };
 		AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD373AF92977D68A00E1236A /* DiaryCellView.swift */; };
 		CA27A6252989FCD700A6AEE5 /* SearchCampingSpotListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A6242989FCD700A6AEE5 /* SearchCampingSpotListView.swift */; };
@@ -121,6 +122,7 @@
 		7CFCE1292987549700E196AF /* RealtimeCampingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealtimeCampingView.swift; sourceTree = "<group>"; };
 		7CFCE12C2987549F00E196AF /* WeeklyPopulerCampingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeeklyPopulerCampingView.swift; sourceTree = "<group>"; };
 		7CFCE12E2987551F00E196AF /* LoginPasswordView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginPasswordView.swift; sourceTree = "<group>"; };
+		AD1FED35298B930F001FB3E5 /* FirebaseScheduleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseScheduleService.swift; sourceTree = "<group>"; };
 		AD21BAE22989F28C007ED6B7 /* FirebaseCommentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseCommentService.swift; sourceTree = "<group>"; };
 		AD373AF92977D68A00E1236A /* DiaryCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCellView.swift; sourceTree = "<group>"; };
 		CA27A6242989FCD700A6AEE5 /* SearchCampingSpotListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCampingSpotListView.swift; sourceTree = "<group>"; };
@@ -328,6 +330,7 @@
 			children = (
 				7CC3AD4F29890974002EF992 /* FirebaseDiaryService.swift */,
 				AD21BAE22989F28C007ED6B7 /* FirebaseCommentService.swift */,
+				AD1FED35298B930F001FB3E5 /* FirebaseScheduleService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 				7CC3AD5029890974002EF992 /* FirebaseDiaryService.swift in Sources */,
 				63AF45AF2977CDB40014B1E1 /* Date.swift in Sources */,
 				63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */,
+				AD1FED36298B930F001FB3E5 /* FirebaseScheduleService.swift in Sources */,
 				63AF45DA2977CE4C0014B1E1 /* SettingView.swift in Sources */,
 				7C95F18F298A42B10095A6BC /* AppleAuthCoordinator.swift in Sources */,
 				7CFCE12B2987549700E196AF /* RealtimeCampingView.swift in Sources */,

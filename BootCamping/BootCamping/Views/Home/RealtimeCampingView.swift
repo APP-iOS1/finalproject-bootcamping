@@ -11,26 +11,18 @@ import Firebase
 struct RealtimeCampingView: View {
     
     @EnvironmentObject var diaryStore: DiaryStore
-
+    
     var body: some View {
         VStack {
             ScrollView {
                 ForEach(diaryStore.diaryList) { item in
-                    VStack {
-                        NavigationLink {
-                            DiaryDetailView(item: item)
-                        } label: {
-                            RealtimeCampingCellView(item: item)
-                                .padding(.bottom,40)
-                        }
-                        .foregroundColor(.bcBlack)
-                    }
+                    RealtimeCampingCellView(item: item)
+                        .padding(.bottom,40)
                 }
             }
-            .padding()
             .onAppear {
                 diaryStore.getData()
-        }
+            }
         }
     }
 }

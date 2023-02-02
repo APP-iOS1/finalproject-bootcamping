@@ -60,6 +60,9 @@ struct campingSpotListCell : View{
             } else {
                 WebImage(url: URL(string: item.firstImageUrl))
                     .resizable()
+                    .placeholder {
+                        Rectangle().foregroundColor(.gray)
+                    }
                     .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
                     .padding(.bottom, 5)
             }

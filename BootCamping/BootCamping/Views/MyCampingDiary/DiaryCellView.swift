@@ -21,6 +21,7 @@ struct DiaryCellView: View {
             diaryTitle
             diaryContent
             diaryCampingLink
+            diaryInfo
         }
     }
 }
@@ -32,6 +33,9 @@ private extension DiaryCellView {
                 ForEach(item.diaryImageURLs, id: \.self) { url in
                     WebImage(url: URL(string: url))
                         .resizable()
+                        .placeholder {
+                            Rectangle().foregroundColor(.gray)
+                        }
                         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                         .aspectRatio(contentMode: .fill)
                     
@@ -93,14 +97,12 @@ private extension DiaryCellView {
 
 
     
-    //MARK: - 좋아요, 댓글, 유저 닉네임, 타임스탬프
+    //MARK: - 좋아요, 댓글, 타임스탬프
     var diaryInfo: some View {
         HStack {
             Text("좋아요 \(item.diaryLike)")
             Text("댓글 8")
             Spacer()
-            Text("by \(item.diaryUserNickName)")
-            Text("|")
             Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
         }
         .font(.system(.subheadline))

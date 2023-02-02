@@ -54,6 +54,9 @@ private extension DiaryDetailView {
             ForEach(item.diaryImageURLs, id: \.self) { url in
                 WebImage(url: URL(string: url))
                     .resizable()
+                    .placeholder {
+                        Rectangle().foregroundColor(.gray)
+                    }
                     .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     .aspectRatio(contentMode: .fill)
                 
@@ -159,7 +162,7 @@ private extension DiaryDetailView {
             }
             HStack{
                 Circle()
-                    .frame(width: 30)
+                    .frame(width: 35)
                 VStack(alignment: .leading) {
                     Text("햄뿡이")
                         .font(.title3)
@@ -168,7 +171,7 @@ private extension DiaryDetailView {
             }
             HStack{
                 Circle()
-                    .frame(width: 30)
+                    .frame(width: 35)
                 VStack(alignment: .leading) {
                     Text("햄뿡이")
                         .font(.title3)
@@ -177,7 +180,7 @@ private extension DiaryDetailView {
             }
             HStack{
                 Circle()
-                    .frame(width: 30)
+                    .frame(width: 35)
                 VStack(alignment: .leading) {
                     Text("햄뿡이")
                         .font(.title3)
@@ -193,7 +196,7 @@ private extension DiaryDetailView {
         
         HStack {
             Circle()
-                .frame(width: 30)
+                .frame(width: 35)
             TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
             Button(action: {}) {
                 Image(systemName: "arrowshape.turn.up.right.circle")

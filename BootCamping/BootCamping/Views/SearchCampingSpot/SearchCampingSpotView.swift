@@ -315,15 +315,15 @@ extension SearchCampingSpotView {
 
                 VStack{
                     NavigationLink {
-                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("강") })
+                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("계곡")})
                     } label: {
-                        Image("river")
+                        Image("valley")
                             .resizable()
                             .cornerRadius(50)
                             .frame(width: 90, height: 90)
                             .aspectRatio(contentMode: .fit)
                     }
-                    Text("강")
+                    Text("계곡")
                 }
 
             }
@@ -347,15 +347,15 @@ extension SearchCampingSpotView {
 
                 VStack{
                     NavigationLink {
-                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("호수") })
+                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("강") || $0.lctCl.contains("호수") })
                     } label: {
-                        Image("lake")
+                        Image("river")
                             .resizable()
                             .cornerRadius(50)
                             .frame(width: 90, height: 90)
                             .aspectRatio(contentMode: .fit)
                     }
-                    Text("호수")
+                    Text("강 / 호수")
                 }
                 Spacer()
 

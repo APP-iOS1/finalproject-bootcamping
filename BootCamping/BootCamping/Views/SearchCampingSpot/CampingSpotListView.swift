@@ -24,7 +24,7 @@ struct CampingSpotListView: View {
                         VStack{
                             campingSpotListCell(item: camping)
                                 .padding(.bottom,40)
-//                            Divider()
+                            //                            Divider()
 //                                .padding(.bottom, 10)
                             ///Divider() 없어도 구분 잘 되나요??
                         }

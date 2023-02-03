@@ -12,7 +12,7 @@ struct GreenButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.headline)
-            .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)
+            .frame(width: UIScreen.screenWidth * 0.94, height: UIScreen.screenHeight * 0.07)
             .foregroundColor(.white)
             .background(Color.bcGreen)
             .cornerRadius(10)

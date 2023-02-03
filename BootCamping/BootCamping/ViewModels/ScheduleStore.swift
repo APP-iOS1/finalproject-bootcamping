@@ -26,7 +26,7 @@ class ScheduleStore: ObservableObject {
     // MARK: Add Schedule
     func addSchedule(_ schedule: Schedule) {
         guard let userUID = Auth.auth().currentUser?.uid else { return }
-       
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
@@ -79,7 +79,7 @@ class ScheduleStore: ObservableObject {
                     print("Failed get Schedules")
                     self.firebaseScheduleServiceError = .badSnapshot
                     self.showErrorAlertMessage = self.firebaseScheduleServiceError.errorDescription!
-                        return
+                    return
                 case .finished:
                     print("Finished get Schedules")
                     return
@@ -102,9 +102,11 @@ class ScheduleStore: ObservableObject {
                     print("Failed create Schedule")
                     self.firebaseScheduleServiceError = .createScheduleError
                     self.showErrorAlertMessage = self.firebaseScheduleServiceError.errorDescription!
-                        return
+                    
+                    return
                 case .finished:
                     print("Finished create Schedule")
+                    self.readScheduleCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -112,7 +114,7 @@ class ScheduleStore: ObservableObject {
             }
             .store(in: &cancellables)
     }
-
+    
     //MARK: Delete Schedule Combine
     
     func deleteScheduleCombine(schedule: Schedule) {
@@ -125,16 +127,17 @@ class ScheduleStore: ObservableObject {
                     print("Failed create Schedule")
                     self.firebaseScheduleServiceError = .deleteScheduleError
                     self.showErrorAlertMessage = self.firebaseScheduleServiceError.errorDescription!
-                        return
+                    return
                 case .finished:
                     print("Finished create Schedule")
+                    self.readScheduleCombine()
                     return
                 }
             } receiveValue: { _ in
                 
             }
             .store(in: &cancellables)
-
+        
     }
-
+    
 }

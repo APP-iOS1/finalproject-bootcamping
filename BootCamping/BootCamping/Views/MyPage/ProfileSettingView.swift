@@ -25,19 +25,24 @@ struct ProfileSettingView: View {
     @State private var newPasswordCheck: String = ""
     
     var body: some View {
-        VStack(alignment: .leading, spacing: UIScreen.screenHeight * 0.05){
-            HStack{
-                Spacer()
-                photoPicker
-                Spacer()
+        ScrollView(showsIndicators: false) {
+            VStack(alignment: .leading, spacing: UIScreen.screenHeight * 0.03){
+                HStack{
+                    Spacer()
+                    photoPicker
+                    Spacer()
+                }
+                updateUserNameTextField
+                updatePasswordTextField
+                    .padding(.bottom)
+                ///이러면 또 질문이 있는데 14pro에서 키보드 올리면 키보드 위에 그린버튼이 살짝 걸치거든용, 키보드 치다가 그린버튼 눌려서 빡치는 상황이 나올수도 있겠다 싶네용...
+                editButton
+                
+                
             }
-            updateUserNameTextField
-            updatePasswordTextField
-            Spacer()
-            editButton
-            
         }
-        .padding(.vertical, UIScreen.screenHeight * 0.05)
+        
+        //        .padding(.vertical, UIScreen.screenHeight * 0.05)
         .padding(.horizontal, UIScreen.screenWidth * 0.05)
     }
     

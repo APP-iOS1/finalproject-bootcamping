@@ -66,7 +66,7 @@ class AuthStore: ObservableObject {
                     let bookMarkedDiaries: [String] = docData["bookMarkedDiaries"] as? [String] ?? []
                     let bookMarkedSpot: [String] = docData["bookMarkedSpot"] as? [String] ?? []
                     
-                    let user: User = User(id: id, profileImage: profileImage, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries, bookMarkedSpot: bookMarkedSpot)
+                    let user: User = User(id: id, profileImageName: "", profileImageURL: profileImage, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries, bookMarkedSpot: bookMarkedSpot)
                     self.userList.append(user)
                     print(self.userList)
                 }
@@ -145,7 +145,8 @@ class AuthStore: ObservableObject {
 
         try await database.collection("UserList").document(user.id).setData([
             "id": user.id,
-            "profileImage": user.profileImage,
+            "profileImageName": user.profileImageName,
+            "profileImageURL": user.profileImageURL,
             "nickName": user.nickName,
             "userEmail": user.userEmail,
             "bookMarkedDiaries": user.bookMarkedDiaries,

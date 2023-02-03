@@ -31,6 +31,9 @@ struct SettingView: View {
             NavigationLink(destination: EmptyView()) {
                 Text("알림설정")
             }
+            NavigationLink(destination: EmptyView()) {
+                Text("보안설정") //페이스아이디
+            }
             Button {
                 authStore.googleSignOut()
                 authStore.authSignOut()

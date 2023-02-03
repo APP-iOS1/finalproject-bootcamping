@@ -56,7 +56,7 @@ struct SearchCampingSpotView: View {
                         recommendCampingSpot
                         
                     }//VStack 끝
-                    .padding(.horizontal, UIScreen.screenWidth*0.05)
+                    .padding(.horizontal, UIScreen.screenWidth*0.03)
                     .toolbar{
                         ToolbarItem(placement: .navigationBarLeading) {
                             Text("BOOTCAMPING")

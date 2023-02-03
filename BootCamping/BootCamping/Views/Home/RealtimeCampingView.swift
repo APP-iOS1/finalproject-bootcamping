@@ -17,7 +17,7 @@ struct RealtimeCampingView: View {
             ScrollView(showsIndicators: false) {
                 ForEach(diaryStore.diaryList) { item in
                     if item.diaryIsPrivate == false {
-                        DiaryCellView(item: item)
+                        RealtimeCampingCellView(item: item)
                             .padding(.bottom, 20)
                     }
                 }

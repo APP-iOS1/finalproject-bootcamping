@@ -31,24 +31,35 @@ struct CampingSpotDetailView: View {
     var places: Item
     
     var body: some View {
-        let images = ["10", "9", "8"]
+//        let images = ["10", "9", "8"] //기존 샘플 사진
         let diary = ["1", "2", "3"]
         
         ZStack {
             ScrollView(showsIndicators: false) {
                 TabView {
-                    ForEach(images, id: \.self) { item in
-                        WebImage(url: URL(string: places.firstImageUrl))
-                            .resizable()
-                            .placeholder {
-                                Rectangle().foregroundColor(.gray)
-                            }
-                            .scaledToFill()
-                            .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
-                            .clipped()
+                    ForEach(0...2, id: \.self) { item in
+                        // 캠핑장 사진
+                        if places.firstImageUrl.isEmpty {
+                            // 이미지 없는 것도 있어서 어떻게 할 지 고민 중~
+                            Image("noImage")
+                                .resizable()
+                                .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
+                                .padding(.bottom, 5)
+                        } else {
+                            WebImage(url: URL(string: places.firstImageUrl))
+                                .resizable()
+                                .placeholder {
+                                    Rectangle().foregroundColor(.gray)
+                                }
+                                .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
+                                .padding(.bottom, 5)
+                        }
                     }
                 }
+                .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                 .tabViewStyle(PageTabViewStyle())
+                // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
+                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Group {
@@ -60,7 +71,7 @@ struct CampingSpotDetailView: View {
                             
                             Button {
                                 bookmarkSpotStore.addBookmark(places)
-                             //   isBookmark.toggle()
+                                isBookmark.toggle()
                             } label: {
                                 Image(systemName: isBookmark ? "bookmark.fill" : "bookmark")
                                     .font(.title3)
@@ -215,8 +226,10 @@ struct ServiceIcon: View {
     }
 }
 
-struct CampingSpotDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        CampingSpotDetailView(places: Item(contentId: "", facltNm: "", lineIntro: "", intro: "", allar: "", insrncAt: "", trsagntNo: "", bizrno: "", facltDivNm: "", mangeDivNm: "", mgcDiv: "", manageSttus: "", hvofBgnde: "", hvofEnddle: "", featureNm: "", induty: "", lctCl: "", doNm: "", sigunguNm: "", zipcode: "", addr1: "", addr2: "", mapX: "", mapY: "", direction: "", tel: "", homepage: "", resveUrl: "", resveCl: "", manageNmpr: "", gnrlSiteCo: "", autoSiteCo: "", glampSiteCo: "", caravSiteCo: "", indvdlCaravSiteCo: "", sitedStnc: "", siteMg1Width: "", siteMg2Width: "", siteMg3Width: "", siteMg1Vrticl: "", siteMg2Vrticl: "", siteMg3Vrticl: "", siteMg1Co: "", siteMg2Co: "", siteMg3Co: "", siteBottomCl1: "", siteBottomCl2: "", siteBottomCl3: "", siteBottomCl4: "", siteBottomCl5: "", tooltip: "", glampInnerFclty: "", caravInnerFclty: "", prmisnDe: "", operPdCl: "", operDeCl: "", trlerAcmpnyAt: "", caravAcmpnyAt: "", toiletCo: "", swrmCo: "", wtrplCo: "", brazierCl: "", sbrsCl: "", sbrsEtc: "", posblFcltyCl: "", posblFcltyEtc: "", clturEventAt: "", clturEvent: "", exprnProgrmAt: "", exprnProgrm: "", extshrCo: "", frprvtWrppCo: "", frprvtSandCo: "", fireSensorCo: "", themaEnvrnCl: "", eqpmnLendCl: "", animalCmgCl: "", tourEraCl: "", firstImageUrl: "", createdtime: "", modifiedtime: ""))
-    }
-}
+//struct CampingSpotDetailView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CampingSpotDetailView(places: Item(contentId: "", facltNm: "", lineIntro: "", intro: "", allar: "", insrncAt: "", trsagntNo: "", bizrno: "", facltDivNm: "", mangeDivNm: "", mgcDiv: "", manageSttus: "", hvofBgnde: "", hvofEnddle: "", featureNm: "", induty: "", lctCl: "", doNm: "", sigunguNm: "", zipcode: "", addr1: "", addr2: "", mapX: "", mapY: "", direction: "", tel: "", homepage: "", resveUrl: "", resveCl: "", manageNmpr: "", gnrlSiteCo: "", autoSiteCo: "", glampSiteCo: "", caravSiteCo: "", indvdlCaravSiteCo: "", sitedStnc: "", siteMg1Width: "", siteMg2Width: "", siteMg3Width: "", siteMg1Vrticl: "", siteMg2Vrticl: "", siteMg3Vrticl: "", siteMg1Co: "", siteMg2Co: "", siteMg3Co: "", siteBottomCl1: "", siteBottomCl2: "", siteBottomCl3: "", siteBottomCl4: "", siteBottomCl5: "", tooltip: "", glampInnerFclty: "", caravInnerFclty: "", prmisnDe: "", operPdCl: "", operDeCl: "", trlerAcmpnyAt: "", caravAcmpnyAt: "", toiletCo: "", swrmCo: "", wtrplCo: "", brazierCl: "", sbrsCl: "", sbrsEtc: "", posblFcltyCl: "", posblFcltyEtc: "", clturEventAt: "", clturEvent: "", exprnProgrmAt: "", exprnProgrm: "", extshrCo: "", frprvtWrppCo: "", frprvtSandCo: "", fireSensorCo: "", themaEnvrnCl: "", eqpmnLendCl: "", animalCmgCl: "", tourEraCl: "", firstImageUrl: "", createdtime: "", modifiedtime: ""))
+//            .environmentObject(AuthStore())
+//            .environmentObject(BookmarkSpotStore())
+//    }
+//}

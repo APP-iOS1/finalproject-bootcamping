@@ -41,10 +41,11 @@ struct CampingSpotDetailView: View {
                                 Rectangle().foregroundColor(.gray)
                             }
                             .scaledToFill()
+                            .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
+                            .clipped()
                     }
                 }
                 .tabViewStyle(PageTabViewStyle())
-                .frame(width: UIScreen.screenWidth, height: 300)
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Group {

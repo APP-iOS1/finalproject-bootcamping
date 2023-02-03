@@ -63,7 +63,9 @@ struct campingSpotListCell : View{
                     .placeholder {
                         Rectangle().foregroundColor(.gray)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
+                    .scaledToFill()
+                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
+                    .clipped()
                     .padding(.bottom, 5)
             }
             

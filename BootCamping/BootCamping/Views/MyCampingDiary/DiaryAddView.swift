@@ -60,9 +60,10 @@ struct DiaryAddView: View {
             .disableAutocorrection(true) //자동 수정 비활성화
             .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
             .submitLabel(.done) //작성 완료하면 키보드 return 버튼이 파란색 done으로 바뀜
-        .onSubmit(of: .text, submit)
-        .padding(.horizontal, UIScreen.screenWidth*0.05)
-        } //done 누르면 submit 함수가 실행됨
+        }
+        .padding(.horizontal, UIScreen.screenWidth*0.03)
+        .padding(.vertical)
+        .navigationTitle(Text("캠핑 일기 쓰기"))
     }
 }
 
@@ -92,7 +93,7 @@ private extension DiaryAddView {
                         }
                         .onChange(of: selectedItems) { newValue in
                             Task {
-                                selectedItems = []
+                                selectedImages = []
                                 for value in newValue {
                                     if let imageData = try? await value.loadTransferable(type: Data.self) {
                                         selectedImages.append(imageData)
@@ -101,26 +102,30 @@ private extension DiaryAddView {
                             }
                         }
                 }
-                .padding(.bottom)
 
                 Text(selectedImages.isEmpty ? "사진을 추가해주세요" : "")
                     .foregroundColor(.secondary)
                     .opacity(0.5)
                     .padding(.leading, UIScreen.screenWidth * 0.05)
                 
+                //TODO: -선택된 사진 취소할 수 있도록
                 if selectedImages.count > 0 {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(selectedImages, id: \.self) { image in
                                 Image(uiImage: UIImage(data: image)!)
                                     .resizable()
+                                    .scaledToFill()
                                     .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
+                                    .clipped()
                             }
+
                         }
                     }
                 }
                 
             }
+            .padding(.bottom)
         
     }
     
@@ -208,7 +213,7 @@ private extension DiaryAddView {
                 diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: "", diaryIsPrivate: diaryIsPrivate), images: selectedImages)
                 dismiss()
             } label: {
-                Text(selectedImages.isEmpty ? "사진을 추가해주세요" : "일기 작성하기")
+                Text(selectedImages.isEmpty ? "사진을 추가해주세요" : "일기 쓰기")
             }
             .font(.headline)
             .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)
@@ -241,5 +246,14 @@ struct DiaryAddView_Previews: PreviewProvider {
         DiaryAddView()
             .environmentObject(AuthStore())
             .environmentObject(DiaryStore())
+        
+        DiaryAddView()
+            .environmentObject(AuthStore())
+            .environmentObject(DiaryStore())
+            .previewDevice("iPhone 11")
+        DiaryAddView()
+            .environmentObject(AuthStore())
+            .environmentObject(DiaryStore())
+            .previewDevice("iPhone SE (3rd generation)")
     }
 }

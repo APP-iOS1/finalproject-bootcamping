@@ -13,29 +13,21 @@ extension UIScreen {
    static let screenSize = UIScreen.main.bounds.size
 }
 
+//MARK: - 사용하는 컬러 익스텐션입니다.
 extension Color {
-  init(hex: String) {
-    let scanner = Scanner(string: hex)
-    _ = scanner.scanString("#")
-    
-    var rgb: UInt64 = 0
-    scanner.scanHexInt64(&rgb)
-    
-    let r = Double((rgb >> 16) & 0xFF) / 255.0
-    let g = Double((rgb >>  8) & 0xFF) / 255.0
-    let b = Double((rgb >>  0) & 0xFF) / 255.0
-    self.init(red: r, green: g, blue: b)
-  }
-}
-
-extension Color {
-    static let bcDarkGray = Color(hex: "2E2E2E")
     static let bcBlack = Color("BCBlack")
     static let bcGreen = Color("BCGreen")
+    static let bcDarkGray = Color("BCDarkGray")
+    static let bcYellow = Color("BCYellow")
 }
 
-//extension View {
-//  func hideKeyboard() {
-//    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-//  }
-//}
+//MARK: - 키보드 dismiss extension함수입니다.
+extension View {
+    func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+
+
+
+

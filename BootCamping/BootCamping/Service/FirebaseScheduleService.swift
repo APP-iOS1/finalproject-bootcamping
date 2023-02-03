@@ -34,7 +34,7 @@ struct FirebaseScheduleService {
     
     let database = Firestore.firestore()
     
-    //    //MARK: Read FirebaseScheduleService
+    //MARK: - Read FirebaseScheduleService
     func readScheduleService() -> AnyPublisher<[Schedule], Error> {
         Future<[Schedule], Error> { promise in
             guard let userUID = Auth.auth().currentUser?.uid else { return }
@@ -63,7 +63,7 @@ struct FirebaseScheduleService {
                         let date: String = docData["date"] as? String ?? ""
                         
                         let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ssSSS"
+                        dateFormatter.dateFormat = "yyyy-MM-dd"
                         
                         let schedule: Schedule = Schedule(id: id, title: title, date: dateFormatter.date(from: date) ?? Date())
                         schedules.append(schedule)
@@ -74,16 +74,22 @@ struct FirebaseScheduleService {
         .eraseToAnyPublisher()
     }
     
+    //MARK: - Create FirebaseScheduleService
+
     func createScheduleService(schedule: Schedule) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
             guard let userUID = Auth.auth().currentUser?.uid else { return }
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            
             self.database.collection("UserList")
                 .document(userUID)
                 .collection("Schedule")
                 .document(schedule.id)
                 .setData(["id": schedule.id,
                           "title": schedule.title,
-                          "date": schedule.date.toString()
+                          "date": dateFormatter.string(from: schedule.date)
                          ]) { error in
                     if let error = error {
                         print(error)
@@ -96,6 +102,8 @@ struct FirebaseScheduleService {
         .eraseToAnyPublisher()
     }
     
+    //MARK: - Delete FirebaseScheduleService
+
     func deleteScheduleService(schedule: Schedule) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
             guard let userUID = Auth.auth().currentUser?.uid else { return }

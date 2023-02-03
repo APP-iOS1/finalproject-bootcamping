@@ -75,7 +75,7 @@ private extension RealtimeCampingCellView {
 //                }
 //                .frame(width: UIScreen.screenWidth * 0.01)
 //                .clipShape(Circle())
-            Image(systemName: "person")
+            Image(systemName: "person.fill")
                 .frame(width: 35)
             //유저 닉네임
             Text(item.diaryUserNickName)

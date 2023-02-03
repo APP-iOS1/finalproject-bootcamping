@@ -12,7 +12,7 @@ struct EmptyCampingSpotListCell: View {
         VStack(alignment: .leading) {
             Rectangle()
                 .fill(Color.bcBlack.opacity(0.1))
-                .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
+                .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
             HStack {
                 ForEach(0...2, id: \.self) { _ in
                     RoundedRectangle(cornerRadius: 10)

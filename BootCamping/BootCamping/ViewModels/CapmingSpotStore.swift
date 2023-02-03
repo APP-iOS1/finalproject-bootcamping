@@ -13,6 +13,7 @@ import FirebaseFirestore
 //MARK: - 캠핑리스트 추가/ 업데이트 함수입니다.
 class CampingSpotStore: ObservableObject {
     @Published var campingSpotList: [Item] = []
+    @Published var campingSpots: [Item] = []
     @Published var firebaseCampingSpotServiceError: FirebaseCampingSpotServiceError = .badSnapshot
     @Published var showErrorAlertMessage: String = "Error"
     @Published var lastDoc: QueryDocumentSnapshot?
@@ -290,7 +291,6 @@ class CampingSpotStore: ObservableObject {
     
     //MARK: 캠핑장리스트 combine으로 읽어오는 함수
     func readCampingSpotListCombine() {
-        self.campingSpotList.removeAll()
         FirebaseCampingSpotService().readCampingSpotService(lastDoc: lastDoc)
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -307,7 +307,7 @@ class CampingSpotStore: ObservableObject {
                 }
             } receiveValue: { [weak self] lastDocument in
                 self?.lastDoc = lastDocument.lastDoc
-                self?.campingSpotList.append(contentsOf: lastDocument.campingSpots)
+                self?.campingSpots = lastDocument.campingSpots
             }
             .store(in: &cancellables)
     }

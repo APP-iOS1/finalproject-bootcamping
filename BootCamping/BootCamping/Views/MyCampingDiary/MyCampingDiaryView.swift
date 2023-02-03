@@ -17,7 +17,8 @@ struct MyCampingDiaryView: View {
             ScrollView(showsIndicators: false) {
                 if faceId.isUnlocked {
                     VStack(alignment: .center) {
-                        Text("일기가 잠겨있습니다.").padding()
+                        Text("일기가 잠겨있습니다.")
+                            .padding()
                         
                         Button {
                             faceId.authenticate()
@@ -28,43 +29,34 @@ struct MyCampingDiaryView: View {
                     
                 } else {
                     ForEach(diaryStore.diaryList) { diaryData in
-                        //네비게이션 화살표 없애기
                         VStack {
-                            ZStack {
-                                NavigationLink {
-                                    DiaryDetailView(item: diaryData)
-                                } label: {
-                                    DiaryCellView(item: diaryData)
-                                        .padding(.bottom,40)
-                                }
-                                .foregroundColor(.bcBlack)
-                                .padding(.vertical, UIScreen.screenHeight * 0.01)
+                            RealtimeCampingCellView(item: diaryData)
+                                .padding(.bottom, 20)
                             }
                         }
-                    }
                     .onAppear {
                         diaryStore.readDiarysCombine()
                         print("\(diaryStore.diaryList)")
                     }
-                    .toolbar{
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            
-                            Text("My Camping Diary")
-                                .font(.title.bold())
-                        }
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            NavigationLink {
-                                DiaryAddView()
-                            } label: {
-                                Image(systemName: "plus")
-                            }
-                        }
-                    }
-                    
+
                 }
+                
             }
         }
         .onAppear(perform: faceId.authenticate)
+        .toolbar{
+            ToolbarItem(placement: .navigationBarLeading) {
+                Text("My Camping Diary")
+                    .font(.title.bold())
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink {
+                    DiaryAddView()
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+        }
     }
 }
 

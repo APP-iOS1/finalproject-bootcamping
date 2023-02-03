@@ -7,60 +7,67 @@
 
 import SwiftUI
 import Firebase
+import SDWebImageSwiftUI
 
 struct WeeklyPopulerCampingView: View {
-    //예시 포토카드 사진
-    var homePhotoCards = ["1", "2", "3", "4"]
-    //예시 포토카드 글
-    var photoCardTestData = [PhotoCardTestData(date: "2023.01.17", campingPlace: "충주호 캠핑월드", title: "충주호 보면서 불멍하기", user: "by User")]
-    
-    var diarySample = [
-        Diary(id: "", uid: "", diaryUserNickName: "닉네임", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "내용", diaryImageNames: [""], diaryImageURLs: [
-            "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "", diaryIsPrivate: true)
-        ]
+    //TODO: - 좋아요 많이 받은 글 10개만 뜰 수 있도록
+    @EnvironmentObject var diaryStore: DiaryStore
     
     var body: some View {
         VStack {
-            ScrollView(.horizontal, showsIndicators: false){
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(homePhotoCards, id: \.self) { item in
-                        NavigationLink {
-                            DiaryDetailView(item: diarySample[0])
-                        } label: {
-                            ZStack(alignment: .leading) {
-                                PhotoCardFrame(image: item)
-                                LinearGradient(gradient: Gradient(colors: [Color.bcBlack.opacity(0.3), Color.clear]), startPoint: .top, endPoint: .bottom)
-                                    .cornerRadius(20)
-                                photoMainStory
-                                    .offset(y: -150)
+                    ForEach(diaryStore.diaryList, id: \.self) { item in
+                        if item.diaryIsPrivate == false {
+                            NavigationLink {
+                                DiaryDetailView(item: item)
+                            } label: {
+                                ZStack(alignment: .leading) {
+                                    PhotoCardFrame(image: item.diaryImageURLs[0])
+                                    LinearGradient(gradient: Gradient(colors: [Color.bcBlack.opacity(0.3), Color.clear]), startPoint: .top, endPoint: .bottom)
+                                        .cornerRadius(20)
+                                    PhotoMainStory(item: item)
+                                        .offset(y: -(UIScreen.screenHeight * 0.2))
+                                }
+                                .modifier(PhotoCardModifier())
                             }
-                            .modifier(PhotoCardModifier())
+                        } else {
+                            EmptyView()
                         }
+                        
                     }
                     
                 }
             }
         }
     }
+}
+
+//MARK: - 포토카드 위 글씨
+struct PhotoMainStory: View {
+    var item: Diary
     
-    //MARK: - 포토카드 위 글씨
-    var photoMainStory: some View {
+    var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
-                Text(photoCardTestData[0].date)
+                Text("\(item.diaryVisitedDate.getKoreanDate())")
                     .font(.subheadline)
+                    .padding(.bottom, 0.01)
                 
-                Text(photoCardTestData[0].campingPlace)
+                //TODO: -캠핑장 이름 연결
+                Text("난지캠핑장")
                     .font(.headline)
                     .fontWeight(.bold)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, UIScreen.screenHeight * 0.03)
                 
-                Text(photoCardTestData[0].title)
+                Text(item.diaryTitle)
                     .font(.title2)
                     .fontWeight(.bold)
-                    .padding(.bottom, 3)
-                Text(photoCardTestData[0].user)
+                    .padding(.bottom, 0.01)
+                
+                Text("by \(item.diaryUserNickName)")
                     .font(.subheadline)
+                
                 
             }
             .foregroundColor(.white)
@@ -75,10 +82,11 @@ struct PhotoCardFrame: View {
     var image: String
     
     var body: some View {
-        Image(image)
+        WebImage(url: URL(string: image))
             .resizable()
-            .aspectRatio(contentMode: .fill)
+            .scaledToFill()
             .frame(width: UIScreen.screenWidth * 0.75, height: UIScreen.screenHeight * 0.7)
+            .clipped()
             .cornerRadius(20)
             .overlay(alignment: .bottomTrailing, content: {
                 Text("자세히 보기 >")
@@ -89,17 +97,10 @@ struct PhotoCardFrame: View {
     }
 }
 
-
-//MARK: - 포토카드 테스트 구조체입니다.
-struct PhotoCardTestData {
-    var date: String
-    var campingPlace: String
-    var title: String
-    var user: String
-}
-
-struct WeeklyPopulerCampingView_Previews: PreviewProvider {
-    static var previews: some View {
-        WeeklyPopulerCampingView()
-    }
-}
+//MARK: - 서버에서 받아오는 뷰라 프리뷰 불가능합니다.
+//struct WeeklyPopulerCampingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        WeeklyPopulerCampingView()
+//            .environmentObject(DiaryStore())
+//    }
+//}

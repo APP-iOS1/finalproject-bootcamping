@@ -5,6 +5,7 @@
 //  Created by Donghoon Bae on 2023/01/19.
 //
 
+import Combine
 import Foundation
 import Firebase
 import FirebaseFirestore
@@ -12,8 +13,12 @@ import FirebaseFirestore
 //MARK: - 캠핑리스트 추가/ 업데이트 함수입니다.
 class CampingSpotStore: ObservableObject {
     @Published var campingSpotList: [Item] = []
+    @Published var firebaseCampingSpotServiceError: FirebaseCampingSpotServiceError = .badSnapshot
+    @Published var showErrorAlertMessage: String = "Error"
     
     let database = Firestore.firestore()
+    
+    private var cancellables = Set<AnyCancellable>()
     
     func fetchCampingSpot() {
         database.collection("CampingSpotList").getDocuments { (snapshot, error) in
@@ -281,4 +286,7 @@ class CampingSpotStore: ObservableObject {
         ])
         fetchCampingSpot()
     }
+    
+    //MARK: 캠핑장리스트 combine으로 읽어오는 함수
+    func readCampingSpotListCombine(page: Int)
 }

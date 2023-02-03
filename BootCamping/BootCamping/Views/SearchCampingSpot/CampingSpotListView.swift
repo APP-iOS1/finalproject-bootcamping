@@ -38,6 +38,12 @@ struct CampingSpotListView: View {
                    }
                }
            }
+                   // MARK: 로티뷰... 일단 주석처리 해둘게요ㅠㅠ
+//        .overlay(content: {
+//            LottieView()
+//                .frame(width: 100, alignment: .center)
+//                .padding(.leading, 20)
+//        }) // 여기까지
 
        }
    }

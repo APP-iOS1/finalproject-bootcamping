@@ -17,7 +17,6 @@ struct SearchCampingSpotListView: View {
     //MARK: 검색할 때 필터링하여 저장
     var filterCamping: [Item] {
         if searchText == "" { return campingSpotStore.campingSpotList }
-        
         return campingSpotStore.campingSpotList.filter { $0.facltNm.lowercased().contains(searchText.lowercased()) }
     }
     

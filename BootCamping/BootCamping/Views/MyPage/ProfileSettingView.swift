@@ -12,14 +12,11 @@ import FirebaseAuth
 // FIXME: 현재 기획한 UserInfo 데이터 모델에 따라서 텍스트 필드 변경 필요
 /// 현재 기획 모델 그대로 가면 닉네임이랑 이메일, 비밀번호 변경하는 걸로 바꿔야 할 것 같습니다
 struct ProfileSettingView: View {
-    @EnvironmentObject var authStore: AuthStore
+    var user: User
+//    @EnvironmentObject var authStore: AuthStore
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
-    @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
-    //로그아웃 시 탭 변경하기 위한 변수
-    @EnvironmentObject var tabSelection: TabSelector
-    //로그아웃시 isSignIn을 false로 변경
-    @Binding var isSignIn: Bool
+//    @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
     
     @State private var updateNickname: String = ""
     
@@ -27,13 +24,10 @@ struct ProfileSettingView: View {
         VStack(alignment: .leading, spacing: UIScreen.screenHeight * 0.05){
             HStack{
                 photoPicker
-                updateNicknameTextField
             }
             updateUserNameTextField
-            updateUserPhoneNumberTextField
-            editButton
             Spacer()
-            signOutButton
+            editButton
             
         }
         .padding(.vertical, UIScreen.screenHeight * 0.05)
@@ -63,11 +57,21 @@ extension ProfileSettingView {
                     selection: $selectedItem,
                     matching: .images,
                     photoLibrary: .shared()) {
-                        Image(systemName: "pencil.circle")
-                            .font(.title)
-                            .foregroundColor(.bcBlack)
-                            .offset(x: 40, y: 40)
-                            .frame(width: 100, height: 100)
+                        ZStack{
+                            Image(systemName: "circlebadge.fill")
+                                .font(.largeTitle)
+                                .foregroundColor(.primary)
+                                .colorInvert()
+                                .offset(x: 40, y: 40)
+                                .frame(width: 100, height: 100)
+                            
+                            Image(systemName: "pencil.circle")
+                                .font(.title)
+                                .foregroundColor(.bcBlack)
+                                .offset(x: 40, y: 40)
+                                .frame(width: 100, height: 100)
+                            
+                        }
                     }
                     .onChange(of: selectedItem) { newItem in
                         Task {
@@ -81,57 +85,48 @@ extension ProfileSettingView {
         }
     }
     // MARK: -View : updateNicknameTextField
-    private var updateNicknameTextField : some View {
-        TextField("닉네임을 입력해주세요", text: $updateNickname)
-    }
+//    private var updateNicknameTextField : some View {
+//        TextField("닉네임을 입력해주세요", text: $updateNickname)
+//    }
     
     // MARK: -View : updateUserNameTextField
     private var updateUserNameTextField : some View {
         VStack(alignment: .leading, spacing: 10){
-            Text("예약자 이름")
+            Text("닉네임")
                 .font(.title3)
                 .bold()
-            Text("이민경")
+            TextField("닉네임", text: $updateNickname,prompt: Text("\(user.nickName)"))
+                .disableAutocorrection(true)
+                .textInputAutocapitalization(.never)
         }
     }
     
     // MARK: -View : updateUserPhoneNumberTextField
-    private var updateUserPhoneNumberTextField : some View {
-        VStack(alignment: .leading, spacing: 10){
-            Text("휴대폰 번호")
-                .font(.title3)
-                .bold()
-            Text("01012345678")
-        }
-    }
+//    private var updateUserPhoneNumberTextField : some View {
+//        VStack(alignment: .leading, spacing: 10){
+//            Text("휴대폰 번호")
+//                .font(.title3)
+//                .bold()
+////            Text("01012345678")
+//            TextField("휴대폰 번호를 입력해주세요", text: <#T##Binding<String>#>)
+//
+//        }
+//    }
     // MARK: -View : editButton
     private var editButton : some View {
         Button {
             // TODO: UserInfo 수정하기
+            
         } label: {
             Text("수정")
                 .modifier(GreenButtonModifier())
         }
     }
-    // MARK: -View : signOutButton
-    private var signOutButton : some View {
-        HStack{
-            Spacer()
-            Button {
-                authStore.googleSignOut()
-                authStore.authSignOut()
-                kakaoAuthStore.kakaoLogout()
-                isSignIn = false
-                tabSelection.change(to: .one)
-            } label: {
-                Text("로그아웃")
-            }
-        }
-    }
+
 }
 
 struct ProfileSettingView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileSettingView(isSignIn: .constant(true))
+        ProfileSettingView(user: User(id: "", profileImage: "", nickName: "chasomin", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
     }
 }

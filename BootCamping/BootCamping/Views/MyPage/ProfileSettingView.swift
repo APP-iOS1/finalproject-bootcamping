@@ -151,6 +151,6 @@ extension ProfileSettingView {
 
 struct ProfileSettingView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileSettingView(user: User(id: "", profileImage: "", nickName: "chasomin", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
+        ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "chasomin", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
     }
 }

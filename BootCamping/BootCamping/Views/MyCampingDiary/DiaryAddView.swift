@@ -69,7 +69,7 @@ struct DiaryAddView: View {
 
 
 private extension DiaryAddView {
-    //MARK: - 포토 피커
+    //MARK: - 포토피커
     var photoPicker: some View {
         HStack {
             VStack{
@@ -85,37 +85,6 @@ private extension DiaryAddView {
                                     .padding(.bottom, 5)
                             }
                         }
-                        .onChange(of: selectedItems) { newValue in
-                            Task {
-                                selectedImages = []
-                                for value in newValue {
-                                    if let imageData = try? await value.loadTransferable(type: Data.self) {
-                                        selectedImages.append(imageData)
-                                    }
-                                }
-                            }
-                        }
-                }
-
-                Text(selectedImages.isEmpty ? "사진을 추가해주세요" : "")
-                    .foregroundColor(.secondary)
-                    .opacity(0.5)
-                    .padding(.leading, UIScreen.screenWidth * 0.05)
-                
-                //TODO: -선택된 사진 취소할 수 있도록
-                if selectedImages.count > 0 {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack {
-                            ForEach(selectedImages, id: \.self) { image in
-                                Image(uiImage: UIImage(data: image)!)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
-                                    .clipped()
-                            }
-
-
-                 /*
                         .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
                         .background {
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -124,7 +93,7 @@ private extension DiaryAddView {
                     }
                     .onChange(of: selectedItems) { newValue in
                         Task {
-                            selectedItems = []
+                            selectedImages = []
                             for value in newValue {
                                 if let imageData = try? await value.loadTransferable(type: Data.self) {
                                     selectedImages.append(imageData)
@@ -145,7 +114,9 @@ private extension DiaryAddView {
                         ForEach(Array(zip(0..<selectedImages.count, selectedImages)), id: \.0) { index, image in
                             Image(uiImage: UIImage(data: image)!)
                                 .resizable()
+                                .scaledToFill()
                                 .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
+                                .clipped()
                                 .overlay(
                                     Text("대표이미지")
                                         .padding(2)
@@ -154,14 +125,13 @@ private extension DiaryAddView {
                                         .offset(y : UIScreen.screenWidth * 0.07)
                                         .opacity(index == 0 ? 1 : 0)
                                 )
-                 */
-
                         }
                     }
                 }
             }
-            .padding(.bottom)
-        
+            
+        }
+        .padding(.bottom)
     }
     
     //MARK: - 제목 작성

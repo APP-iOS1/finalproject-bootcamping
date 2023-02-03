@@ -18,7 +18,6 @@ struct DiaryDetailView: View {
     @State private var isShowingDeleteAlert = false
     
     @EnvironmentObject var diaryStore: DiaryStore
-    @EnvironmentObject var authStore: AuthStore
     
     
     @State var isBookmarked: Bool = false
@@ -67,23 +66,23 @@ private extension DiaryDetailView {
     var diaryUserProfile: some View {
         HStack {
             //TODO: -유저 프로필 사진
-            ForEach(authStore.userList) { user in
-                if item.uid == user.id && user.profileImage != "" {
-                    WebImage(url: URL(string: user.profileImage))
-                        .resizable()
-                        .placeholder {
-                            Rectangle().foregroundColor(.gray)
-                        }
-                        .scaledToFill()
-                        .frame(width: UIScreen.screenWidth * 0.01)
-                        .clipShape(Circle())
-                } else {
+//            ForEach(authStore.userList) { user in
+//                if item.uid == user.id && user.profileImage != "" {
+//                    WebImage(url: URL(string: user.profileImage))
+//                        .resizable()
+//                        .placeholder {
+//                            Rectangle().foregroundColor(.gray)
+//                        }
+//                        .scaledToFill()
+//                        .frame(width: UIScreen.screenWidth * 0.01)
+//                        .clipShape(Circle())
+//                } else {
                     Image(systemName: "person.fill")
                         .overlay {
                             Circle().stroke(lineWidth: 1)
                         }
-                }
-            }
+//                }
+//            }
             //유저 닉네임
             Text(item.diaryUserNickName)
                 .font(.headline).fontWeight(.semibold)
@@ -130,24 +129,25 @@ private extension DiaryDetailView {
                         .placeholder {
                             Rectangle().foregroundColor(.gray)
                         }
+                        .scaledToFill()
                         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
-                        .aspectRatio(contentMode: .fill)
-                    Button {
-                        isBookmarked.toggle()
-                        if isBookmarked{
-                            bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
-                        } else{
-                            bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
+                        .clipped()
+                        .overlay(alignment: .topTrailing){
+                            Button {
+                                isBookmarked.toggle()
+                                if isBookmarked{
+                                    bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
+                                } else{
+                                    bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
+                                }
+                            } label: {
+                                Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                            }
+                            .foregroundColor(.white)
+                            .shadow(radius: 5)
+                            .padding()
                         }
-                    } label: {
-                        Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                    }
-                    .scaledToFill()
-                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
-                    .clipped()
-                    .offset(x:UIScreen.screenWidth*0.45, y: -UIScreen.screenWidth*0.45)
-                    .foregroundColor(.white)
-                    .shadow(radius: 5)
+
                 }
             }
         }

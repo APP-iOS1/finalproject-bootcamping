@@ -26,7 +26,15 @@ struct AddScheduleView: View {
         )!
         return startDate...max
     }
-    
+
+    var alert: String {
+        if campingSpot != "" {
+            if isAddingDisable { return "날짜를 다시 선택해주세요\n하루에 한 개의 캠핑일정만 등록 가능합니다"}
+            return ""
+        }
+        return "캠핑장 이름을 입력해주세요"
+    }
+
     //onAppear 시 캠핑장 데이터 패치
     @EnvironmentObject var campingSpotStore: CampingSpotStore
     @State var page: Int = 2
@@ -60,8 +68,10 @@ struct AddScheduleView: View {
                 }
             }
             Spacer()
+                .frame(maxHeight: .infinity)
+            alertText
             addScheduleButton
-                .padding(.bottom, 50)
+                .padding(.vertical, UIScreen.screenHeight*0.05)
         }
         .onAppear{
             isAddingDisable = checkSchedule(startDate: startDate, endDate: endDate)
@@ -73,21 +83,27 @@ struct AddScheduleView: View {
         }
         .onChange(of: [self.startDate, self.endDate]) { newvalues in
             isAddingDisable = checkSchedule(startDate: newvalues[0], endDate: newvalues[1])
-            print("isAddingDisable \(isAddingDisable)")
         }
         .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
     func checkSchedule(startDate: Date, endDate: Date) -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let startDate = dateFormatter.string(from: startDate)
+        let endDate = dateFormatter.string(from: endDate)
+        
         if startDate > endDate {  return true }
         for schedule in scheduleStore.scheduleList{
-            if (startDate ... endDate).contains(schedule.date) {
+            let scheduleDate = dateFormatter.string(from: schedule.date)
+            if (startDate <= scheduleDate && scheduleDate <= endDate) {
                 print("check Schedule returns true")
                 return true
             }
         }
         print("check Schedule returns false")
-        return true
+        return false
     }
 }
 
@@ -136,10 +152,11 @@ extension AddScheduleView {
                 let interval = endDate.timeIntervalSince(startDate)
                 let days = Int(interval / 86400)
                 for day in 0...days {
-                    scheduleStore.addSchedule(Schedule(id: UUID().uuidString, title: campingSpot, date: calendar.date(byAdding: .day, value: day, to: startDate) ?? Date()))
+                    print(calendar.date(byAdding: .day, value: day, to: startDate) ?? Date())
+                    scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: calendar.date(byAdding: .day, value: day, to: startDate) ?? Date()))
                 }
             } else {
-                scheduleStore.addSchedule(Schedule(id: UUID().uuidString, title: campingSpot, date: startDate))
+                scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: startDate))
             }
             dismiss()
         } label: {
@@ -149,6 +166,13 @@ extension AddScheduleView {
         }
         .disabled(campingSpot == "" || isAddingDisable)
         
+    }
+    // MARK: -View : alertText
+    private var alertText : some View {
+        Text(alert)
+            .font(.caption)
+            .foregroundColor(Color.bcDarkGray)
+            .multilineTextAlignment(.center)
     }
 }
 

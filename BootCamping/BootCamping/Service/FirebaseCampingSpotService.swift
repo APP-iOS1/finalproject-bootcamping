@@ -37,6 +37,7 @@ struct FirebaseCampingSpotService {
     func readCampingSpotService() -> AnyPublisher<[Item], Error> {
         Future<[Item], Error> { promise in
             database.collection("CampingSpotList")
+                .order(by: "contentId", descending: false)
                 .limit(to: 10)
                 .getDocuments { snapshot, error in
                     if let error = error {
@@ -144,6 +145,8 @@ struct FirebaseCampingSpotService {
     func updateNextCampingSpot() {
         Future<[Item], Error> { promise in
             database.collection("CampingSpotList")
+                .order(by: "contentId", descending: false)
+                .start(afterDocument: lastDoc)
                 .getDocuments { snapshot, error in
                     if let error = error {
                         promise(.failure(error))

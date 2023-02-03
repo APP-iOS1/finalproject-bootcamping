@@ -29,9 +29,10 @@ extension Color {
 }
 
 extension Color {
-    static let bcDarkGray = Color(hex: "2E2E2E")
+    static let bcDarkGray = Color("BCDarkGray")
     static let bcBlack = Color("BCBlack")
     static let bcGreen = Color("BCGreen")
+    static let bcYellow = Color("BCYellow")
 }
 
 //extension View {

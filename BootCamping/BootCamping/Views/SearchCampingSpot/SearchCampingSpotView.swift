@@ -92,7 +92,8 @@ struct SearchCampingSpotView: View {
         .textInputAutocapitalization(.never)
         .onAppear{
             Task {
-                campingSpotStore.campingSpotList = try await fecthData.fetchData(page: page)
+//                campingSpotStore.campingSpotList = try await fecthData.fetchData(page: page)
+                campingSpotStore.readCampingSpotListCombine()
             }
         }
     }

@@ -37,6 +37,9 @@ struct CampingSpotListView: View {
                     Text("캠핑 모아보기")
                 }
             }
+            .task {
+                campingSpotStore.readCampingSpotListCombine()
+            }
         }
 
     }

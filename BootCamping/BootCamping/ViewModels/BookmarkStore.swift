@@ -64,5 +64,4 @@ class BookmarkStore: ObservableObject {
             }
             .store(in: &cancellables)
     }
-    
 }

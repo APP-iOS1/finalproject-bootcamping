@@ -17,8 +17,8 @@ struct RealtimeCampingCellView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            diaryImage
             diaryUserProfile
+            diaryImage
             NavigationLink {
                 DiaryDetailView(item: item)
             } label: {
@@ -32,6 +32,7 @@ struct RealtimeCampingCellView: View {
                     diaryCampingLink
                     diaryInfo
                 }
+                .padding(.horizontal, UIScreen.screenWidth * 0.03)
             }
             .foregroundColor(.bcBlack)
         }
@@ -61,40 +62,54 @@ private extension RealtimeCampingCellView {
         .tabViewStyle(PageTabViewStyle())
         // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
-//        .padding(.vertical, 3)
+        //        .padding(.vertical, 3)
     }
     //MARK: - 다이어리 작성자 프로필
     var diaryUserProfile: some View {
         
         HStack {
             //TODO: -유저 프로필 사진
-//            WebImage(url: URL(string: url))
-//                .resizable()
-//                .placeholder {
-//                    Rectangle().foregroundColor(.gray)
-//                }
-//                .frame(width: UIScreen.screenWidth * 0.01)
-//                .clipShape(Circle())
-            Image(systemName: "person.fill")
-                .frame(width: 35)
+            ForEach(authStore.userList) { user in
+                if item.uid == user.id && user.profileImage != "" {
+                    WebImage(url: URL(string: user.profileImage))
+                        .resizable()
+                        .placeholder {
+                            Rectangle().foregroundColor(.gray)
+                        }
+                        .frame(width: UIScreen.screenWidth * 0.01)
+                        .clipShape(Circle())
+                } else {
+                    Image(systemName: "person.fill")
+                        .overlay {
+                            Circle().stroke(lineWidth: 1)
+                        }
+                }
+            }
             //유저 닉네임
             Text(item.diaryUserNickName)
             Spacer()
+            //세부 버튼
+            //            Picker(selection: Binding<Hashable>, content: <#T##() -> View#>, label: <#T##() -> View#>)
+            Button {
+                //
+            } label: {
+                Image(systemName: "ellipsis")
+            }
+            
         }
-        .padding(.horizontal)
+        .padding(.horizontal, UIScreen.screenWidth * 0.05)
     }
+
     
     //MARK: - 제목
     var diaryTitle: some View {
         Text(item.diaryTitle)
             .font(.system(.title3, weight: .semibold))
-            .padding(.horizontal)
     }
     
     //MARK: - 다이어리 공개 여부 - 잠금 했을때만 자물쇠 나오도록 설정
     var diaryIsPrivate: some View {
         Image(systemName: item.diaryIsPrivate ? "lock" : "" )
-            .padding()
     }
     
     //MARK: - 내용
@@ -102,7 +117,6 @@ private extension RealtimeCampingCellView {
         Text(item.diaryContent)
             .lineLimit(3)
             .multilineTextAlignment(.leading)
-            .padding(.horizontal)
     }
     
     //MARK: - 캠핑장 이동
@@ -136,7 +150,6 @@ private extension RealtimeCampingCellView {
 
         }
         .foregroundColor(.clear)
-        .padding()
     }
 
     
@@ -149,8 +162,7 @@ private extension RealtimeCampingCellView {
             Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
         }
         .font(.system(.subheadline))
-        .padding(.horizontal)
-        .padding(.vertical, 5)
+        .padding(.vertical)
     }
 }
 

@@ -19,12 +19,6 @@ struct HomeView: View {
             mainTapView(mainTap: selectedPicker)
         }
         .toolbar {
-            //TODO: - 상단 왼쪽 앱 로고 위치입니다.
-//            ToolbarItem(placement: .navigationBarLeading) {
-//                Image("appIcon")
-//                    .resizable()
-//                    .frame(width: 30, height: 30)
-//            }
             //MARK: - 홈 상단 피커 애니메이션입니다.
             ToolbarItem(placement: .principal) {
                 animate()
@@ -74,7 +68,7 @@ private extension HomeView {
                         Text(item.rawValue)
                             .font(.system(.title3, weight: .heavy))
                             .kerning(-1)
-                            .frame(maxWidth: 200, maxHeight: 30)
+                            .frame(maxWidth: 180, maxHeight: 30)
                             .foregroundColor(selectedPicker == item ? .bcBlack : .gray)
                             .padding(.top, 10)
                         
@@ -89,7 +83,7 @@ private extension HomeView {
                                 .frame(height: 2)
                         }
                     }
-                    .frame(width: 110)
+                    .frame(minWidth: 100)
                     .onTapGesture {
                         withAnimation(.easeInOut(duration: 0.1)) {
                             self.selectedPicker = item

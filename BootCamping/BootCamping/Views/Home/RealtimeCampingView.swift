@@ -14,16 +14,17 @@ struct RealtimeCampingView: View {
     
     var body: some View {
         VStack {
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 ForEach(diaryStore.diaryList) { item in
                     RealtimeCampingCellView(item: item)
-                        .padding(.bottom,40)
+                        .padding(.bottom, 20)
                 }
             }
             .onAppear {
                 diaryStore.getData()
             }
         }
+        .padding(.top)
     }
 }
 

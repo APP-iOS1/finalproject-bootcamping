@@ -17,6 +17,7 @@ extension UIScreen {
 extension Color {
     static let bcBlack = Color("BCBlack")
     static let bcGreen = Color("BCGreen")
+    static let bcDarkGray = Color("BCDarkGray")
 }
 
 //MARK: - 키보드 dismiss extension함수입니다.

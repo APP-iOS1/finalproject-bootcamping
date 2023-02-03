@@ -61,7 +61,7 @@ struct DiaryAddView: View {
             .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
             .submitLabel(.done) //작성 완료하면 키보드 return 버튼이 파란색 done으로 바뀜
         .onSubmit(of: .text, submit)
-        .padding(.horizontal, UIScreen.screenWidth*0.1)
+        .padding(.horizontal, UIScreen.screenWidth*0.05)
         } //done 누르면 submit 함수가 실행됨
     }
 }
@@ -101,6 +101,7 @@ private extension DiaryAddView {
                             }
                         }
                 }
+                .padding(.bottom)
 
                 Text(selectedImages.isEmpty ? "사진을 추가해주세요" : "")
                     .foregroundColor(.secondary)
@@ -120,7 +121,6 @@ private extension DiaryAddView {
                 }
                 
             }
-            .padding()
         
     }
     
@@ -133,11 +133,9 @@ private extension DiaryAddView {
                     RoundedRectangle(cornerRadius: 2, style: .continuous)
                         .stroke(.gray, lineWidth: 2)
                 }
-                .padding(.horizontal)
                 .padding(.bottom)
         } header: {
             Text("제목")
-                .padding(.horizontal)
         }
         .focused($inputFocused)
     }
@@ -152,11 +150,9 @@ private extension DiaryAddView {
                     RoundedRectangle(cornerRadius: 2, style: .continuous)
                         .stroke(.gray, lineWidth: 2)
                 }
-                .padding(.horizontal)
                 .padding(.bottom)
         } header: {
             Text("위치 등록하기")
-                .padding(.horizontal)
         }
         .focused($inputFocused)
     }
@@ -167,7 +163,6 @@ private extension DiaryAddView {
             DatePicker("방문일자 등록하기",
                        selection: $selectedDate,
                        displayedComponents: [.date])
-//            .padding(.horizontal)
             .padding(.bottom)
         }
     }
@@ -187,7 +182,6 @@ private extension DiaryAddView {
             }
             .foregroundColor(.bcBlack)
         }
-        .padding(.horizontal)
         .padding(.bottom)
     }
     
@@ -203,7 +197,6 @@ private extension DiaryAddView {
                 .opacity(0.5)
                 .position(x: 73, y: 19)
         }
-        .padding()
     }
 
     //MARK: - 추가버튼
@@ -215,11 +208,16 @@ private extension DiaryAddView {
                 diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: "", diaryIsPrivate: diaryIsPrivate), images: selectedImages)
                 dismiss()
             } label: {
-                Text("일기 작성하기")
+                Text(selectedImages.isEmpty ? "사진을 추가해주세요" : "일기 작성하기")
             }
-            .modifier(GreenButtonModifier())
+            .font(.headline)
+            .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)
+            .foregroundColor(.white)
+            .background(selectedImages.isEmpty ? .secondary : Color.bcGreen)
+            .cornerRadius(10)
             .disabled(selectedImages.isEmpty)
             Spacer()
+
         }
     }
 

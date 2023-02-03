@@ -9,7 +9,8 @@ import Foundation
 
 struct User: Identifiable, Hashable {
     let id: String
-    var profileImage: String
+    var profileImageName: String
+    var profileImageURL: String
     var nickName: String
     var userEmail: String
     var bookMarkedDiaries: [String]

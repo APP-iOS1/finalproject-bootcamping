@@ -288,5 +288,7 @@ class CampingSpotStore: ObservableObject {
     }
     
     //MARK: 캠핑장리스트 combine으로 읽어오는 함수
-    func readCampingSpotListCombine(page: Int)
+    func readCampingSpotListCombine(page: Int) {
+        
+    }
 }

@@ -43,7 +43,7 @@ struct ProfileSettingView: View {
         }
         
         //        .padding(.vertical, UIScreen.screenHeight * 0.05)
-        .padding(.horizontal, UIScreen.screenWidth * 0.05)
+        .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
 }

@@ -27,10 +27,16 @@ struct AddScheduleView: View {
         return startDate...max
     }
     
+    var alert: String {
+        if campingSpot != "" {
+            if isAddingDisable { return "날짜를 다시 선택해주세요\n하루에 한 개의 캠핑일정만 등록 가능합니다"}
+            return ""
+        }
+        return "캠핑장 이름을 입력해주세요"
+    }
+    
     var body: some View {
-        // FIXME: 여행 일정의 첫 날과 마지막 날을 선택하면 범위 선택이 가능해야 함
-        VStack{
-            Spacer()
+        VStack {
             titleTextField
             DatePicker(
                 "캠핑 시작일",
@@ -51,17 +57,16 @@ struct AddScheduleView: View {
                 }
             }
             Spacer()
+                .frame(maxHeight: .infinity)
+            alertText
             addScheduleButton
-                .padding(.bottom, 50)
+                .padding(.vertical, UIScreen.screenHeight*0.05)
         }
         .onAppear{
-            print(scheduleStore.scheduleList)
             isAddingDisable = checkSchedule(startDate: startDate, endDate: endDate)
-            print("Appeared isAddingDisable \(isAddingDisable)")
         }
         .onChange(of: [self.startDate, self.endDate]) { newvalues in
             isAddingDisable = checkSchedule(startDate: newvalues[0], endDate: newvalues[1])
-            print("onChange isAddingDisable \(isAddingDisable)")
         }
         .padding(.horizontal)
     }
@@ -116,12 +121,9 @@ extension AddScheduleView {
                 for day in 0...days {
                     print(calendar.date(byAdding: .day, value: day, to: startDate) ?? Date())
                     scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: calendar.date(byAdding: .day, value: day, to: startDate) ?? Date()))
-//                    scheduleStore.addSchedule(Schedule(id: UUID().uuidString, title: campingSpot, date: calendar.date(byAdding: .day, value: day, to: startDate) ?? Date()))
                 }
             } else {
-                print("else \(startDate)")
                 scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: startDate))
-//                scheduleStore.addSchedule(Schedule(id: UUID().uuidString, title: campingSpot, date: startDate))
             }
             dismiss()
         } label: {
@@ -130,6 +132,13 @@ extension AddScheduleView {
             //                    .modifier(GreenButtonModifier())
         }
         .disabled(campingSpot == "" || isAddingDisable)
+    }
+    // MARK: -View : alertText
+    private var alertText : some View {
+        Text(alert)
+            .font(.caption)
+            .foregroundColor(Color.bcDarkGray)
+            .multilineTextAlignment(.center)
     }
 }
 

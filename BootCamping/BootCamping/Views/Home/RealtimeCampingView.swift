@@ -14,22 +14,25 @@ struct RealtimeCampingView: View {
     
     var body: some View {
         VStack {
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 ForEach(diaryStore.diaryList) { item in
-                    RealtimeCampingCellView(item: item)
-                        .padding(.bottom,40)
+                    if item.diaryIsPrivate == false {
+                        DiaryCellView(item: item)
+                            .padding(.bottom, 20)
+                    }
                 }
             }
-            .onAppear {
-                diaryStore.getData()
-            }
+        }
+        .onAppear {
+            diaryStore.getData()
         }
     }
 }
 
-struct RealtimeCampingView_Previews: PreviewProvider {
-    static var previews: some View {
-        RealtimeCampingView()
-            .environmentObject(DiaryStore())
-    }
-}
+//MARK: - 서버에서 받아오는 부분이라 프리뷰 안됩니다.
+//struct RealtimeCampingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        RealtimeCampingView()
+//            .environmentObject(DiaryStore())
+//    }
+//}

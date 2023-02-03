@@ -62,7 +62,7 @@ struct ContentView: View {
                     isSignIn = false
                 }
                 diaryStore.getData()
-                scheduleStore.fetchSchedule()
+                scheduleStore.readScheduleCombine()
             }
         } else {
             LoginView(isSignIn: $isSignIn)

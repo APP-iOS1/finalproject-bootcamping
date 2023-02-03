@@ -1,61 +1,18 @@
 //
-//  CampingSpotListView.swift
+//  CampingSpotListRaw.swift
 //  BootCamping
 //
-//  Created by 차소민 on 2023/01/18.
+//  Created by Donghoon Bae on 2023/02/03.
 //
 
 import SwiftUI
 import SDWebImageSwiftUI
-//import ExpandableText     // 패키지 또 추가하면 충돌날거같아서 일단 코드만 추가해둠~
 
-struct CampingSpotListView: View {
-    //TODO: 북마크 만들기
-    @EnvironmentObject var campingSpotStore: CampingSpotStore
+//MARK: 캠핑장 리스트 셀 뷰
+struct CampingSpotListRaw: View {
+    var item: Item
+
     
-    @State private var isLoading: Bool = false
-    
-    var campingSpotList: [Item]
-    
-    var body: some View {
-           VStack{
-               ScrollView(showsIndicators: false){
-                   ForEach(campingSpotList, id: \.self) { camping in
-                       NavigationLink {
-                           CampingSpotDetailView(places: camping)
-                       } label: {
-                           VStack{
-                               CampingSpotListRaw(item: camping)
-                                   .padding(.bottom,40)
-                           }
-                       }
-                   }
-               }
-               .navigationBarTitleDisplayMode(.inline)
-               .toolbar{
-                   ToolbarItem(placement: .principal) {
-                       Text("캠핑 모아보기")
-                   }
-               }
-           }
-                   // MARK: 로티뷰... 일단 주석처리 해둘게요ㅠㅠ
-//        .overlay(content: {
-//            LottieView()
-//                .frame(width: 100, alignment: .center)
-//                .padding(.leading, 20)
-//        }) // 여기까지
-
-       }
-   }
-
-
-struct CampingSpotListView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack{
-            CampingSpotListView(campingSpotList: [])
-                .environmentObject(CampingSpotStore())
-                
-/*
     var body: some View{
         VStack(alignment: .leading){
             
@@ -72,9 +29,7 @@ struct CampingSpotListView_Previews: PreviewProvider {
                     .placeholder {
                         Rectangle().foregroundColor(.gray)
                     }
-                    .scaledToFill()
-                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
-                    .clipped()
+                    .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
                     .padding(.bottom, 5)
             }
             
@@ -93,7 +48,7 @@ struct CampingSpotListView_Previews: PreviewProvider {
                             }
                     }
                 }
-                .padding(.horizontal, UIScreen.screenWidth*0.03)
+                .padding(.horizontal, UIScreen.screenWidth*0.05)
             }
             
             
@@ -101,7 +56,7 @@ struct CampingSpotListView_Previews: PreviewProvider {
             Text(item.facltNm)
                 .font(.title3.bold())
                 .foregroundColor(.bcBlack)
-                .padding(.horizontal, UIScreen.screenWidth*0.03)
+                .padding(.horizontal, UIScreen.screenWidth*0.05)
 
             // 캠핑장 간단 주소
             HStack {
@@ -114,7 +69,7 @@ struct CampingSpotListView_Previews: PreviewProvider {
                     .foregroundColor(.gray)
             }
             .padding(.bottom, 5)
-            .padding(.horizontal, UIScreen.screenWidth*0.03)
+            .padding(.horizontal, UIScreen.screenWidth*0.05)
 
             // 캠핑장 설명 3줄
             if item.lineIntro != "" {
@@ -122,13 +77,19 @@ struct CampingSpotListView_Previews: PreviewProvider {
                     .font(.callout)
                     .multilineTextAlignment(.leading)
                     .foregroundColor(.bcBlack)
-                    .padding(.horizontal, UIScreen.screenWidth*0.03)
+                    .padding(.horizontal, UIScreen.screenWidth*0.05)
             }
             //                        .lineLimit(3)//optional
             //                        .expandButton(TextSet(text: "more", font: .body, color: .blue))//optional
             //                        .collapseButton(TextSet(text: "less", font: .body, color: .blue))//optional
             //                        .expandAnimation(.easeOut)//optional
-        */
+            
         }
+    }
+}
+
+struct CampingSpotListRaw_Previews: PreviewProvider {
+    static var previews: some View {
+        CampingSpotListRaw(item: Item(contentId: "", facltNm: "", lineIntro: "", intro: "", allar: "", insrncAt: "", trsagntNo: "", bizrno: "", facltDivNm: "", mangeDivNm: "", mgcDiv: "", manageSttus: "", hvofBgnde: "", hvofEnddle: "", featureNm: "", induty: "", lctCl: "", doNm: "", sigunguNm: "", zipcode: "", addr1: "", addr2: "", mapX: "", mapY: "", direction: "", tel: "", homepage: "", resveUrl: "", resveCl: "", manageNmpr: "", gnrlSiteCo: "", autoSiteCo: "", glampSiteCo: "", caravSiteCo: "", indvdlCaravSiteCo: "", sitedStnc: "", siteMg1Width: "", siteMg2Width: "", siteMg3Width: "", siteMg1Vrticl: "", siteMg2Vrticl: "", siteMg3Vrticl: "", siteMg1Co: "", siteMg2Co: "", siteMg3Co: "", siteBottomCl1: "", siteBottomCl2: "", siteBottomCl3: "", siteBottomCl4: "", siteBottomCl5: "", tooltip: "", glampInnerFclty: "", caravInnerFclty: "", prmisnDe: "", operPdCl: "", operDeCl: "", trlerAcmpnyAt: "", caravAcmpnyAt: "", toiletCo: "", swrmCo: "", wtrplCo: "", brazierCl: "", sbrsCl: "", sbrsEtc: "", posblFcltyCl: "", posblFcltyEtc: "", clturEventAt: "", clturEvent: "", exprnProgrmAt: "", exprnProgrm: "", extshrCo: "", frprvtWrppCo: "", frprvtSandCo: "", fireSensorCo: "", themaEnvrnCl: "", eqpmnLendCl: "", animalCmgCl: "", tourEraCl: "", firstImageUrl: "", createdtime: "", modifiedtime: ""))
     }
 }

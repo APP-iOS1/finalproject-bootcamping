@@ -144,6 +144,7 @@ extension ProfileSettingView {
             Text("수정")
                 .modifier(GreenButtonModifier())
         }
+        .disabled(updateNickname == "" && (currentPassword == "" || newPassword == "" || newPasswordCheck == ""))
     }
 
 }

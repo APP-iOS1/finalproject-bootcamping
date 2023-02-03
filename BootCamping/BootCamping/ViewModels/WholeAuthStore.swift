@@ -43,9 +43,17 @@ class WholeAuthStore: ObservableObject {
     @Published var loginState: LogInState = .none
     @Published var loginPlatform: LoginPlatform = .none
     
-    @Published var firebaseUserServiceError: FirebaseUserServiceError = .badSnapshot
+    //서비스 오류 상태
     @Published var showErrorAlertMessage: String = "오류"
+
+    //파이어베이스 서비스 오류
+    @Published var firebaseUserServiceError: FirebaseUserServiceError = .badSnapshot
     
+    //이메일 서비스 오류
+    @Published var authImailLoginServiceError: AuthImailLoginServiceError = .emailDuplicated
+    
+    // 이메일 중복상태
+    @Published var duplicatedEmailState: Bool = true
     
     init() {
         currentUser = Auth.auth().currentUser
@@ -58,7 +66,7 @@ class WholeAuthStore: ObservableObject {
 
     static let shared = WholeAuthStore()
     
-    // MARK: - UserList CRUD Combine
+    // MARK: - Firebase UserList CRUD Combine
 
     // MARK: readUserListCombine 유저리스트 조회
     func readUserListCombine() {
@@ -82,6 +90,8 @@ class WholeAuthStore: ObservableObject {
             .store(in: &cancellables)
     }
     
+    // MARK: createUserCombine 유저 생성
+
     func createUserCombine(user: User) {
         FirebaseUserService().createUserService(user: user)
             .receive(on: DispatchQueue.main)
@@ -103,6 +113,8 @@ class WholeAuthStore: ObservableObject {
             }
             .store(in: &cancellables)
     }
+    
+    // MARK: updateUserCombine 유저 업데이트
     
     func updateUserCombine(image: Data, user: User) {
         FirebaseUserService().updateUserService(image: image, user: user)
@@ -126,6 +138,8 @@ class WholeAuthStore: ObservableObject {
             .store(in: &cancellables)
     }
     
+    // MARK: deleteUserCombine 유저 삭제
+
     func deleteUserCombine(user: User) {
         FirebaseUserService().deleteUserService(user: user)
             .receive(on: DispatchQueue.main)
@@ -151,25 +165,27 @@ class WholeAuthStore: ObservableObject {
     // MARK: - 이메일 로그인 (Sign up, Sign In, Sign Out, Checking)
 
     // MARK: checkUserEmailDuplicated 이메일 중복 체크
-    func checkUserEmailDuplicated(userEmail: String) -> Bool {
-        var state: Bool = true
-        Future<Bool, Error> {  promise in
-            self.database.collection("UserList").whereField("userEmail", isEqualTo: "\(userEmail)").getDocuments() { error, arg  in
-                if let error = error {
+    
+    /// true = 중복됨
+    /// false = 중복 안됨
+
+    func checkUserEmailDuplicatedCombine(userEmail: String){
+        AuthImailLoginService().checkUserEmailDuplicatedService(userEmail: userEmail)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
                     print(error)
+                    self.duplicatedEmailState = true
+                    return
+                case .finished:
+                    print("Finished delete User")
                     return
                 }
+            } receiveValue: { value in
+                self.duplicatedEmailState = value
             }
-        }
-        .eraseToAnyPublisher()
-        .sink { _ in
-            
-        } receiveValue: { _ in
-            
-        }
-        .store(in: &cancellables)
-        
-        return state
+            .store(in: &cancellables)
     }
     
     // MARK: checkAuthFormat 이메일 정합성 체크
@@ -187,6 +203,62 @@ class WholeAuthStore: ObservableObject {
         } else {
             return false
         }
+    }
+    
+    // MARK: Auth SignIn Combine
+
+    func authSignInCombine(userEmail: String, password: String) {
+        AuthImailLoginService().authSignInService(userEmail: userEmail, password: password)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed SingUp User")
+                    self.authImailLoginServiceError = .signInError
+                    self.showErrorAlertMessage = self.authImailLoginServiceError.errorDescription!
+                    self.isLogin = false
+                    return
+                case .finished:
+                    print("Finished SingIn User")
+                    self.isLogin = true
+                    return
+                }
+            } receiveValue: { user in
+                self.currentUser = user
+            }
+            .store(in: &cancellables)
+    }
+    
+    // MARK: Auth LogOut
+    
+    func authSignOut() {
+        try? Auth.auth().signOut()
+        self.isLogin = false
+        self.currentUser = Auth.auth().currentUser
+    }
+    
+    // MARK: Auth SignUp Combine
+    
+    func authSignUpCombine(userEmail: String, password: String, confirmPassword: String) {
+        AuthImailLoginService().authSignUpService(userEmail: userEmail, password: password, confirmPassword: confirmPassword)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Failed SingUp User")
+                    print(error)
+                    self.authImailLoginServiceError = .signUpError
+                    self.showErrorAlertMessage = self.authImailLoginServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished SingUp User")
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
     }
     
     // MARK: - 구글 로그인

@@ -36,7 +36,7 @@ struct FirebaseDiaryService {
     
     let database = Firestore.firestore()
     
-    //MARK: Read FirebaseDiaryService
+    //MARK: - Read FirebaseDiaryService
     
     func readDiarysService() -> AnyPublisher<[Diary], Error> {
         Future<[Diary], Error> { promise in
@@ -76,7 +76,7 @@ struct FirebaseDiaryService {
         .eraseToAnyPublisher()
     }
     
-    //MARK: Create FirebaseDiaryService
+    //MARK: - Create FirebaseDiaryService
     
     func createDiaryService(diary: Diary, images: [Data]) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
@@ -174,7 +174,7 @@ struct FirebaseDiaryService {
         .eraseToAnyPublisher()
     }
     
-    //MARK: Update FirebaseDiaryService
+    //MARK: - Update FirebaseDiaryService
     
     func updateDiarysService(diary: Diary, images: [Data]) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
@@ -273,7 +273,7 @@ struct FirebaseDiaryService {
     
     
     
-    //MARK: Delete FirebaseDiaryService
+    //MARK: - Delete FirebaseDiaryService
     
     func deleteDiaryService(diary: Diary) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in

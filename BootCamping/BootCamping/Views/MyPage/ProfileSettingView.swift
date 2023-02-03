@@ -20,18 +20,25 @@ struct ProfileSettingView: View {
     
     @State private var updateNickname: String = ""
     
+    @State private var currentPassword: String = ""
+    @State private var newPassword: String = ""
+    @State private var newPasswordCheck: String = ""
+    
     var body: some View {
         VStack(alignment: .leading, spacing: UIScreen.screenHeight * 0.05){
             HStack{
+                Spacer()
                 photoPicker
+                Spacer()
             }
             updateUserNameTextField
+            updatePasswordTextField
             Spacer()
             editButton
             
         }
         .padding(.vertical, UIScreen.screenHeight * 0.05)
-        .padding(.horizontal, UIScreen.screenWidth * 0.1)
+        .padding(.horizontal, UIScreen.screenWidth * 0.05)
     }
     
 }
@@ -84,10 +91,6 @@ extension ProfileSettingView {
             }
         }
     }
-    // MARK: -View : updateNicknameTextField
-//    private var updateNicknameTextField : some View {
-//        TextField("닉네임을 입력해주세요", text: $updateNickname)
-//    }
     
     // MARK: -View : updateUserNameTextField
     private var updateUserNameTextField : some View {
@@ -96,22 +99,37 @@ extension ProfileSettingView {
                 .font(.title3)
                 .bold()
             TextField("닉네임", text: $updateNickname,prompt: Text("\(user.nickName)"))
+                .textFieldStyle(.roundedBorder)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.never)
         }
     }
     
-    // MARK: -View : updateUserPhoneNumberTextField
-//    private var updateUserPhoneNumberTextField : some View {
-//        VStack(alignment: .leading, spacing: 10){
-//            Text("휴대폰 번호")
-//                .font(.title3)
-//                .bold()
-////            Text("01012345678")
-//            TextField("휴대폰 번호를 입력해주세요", text: <#T##Binding<String>#>)
-//
-//        }
-//    }
+    //MARK: -View: 비밀번호 수정
+    private var updatePasswordTextField : some View {
+        VStack(alignment: .leading, spacing: 10){
+            Text("비밀번호")
+                .font(.title3)
+                .bold()
+            SecureField("비밀번호", text: $currentPassword, prompt: Text("현재 비밀번호를 입력해주세요"))
+                .textFieldStyle(.roundedBorder)
+                .disableAutocorrection(true)
+                .textInputAutocapitalization(.never)
+            SecureField("비밀번호", text: $newPassword,prompt: Text("새로운 비밀번호를 입력해주세요"))
+                .textFieldStyle(.roundedBorder)
+                .disableAutocorrection(true)
+                .textInputAutocapitalization(.never)
+            SecureField("비밀번호", text: $newPasswordCheck,prompt: Text("새로운 비밀번호를 다시 입력해주세요"))
+                .textFieldStyle(.roundedBorder)
+                .disableAutocorrection(true)
+                .textInputAutocapitalization(.never)
+
+            Text("* 영어 + 숫자 + 특수문자 최소 8자 이상")
+                .font(.footnote).foregroundColor(.secondary)
+        }
+    }
+    
+
     // MARK: -View : editButton
     private var editButton : some View {
         Button {

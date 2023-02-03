@@ -10,13 +10,15 @@ import SwiftUI
 struct TaskCellView: View{
     @EnvironmentObject var scheduleStore: ScheduleStore
     
+    @State private var isShowingDeleteAlert = false
+    
     let month: String
     let day: String
     let schedule: Schedule
     
     var body: some View {
         HStack {
-            ExDivider(color: Color.red)
+            ExDivider(color: Color.bcGreen)
                 .padding(.trailing, UIScreen.screenWidth*0.05)
             VStack(alignment: .leading, spacing: 5) {
                 Text("\(month).\(day) 캠핑 일정")
@@ -27,9 +29,16 @@ struct TaskCellView: View{
             }
             Spacer()
             Button {
-                scheduleStore.deleteScheduleCombine(schedule: schedule)
+                isShowingDeleteAlert = true
             } label: {
                 Image(systemName: "trash")
+            }
+            /// ios15부터 .alert 형태로 사용
+            .alert("이 일정을 정말 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
+                Button("취소", role: .cancel) {}
+                Button("삭제", role: .destructive) {
+                    scheduleStore.deleteScheduleCombine(schedule: schedule)
+                }
             }
         }
         .frame(maxWidth: UIScreen.screenWidth)

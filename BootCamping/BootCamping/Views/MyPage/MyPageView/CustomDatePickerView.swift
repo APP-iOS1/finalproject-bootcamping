@@ -29,12 +29,14 @@ struct CustomDatePickerView: View {
             // 일 월 화 수 목 금 토
             dayLabelView
             Divider()
-            calendarView
-            taskView
-        }
-        .onChange(of: currentMonth) { newValue in
-            //updating Month
-            currentDate = getCurrentMonth()
+            VStack{
+                calendarView
+                taskView
+            }
+            .onChange(of: currentMonth) { newValue in
+                //updating Month
+                currentDate = getCurrentMonth()
+            }
         }
     }
     
@@ -162,7 +164,7 @@ extension CustomDatePickerView{
                     .background (
                         Rectangle()
                             .frame(width: 50, height: 50)
-                            .foregroundColor(Color.secondary)
+                            .foregroundColor(Color.bcYellow)
                             .opacity((isSameDay(date1: value.date, date2: currentDate) && value.day != -1) ? 1 : 0)
                     )
                     .onTapGesture {
@@ -186,10 +188,9 @@ extension CustomDatePickerView{
                     }
                 }
             } else {
-                Text("\(extraData_MonthDay()[0]).\(extraData_MonthDay()[1])의 캠핑 일정이 없습니다")
+                Text("해당 날짜의 캠핑 일정이 없습니다")
                     .padding(.vertical, UIScreen.screenHeight * 0.05)
             }
-            Spacer()
         }
     }
     
@@ -199,22 +200,23 @@ extension CustomDatePickerView{
     func CardView(value: DateValue) -> some View {
         VStack {
             if value.day != -1 {
-                
                 if scheduleStore.scheduleList.first(where: { schedule in
                     return isSameDay(date1: schedule.date, date2: value.date)
                 }) != nil {
                     Text("\(value.day)")
                         .font(.body.bold())
                     Spacer()
-                    
                     HStack(spacing: 8) {
                         // 스케줄 개수만큼 점으로 표시하기
                         ForEach(scheduleStore.scheduleList.filter{ schedule in
                             return isSameDay(date1: schedule.date, date2: value.date)
                         }) {_ in
-                            Circle()
-                                .fill(Color.red)
-                                .frame(width: 7, height: 7)
+//                            Circle()
+//                                .fill(Color.bcGreen)
+//                                .frame(width: 7, height: 7)
+                            Image(systemName: "flag.fill")
+                                .font(.caption)
+                                .foregroundColor(Color.bcGreen)
                         }
                     }
                 } else {

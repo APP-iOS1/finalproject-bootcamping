@@ -82,7 +82,7 @@ struct campingSpotListCell : View{
                             }
                     }
                 }
-                .padding(.horizontal, UIScreen.screenWidth*0.05)
+                .padding(.horizontal, UIScreen.screenWidth*0.03)
             }
             
             
@@ -90,7 +90,7 @@ struct campingSpotListCell : View{
             Text(item.facltNm)
                 .font(.title3.bold())
                 .foregroundColor(.bcBlack)
-                .padding(.horizontal, UIScreen.screenWidth*0.05)
+                .padding(.horizontal, UIScreen.screenWidth*0.03)
 
             // 캠핑장 간단 주소
             HStack {
@@ -103,7 +103,7 @@ struct campingSpotListCell : View{
                     .foregroundColor(.gray)
             }
             .padding(.bottom, 5)
-            .padding(.horizontal, UIScreen.screenWidth*0.05)
+            .padding(.horizontal, UIScreen.screenWidth*0.03)
 
             // 캠핑장 설명 3줄
             if item.lineIntro != "" {
@@ -111,7 +111,7 @@ struct campingSpotListCell : View{
                     .font(.callout)
                     .multilineTextAlignment(.leading)
                     .foregroundColor(.bcBlack)
-                    .padding(.horizontal, UIScreen.screenWidth*0.05)
+                    .padding(.horizontal, UIScreen.screenWidth*0.03)
             }
             //                        .lineLimit(3)//optional
             //                        .expandButton(TextSet(text: "more", font: .body, color: .blue))//optional

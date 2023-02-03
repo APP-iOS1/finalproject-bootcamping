@@ -90,34 +90,34 @@ private extension RealtimeCampingCellView {
             //유저 닉네임
             Text(item.diaryUserNickName)
                 .font(.headline).fontWeight(.semibold)
-            Spacer()
-            //MARK: - ... 버튼입니다.
-            Menu {
-                Button {
-                    //TODO: -수정기능 추가
-                } label: {
-                    Text("수정하기")
-                }
-                
-                Button {
-                    isShowingDeleteAlert = true
-                } label: {
-                    Text("삭제하기")
-                }
-                
-            } label: {
-                Image(systemName: "ellipsis")
-            }
-            
-            //MARK: - 일기 삭제 알림
-            .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
-                Button("취소", role: .cancel) {
-                    isShowingDeleteAlert = false
-                }
-                Button("삭제", role: .destructive) {
-                    diaryStore.deleteDiaryCombine(diary: item)
-                }
-            }
+//            Spacer()
+//            //MARK: - ... 버튼입니다.
+//            Menu {
+//                Button {
+//                    //TODO: -수정기능 추가
+//                } label: {
+//                    Text("수정하기")
+//                }
+//
+//                Button {
+//                    isShowingDeleteAlert = true
+//                } label: {
+//                    Text("삭제하기")
+//                }
+//
+//            } label: {
+//                Image(systemName: "ellipsis")
+//            }
+//
+//            //MARK: - 일기 삭제 알림
+//            .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
+//                Button("취소", role: .cancel) {
+//                    isShowingDeleteAlert = false
+//                }
+//                Button("삭제", role: .destructive) {
+//                    diaryStore.deleteDiaryCombine(diary: item)
+//                }
+//            }
 
         }
         .padding(.horizontal, UIScreen.screenWidth * 0.03)

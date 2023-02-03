@@ -12,44 +12,41 @@ import SDWebImageSwiftUI
 struct CampingSpotListView: View {
     //TODO: 북마크 만들기
     @EnvironmentObject var campingSpotStore: CampingSpotStore
-    var item: [Item]
-
+    
+    @State private var isLoading: Bool = false
+    
+    var campingSpotList: [Item]
+    
     var body: some View {
-        VStack{
-            ScrollView(showsIndicators: false){
-                ForEach(item, id: \.self) { camping in
-                    NavigationLink {
-                        CampingSpotDetailView(places: camping)
-                    } label: {
-                        VStack{
-                            CampingSpotListRaw(item: camping)
-                                .padding(.bottom,40)
-                            //                            Divider()
-//                                .padding(.bottom, 10)
-                            ///Divider() 없어도 구분 잘 되나요??
-                        }
-                    }
-                }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar{
-                ToolbarItem(placement: .principal) {
-                    Text("캠핑 모아보기")
-                }
-            }
-            .task {
-                campingSpotStore.readCampingSpotListCombine()
-            }
-        }
+           VStack{
+               ScrollView(showsIndicators: false){
+                   ForEach(campingSpotList, id: \.self) { camping in
+                       NavigationLink {
+                           CampingSpotDetailView(places: camping)
+                       } label: {
+                           VStack{
+                               CampingSpotListRaw(item: camping)
+                                   .padding(.bottom,40)
+                           }
+                       }
+                   }
+               }
+               .navigationBarTitleDisplayMode(.inline)
+               .toolbar{
+                   ToolbarItem(placement: .principal) {
+                       Text("캠핑 모아보기")
+                   }
+               }
+           }
 
-    }
-}
+       }
+   }
 
 
 struct CampingSpotListView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            CampingSpotListView(item: [])
+            CampingSpotListView(campingSpotList: [])
                 .environmentObject(CampingSpotStore())
         }
     }

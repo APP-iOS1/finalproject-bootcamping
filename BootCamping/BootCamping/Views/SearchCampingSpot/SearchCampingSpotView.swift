@@ -35,7 +35,7 @@ struct SearchCampingSpotView: View {
         return campingSpotStore.campingSpotList.filter{$0.facltNm.lowercased().contains(searchText.lowercased()) || $0.addr1.lowercased().contains(searchText.lowercased()) || $0.lctCl.lowercased().contains(searchText.lowercased())}
     }
     
-
+    
     
     var body: some View {
         NavigationView {
@@ -83,7 +83,7 @@ struct SearchCampingSpotView: View {
                     }
                 } else {
                     Text("해당되는 캠핑장이 없습니다.")
-
+                    
                 }
             }
         }
@@ -91,9 +91,12 @@ struct SearchCampingSpotView: View {
         .disableAutocorrection(true)
         .textInputAutocapitalization(.never)
         .onAppear{
+//            Task {
+//                campingSpotStore.readCampingSpotListCombine()
+//                campingSpotStore.campingSpotList = campingSpotStore.campingSpots
+//            }
             Task {
-//                campingSpotStore.campingSpotList = try await fecthData.fetchData(page: page)
-                campingSpotStore.readCampingSpotListCombine()
+                campingSpotStore.campingSpotList = try await fecthData.fetchData(page: page)
             }
         }
     }
@@ -133,7 +136,7 @@ extension SearchCampingSpotView {
             HStack{
                 VStack{
                     NavigationLink {
-                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("서울") })
+                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("서울") })
                     } label: {
                         Image("seoul")
                             .resizable()
@@ -147,7 +150,7 @@ extension SearchCampingSpotView {
 
                 VStack{
                     NavigationLink {
-                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("경기") || $0.doNm.contains("인천")})
+                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("경기") || $0.doNm.contains("인천")})
                     } label: {
                         Image("incheon")
                             .resizable()
@@ -161,7 +164,7 @@ extension SearchCampingSpotView {
 
                 VStack{
                     NavigationLink {
-                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("강원") })
+                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("강원") })
                     } label: {
                         Image("gangwon")
                             .resizable()
@@ -178,7 +181,7 @@ extension SearchCampingSpotView {
             HStack{
                 VStack{
                     NavigationLink {
-                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("충청") })
+                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("충청") })
                     } label: {
                         Image("Chungcheong")
                             .resizable()
@@ -192,7 +195,7 @@ extension SearchCampingSpotView {
 
                 VStack{
                     NavigationLink {
-                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("경상") || $0.doNm.contains("부산") })
+                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("경상") || $0.doNm.contains("부산") })
                     } label: {
                         Image("busan")
                             .resizable()
@@ -206,7 +209,7 @@ extension SearchCampingSpotView {
 
                 VStack{
                     NavigationLink {
-                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("전라") || $0.doNm.contains("제주") })
+                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("전라") || $0.doNm.contains("제주") })
                     } label: {
                         Image("jeju")
                             .resizable()
@@ -233,7 +236,7 @@ extension SearchCampingSpotView {
             HStack{
                 VStack{
                     NavigationLink {
-                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("산") })
+                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("산") })
                     } label: {
                         Image("mountain")
                             .resizable()
@@ -247,7 +250,7 @@ extension SearchCampingSpotView {
 
                 VStack{
                     NavigationLink {
-                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("바다") || $0.lctCl.contains("해변") })
+                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("바다") || $0.lctCl.contains("해변") })
                     } label: {
                         Image("ocean")
                             .resizable()
@@ -261,7 +264,7 @@ extension SearchCampingSpotView {
 
                 VStack{
                     NavigationLink {
-                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("계곡")})
+                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("계곡")})
                     } label: {
                         Image("valley")
                             .resizable()
@@ -279,7 +282,7 @@ extension SearchCampingSpotView {
             HStack{
                 VStack{
                     NavigationLink {
-                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("숲") })
+                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("숲") })
                     } label: {
                         Image("forest")
                             .resizable()
@@ -293,7 +296,7 @@ extension SearchCampingSpotView {
 
                 VStack{
                     NavigationLink {
-                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("강") || $0.lctCl.contains("호수") })
+                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("강") || $0.lctCl.contains("호수") })
                     } label: {
                         Image("river")
                             .resizable()
@@ -307,7 +310,7 @@ extension SearchCampingSpotView {
 
                 VStack{
                     NavigationLink {
-                        CampingSpotListView(item: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("섬") })
+                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("섬") })
                     } label: {
                         Image("island")
                             .resizable()

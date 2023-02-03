@@ -31,6 +31,24 @@ enum FirebaseDiaryServiceError: Error {
     }
 }
 
+enum FirebaseBookmarkDiaryServiceError: Error {
+    case badSnapshot
+    case addBookmarkDiaryError
+    case removeBookmarkDiaryError
+    
+    var errorDescription: String? {
+        switch self {
+        case .badSnapshot:
+            return "북마크한 다이어리 가져오기 실패"
+        case .addBookmarkDiaryError:
+            return "다이어리 북마크 추가 실패"
+        case .removeBookmarkDiaryError:
+            return "다이어리 북마크 삭제 실패"
+        }
+    }
+}
+
+
 
 struct FirebaseDiaryService {
     
@@ -299,189 +317,66 @@ struct FirebaseDiaryService {
                 
                 self.database.collection("Diarys")
                     .document(diary.id).delete() { error in
-                    if let error = error {
-                        print(error)
-                        promise(.failure(FirebaseDiaryServiceError.deleteDiaryError))
-                    } else {
-                        promise(.success(()))
+                        if let error = error {
+                            print(error)
+                            promise(.failure(FirebaseDiaryServiceError.deleteDiaryError))
+                        } else {
+                            promise(.success(()))
+                        }
                     }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    //MARK: - Add BookmarkDiaryService
+    func addBookmarkDiaryService(diaryId: String) -> AnyPublisher<Void, Error> {
+        Future<Void, Error> { promise in
+            guard let userUID = Auth.auth().currentUser?.uid else { return }
+            
+            self.database
+                .collection("UserList")
+                .document(userUID)
+                .updateData([
+                "bookMarkedDiaries" : FieldValue.arrayUnion([diaryId])
+            ]) { error in
+                if let error = error {
+                    print(error)
+                    promise(.failure(FirebaseBookmarkDiaryServiceError.addBookmarkDiaryError))
+                } else {
+                    // TODO: - fetch,,
+                    /// 현재 로그인된 유저의 데이터를 가져오는 게 bookmark에서의 fetch,, !
+                    promise(.success(()))
                 }
             }
         }
         .eraseToAnyPublisher()
     }
     
+    //MARK: - Remove BookmarkDiaryService
+    func removeBookmarkDiaryService(diaryId: String) -> AnyPublisher<Void, Error> {
+        Future<Void, Error> { promise in
+            guard let userUID = Auth.auth().currentUser?.uid else { return }
+            
+            self.database
+                .collection("UserList")
+                .document(userUID)
+                .updateData([
+                "bookMarkedDiaries" : FieldValue.arrayRemove([diaryId])
+            ]) { error in
+                if let error = error {
+                    print(error)
+                    promise(.failure(FirebaseBookmarkDiaryServiceError.removeBookmarkDiaryError))
+                } else {
+                    // TODO: - fetch,,
+                    /// 현재 로그인된 유저의 데이터를 가져오는 게 bookmark에서의 fetch,, !
+                    promise(.success(()))
+                }
+            }
+            
+        }
+        .eraseToAnyPublisher()
+    }
+    
 }
 
-
-
-
-//MARK: Create FirebaseDiaryService
-
-//func createDiaryService(diary: Diary, images: [Data]) -> AnyPublisher<Void, Error> {
-//    Future<Void, Error> { promise in
-//        var imageNames: [String] = []
-//        var imageURLs: [String] = []
-//
-//        imageUpload(images: images) { imgNames in
-//            imageNames.append(contentsOf: imgNames)
-//            getDownloadURL(imageNames: imageNames) { imgURLs in
-//                imageURLs.append(contentsOf: imgURLs)
-//                guard let userUID = Auth.auth().currentUser?.uid else { return
-//                }
-//
-//                let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
-//
-//                self.database.collection("Diarys").document(diary.id).setData([
-//                    "id": newDiary.id,
-//                    "uid": newDiary.uid,
-//                    "diaryUserNickName": newDiary.diaryUserNickName,
-//                    "diaryTitle": newDiary.diaryTitle,
-//                    "diaryAddress": newDiary.diaryAddress,
-//                    "diaryContent": newDiary.diaryContent,
-//                    "diaryImageNames": newDiary.diaryImageNames,
-//                    "diaryImageURLs": newDiary.diaryImageURLs,
-//                    "diaryCreatedDate": newDiary.diaryCreatedDate,
-//                    "diaryVisitedDate": newDiary.diaryVisitedDate,
-//                    "diaryLike": newDiary.diaryLike,
-//                    "diaryIsPrivate": newDiary.diaryIsPrivate,]) { error in
-//                        if let error = error {
-//                            promise(.failure(error))
-//                        } else {
-//                            promise(.success(()))
-//                        }
-//
-//                    }
-//            }
-//        }
-//    }
-//    .eraseToAnyPublisher()
-//}
-//
-//
-//func imageUpload(images: [Data], completion: @escaping ([String]) -> ()) {
-//    var imageNames: [String] = []
-//    var count: Int = 0
-//    for image in images {
-//        let storageRef = Storage.storage().reference().child("DiaryImages")
-//        let imageName = UUID().uuidString
-//        let metadata = StorageMetadata()
-//        metadata.contentType = "image/jpeg"
-//        let uploadTask = storageRef.child(imageName).putData(image, metadata: metadata)
-//        uploadTask.observe(.success) { snapshot in
-//            count += 1
-//            imageNames.append(imageName)
-//            if count == images.count {
-//                completion(imageNames)
-//            }
-//        }
-//        uploadTask.observe(.failure) { snapshot in
-//          if let error = snapshot.error as? NSError {
-//            switch (StorageErrorCode(rawValue: error.code)!) {
-//            case .objectNotFound:
-//                count += 1
-//                if count == images.count {
-//                    completion(imageNames)
-//                }
-//               print("File doesn't exist")
-//              break
-//            case .unauthorized:
-//                count += 1
-//                if count == images.count {
-//                    completion(imageNames)
-//                }
-//
-//               print("User doesn't have permission to access file")
-//              break
-//            case .cancelled:
-//                count += 1
-//                if count == images.count {
-//                    completion(imageNames)
-//                }
-//               print("User canceled the upload")
-//              break
-//
-//            /* ... */
-//
-//            case .unknown:
-//                count += 1
-//                if count == images.count {
-//                    completion(imageNames)
-//                }
-//               print("Unknown error occurred, inspect the server response")
-//              break
-//            default:
-//                count += 1
-//                if count == images.count {
-//                    completion(imageNames)
-//                }
-//               print("A separate error occurred. This is a good place to retry the upload.")
-//              break
-//            }
-//          }
-//        }
-//    }
-//}
-//
-//func getDownloadURL(imageNames: [String], completion: @escaping ([String]) -> ()) {
-//    var imageURLs: [String] = []
-//    var count: Int = 0
-//    for imageName in imageNames {
-//        let storageRef = Storage.storage().reference().child("DiaryImages")
-//        storageRef.child(imageName).downloadURL { url, error in
-//            if let error = error {
-//                count += 1
-//                print(error)
-//                if count == imageNames.count {
-//                    completion(imageURLs)
-//                }
-//            } else {
-//                count += 1
-//                imageURLs.append(url!.absoluteString)
-//                if count == imageNames.count {
-//                    completion(imageURLs)
-//                }
-//            }
-//        }
-//    }
-//}
-
-//MARK: Delete FirebaseDiaryService
-//func deleteDiaryService(diary: Diary) -> AnyPublisher<Void, Error> {
-//    Future<Void, Error> { promise in
-//        removeImage(diary: diary) {
-//            self.database.collection("Diarys")
-//                .document(diary.id).delete()
-//            { error in
-//                if let error = error {
-//                    promise(.failure(error))
-//                } else {
-//                    promise(.success(()))
-//                }
-//            }
-//        }
-//    }
-//    .eraseToAnyPublisher()
-//}
-//
-////MARK: Remove Storage
-//func removeImage(diary: Diary, completion: @escaping () -> ()) {
-//    let storageRef = Storage.storage().reference().child("DiaryImages")
-//    var count: Int = 0
-//    for diaryImage in diary.diaryImageNames {
-//        storageRef.child(diaryImage).delete { error in
-//            if let error = error {
-//                print("Error removing image from storage: \(error.localizedDescription)")
-//                count += 1
-//                if count == diary.diaryImageNames.count {
-//                    completion()
-//                }
-//            } else {
-//                count += 1
-//                if count == diary.diaryImageNames.count {
-//                    completion()
-//                }
-//            }
-//        }
-//    }
-//}

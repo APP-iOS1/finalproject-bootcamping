@@ -36,7 +36,11 @@ struct AddScheduleView: View {
         // FIXME: 여행 일정의 첫 날과 마지막 날을 선택하면 범위 선택이 가능해야 함
         VStack{
             Spacer()
+            Divider()
             titleTextField
+                .padding(.vertical, 10)
+            Divider()
+                .padding(.bottom, 10)
             DatePicker(
                 "캠핑 시작일",
                 selection: $startDate,
@@ -71,7 +75,7 @@ struct AddScheduleView: View {
             isAddingDisable = checkSchedule(startDate: newvalues[0], endDate: newvalues[1])
             print("isAddingDisable \(isAddingDisable)")
         }
-        .padding(.horizontal)
+        .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
     func checkSchedule(startDate: Date, endDate: Date) -> Bool {
@@ -91,20 +95,37 @@ extension AddScheduleView {
     
     // MARK: -View : 캠핑장 이름 titleTextField
     private var titleTextField : some View {
-        VStack(alignment: .leading, spacing: 10){
-            NavigationLink {
-                SearchCampingSpotListView(campingSpotName: $campingSpot)
-            } label: {
+        VStack {
+            if campingSpot == "" {
                 HStack{
-                    Text("캠핑장 이름 검색하기")
-                        .font(.title3)
-                        .bold()
-                    Image(systemName: "magnifyingglass")
+                    NavigationLink {
+                        SearchCampingSpotListView(campingSpotName: $campingSpot)
+                    } label: {
+                        HStack{
+                            Text("캠핑장 추가하기")
+                                .foregroundColor(.bcBlack)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.bcBlack)
+                        }
+                    }
                 }
+            } else {
+                HStack {
+                    Text("\(campingSpot)")
+                        .lineLimit(1)
+                    Spacer()
+                    Button {
+                        campingSpot = ""
+                    } label: {
+                        Image(systemName: "xmark")
+                            .foregroundColor(.bcBlack)
+
+                    }
+
+                }
+                
             }
-            
-            TextField("캠핑장 이름 직접 입력하기", text: $campingSpot)
-                .textFieldStyle(.roundedBorder)
         }
     }
     // MARK: -View : addScheduleButton
@@ -127,13 +148,16 @@ extension AddScheduleView {
             //                    .modifier(GreenButtonModifier())
         }
         .disabled(campingSpot == "" || isAddingDisable)
+        
     }
 }
 
 
 
-//struct AddScheduleView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddScheduleView()
-//    }
-//}
+struct AddScheduleView_Previews: PreviewProvider {
+    static var previews: some View {
+        AddScheduleView()
+            .environmentObject(ScheduleStore())
+            .environmentObject(CampingSpotStore())
+    }
+}

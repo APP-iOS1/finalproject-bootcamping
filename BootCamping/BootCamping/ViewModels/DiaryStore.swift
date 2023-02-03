@@ -239,7 +239,6 @@ class DiaryStore: ObservableObject {
                 
             }
             .store(in: &cancellables)
-
     }
-    
+
 }

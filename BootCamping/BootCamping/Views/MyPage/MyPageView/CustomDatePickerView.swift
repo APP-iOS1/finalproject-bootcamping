@@ -29,12 +29,14 @@ struct CustomDatePickerView: View {
             // 일 월 화 수 목 금 토
             dayLabelView
             Divider()
-            calendarView
-            taskView
-        }
-        .onChange(of: currentMonth) { newValue in
-            //updating Month
-            currentDate = getCurrentMonth()
+            VStack{
+                calendarView
+                taskView
+            }
+            .onChange(of: currentMonth) { newValue in
+                //updating Month
+                currentDate = getCurrentMonth()
+            }
         }
     }
     
@@ -162,7 +164,7 @@ extension CustomDatePickerView{
                     .background (
                         Rectangle()
                             .frame(width: 50, height: 50)
-                            .foregroundColor(Color.secondary)
+                            .foregroundColor(Color.bcYellow)
                             .opacity((isSameDay(date1: value.date, date2: currentDate) && value.day != -1) ? 1 : 0)
                     )
                     .onTapGesture {
@@ -173,29 +175,22 @@ extension CustomDatePickerView{
     }
     // MARK: - 일정 뷰
     private var taskView: some View{
-        HStack {
-            VStack(alignment: .leading, spacing: 10) {
-                Text("\(extraData_MonthDay()[0]).\(extraData_MonthDay()[1])")
-                    .font(.title2.bold())
-                    .padding(.top, 25)
-                
-                //MARK: 일정 디테일
-                if scheduleStore.scheduleList.first(where: { schedule in
-                    return isSameDay(date1: schedule.date, date2: currentDate)
-                }) != nil{
-                    ScrollView(showsIndicators: false) {
-                        ForEach(scheduleStore.scheduleList.filter{ schedule in
-                            return isSameDay(date1: schedule.date, date2: currentDate)
-                        }) { schedule in
-                            TaskCellView(title: schedule.title)
-                        }
+        VStack(alignment: .leading) {
+            //MARK: 일정 디테일
+            if scheduleStore.scheduleList.first(where: { schedule in
+                return isSameDay(date1: schedule.date, date2: currentDate)
+            }) != nil{
+                ScrollView(showsIndicators: false) {
+                    ForEach(scheduleStore.scheduleList.filter{ schedule in
+                        return isSameDay(date1: schedule.date, date2: currentDate)
+                    }) { schedule in
+                        TaskCellView(month: extraData_MonthDay()[0], day: extraData_MonthDay()[1], schedule: schedule)
                     }
-                } else {
-                    Text("No schedule")
                 }
-                Spacer()
+            } else {
+                Text("해당 날짜의 캠핑 일정이 없습니다")
+                    .padding(.vertical, UIScreen.screenHeight * 0.05)
             }
-            Spacer()
         }
     }
     
@@ -205,22 +200,23 @@ extension CustomDatePickerView{
     func CardView(value: DateValue) -> some View {
         VStack {
             if value.day != -1 {
-                
                 if scheduleStore.scheduleList.first(where: { schedule in
                     return isSameDay(date1: schedule.date, date2: value.date)
                 }) != nil {
                     Text("\(value.day)")
                         .font(.body.bold())
                     Spacer()
-                    
                     HStack(spacing: 8) {
                         // 스케줄 개수만큼 점으로 표시하기
                         ForEach(scheduleStore.scheduleList.filter{ schedule in
                             return isSameDay(date1: schedule.date, date2: value.date)
                         }) {_ in
-                            Circle()
-                                .fill(Color.red)
-                                .frame(width: 7, height: 7)
+//                            Circle()
+//                                .fill(Color.bcGreen)
+//                                .frame(width: 7, height: 7)
+                            Image(systemName: "flag.fill")
+                                .font(.caption)
+                                .foregroundColor(Color.bcGreen)
                         }
                     }
                 } else {
@@ -249,39 +245,6 @@ extension Date {
         } ?? []
     }
 }
-
-//MARK: 일정 구분선
-///달력 뷰에서 일정별로 구분해주는 선을 그려주는 구조체입니다. Color를 인자로 받습니다.
-///해당 색은 구분선의 색으로 사용됩니다.
-struct ExDivider: View {
-    let color: Color
-    let width: CGFloat = 5
-    var body: some View {
-        RoundedRectangle(cornerRadius: 5)
-            .fill(color)
-            .frame(width: width, height: 45)
-        //            .edgesIgnoringSafeArea(.horizontal)
-    }
-}
-
-struct TaskCellView: View{
-    let title: String
-    var body: some View {
-        HStack {
-            ExDivider(color: Color.red)
-                .padding(.trailing, UIScreen.screenWidth*0.05)
-            VStack(alignment: .leading, spacing: 5) {
-                Text("\(title)")
-                    .font(.body.bold())
-            }
-            Spacer()
-        }
-        .frame(maxWidth: UIScreen.screenWidth)
-        .padding(.bottom, 10)
-        .padding(.top, 20)
-    }
-}
-
 
 
 //

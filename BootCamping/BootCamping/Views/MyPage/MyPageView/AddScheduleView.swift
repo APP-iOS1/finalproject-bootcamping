@@ -26,7 +26,7 @@ struct AddScheduleView: View {
         )!
         return startDate...max
     }
-    
+
     var alert: String {
         if campingSpot != "" {
             if isAddingDisable { return "날짜를 다시 선택해주세요\n하루에 한 개의 캠핑일정만 등록 가능합니다"}
@@ -34,10 +34,21 @@ struct AddScheduleView: View {
         }
         return "캠핑장 이름을 입력해주세요"
     }
-    
+
+    //onAppear 시 캠핑장 데이터 패치
+    @EnvironmentObject var campingSpotStore: CampingSpotStore
+    @State var page: Int = 2
+    var fetchData: FetchData = FetchData()
+
     var body: some View {
-        VStack {
+        // FIXME: 여행 일정의 첫 날과 마지막 날을 선택하면 범위 선택이 가능해야 함
+        VStack{
+            Spacer()
+            Divider()
             titleTextField
+                .padding(.vertical, 10)
+            Divider()
+                .padding(.bottom, 10)
             DatePicker(
                 "캠핑 시작일",
                 selection: $startDate,
@@ -64,11 +75,16 @@ struct AddScheduleView: View {
         }
         .onAppear{
             isAddingDisable = checkSchedule(startDate: startDate, endDate: endDate)
+            
+            Task {
+                campingSpotStore.campingSpotList = try await fetchData.fetchData(page: page)
+            }
+            
         }
         .onChange(of: [self.startDate, self.endDate]) { newvalues in
             isAddingDisable = checkSchedule(startDate: newvalues[0], endDate: newvalues[1])
         }
-        .padding(.horizontal)
+        .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
     func checkSchedule(startDate: Date, endDate: Date) -> Bool {
@@ -95,20 +111,37 @@ extension AddScheduleView {
     
     // MARK: -View : 캠핑장 이름 titleTextField
     private var titleTextField : some View {
-        VStack(alignment: .leading, spacing: 10){
-            NavigationLink {
-                SearchCampingSpotListView()
-            } label: {
+        VStack {
+            if campingSpot == "" {
                 HStack{
-                    Text("캠핑장 이름 검색하기")
-                        .font(.title3)
-                        .bold()
-                    Image(systemName: "magnifyingglass")
+                    NavigationLink {
+                        SearchCampingSpotListView(campingSpotName: $campingSpot)
+                    } label: {
+                        HStack{
+                            Text("캠핑장 추가하기")
+                                .foregroundColor(.bcBlack)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.bcBlack)
+                        }
+                    }
                 }
+            } else {
+                HStack {
+                    Text("\(campingSpot)")
+                        .lineLimit(1)
+                    Spacer()
+                    Button {
+                        campingSpot = ""
+                    } label: {
+                        Image(systemName: "xmark")
+                            .foregroundColor(.bcBlack)
+
+                    }
+
+                }
+                
             }
-            
-            TextField("캠핑장 이름 직접 입력하기", text: $campingSpot)
-                .textFieldStyle(.roundedBorder)
         }
     }
     // MARK: -View : addScheduleButton
@@ -132,6 +165,7 @@ extension AddScheduleView {
             //                    .modifier(GreenButtonModifier())
         }
         .disabled(campingSpot == "" || isAddingDisable)
+        
     }
     // MARK: -View : alertText
     private var alertText : some View {
@@ -144,8 +178,10 @@ extension AddScheduleView {
 
 
 
-//struct AddScheduleView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddScheduleView()
-//    }
-//}
+struct AddScheduleView_Previews: PreviewProvider {
+    static var previews: some View {
+        AddScheduleView()
+            .environmentObject(ScheduleStore())
+            .environmentObject(CampingSpotStore())
+    }
+}

@@ -48,7 +48,7 @@ struct MyPageView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        SettingView()
+                        SettingView(isSignIn: $isSignIn)
                     } label: {
                         Image(systemName: "gearshape").foregroundColor(.bcBlack)
                     }
@@ -70,13 +70,15 @@ extension MyPageView{
                 .frame(width: 60, height: 60)
             Text("\(userNickName ?? "민콩콩") 님")
             NavigationLink {
-                ProfileSettingView(isSignIn: $isSignIn)
+                ProfileSettingView(user: User(id: "", profileImage: "", nickName: "밍콩", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
+                
             } label: {
                 Image(systemName: "chevron.right")
                     .bold()
             }
             Spacer()
         }
+        
     }
     
     // MARK: -ViewBuilder : 탭으로 일정, 북마크 표시

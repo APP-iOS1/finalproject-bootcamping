@@ -93,7 +93,7 @@ class CommentStore: ObservableObject {
         }
     }
     
-    //MARK: Read Comment Combine
+    //MARK: - Read Comment Combine
     
     func readCommentsCombine() {
         FirebaseCommentService().readCommentsService()
@@ -116,7 +116,7 @@ class CommentStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    //MARK: Create Comment Combine
+    //MARK: - Create Comment Combine
     
     func createCommentCombine(comment: Comment) {
         FirebaseCommentService().createCommentService(comment: comment)
@@ -128,7 +128,6 @@ class CommentStore: ObservableObject {
                     print("Failed Create Comment")
                     self.firebaseCommentServiceError = .createCommentError
                     self.showErrorAlertMessage = self.firebaseCommentServiceError.errorDescription!
-
                     return
                 case .finished:
                     print("Finished Create Comment")
@@ -141,7 +140,7 @@ class CommentStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    //MARK: Update CommentLike Combine
+    //MARK: - Update CommentLike Combine
     
     func updateCommentLikeCombine(comment: Comment) {
         FirebaseCommentService().updateCommentLikeService(comment: comment)
@@ -166,7 +165,7 @@ class CommentStore: ObservableObject {
             .store(in: &cancellables)
     }
 
-    //MARK: Delete Comment Combine
+    //MARK: - Delete Comment Combine
     
     func deleteCommentCombine(comment: Comment) {
         FirebaseCommentService().deleteCommentService(comment: comment)

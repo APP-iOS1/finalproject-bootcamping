@@ -18,6 +18,7 @@ extension Color {
     static let bcBlack = Color("BCBlack")
     static let bcGreen = Color("BCGreen")
     static let bcDarkGray = Color("BCDarkGray")
+    static let bcYellow = Color("BCYellow")
 }
 
 //MARK: - 키보드 dismiss extension함수입니다.

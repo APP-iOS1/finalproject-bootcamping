@@ -10,6 +10,8 @@ import Firebase
 import SDWebImageSwiftUI
 
 struct DiaryDetailView: View {
+    @EnvironmentObject var bookmarkStore: BookmarkStore
+    @EnvironmentObject var authStore: AuthStore
     
     @State var diaryComment: String = ""
     //삭제 알림
@@ -19,6 +21,7 @@ struct DiaryDetailView: View {
     @EnvironmentObject var authStore: AuthStore
     
     
+    @State var isBookmarked: Bool = false
     var item: Diary
     
     var body: some View {
@@ -41,9 +44,23 @@ struct DiaryDetailView: View {
             Divider()
             diaryCommetInputView
         }
+        .onAppear{
+            isBookmarked = checkBookmark(diaryId: item.id)
+        }
 
     }
+    
+    func checkBookmark(diaryId: String) -> Bool {
+        for user in authStore.userList {
+            if user.id == Auth.auth().currentUser?.uid {
+                if user.bookMarkedDiaries.contains(diaryId) { return true
+                }
+            }
+        }
+        return false
+    }
 }
+
 
 private extension DiaryDetailView {
     //MARK: - 유저 프로필, 글 수정버튼
@@ -107,14 +124,31 @@ private extension DiaryDetailView {
     var diaryDetailImage: some View {
         TabView{
             ForEach(item.diaryImageURLs, id: \.self) { url in
-                WebImage(url: URL(string: url))
-                    .resizable()
-                    .placeholder {
-                        Rectangle().foregroundColor(.gray)
+                ZStack{
+                    WebImage(url: URL(string: url))
+                        .resizable()
+                        .placeholder {
+                            Rectangle().foregroundColor(.gray)
+                        }
+                        .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
+                        .aspectRatio(contentMode: .fill)
+                    Button {
+                        isBookmarked.toggle()
+                        if isBookmarked{
+                            bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
+                        } else{
+                            bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
+                        }
+                    } label: {
+                        Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
                     }
                     .scaledToFill()
                     .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     .clipped()
+                    .offset(x:UIScreen.screenWidth*0.45, y: -UIScreen.screenWidth*0.45)
+                    .foregroundColor(.white)
+                    .shadow(radius: 5)
+                }
             }
         }
         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)

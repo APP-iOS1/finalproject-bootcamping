@@ -145,7 +145,7 @@ class DiaryStore: ObservableObject {
         getData()
     }
 
-    //MARK: Read Diary Combine
+    //MARK: - Read Diary Combine
     
     func readDiarysCombine() {
         FirebaseDiaryService().readDiarysService()
@@ -169,7 +169,7 @@ class DiaryStore: ObservableObject {
     }
     
 
-    //MARK: Create Diary Combine
+    //MARK: - Create Diary Combine
 
     func createDiaryCombine(diary: Diary, images: [Data]) {
         FirebaseDiaryService().createDiaryService(diary: diary, images: images)
@@ -193,7 +193,7 @@ class DiaryStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    //MARK: Update Diary Combine
+    //MARK: - Update Diary Combine
     
     func updateDiaryCombine(diary: Diary, images: [Data]) {
         FirebaseDiaryService().createDiaryService(diary: diary, images: images)
@@ -217,7 +217,7 @@ class DiaryStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    //MARK: Delete Diary Combine
+    //MARK: - Delete Diary Combine
     
     func deleteDiaryCombine(diary: Diary) {
         FirebaseDiaryService().deleteDiaryService(diary: diary)
@@ -239,7 +239,6 @@ class DiaryStore: ObservableObject {
                 
             }
             .store(in: &cancellables)
-
     }
-    
+
 }

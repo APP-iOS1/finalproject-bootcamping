@@ -12,41 +12,50 @@ import SDWebImageSwiftUI
 struct CampingSpotListView: View {
     //TODO: 북마크 만들기
     @EnvironmentObject var campingSpotStore: CampingSpotStore
-//    var item: [Item]
-
-    var body: some View {
-        VStack{
-            ScrollView(showsIndicators: false){
-                ForEach(campingSpotStore.campingSpotList, id: \.self) { camping in
-                    NavigationLink {
-                        CampingSpotDetailView(places: camping)
-                    } label: {
-                        VStack{
-                            campingSpotListCell(item: camping)
-                                .padding(.bottom,40)
-//                            Divider()
-//                                .padding(.bottom, 10)
-                            ///Divider() 없어도 구분 잘 되나요??
-                        }
-                    }
-                }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar{
-                ToolbarItem(placement: .principal) {
-                    Text("캠핑 모아보기")
-                }
-            }
-        }
-
-    }
-}
-
-//MARK: 캠핑장 리스트 셀 뷰
-struct campingSpotListCell : View{
-    var item: Item
-
     
+    @State private var isLoading: Bool = false
+    
+    var campingSpotList: [Item]
+    
+    var body: some View {
+           VStack{
+               ScrollView(showsIndicators: false){
+                   ForEach(campingSpotList, id: \.self) { camping in
+                       NavigationLink {
+                           CampingSpotDetailView(places: camping)
+                       } label: {
+                           VStack{
+                               CampingSpotListRaw(item: camping)
+                                   .padding(.bottom,40)
+                           }
+                       }
+                   }
+               }
+               .navigationBarTitleDisplayMode(.inline)
+               .toolbar{
+                   ToolbarItem(placement: .principal) {
+                       Text("캠핑 모아보기")
+                   }
+               }
+           }
+                   // MARK: 로티뷰... 일단 주석처리 해둘게요ㅠㅠ
+//        .overlay(content: {
+//            LottieView()
+//                .frame(width: 100, alignment: .center)
+//                .padding(.leading, 20)
+//        }) // 여기까지
+
+       }
+   }
+
+
+struct CampingSpotListView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationStack{
+            CampingSpotListView(campingSpotList: [])
+                .environmentObject(CampingSpotStore())
+                
+/*
     var body: some View{
         VStack(alignment: .leading){
             
@@ -60,7 +69,12 @@ struct campingSpotListCell : View{
             } else {
                 WebImage(url: URL(string: item.firstImageUrl))
                     .resizable()
-                    .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
+                    .placeholder {
+                        Rectangle().foregroundColor(.gray)
+                    }
+                    .scaledToFill()
+                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
+                    .clipped()
                     .padding(.bottom, 5)
             }
             
@@ -79,7 +93,7 @@ struct campingSpotListCell : View{
                             }
                     }
                 }
-                .padding(.horizontal, UIScreen.screenWidth*0.05)
+                .padding(.horizontal, UIScreen.screenWidth*0.03)
             }
             
             
@@ -87,7 +101,7 @@ struct campingSpotListCell : View{
             Text(item.facltNm)
                 .font(.title3.bold())
                 .foregroundColor(.bcBlack)
-                .padding(.horizontal, UIScreen.screenWidth*0.05)
+                .padding(.horizontal, UIScreen.screenWidth*0.03)
 
             // 캠핑장 간단 주소
             HStack {
@@ -100,7 +114,7 @@ struct campingSpotListCell : View{
                     .foregroundColor(.gray)
             }
             .padding(.bottom, 5)
-            .padding(.horizontal, UIScreen.screenWidth*0.05)
+            .padding(.horizontal, UIScreen.screenWidth*0.03)
 
             // 캠핑장 설명 3줄
             if item.lineIntro != "" {
@@ -108,22 +122,13 @@ struct campingSpotListCell : View{
                     .font(.callout)
                     .multilineTextAlignment(.leading)
                     .foregroundColor(.bcBlack)
-                    .padding(.horizontal, UIScreen.screenWidth*0.05)
+                    .padding(.horizontal, UIScreen.screenWidth*0.03)
             }
             //                        .lineLimit(3)//optional
             //                        .expandButton(TextSet(text: "more", font: .body, color: .blue))//optional
             //                        .collapseButton(TextSet(text: "less", font: .body, color: .blue))//optional
             //                        .expandAnimation(.easeOut)//optional
-            
+        */
         }
     }
 }
-
-
-//struct CampingSpotListView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        NavigationStack{
-//            CampingSpotListView()
-//        }
-//    }
-//}

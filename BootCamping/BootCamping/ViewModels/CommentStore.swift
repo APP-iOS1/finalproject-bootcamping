@@ -93,10 +93,10 @@ class CommentStore: ObservableObject {
         }
     }
     
-    //MARK: Read Comment Combine
+    //MARK: - Read Comment Combine
     
-    func getCommentsCobine() {
-        FirebaseCommentService().getCommentsService()
+    func readCommentsCombine() {
+        FirebaseCommentService().readCommentsService()
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -116,7 +116,7 @@ class CommentStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    //MARK: Create Comment Combine
+    //MARK: - Create Comment Combine
     
     func createCommentCombine(comment: Comment) {
         FirebaseCommentService().createCommentService(comment: comment)
@@ -128,11 +128,10 @@ class CommentStore: ObservableObject {
                     print("Failed Create Comment")
                     self.firebaseCommentServiceError = .createCommentError
                     self.showErrorAlertMessage = self.firebaseCommentServiceError.errorDescription!
-
                     return
                 case .finished:
                     print("Finished Create Comment")
-                    self.getCommentsCobine()
+                    self.readCommentsCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -141,7 +140,7 @@ class CommentStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    //MARK: Update CommentLike Combine
+    //MARK: - Update CommentLike Combine
     
     func updateCommentLikeCombine(comment: Comment) {
         FirebaseCommentService().updateCommentLikeService(comment: comment)
@@ -157,7 +156,7 @@ class CommentStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Update CommentLike")
-                    self.getCommentsCobine()
+                    self.readCommentsCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -166,7 +165,7 @@ class CommentStore: ObservableObject {
             .store(in: &cancellables)
     }
 
-    //MARK: Delete Comment Combine
+    //MARK: - Delete Comment Combine
     
     func deleteCommentCombine(comment: Comment) {
         FirebaseCommentService().deleteCommentService(comment: comment)
@@ -181,7 +180,7 @@ class CommentStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Delete Comment")
-                    self.getCommentsCobine()
+                    self.readCommentsCombine()
                     return
                 }
             } receiveValue: { _ in

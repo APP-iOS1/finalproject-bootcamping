@@ -10,53 +10,145 @@ import Firebase
 import SDWebImageSwiftUI
 
 struct DiaryDetailView: View {
+    @EnvironmentObject var bookmarkStore: BookmarkStore
+    @EnvironmentObject var authStore: AuthStore
     
     @State var diaryComment: String = ""
+    //삭제 알림
+    @State private var isShowingDeleteAlert = false
     
+    @EnvironmentObject var diaryStore: DiaryStore
+    
+    
+    @State var isBookmarked: Bool = false
     var item: Diary
     
     var body: some View {
         VStack {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading) {
-                    DiaryDetailImage
-                    DiaryDetailTitle
-                    DiaryDetailContent
-                    diaryCampingLink
-                    diaryDetailInfo
-                    Divider()
-                    DiaryCommetView
+                    diaryUserProfile
+                    diaryDetailImage
+                    Group {
+                        diaryDetailTitle
+                        diaryDetailContent
+                        diaryCampingLink
+                        diaryDetailInfo
+                        Divider()
+                        diaryCommetView
+                    }
+                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 }
             }
             Divider()
-            DiaryCommetInputView
+            diaryCommetInputView
         }
+        .onAppear{
+            isBookmarked = checkBookmark(diaryId: item.id)
+        }
+
+    }
+    
+    func checkBookmark(diaryId: String) -> Bool {
+        for user in authStore.userList {
+            if user.id == Auth.auth().currentUser?.uid {
+                if user.bookMarkedDiaries.contains(diaryId) { return true
+                }
+            }
+        }
+        return false
     }
 }
-// MARK: -View : 프로필사진, 작성자 이름, 수정 삭제버튼
-//    private var DiaryDetailTitleView : some View {
-//        HStack{
-//            Circle()
-//                .frame(width: 25)
-//            Text("햄뿡이")
-//            Image(systemName: "lock")
-//            Spacer()
-//            //삭제 수정
-//            Image(systemName: "ellipsis")
-//        }
-//        .padding(.horizontal)
-//    }
+
 
 private extension DiaryDetailView {
+    //MARK: - 유저 프로필, 글 수정버튼
+    var diaryUserProfile: some View {
+        HStack {
+            //TODO: -유저 프로필 사진
+//            ForEach(authStore.userList) { user in
+//                if item.uid == user.id && user.profileImage != "" {
+//                    WebImage(url: URL(string: user.profileImage))
+//                        .resizable()
+//                        .placeholder {
+//                            Rectangle().foregroundColor(.gray)
+//                        }
+//                        .scaledToFill()
+//                        .frame(width: UIScreen.screenWidth * 0.01)
+//                        .clipShape(Circle())
+//                } else {
+                    Image(systemName: "person.fill")
+                        .overlay {
+                            Circle().stroke(lineWidth: 1)
+                        }
+//                }
+//            }
+            //유저 닉네임
+            Text(item.diaryUserNickName)
+                .font(.headline).fontWeight(.semibold)
+            Spacer()
+            //MARK: - ... 버튼입니다.
+            Menu {
+                Button {
+                    //TODO: -수정기능 추가
+                } label: {
+                    Text("수정하기")
+                }
+                
+                Button {
+                    isShowingDeleteAlert = true
+                } label: {
+                    Text("삭제하기")
+                }
+                
+            } label: {
+                Image(systemName: "ellipsis")
+            }
+            //MARK: - 일기 삭제 알림
+            .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
+                Button("취소", role: .cancel) {
+                    isShowingDeleteAlert = false
+                }
+                Button("삭제", role: .destructive) {
+                    diaryStore.deleteDiaryCombine(diary: item)
+                }
+            }
+            
+        }
+        .padding(.horizontal, UIScreen.screenWidth * 0.05)
+        .padding(.top, 5)
+    }
+    
     // MARK: -View : 다이어리 사진
-    var DiaryDetailImage: some View {
+    var diaryDetailImage: some View {
         TabView{
             ForEach(item.diaryImageURLs, id: \.self) { url in
-                WebImage(url: URL(string: url))
-                    .resizable()
-                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
-                    .aspectRatio(contentMode: .fill)
-                
+                ZStack{
+                    WebImage(url: URL(string: url))
+                        .resizable()
+                        .placeholder {
+                            Rectangle().foregroundColor(.gray)
+                        }
+                        .scaledToFill()
+                        .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
+                        .clipped()
+                        .overlay(alignment: .topTrailing){
+                            Button {
+                                isBookmarked.toggle()
+                                if isBookmarked{
+                                    bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
+                                } else{
+                                    bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
+                                }
+                            } label: {
+                                Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                            }
+                            .foregroundColor(.white)
+                            .shadow(radius: 5)
+                            .padding()
+                        }
+
+                }
             }
         }
         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
@@ -66,22 +158,22 @@ private extension DiaryDetailView {
     }
     
     // MARK: -View : 다이어리 제목
-    var DiaryDetailTitle: some View {
+    var diaryDetailTitle: some View {
         Text(item.diaryTitle)
             .font(.system(.title3, weight: .semibold))
-            .padding()
+            .padding(.vertical, 5)
     }
     
     // MARK: -View : 다이어리 내용
-    var DiaryDetailContent: some View {
+    var diaryDetailContent: some View {
         Text(item.diaryContent)
             .multilineTextAlignment(.leading)
-            .padding(.horizontal)
     }
     
     //MARK: - 방문한 캠핑장 링크
     //TODO: - 캠핑장 정보 연결
     var diaryCampingLink: some View {
+        
         NavigationLink {
             Text("캠핑장 정보 연결")
         } label: {
@@ -90,11 +182,11 @@ private extension DiaryDetailView {
                     .resizable()
                     .frame(width: 50, height: 50)
                 
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(item.diaryAddress)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("캠핑장 이름")
                         .font(.headline)
                     HStack {
-                        Text(item.diaryAddress + "(대구시 수성구)") //TODO: -앞에 -시 -구 까지 짜르기
+                        Text("대구시 수성구") //TODO: 캠핑장 주소 -앞에 -시 -구 까지 짜르기
                         Spacer()
                         //방문일
                         Text("\(item.diaryVisitedDate.getKoreanDate())")
@@ -110,14 +202,13 @@ private extension DiaryDetailView {
                     .foregroundColor(.gray)
                     .opacity(0.2)
                     .shadow(color: .gray, radius: 3)
-                
             }
         }
         .foregroundColor(.clear)
-        .padding()
     }
     
-    //MARK: - 좋아요, 댓글, 유저 닉네임, 타임스탬프
+    
+    //MARK: - 좋아요, 댓글, 타임스탬프
     var diaryDetailInfo: some View {
         HStack {
             Button {
@@ -135,19 +226,16 @@ private extension DiaryDetailView {
                     .padding(.horizontal, 3)
             }
             Spacer()
-            Text("by \(item.diaryUserNickName)")
-            Text("|")
             Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
         }
         .foregroundColor(.bcBlack)
         .font(.system(.subheadline))
-        .padding(.horizontal)
         .padding(.vertical, 5)
     }
     
     // MARK: -View : 댓글 뷰
     //TODO: -댓글 연동
-    private var DiaryCommetView : some View {
+    private var diaryCommetView : some View {
         VStack(alignment: .leading) {
             
             HStack {
@@ -159,7 +247,7 @@ private extension DiaryDetailView {
             }
             HStack{
                 Circle()
-                    .frame(width: 30)
+                    .frame(width: 35)
                 VStack(alignment: .leading) {
                     Text("햄뿡이")
                         .font(.title3)
@@ -168,7 +256,7 @@ private extension DiaryDetailView {
             }
             HStack{
                 Circle()
-                    .frame(width: 30)
+                    .frame(width: 35)
                 VStack(alignment: .leading) {
                     Text("햄뿡이")
                         .font(.title3)
@@ -177,7 +265,7 @@ private extension DiaryDetailView {
             }
             HStack{
                 Circle()
-                    .frame(width: 30)
+                    .frame(width: 35)
                 VStack(alignment: .leading) {
                     Text("햄뿡이")
                         .font(.title3)
@@ -189,11 +277,11 @@ private extension DiaryDetailView {
     }
     
     // MARK: -View : 댓글 작성
-    private var DiaryCommetInputView : some View {
+    private var diaryCommetInputView : some View {
         
         HStack {
             Circle()
-                .frame(width: 30)
+                .frame(width: 35)
             TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
             Button(action: {}) {
                 Image(systemName: "arrowshape.turn.up.right.circle")
@@ -211,5 +299,7 @@ struct DiaryDetailView_Previews: PreviewProvider {
     static var previews: some View {
         DiaryDetailView(item: Diary(id: "", uid: "", diaryUserNickName: "닉네임", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "용감하고 인류의 그들의 따뜻한 있음으로써 그러므로 봄바람이다. 힘차게 밥을 가슴이 용감하고 튼튼하며, 그들의 보는 새가 인간의 칼이다. 충분히 인생을 못할 곧 우리는 청춘은 인간의 황금시대다. 지혜는 찾아다녀도, 것은 못하다 어디 곳으로 꽃 봄날의 보라. 우는 예가 이상은 온갖 그것은 품었기 얼음 힘있다. 투명하되 그들의 밥을 창공에 주는 이상, 이상의 힘있다. 새 피가 가장 놀이 부패뿐이다. 그들은 원질이 든 무엇을 되려니와, 불어 우리는 노래하며 것이다. 대한 청춘의 곳이 바이며, 충분히 방황하였으며, 있는가? 그들은 거친 위하여, 살 때문이다.", diaryImageNames: [""], diaryImageURLs: [
             "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "", diaryIsPrivate: true))
+        .environmentObject(AuthStore())
+        .environmentObject(DiaryStore())
     }
 }

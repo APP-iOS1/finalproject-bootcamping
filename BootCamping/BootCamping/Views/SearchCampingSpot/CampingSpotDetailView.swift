@@ -24,6 +24,9 @@ struct CampingSpotDetailView: View {
     )
     @State var annotatedItem: [AnnotatedItem] = []
     @State private var isBookmark: Bool = false
+
+    @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var bookmarkSpotStore: BookmarkSpotStore
     
     var places: Item
     
@@ -36,11 +39,16 @@ struct CampingSpotDetailView: View {
                 TabView {
                     ForEach(images, id: \.self) { item in
                         WebImage(url: URL(string: places.firstImageUrl))
-                            .resizable().scaledToFill()
+                            .resizable()
+                            .placeholder {
+                                Rectangle().foregroundColor(.gray)
+                            }
+                            .scaledToFill()
+                            .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
+                            .clipped()
                     }
                 }
                 .tabViewStyle(PageTabViewStyle())
-                .frame(width: UIScreen.screenWidth, height: 300)
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Group {
@@ -51,7 +59,8 @@ struct CampingSpotDetailView: View {
                             Spacer()
                             
                             Button {
-                                isBookmark.toggle()
+                                bookmarkSpotStore.addBookmark(places)
+                             //   isBookmark.toggle()
                             } label: {
                                 Image(systemName: isBookmark ? "bookmark.fill" : "bookmark")
                                     .font(.title3)
@@ -68,16 +77,17 @@ struct CampingSpotDetailView: View {
                                 .font(.callout)
                                 .foregroundColor(.gray)
                         }
+                        .padding(.bottom, 15)
                     }
                     
                     Group {
                         Text("\(places.intro)")
                             .lineSpacing(7)
                     }
-                    .padding(7)
+                    
                     
                     Divider()
-                        .padding()
+                        .padding(.vertical)
                     Group {
                         Text("편의시설 및 서비스")
                             .font(.headline)
@@ -87,7 +97,7 @@ struct CampingSpotDetailView: View {
                     }
                     
                     Divider()
-                        .padding()
+                        .padding(.vertical)
                     
                     Group {
                         Text("위치 보기")
@@ -99,7 +109,7 @@ struct CampingSpotDetailView: View {
                             Map(coordinateRegion: $region, interactionModes: [], annotationItems: annotatedItem) { item in
                                 MapMarker(coordinate: item.coordinate, tint: Color.bcGreen)
                             }
-                            .frame(width: UIScreen.screenWidth * 0.84, height: 250)
+                            .frame(width: UIScreen.screenWidth * 0.95, height: 250)
                             .cornerRadius(10)
                         }
                         
@@ -107,7 +117,7 @@ struct CampingSpotDetailView: View {
                     }
                     
                     Divider()
-                        .padding()
+                        .padding(.vertical)
                     
                     Group {
                         HStack {
@@ -142,7 +152,8 @@ struct CampingSpotDetailView: View {
                         }
                     }
                 }
-                .padding(30)
+                .padding(.horizontal, UIScreen.screenWidth * 0.05)
+                .padding(.vertical, 30)
             }
             .onAppear {
                 region.center = CLLocationCoordinate2D(latitude: Double(places.mapY)!, longitude: Double(places.mapX)!)
@@ -198,7 +209,7 @@ struct ServiceIcon: View {
                         .font(.caption)
                         .kerning(-1)
                 }
-                .padding(4)
+               // .padding(4)
             }
         }
     }

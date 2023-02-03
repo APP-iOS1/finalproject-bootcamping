@@ -27,6 +27,11 @@ struct AddScheduleView: View {
         return startDate...max
     }
     
+    //onAppear 시 캠핑장 데이터 패치
+    @EnvironmentObject var campingSpotStore: CampingSpotStore
+    @State var page: Int = 2
+    var fetchData: FetchData = FetchData()
+
     var body: some View {
         // FIXME: 여행 일정의 첫 날과 마지막 날을 선택하면 범위 선택이 가능해야 함
         VStack{
@@ -56,6 +61,11 @@ struct AddScheduleView: View {
         }
         .onAppear{
             isAddingDisable = checkSchedule(startDate: startDate, endDate: endDate)
+            
+            Task {
+                campingSpotStore.campingSpotList = try await fetchData.fetchData(page: page)
+            }
+            
         }
         .onChange(of: [self.startDate, self.endDate]) { newvalues in
             isAddingDisable = checkSchedule(startDate: newvalues[0], endDate: newvalues[1])
@@ -83,7 +93,7 @@ extension AddScheduleView {
     private var titleTextField : some View {
         VStack(alignment: .leading, spacing: 10){
             NavigationLink {
-                SearchCampingSpotListView()
+                SearchCampingSpotListView(campingSpotName: $campingSpot)
             } label: {
                 HStack{
                     Text("캠핑장 이름 검색하기")

@@ -61,6 +61,7 @@
 		7C95F191298A55120095A6BC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C95F190298A55120095A6BC /* GoogleService-Info.plist */; };
 		7CC3AD4E29890970002EF992 /* DiaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3AD4D29890970002EF992 /* DiaryStore.swift */; };
 		7CC3AD5029890974002EF992 /* FirebaseDiaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3AD4F29890974002EF992 /* FirebaseDiaryService.swift */; };
+		7CD6570B298C91B000889FF3 /* LocalAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD6570A298C91B000889FF3 /* LocalAuthentication.swift */; };
 		7CFCE12A2987549700E196AF /* RealtimeCampingCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE1282987549700E196AF /* RealtimeCampingCellView.swift */; };
 		7CFCE12B2987549700E196AF /* RealtimeCampingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE1292987549700E196AF /* RealtimeCampingView.swift */; };
 		7CFCE12D2987549F00E196AF /* WeeklyPopulerCampingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE12C2987549F00E196AF /* WeeklyPopulerCampingView.swift */; };
@@ -118,6 +119,7 @@
 		7C95F190298A55120095A6BC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7CC3AD4D29890970002EF992 /* DiaryStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryStore.swift; sourceTree = "<group>"; };
 		7CC3AD4F29890974002EF992 /* FirebaseDiaryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseDiaryService.swift; sourceTree = "<group>"; };
+		7CD6570A298C91B000889FF3 /* LocalAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthentication.swift; sourceTree = "<group>"; };
 		7CFCE1282987549700E196AF /* RealtimeCampingCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealtimeCampingCellView.swift; sourceTree = "<group>"; };
 		7CFCE1292987549700E196AF /* RealtimeCampingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealtimeCampingView.swift; sourceTree = "<group>"; };
 		7CFCE12C2987549F00E196AF /* WeeklyPopulerCampingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeeklyPopulerCampingView.swift; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 				7CC3AD4D29890970002EF992 /* DiaryStore.swift */,
 				7C95F18E298A42B10095A6BC /* AppleAuthCoordinator.swift */,
 				6E96013C298A40C7009C60F2 /* BookmarkedStore.swift */,
+				7CD6570A298C91B000889FF3 /* LocalAuthentication.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -448,6 +451,7 @@
 				63AF45DF2977CE5E0014B1E1 /* MyCampingDiaryView.swift in Sources */,
 				7CC3AD4E29890970002EF992 /* DiaryStore.swift in Sources */,
 				7CC3AD5029890974002EF992 /* FirebaseDiaryService.swift in Sources */,
+				7CD6570B298C91B000889FF3 /* LocalAuthentication.swift in Sources */,
 				63AF45AF2977CDB40014B1E1 /* Date.swift in Sources */,
 				63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */,
 				AD1FED36298B930F001FB3E5 /* FirebaseScheduleService.swift in Sources */,
@@ -619,11 +623,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BootCamping/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6R3M7VGRP2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BootCamping/Info.plist;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "\"다이어리 접근을 위한 FaceId 요청입니다.\"";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -662,11 +667,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BootCamping/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6R3M7VGRP2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BootCamping/Info.plist;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "\"다이어리 접근을 위한 FaceId 요청입니다.\"";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;

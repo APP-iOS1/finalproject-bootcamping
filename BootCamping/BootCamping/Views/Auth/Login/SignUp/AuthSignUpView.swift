@@ -67,6 +67,7 @@ struct AuthSignUpView: View {
             }
             if isProgressing {
                 ZStack {
+                    //다크그레이 한번 썼음
                     Color.bcDarkGray
                         .opacity(0.5)
                         .ignoresSafeArea()

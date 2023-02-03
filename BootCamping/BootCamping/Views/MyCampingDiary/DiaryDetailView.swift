@@ -138,8 +138,6 @@ private extension DiaryDetailView {
                     .padding(.horizontal, 3)
             }
             Spacer()
-            Text("by \(item.diaryUserNickName)")
-            Text("|")
             Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
         }
         .foregroundColor(.bcBlack)

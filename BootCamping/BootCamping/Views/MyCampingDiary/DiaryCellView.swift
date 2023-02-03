@@ -11,6 +11,7 @@ import Firebase
 
 struct DiaryCellView: View {
     
+    @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var authStore: AuthStore
     //선택한 다이어리 정보 변수입니다.
     var item: Diary
@@ -49,9 +50,19 @@ private extension DiaryCellView {
     
     //MARK: - 제목
     var diaryTitle: some View {
-        Text(item.diaryTitle)
-            .font(.system(.title3, weight: .semibold))
-            .padding()
+        HStack {
+            Text(item.diaryTitle)
+                .font(.system(.title3, weight: .semibold))
+                .padding()
+            Spacer()
+            Button {
+                diaryStore.deleteDiaryCombine(diary: item)
+            } label: {
+                Image(systemName: "trash")
+                    .padding()
+            }
+
+        }
     }
     
     //MARK: - 내용

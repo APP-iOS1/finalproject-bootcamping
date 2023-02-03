@@ -25,6 +25,23 @@ enum FirebaseBookmarkDiaryServiceError: Error {
     }
 }
 
+enum FirebaseBookmarkSpotServiceError: Error {
+    case badSnapshot
+    case addBookmarkSpotError
+    case removeBookmarkSpotError
+    
+    var errorDescription: String? {
+        switch self {
+        case .badSnapshot:
+            return "즐겨찾기한 캠핑장 가져오기 실패"
+        case .addBookmarkSpotError:
+            return "캠핑장 즐겨찾기 추가 실패"
+        case .removeBookmarkSpotError:
+            return "캠핑장 즐겨찾기 삭제 실패"
+        }
+    }
+}
+
 
 struct FirebaseBookmarkService {
     let database = Firestore.firestore()

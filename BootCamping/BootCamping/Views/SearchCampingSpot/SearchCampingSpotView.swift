@@ -74,7 +74,7 @@ struct SearchCampingSpotView: View {
                                     CampingSpotDetailView(places: campingSpot)
                                 } label: {
                                     VStack{
-                                        campingSpotListCell(item: campingSpot)
+                                        CampingSpotListRaw(item: campingSpot)
                                             .padding(.bottom,40)
                                     }
                                 }

@@ -55,25 +55,34 @@ struct AddScheduleView: View {
                 .padding(.bottom, 50)
         }
         .onAppear{
+            print(scheduleStore.scheduleList)
             isAddingDisable = checkSchedule(startDate: startDate, endDate: endDate)
+            print("Appeared isAddingDisable \(isAddingDisable)")
         }
         .onChange(of: [self.startDate, self.endDate]) { newvalues in
             isAddingDisable = checkSchedule(startDate: newvalues[0], endDate: newvalues[1])
-            print("isAddingDisable \(isAddingDisable)")
+            print("onChange isAddingDisable \(isAddingDisable)")
         }
         .padding(.horizontal)
     }
     
     func checkSchedule(startDate: Date, endDate: Date) -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let startDate = dateFormatter.string(from: startDate)
+        let endDate = dateFormatter.string(from: endDate)
+        
         if startDate > endDate {  return true }
         for schedule in scheduleStore.scheduleList{
-            if (startDate ... endDate).contains(schedule.date) {
+            let scheduleDate = dateFormatter.string(from: schedule.date)
+            if (startDate <= scheduleDate && scheduleDate <= endDate) {
                 print("check Schedule returns true")
                 return true
             }
         }
         print("check Schedule returns false")
-        return true
+        return false
     }
 }
 
@@ -105,10 +114,14 @@ extension AddScheduleView {
                 let interval = endDate.timeIntervalSince(startDate)
                 let days = Int(interval / 86400)
                 for day in 0...days {
-                    scheduleStore.addSchedule(Schedule(id: UUID().uuidString, title: campingSpot, date: calendar.date(byAdding: .day, value: day, to: startDate) ?? Date()))
+                    print(calendar.date(byAdding: .day, value: day, to: startDate) ?? Date())
+                    scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: calendar.date(byAdding: .day, value: day, to: startDate) ?? Date()))
+//                    scheduleStore.addSchedule(Schedule(id: UUID().uuidString, title: campingSpot, date: calendar.date(byAdding: .day, value: day, to: startDate) ?? Date()))
                 }
             } else {
-                scheduleStore.addSchedule(Schedule(id: UUID().uuidString, title: campingSpot, date: startDate))
+                print("else \(startDate)")
+                scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: startDate))
+//                scheduleStore.addSchedule(Schedule(id: UUID().uuidString, title: campingSpot, date: startDate))
             }
             dismiss()
         } label: {

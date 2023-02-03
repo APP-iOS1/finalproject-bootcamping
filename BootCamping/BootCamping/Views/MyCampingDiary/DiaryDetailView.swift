@@ -10,7 +10,7 @@ import Firebase
 import SDWebImageSwiftUI
 
 struct DiaryDetailView: View {
-    @EnvironmentObject var diaryStore: DiaryStore
+    @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var authStore: AuthStore
     
     @State var diaryComment: String = ""
@@ -80,9 +80,9 @@ extension DiaryDetailView {
                     Button {
                         isBookmarked.toggle()
                         if isBookmarked{
-                            diaryStore.addBookmarkDiaryCombine(diaryId: item.id)
+                            bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
                         } else{
-                            diaryStore.removeBookmarkDiaryCombine(diaryId: item.id)
+                            bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
                         }
                     } label: {
                         Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")

@@ -24,6 +24,8 @@ struct CampingSpotDetailView: View {
     )
     @State var annotatedItem: [AnnotatedItem] = []
     @State private var isBookmark: Bool = false
+    @StateObject private var bookmarkStore: BookmarkStore = BookmarkStore()
+    @EnvironmentObject var authStore: AuthStore
     
     var places: Item
     
@@ -55,7 +57,8 @@ struct CampingSpotDetailView: View {
                             Spacer()
                             
                             Button {
-                                isBookmark.toggle()
+                                bookmarkStore.addBookmark(places)
+                             //   isBookmark.toggle()
                             } label: {
                                 Image(systemName: isBookmark ? "bookmark.fill" : "bookmark")
                                     .font(.title3)
@@ -104,7 +107,7 @@ struct CampingSpotDetailView: View {
                             Map(coordinateRegion: $region, interactionModes: [], annotationItems: annotatedItem) { item in
                                 MapMarker(coordinate: item.coordinate, tint: Color.bcGreen)
                             }
-                            .frame(width: UIScreen.screenWidth * 0.84, height: 250)
+                            .frame(width: UIScreen.screenWidth * 0.95, height: 250)
                             .cornerRadius(10)
                         }
                         
@@ -147,7 +150,8 @@ struct CampingSpotDetailView: View {
                         }
                     }
                 }
-                .padding(30)
+                .padding(.horizontal, UIScreen.screenWidth * 0.05)
+                .padding(.vertical, 30)
             }
             .onAppear {
                 region.center = CLLocationCoordinate2D(latitude: Double(places.mapY)!, longitude: Double(places.mapX)!)

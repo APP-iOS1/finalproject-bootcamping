@@ -8,6 +8,6 @@
 import Foundation
 
 struct BookmarkSpot: Hashable, Identifiable {
-    let id: [String] // 북마크 한 장소id
-    let uid: String // 유저
+    let id: String
+    let campingSpot: String // 캠핑장 고유 ID (contentId)
 }

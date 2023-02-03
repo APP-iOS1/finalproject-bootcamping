@@ -62,7 +62,7 @@ struct ContentView: View {
                     isSignIn = false
                 }
                 diaryStore.getData()
-                scheduleStore.fetchSchedule()
+                scheduleStore.readScheduleCombine()
             }
         } else {
             LoginView(isSignIn: $isSignIn)
@@ -90,6 +90,7 @@ enum TabViewScreen {
     case three
     case four
 }
+
 //탭뷰 화면전환 함수입니다.
 final class TabSelector: ObservableObject {
     

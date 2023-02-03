@@ -15,7 +15,7 @@ import FirebaseFirestore
 
 class KakaoAuthStore: ObservableObject {
     
-    @Published var userInfo: User = User(id: UUID().uuidString, profileImage: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [])
+    @Published var userInfo: User = User(id: UUID().uuidString, profileImageName: "", profileImageURL: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [])
     // 로그인 상태 저장
     @Published var currentUser: Firebase.User?
     
@@ -142,7 +142,7 @@ class KakaoAuthStore: ObservableObject {
                 }
                 self.userInfo.userEmail = "\(String(describing: user?.kakaoAccount?.profile?.nickname ?? ""))@kakao.com"
                 self.userInfo.nickName = user?.kakaoAccount?.profile?.nickname ?? ""
-                self.userInfo.profileImage = user?.kakaoAccount?.profile?.profileImageUrl?.absoluteString ?? ""
+                self.userInfo.profileImageURL = user?.kakaoAccount?.profile?.profileImageUrl?.absoluteString ?? ""
             }
         }
     }
@@ -155,8 +155,7 @@ class KakaoAuthStore: ObservableObject {
             } else {
                 self.userInfo.userEmail = "\(String(describing: user?.kakaoAccount?.profile?.nickname ?? ""))@kakao.com"
                 self.userInfo.nickName = user?.kakaoAccount?.profile?.nickname ?? ""
-                self.userInfo.profileImage = user?.kakaoAccount?.profile?.profileImageUrl?.absoluteString ?? ""
-
+                self.userInfo.profileImageURL = user?.kakaoAccount?.profile?.profileImageUrl?.absoluteString ?? ""
             }
             
         }

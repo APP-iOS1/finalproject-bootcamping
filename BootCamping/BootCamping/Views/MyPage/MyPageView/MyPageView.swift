@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 enum TapMypage : String, CaseIterable {
     case myCamping = "나의 캠핑 일정"
@@ -14,18 +15,30 @@ enum TapMypage : String, CaseIterable {
 
 // MARK: - 마이페이지 첫 화면에 나타나는 뷰
 struct MyPageView: View {
-    @State private var nickname: String = "민콩"
+    @EnvironmentObject var authStore: AuthStore
+    
     @State private var selectedPicker2: TapMypage = .myCamping
     //로그인 유무 함수
     @Binding var isSignIn: Bool
     
     @Namespace private var animation
     
+    //글 작성 유저 닉네임 변수
+    var userNickName: String? {
+        for user in authStore.userList {
+            if user.id == Auth.auth().currentUser?.uid {
+                return user.nickName
+            }
+        }
+        return nil
+    }
+    
     var body: some View {
         VStack {
             ScrollView(showsIndicators: false) {
                 userProfileSection
                 animate()
+                    .padding(.top, UIScreen.screenHeight*0.02)
                 myPageTap
             }
             .padding(.horizontal, UIScreen.screenWidth * 0.1)
@@ -35,7 +48,7 @@ struct MyPageView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        SettingView()
+                        SettingView(isSignIn: $isSignIn)
                     } label: {
                         Image(systemName: "gearshape").foregroundColor(.bcBlack)
                     }
@@ -55,15 +68,17 @@ extension MyPageView{
                 .resizable()
                 .clipShape(Circle())
                 .frame(width: 60, height: 60)
-            Text("\(nickname) 님")
+            Text("\(userNickName ?? "민콩콩") 님")
             NavigationLink {
-                ProfileSettingView(isSignIn: $isSignIn)
+                ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "밍콩", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
+                
             } label: {
                 Image(systemName: "chevron.right")
                     .bold()
             }
             Spacer()
         }
+        
     }
     
     // MARK: -ViewBuilder : 탭으로 일정, 북마크 표시

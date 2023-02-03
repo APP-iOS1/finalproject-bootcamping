@@ -11,33 +11,28 @@ import Firebase
 struct RealtimeCampingView: View {
     
     @EnvironmentObject var diaryStore: DiaryStore
-
+    
     var body: some View {
         VStack {
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 ForEach(diaryStore.diaryList) { item in
-                    VStack {
-                        NavigationLink {
-                            DiaryDetailView(item: item)
-                        } label: {
-                            RealtimeCampingCellView(item: item)
-                                .padding(.bottom,40)
-                        }
-                        .foregroundColor(.bcBlack)
+                    if item.diaryIsPrivate == false {
+                        DiaryCellView(item: item)
+                            .padding(.bottom, 20)
                     }
                 }
             }
-            .padding()
-            .onAppear {
-                diaryStore.getData()
         }
+        .onAppear {
+            diaryStore.getData()
         }
     }
 }
 
-struct RealtimeCampingView_Previews: PreviewProvider {
-    static var previews: some View {
-        RealtimeCampingView()
-            .environmentObject(DiaryStore())
-    }
-}
+//MARK: - 서버에서 받아오는 부분이라 프리뷰 안됩니다.
+//struct RealtimeCampingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        RealtimeCampingView()
+//            .environmentObject(DiaryStore())
+//    }
+//}

@@ -15,7 +15,7 @@ struct DiaryAddView: View {
     @State private var diaryTitle: String = ""
     @State private var locationInfo: String = ""
     @State private var visitDate: String = ""
-    @State private var isOpen: Bool = true
+    @State private var diaryIsPrivate: Bool = false //false가 공개
     @State private var diaryContent: String = ""
     
     @EnvironmentObject var diaryStore: DiaryStore
@@ -60,62 +60,78 @@ struct DiaryAddView: View {
             .disableAutocorrection(true) //자동 수정 비활성화
             .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
             .submitLabel(.done) //작성 완료하면 키보드 return 버튼이 파란색 done으로 바뀜
-        .onSubmit(of: .text, submit)
-        .padding(.horizontal, UIScreen.screenWidth*0.1)
-        } //done 누르면 submit 함수가 실행됨
+        }
+        .padding(.horizontal, UIScreen.screenWidth*0.03)
+        .padding(.vertical)
+        .navigationTitle(Text("캠핑 일기 쓰기"))
     }
 }
 
 
 private extension DiaryAddView {
-    //MARK: - 포토 피커
+    //MARK: - 포토피커
     var photoPicker: some View {
-            HStack {
-                VStack{
-                    PhotosPicker(
-                        selection: $selectedItems,
-                        maxSelectionCount: 10,
-                        matching: .any(of: [.images, .not(.videos)])) {
-                            ZStack {
-                                Image(systemName: "plus")
-                                VStack{
-                                    Spacer()
-                                    Text("\(selectedImages.count) / 10")
-                                        .padding(.bottom, 5)
-                                }
-                            }
-                            .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
-                            .background {
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .stroke(.gray, lineWidth: 2)
+        HStack {
+            VStack{
+                PhotosPicker(
+                    selection: $selectedItems,
+                    maxSelectionCount: 10,
+                    matching: .any(of: [.images, .not(.videos)])) {
+                        ZStack {
+                            Image(systemName: "plus")
+                            VStack{
+                                Spacer()
+                                Text("\(selectedImages.count) / 10")
+                                    .padding(.bottom, 5)
                             }
                         }
-                        .onChange(of: selectedItems) { newValue in
-                            Task {
-                                selectedItems = []
-                                for value in newValue {
-                                    if let imageData = try? await value.loadTransferable(type: Data.self) {
-                                        selectedImages.append(imageData)
-                                    }
-                                }
-                            }
+                        .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
+                        .background {
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .stroke(.gray, lineWidth: 2)
                         }
-                }
-                if selectedImages.count > 0 {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack {
-                            ForEach(selectedImages, id: \.self) { image in
-                                Image(uiImage: UIImage(data: image)!)
-                                    .resizable()
-                                    .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
+                    }
+                    .onChange(of: selectedItems) { newValue in
+                        Task {
+                            selectedImages = []
+                            for value in newValue {
+                                if let imageData = try? await value.loadTransferable(type: Data.self) {
+                                    selectedImages.append(imageData)
+                                }
                             }
                         }
                     }
-                }
-                
             }
-            .padding()
-        
+            
+            Text(selectedImages.isEmpty ? "사진을 추가해주세요" : "")
+                .foregroundColor(.secondary)
+                .opacity(0.5)
+                .padding(.leading, UIScreen.screenWidth * 0.05)
+            
+            if selectedImages.count > 0 {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ForEach(Array(zip(0..<selectedImages.count, selectedImages)), id: \.0) { index, image in
+                            Image(uiImage: UIImage(data: image)!)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
+                                .clipped()
+                                .overlay(
+                                    Text("대표이미지")
+                                        .padding(2)
+                                        .foregroundColor(Color.white)
+                                        .background(Color.bcGreen)
+                                        .offset(y : UIScreen.screenWidth * 0.07)
+                                        .opacity(index == 0 ? 1 : 0)
+                                )
+                        }
+                    }
+                }
+            }
+            
+        }
+        .padding(.bottom)
     }
     
     //MARK: - 제목 작성
@@ -127,11 +143,9 @@ private extension DiaryAddView {
                     RoundedRectangle(cornerRadius: 2, style: .continuous)
                         .stroke(.gray, lineWidth: 2)
                 }
-                .padding(.horizontal)
                 .padding(.bottom)
         } header: {
             Text("제목")
-                .padding(.horizontal)
         }
         .focused($inputFocused)
     }
@@ -146,76 +160,77 @@ private extension DiaryAddView {
                     RoundedRectangle(cornerRadius: 2, style: .continuous)
                         .stroke(.gray, lineWidth: 2)
                 }
-                .padding(.horizontal)
                 .padding(.bottom)
         } header: {
             Text("위치 등록하기")
-                .padding(.horizontal)
         }
         .focused($inputFocused)
     }
     
     //MARK: - 방문일자 등록하기
-    //TODO: - DatePicker로 수정하기 - 완료
     var addViewVisitDate: some View {
         Section {
             DatePicker("방문일자 등록하기",
                        selection: $selectedDate,
                        displayedComponents: [.date])
-//            .padding(.horizontal)
             .padding(.bottom)
         }
     }
     
     //MARK: - 글 공개 여부
-    //TODO: - 버튼 + 애니매이션으로 수정
     var addViewIsPrivate: some View {
         HStack {
             Text("공개설정")
             Spacer()
             Button {
-                isOpen.toggle()
+                diaryIsPrivate.toggle()
             } label: {
                 VStack {
-                    Image(systemName: isOpen ? "lock.open" : "lock")
-                    Text(isOpen ? "공개" : "비공개")
+                    Image(systemName: diaryIsPrivate ? "lock" : "lock.open" )
+                    Text(diaryIsPrivate ? "비공개": "공개")
                 }
             }
             .foregroundColor(.bcBlack)
         }
-        .padding(.horizontal)
         .padding(.bottom)
     }
     
     //MARK: - 일기 작성 뷰
     var addViewDiaryContent: some View {
-        TextEditor(text: $diaryContent)
-            .overlay(alignment: .topLeading) {
-                Text(diaryContent == "" ? "일기를 작성해주세요" : "")
-                    .foregroundColor(.secondary)
-                    .opacity(0.5)
-            }
-            .multilineTextAlignment(.leading)
-            .frame(minHeight: 180)
-            .focused($inputFocused)
-            .padding()
+        ZStack {
+            TextEditor(text: $diaryContent)
+                .multilineTextAlignment(.leading)
+                .frame(minHeight: 180)
+                .focused($inputFocused)
+            Text(diaryContent == "" ? "일기를 작성해주세요" : "")
+                .foregroundColor(.secondary)
+                .opacity(0.5)
+                .position(x: 73, y: 19)
+        }
     }
-
+    
     //MARK: - 추가버튼
+    //TODO: - disable 시 회색버튼으로 만들기
     var addViewAddButton: some View {
         HStack {
             Spacer()
             Button {
-                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: "", diaryIsPrivate: false), images: selectedImages)
+                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: "", diaryIsPrivate: diaryIsPrivate), images: selectedImages)
                 dismiss()
             } label: {
-                Text("일기 작성하기")
-                    .modifier(GreenButtonModifier())
+                Text(selectedImages.isEmpty ? "사진을 추가해주세요" : "일기 쓰기")
             }
+            .font(.headline)
+            .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)
+            .foregroundColor(.white)
+            .background(selectedImages.isEmpty ? .secondary : Color.bcGreen)
+            .cornerRadius(10)
+            .disabled(selectedImages.isEmpty)
             Spacer()
+
         }
     }
-
+    
     //MARK: - 키보드 dismiss 함수입니다.
     func submit() {
         resignKeyboard()
@@ -229,17 +244,21 @@ private extension DiaryAddView {
         }
     }
 }
-//MARK: - 키보드 dismiss extension함수입니다.
-extension View {
-    func dismissKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-}
+
 
 struct DiaryAddView_Previews: PreviewProvider {
     static var previews: some View {
         DiaryAddView()
             .environmentObject(AuthStore())
             .environmentObject(DiaryStore())
+        
+        DiaryAddView()
+            .environmentObject(AuthStore())
+            .environmentObject(DiaryStore())
+            .previewDevice("iPhone 11")
+        DiaryAddView()
+            .environmentObject(AuthStore())
+            .environmentObject(DiaryStore())
+            .previewDevice("iPhone SE (3rd generation)")
     }
 }

@@ -35,10 +35,11 @@ struct FirebaseCommentService {
     
     let database = Firestore.firestore()
     
-    //MARK: Read FirebaseCommentService
-    func getCommentsService() -> AnyPublisher<[Comment], Error> {
+    //MARK: - Read FirebaseCommentService
+    func readCommentsService() -> AnyPublisher<[Comment], Error> {
         Future<[Comment], Error> { promise in
             database.collection("Comments")
+                .order(by: "commentCreatedDate", descending: true)
                 .getDocuments { snapshot, error in
                     if let error = error {
                         promise(.failure(error))
@@ -69,7 +70,7 @@ struct FirebaseCommentService {
         .eraseToAnyPublisher()
     }
     
-    //MARK: Create FirebaseCommentService
+    //MARK: - Create FirebaseCommentService
     func createCommentService(comment: Comment) -> AnyPublisher<Void, Error> {
        
         Future<Void, Error> { promise in
@@ -92,12 +93,11 @@ struct FirebaseCommentService {
                     }
                     
                 }
-                
         }
         .eraseToAnyPublisher()
     }
     
-    //MARK: Update CommentLike FirebaseCommentService
+    //MARK: - Update CommentLike FirebaseCommentService
     func updateCommentLikeService(comment: Comment) -> AnyPublisher<Void, Error> {
         
         Future<Void, Error> { promise in
@@ -118,7 +118,7 @@ struct FirebaseCommentService {
         .eraseToAnyPublisher()
     }
     
-    //MARK: Delete FirebaseCommentService
+    //MARK: - Delete FirebaseCommentService
     func deleteCommentService(comment: Comment) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
             self.database.collection("Comments")

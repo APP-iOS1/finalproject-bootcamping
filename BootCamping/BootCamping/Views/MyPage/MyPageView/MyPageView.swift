@@ -70,7 +70,7 @@ extension MyPageView{
                 .frame(width: 60, height: 60)
             Text("\(userNickName ?? "민콩콩") 님")
             NavigationLink {
-                ProfileSettingView(user: User(id: "", profileImage: "", nickName: "밍콩", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
+                ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "밍콩", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
                 
             } label: {
                 Image(systemName: "chevron.right")

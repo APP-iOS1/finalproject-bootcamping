@@ -68,24 +68,24 @@ private extension RealtimeCampingCellView {
     var diaryUserProfile: some View {
         
         HStack {
-            //TODO: -유저 프로필 사진
-            ForEach(authStore.userList) { user in
-                if item.uid == user.id && user.profileImage != "" {
-                    WebImage(url: URL(string: user.profileImage))
-                        .resizable()
-                        .placeholder {
-                            Rectangle().foregroundColor(.gray)
-                        }
-                        .scaledToFill()
-                        .frame(width: UIScreen.screenWidth * 0.01)
-                        .clipShape(Circle())
-                } else {
+//            //TODO: -유저 프로필 사진
+//            ForEach(authStore.userList) { user in
+//                if item.uid == user.id && user.profileImage != "" {
+//                    WebImage(url: URL(string: user.profileImage))
+//                        .resizable()
+//                        .placeholder {
+//                            Rectangle().foregroundColor(.gray)
+//                        }
+//                        .scaledToFill()
+//                        .frame(width: UIScreen.screenWidth * 0.01)
+//                        .clipShape(Circle())
+//                } else {
                     Image(systemName: "person.fill")
                         .overlay {
                             Circle().stroke(lineWidth: 1)
                         }
-                }
-            }
+//                }
+//            }
             
             //유저 닉네임
             Text(item.diaryUserNickName)

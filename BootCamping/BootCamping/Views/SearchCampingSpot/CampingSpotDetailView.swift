@@ -24,8 +24,9 @@ struct CampingSpotDetailView: View {
     )
     @State var annotatedItem: [AnnotatedItem] = []
     @State private var isBookmark: Bool = false
-    @StateObject private var bookmarkStore: BookmarkStore = BookmarkStore()
+
     @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var bookmarkSpotStore: BookmarkSpotStore
     
     var places: Item
     
@@ -58,7 +59,7 @@ struct CampingSpotDetailView: View {
                             Spacer()
                             
                             Button {
-                                bookmarkStore.addBookmark(places)
+                                bookmarkSpotStore.addBookmark(places)
                              //   isBookmark.toggle()
                             } label: {
                                 Image(systemName: isBookmark ? "bookmark.fill" : "bookmark")

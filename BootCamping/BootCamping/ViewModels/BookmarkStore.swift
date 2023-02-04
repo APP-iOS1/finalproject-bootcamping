@@ -11,8 +11,6 @@ import Firebase
 
 class BookmarkStore: ObservableObject {
     //저장된 다이어리 리스트
-    @Published var firebaseBookmarkDiaryServiceError: FirebaseBookmarkDiaryServiceError = .badSnapshot
-    @Published var showErrorAlertMessage: String = "오류"
     
     let wholeAuthStore = WholeAuthStore.shared
     
@@ -34,8 +32,6 @@ class BookmarkStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Add bookmark to Diary")
-                    // TODO: - fetch,,
-                    /// 현재 로그인된 유저의 데이터를 가져오는 게 bookmark에서의 fetch,, !
                     self.wholeAuthStore.readUserListCombine()
                     return
                 }
@@ -45,8 +41,7 @@ class BookmarkStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    //MARK: remove bookmark in Diary Combine
-    
+    //MARK: - remove bookmark in Diary Combine
     func removeBookmarkDiaryCombine(diaryId: String) {
         FirebaseBookmarkService().removeBookmarkDiaryService(diaryId: diaryId)
             .receive(on: DispatchQueue.main)
@@ -57,10 +52,50 @@ class BookmarkStore: ObservableObject {
                     print("Failed remove bookmark in Diary")
                     return
                 case .finished:
-                    // TODO: - fetch,,
-                    /// 현재 로그인된 유저의 데이터를 가져오는 게 bookmark에서의 fetch,, !
                     self.wholeAuthStore.readUserListCombine()
                     print("Finished remove bookmark in Diary")
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
+    
+    //MARK: - Add bookmark to CampingSpot Combine
+    func addBookmarkSpotCombine(campingSpotId: String) {
+        FirebaseBookmarkService().addBookmarkSpotService(campingSpotId: campingSpotId)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Add bookmark to CampingSpot")
+                    return
+                case .finished:
+                    print("Finished Add bookmark to CampingSpot")
+                    self.wholeAuthStore.readUserListCombine()
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
+    
+    //MARK: - remove bookmark in CampingSpot Combine
+    func removeBookmarkCampingSpotCombine(campingSpotId: String) {
+        FirebaseBookmarkService().removeBookmarkSpotService(campingSpotId: campingSpotId)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed remove bookmark in CampingSpot")
+                    return
+                case .finished:
+                    self.wholeAuthStore.readUserListCombine()
+                    print("Finished remove bookmark in CampingSpot")
                     return
                 }
             } receiveValue: { _ in
@@ -79,6 +114,21 @@ extension BookmarkStore{
                     if user.bookMarkedDiaries.isEmpty { return false }
                     // TODO: - 자기가 쓴 다이어리도 북마크가 가능하게 할 것인가,, !
                     if user.bookMarkedDiaries.contains(diaryId) { return true }
+                }
+            }
+        }
+        return false
+    }
+    
+    // MARK: - 북마크 된 캠핑장인지 확인하기
+    func checkBookmarkedSpot(campingSpotId: String) -> Bool {
+        if let currentUser = wholeAuthStore.currentUser {
+            for user in wholeAuthStore.userList {
+                if user.id == currentUser.uid {
+                    if user.bookMarkedSpot.isEmpty { return false }
+                    print(user.bookMarkedSpot)
+                    print("camping id\(campingSpotId)")
+                    if user.bookMarkedSpot.contains(campingSpotId) { return true }
                 }
             }
         }

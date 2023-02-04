@@ -23,11 +23,11 @@ struct CampingSpotDetailView: View {
         span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
     )
     @State var annotatedItem: [AnnotatedItem] = []
-    @State private var isBookmark: Bool = false
+    @State private var isBookmarked: Bool = false
 
-    @EnvironmentObject var authStore: AuthStore
-    @EnvironmentObject var bookmarkSpotStore: BookmarkSpotStore
-    
+//    @EnvironmentObject var authStore: AuthStore
+//    @EnvironmentObject var bookmarkSpotStore: BookmarkSpotStore
+    @EnvironmentObject var bookmarkStore: BookmarkStore
     var places: Item
     
     var body: some View {
@@ -68,15 +68,18 @@ struct CampingSpotDetailView: View {
                                 .font(.title)
                                 .bold()
                             Spacer()
-                            
                             Button {
-                                bookmarkSpotStore.addBookmark(places)
-                                isBookmark.toggle()
+                                // FIXME: - 북마크한 캠핑장 캠핑장의 contentId를 저장하는 거 맞는지 확인하기
+                                isBookmarked.toggle()
+                                if isBookmarked{
+                                    bookmarkStore.addBookmarkSpotCombine(campingSpotId: places.contentId)
+                                } else{
+                                    bookmarkStore.removeBookmarkCampingSpotCombine(campingSpotId: places.contentId)
+                                }
                             } label: {
-                                Image(systemName: isBookmark ? "bookmark.fill" : "bookmark")
-                                    .font(.title3)
-                                    .foregroundColor(.bcGreen)
+                                Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
                             }
+                            .padding()
                             
                         }
                         .padding(.top, -15)
@@ -166,10 +169,11 @@ struct CampingSpotDetailView: View {
                 .padding(.horizontal, UIScreen.screenWidth * 0.05)
                 .padding(.vertical, 30)
             }
-            .onAppear {
-                region.center = CLLocationCoordinate2D(latitude: Double(places.mapY)!, longitude: Double(places.mapX)!)
-                annotatedItem.append(AnnotatedItem(name: places.facltNm, coordinate: CLLocationCoordinate2D(latitude: Double(places.mapY)!, longitude: Double(places.mapX)!)))
-            }
+        }
+        .onAppear {
+            region.center = CLLocationCoordinate2D(latitude: Double(places.mapY)!, longitude: Double(places.mapX)!)
+            annotatedItem.append(AnnotatedItem(name: places.facltNm, coordinate: CLLocationCoordinate2D(latitude: Double(places.mapY)!, longitude: Double(places.mapX)!)))
+            isBookmarked = bookmarkStore.checkBookmarkedSpot(campingSpotId: places.contentId)
         }
     }
 }

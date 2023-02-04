@@ -10,13 +10,14 @@ import SDWebImageSwiftUI
 import Firebase
 
 struct DiaryCellView: View {
-    
+    @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var diaryStore: DiaryStore
-    @EnvironmentObject var authStore: AuthStore
+//    @EnvironmentObject var authStore: AuthStore
     //선택한 다이어리 정보 변수입니다.
     var item: Diary
     //삭제 알림
     @State private var isShowingDeleteAlert = false
+    @State var isBookmarked: Bool = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -39,6 +40,9 @@ struct DiaryCellView: View {
             }
             .foregroundColor(.bcBlack)
         }
+        .onAppear{
+            isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
+        }
     }
 }
 
@@ -55,6 +59,21 @@ private extension DiaryCellView {
                     .scaledToFill()
                     .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     .clipped()
+                    .overlay(alignment: .topTrailing){
+                        Button {
+                            isBookmarked.toggle()
+                            if isBookmarked{
+                                bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
+                            } else{
+                                bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
+                            }
+                        } label: {
+                            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                        }
+                        .foregroundColor(.white)
+                        .shadow(radius: 5)
+                        .padding()
+                    }
                 
             }
         }

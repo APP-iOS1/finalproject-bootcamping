@@ -335,7 +335,7 @@ extension SearchCampingSpotView {
             Text("추천 캠핑장!")
                 .font(.title.bold())
             LazyVGrid(columns: columns2) {
-                ForEach(0..<campingSpotADName.count){ index in
+                ForEach(0..<campingSpotADName.count, id:\.self){ index in
                     VStack(alignment: .leading){
                         NavigationLink {
                        //     CampingSpotDetailView()

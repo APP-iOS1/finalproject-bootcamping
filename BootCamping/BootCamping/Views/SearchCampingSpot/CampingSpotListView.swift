@@ -21,18 +21,27 @@ struct CampingSpotListView: View {
         VStack{
             ScrollView(showsIndicators: false){
                 LazyVStack {
-                    ForEach(Array(campingSpotStore.campingSpotList.enumerated()), id: \.offset) { (index, camping) in
-                        NavigationLink {
-                            CampingSpotDetailView(places: camping)
-                        } label: {
-                            CampingSpotListRaw(item: camping)
-                                .padding(.bottom,40)
+                    if campingSpotList.count == 0 {
+                        ForEach(0...2, id: \.self) { _ in 
+                            EmptyCampingSpotListCell()
+                                .onAppear {
+                                    print("test")
+                                }
                         }
-                        .onAppear {
-                            if index == campingSpotStore.campingSpotList.count - 1 {
-                                Task {
-                                    campingSpotStore.readCampingSpotListCombine()
-                                    campingSpotStore.campingSpotList.append(contentsOf: campingSpotStore.campingSpots)
+                    } else {
+                        ForEach(Array(campingSpotStore.campingSpotList.enumerated()), id: \.offset) { (index, camping) in
+                            NavigationLink {
+                                CampingSpotDetailView(places: camping)
+                            } label: {
+                                CampingSpotListRaw(item: camping)
+                                    .padding(.bottom,40)
+                            }
+                            .onAppear {
+                                if index == campingSpotStore.campingSpotList.count - 1 {
+                                    Task {
+                                        campingSpotStore.readCampingSpotListCombine()
+                                        campingSpotStore.campingSpotList.append(contentsOf: campingSpotStore.campingSpots)
+                                    }
                                 }
                             }
                         }

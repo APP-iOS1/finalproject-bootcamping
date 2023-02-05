@@ -37,9 +37,9 @@
 		63AF45E62977CE650014B1E1 /* CampingSpotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */; };
 		63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */; };
 		63BC803B298C8EF30088AC02 /* EmptyCampingSpotListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BC803A298C8EF30088AC02 /* EmptyCampingSpotListCell.swift */; };
-		63BC803D298C94AB0088AC02 /* CampingSpotListRaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BC803C298C94AB0088AC02 /* CampingSpotListRaw.swift */; };
 		63BC803F298C97380088AC02 /* FirebaseCampingSpotService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BC803E298C97380088AC02 /* FirebaseCampingSpotService.swift */; };
 		63F8426A298CE4F9006A9433 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F84269298CE4F9006A9433 /* Home.swift */; };
+		63F8426C298FB5FF006A9433 /* CampingSpotListRaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F8426B298FB5FF006A9433 /* CampingSpotListRaw.swift */; };
 		6E11BE2D298C8FD60019E963 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 6E11BE2C298C8FD60019E963 /* Lottie */; };
 		6E11BE2F298C90390019E963 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E11BE2E298C90390019E963 /* LottieView.swift */; };
 		6E11BE31298C905D0019E963 /* campfire.json in Resources */ = {isa = PBXBuildFile; fileRef = 6E11BE30298C905C0019E963 /* campfire.json */; };
@@ -120,9 +120,9 @@
 		63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CampingSpotDetailView.swift; sourceTree = "<group>"; };
 		63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCampingSpotView.swift; sourceTree = "<group>"; };
 		63BC803A298C8EF30088AC02 /* EmptyCampingSpotListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCampingSpotListCell.swift; sourceTree = "<group>"; };
-		63BC803C298C94AB0088AC02 /* CampingSpotListRaw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampingSpotListRaw.swift; sourceTree = "<group>"; };
 		63BC803E298C97380088AC02 /* FirebaseCampingSpotService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseCampingSpotService.swift; sourceTree = "<group>"; };
 		63F84269298CE4F9006A9433 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		63F8426B298FB5FF006A9433 /* CampingSpotListRaw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CampingSpotListRaw.swift; sourceTree = "<group>"; };
 		6E11BE2E298C90390019E963 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		6E11BE30298C905C0019E963 /* campfire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = campfire.json; sourceTree = "<group>"; };
 		6E96013A298A32D6009C60F2 /* FullMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullMapView.swift; sourceTree = "<group>"; };
@@ -331,8 +331,8 @@
 			children = (
 				63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */,
 				63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */,
-				63BC803C298C94AB0088AC02 /* CampingSpotListRaw.swift */,
 				63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */,
+				63F8426B298FB5FF006A9433 /* CampingSpotListRaw.swift */,
 				6E96013A298A32D6009C60F2 /* FullMapView.swift */,
 				63BC803A298C8EF30088AC02 /* EmptyCampingSpotListCell.swift */,
 				63F84269298CE4F9006A9433 /* Home.swift */,
@@ -487,7 +487,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63BC803D298C94AB0088AC02 /* CampingSpotListRaw.swift in Sources */,
 				630ADB512977CC6C000A517B /* ContentView.swift in Sources */,
 				7CFCE12F2987551F00E196AF /* LoginPasswordView.swift in Sources */,
 				63AF45DF2977CE5E0014B1E1 /* MyCampingDiaryView.swift in Sources */,
@@ -498,6 +497,7 @@
 				7CD6570B298C91B000889FF3 /* LocalAuthentication.swift in Sources */,
 				63AF45AF2977CDB40014B1E1 /* Date.swift in Sources */,
 				63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */,
+				63F8426C298FB5FF006A9433 /* CampingSpotListRaw.swift in Sources */,
 				AD1FED36298B930F001FB3E5 /* FirebaseScheduleService.swift in Sources */,
 				63AF45DA2977CE4C0014B1E1 /* SettingView.swift in Sources */,
 				7C95F18F298A42B10095A6BC /* AppleAuthCoordinator.swift in Sources */,

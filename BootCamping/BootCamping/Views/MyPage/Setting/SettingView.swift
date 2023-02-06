@@ -17,6 +17,7 @@ struct SettingView: View {
     //로그아웃시 isSignIn을 false로 변경
     @Binding var isSignIn: Bool
 
+    //로그아웃 알럿
     @State var showingAlertLogOut: Bool = false
     
     var body: some View {

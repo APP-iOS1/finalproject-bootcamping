@@ -95,9 +95,9 @@ struct SearchCampingSpotView: View {
 //                campingSpotStore.readCampingSpotListCombine()
 //                campingSpotStore.campingSpotList = campingSpotStore.campingSpots
 //            }
-            Task {
-                campingSpotStore.campingSpotList = try await fecthData.fetchData(page: page)
-            }
+//            Task {
+//                campingSpotStore.campingSpotList = try await fecthData.fetchData(page: page)
+//            }
         }
     }
 }
@@ -139,6 +139,7 @@ extension SearchCampingSpotView {
                         CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("서울") })
                     } label: {
                         Image("seoul")
+                            .resizeImage(imgName: "seoul")
                             .resizable()
                             .cornerRadius(50)
                             .frame(width: 90, height: 90)
@@ -153,6 +154,7 @@ extension SearchCampingSpotView {
                         CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("경기") || $0.doNm.contains("인천")})
                     } label: {
                         Image("incheon")
+                            .resizeImage(imgName: "incheon")
                             .resizable()
                             .cornerRadius(50)
                             .frame(width: 90, height: 90)
@@ -167,6 +169,7 @@ extension SearchCampingSpotView {
                         CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("강원") })
                     } label: {
                         Image("gangwon")
+                            .resizeImage(imgName: "gangwon")
                             .resizable()
                             .cornerRadius(50)
                             .frame(width: 90, height: 90)
@@ -184,6 +187,7 @@ extension SearchCampingSpotView {
                         CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("충청") })
                     } label: {
                         Image("Chungcheong")
+                            .resizeImage(imgName: "Chungcheong")
                             .resizable()
                             .cornerRadius(50)
                             .frame(width: 90, height: 90)
@@ -198,6 +202,7 @@ extension SearchCampingSpotView {
                         CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("경상") || $0.doNm.contains("부산") })
                     } label: {
                         Image("busan")
+                            .resizeImage(imgName: "busan")
                             .resizable()
                             .cornerRadius(50)
                             .frame(width: 90, height: 90)
@@ -212,6 +217,7 @@ extension SearchCampingSpotView {
                         CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("전라") || $0.doNm.contains("제주") })
                     } label: {
                         Image("jeju")
+                            .resizeImage(imgName: "jeju")
                             .resizable()
                             .cornerRadius(50)
                             .frame(width: 90, height: 90)
@@ -239,6 +245,7 @@ extension SearchCampingSpotView {
                         CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("산") })
                     } label: {
                         Image("mountain")
+                            .resizeImage(imgName: "mountain")
                             .resizable()
                             .cornerRadius(50)
                             .frame(width: 90, height: 90)
@@ -253,6 +260,7 @@ extension SearchCampingSpotView {
                         CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("바다") || $0.lctCl.contains("해변") })
                     } label: {
                         Image("ocean")
+                            .resizeImage(imgName: "ocean")
                             .resizable()
                             .cornerRadius(50)
                             .frame(width: 90, height: 90)
@@ -267,6 +275,7 @@ extension SearchCampingSpotView {
                         CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("계곡")})
                     } label: {
                         Image("valley")
+                            .resizeImage(imgName: "valley")
                             .resizable()
                             .cornerRadius(50)
                             .frame(width: 90, height: 90)
@@ -285,6 +294,7 @@ extension SearchCampingSpotView {
                         CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("숲") })
                     } label: {
                         Image("forest")
+                            .resizeImage(imgName: "forest")
                             .resizable()
                             .cornerRadius(50)
                             .frame(width: 90, height: 90)
@@ -299,6 +309,7 @@ extension SearchCampingSpotView {
                         CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("강") || $0.lctCl.contains("호수") })
                     } label: {
                         Image("river")
+                            .resizeImage(imgName: "river")
                             .resizable()
                             .cornerRadius(50)
                             .frame(width: 90, height: 90)
@@ -313,6 +324,7 @@ extension SearchCampingSpotView {
                         CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("섬") })
                     } label: {
                         Image("island")
+                            .resizeImage(imgName: "island")
                             .resizable()
                             .cornerRadius(50)
                             .frame(width: 90, height: 90)

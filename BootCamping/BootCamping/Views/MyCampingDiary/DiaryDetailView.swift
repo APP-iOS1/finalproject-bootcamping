@@ -44,19 +44,9 @@ struct DiaryDetailView: View {
             diaryCommetInputView
         }
         .onAppear{
-            isBookmarked = checkBookmark(diaryId: item.id)
+            isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
         }
-
-    }
-    
-    func checkBookmark(diaryId: String) -> Bool {
-        for user in authStore.userList {
-            if user.id == Auth.auth().currentUser?.uid {
-                if user.bookMarkedDiaries.contains(diaryId) { return true
-                }
-            }
-        }
-        return false
+        
     }
 }
 
@@ -66,23 +56,23 @@ private extension DiaryDetailView {
     var diaryUserProfile: some View {
         HStack {
             //TODO: -유저 프로필 사진
-//            ForEach(authStore.userList) { user in
-//                if item.uid == user.id && user.profileImage != "" {
-//                    WebImage(url: URL(string: user.profileImage))
-//                        .resizable()
-//                        .placeholder {
-//                            Rectangle().foregroundColor(.gray)
-//                        }
-//                        .scaledToFill()
-//                        .frame(width: UIScreen.screenWidth * 0.01)
-//                        .clipShape(Circle())
-//                } else {
-                    Image(systemName: "person.fill")
-                        .overlay {
-                            Circle().stroke(lineWidth: 1)
-                        }
-//                }
-//            }
+            //            ForEach(authStore.userList) { user in
+            //                if item.uid == user.id && user.profileImage != "" {
+            //                    WebImage(url: URL(string: user.profileImage))
+            //                        .resizable()
+            //                        .placeholder {
+            //                            Rectangle().foregroundColor(.gray)
+            //                        }
+            //                        .scaledToFill()
+            //                        .frame(width: UIScreen.screenWidth * 0.01)
+            //                        .clipShape(Circle())
+            //                } else {
+            Image(systemName: "person.fill")
+                .overlay {
+                    Circle().stroke(lineWidth: 1)
+                }
+            //                }
+            //            }
             //유저 닉네임
             Text(item.diaryUserNickName)
                 .font(.headline).fontWeight(.semibold)
@@ -147,7 +137,7 @@ private extension DiaryDetailView {
                             .shadow(radius: 5)
                             .padding()
                         }
-
+                    
                 }
             }
         }

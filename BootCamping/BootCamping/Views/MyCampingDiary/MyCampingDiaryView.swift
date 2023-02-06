@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct MyCampingDiaryView: View {
     
@@ -14,6 +15,12 @@ struct MyCampingDiaryView: View {
     
     var body: some View {
         VStack {
+            //TODO: -자기 다이어리 없으면 DiaryAddView나오도록
+            //            ForEach(diaryStore.diaryList) { diaryData in
+            //                if diaryData.uid == Auth.auth().currentUser?.uid && diaryData == nil {
+            //                    DiaryAddView()
+            //                }
+            
             ScrollView(showsIndicators: false) {
                 if faceId.isUnlocked {
                     VStack(alignment: .center) {
@@ -28,17 +35,20 @@ struct MyCampingDiaryView: View {
                     }
                     
                 } else {
+                    //uid 비교해 자신이 쓴 글만 나오도록
                     ForEach(diaryStore.diaryList) { diaryData in
-                        VStack {
-                            RealtimeCampingCellView(item: diaryData)
-                                .padding(.bottom, 20)
+                        if diaryData.uid == Auth.auth().currentUser?.uid {
+                            VStack {
+                                //                            RealtimeCampingCellView(item: diaryData)
+                                DiaryCellView(item: diaryData)
+                                    .padding(.bottom, 20)
+                            }
+                            .onAppear {
+                                diaryStore.readDiarysCombine()
+                                print("\(diaryStore.diaryList)")
                             }
                         }
-                    .onAppear {
-                        diaryStore.readDiarysCombine()
-                        print("\(diaryStore.diaryList)")
                     }
-
                 }
                 
             }

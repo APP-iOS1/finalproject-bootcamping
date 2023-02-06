@@ -19,7 +19,7 @@ struct MyPageView: View {
     
     @State private var selectedPicker2: TapMypage = .myCamping
     //로그인 유무 함수
-    @Binding var isSignIn: Bool
+    @AppStorage("login") var isSignIn: Bool?
     
     @Namespace private var animation
     
@@ -48,7 +48,7 @@ struct MyPageView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        SettingView(isSignIn: $isSignIn)
+                        SettingView()
                     } label: {
                         Image(systemName: "gearshape").foregroundColor(.bcBlack)
                     }
@@ -133,6 +133,6 @@ extension MyPageView{
 
 struct MyPageView_Previews: PreviewProvider {
     static var previews: some View {
-        MyPageView(isSignIn: .constant(true))
+        MyPageView()
     }
 }

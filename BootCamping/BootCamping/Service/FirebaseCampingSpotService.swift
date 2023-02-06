@@ -30,8 +30,12 @@ enum FirebaseCampingSpotServiceError: Error {
     }
 }
 
-struct LastDocument {
-    var campingSpots: [Item]
+struct ReadDocuments {
+    var campingSpots: [Item]?
+    var campingSpotLocation: String?
+    var campingSpotView: String?
+    var campingSpotName: String?
+    var campingSpotContenId: String?
     var lastDoc: QueryDocumentSnapshot?
 }
 
@@ -39,9 +43,9 @@ struct FirebaseCampingSpotService {
     
     let database = Firestore.firestore()
     
-    func readCampingSpotService(lastDoc: QueryDocumentSnapshot?) -> AnyPublisher<LastDocument, Error> {
-        Future<LastDocument, Error> { promise in
-            if lastDoc == nil {
+    func readCampingSpotService(readDocument: ReadDocuments) -> AnyPublisher<ReadDocuments, Error> {
+        Future<ReadDocuments, Error> { promise in
+            if readDocument.lastDoc == nil {
                 database.collection("CampingSpotList")
                     .order(by: "contentId", descending: false)
                     .limit(to: 10)
@@ -55,7 +59,7 @@ struct FirebaseCampingSpotService {
                             return
                         }
                         
-                        var lastDocument: LastDocument = LastDocument(campingSpots: [], lastDoc: nil)
+                        var readDocument: ReadDocuments = ReadDocuments()
                         var campingSpots: [Item] = []
                         
                         campingSpots = snapshot.documents.map { docData in
@@ -143,14 +147,14 @@ struct FirebaseCampingSpotService {
                                 modifiedtime: docData["modifiedtime"] as? String ?? ""
                             )
                         }
-                        lastDocument.lastDoc = snapshot.documents.last!
-                        lastDocument.campingSpots = campingSpots
-                        promise(.success(lastDocument))
+                        readDocument.lastDoc = snapshot.documents.last!
+                        readDocument.campingSpots = campingSpots
+                        promise(.success(readDocument))
                     }
             } else {
                 database.collection("CampingSpotList")
                     .order(by: "contentId", descending: false)
-                    .start(afterDocument: lastDoc!)
+                    .start(afterDocument: readDocument.lastDoc!)
                     .limit(to: 10)
                     .getDocuments { snapshot, error in
                         if let error = error {
@@ -162,7 +166,7 @@ struct FirebaseCampingSpotService {
                             return
                         }
                         
-                        var lastDocument: LastDocument = LastDocument(campingSpots: [], lastDoc: nil)
+                        var readDocument: ReadDocuments = ReadDocuments()
                         var campingSpots: [Item] = []
                         
                         campingSpots = snapshot.documents.map { docData in
@@ -250,9 +254,9 @@ struct FirebaseCampingSpotService {
                                 modifiedtime: docData["modifiedtime"] as? String ?? ""
                             )
                         }
-                        lastDocument.lastDoc = snapshot.documents.last!
-                        lastDocument.campingSpots = campingSpots
-                        promise(.success(lastDocument))
+                        readDocument.lastDoc = snapshot.documents.last!
+                        readDocument.campingSpots = campingSpots
+                        promise(.success(readDocument))
                     }
             }
         }

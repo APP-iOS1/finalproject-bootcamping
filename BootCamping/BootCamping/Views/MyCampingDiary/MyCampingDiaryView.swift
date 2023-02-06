@@ -36,7 +36,6 @@ struct MyCampingDiaryView: View {
                         }
                     .onAppear {
                         diaryStore.readDiarysCombine()
-                        print("\(diaryStore.diaryList)")
                     }
 
                 }

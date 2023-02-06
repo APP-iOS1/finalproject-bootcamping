@@ -28,6 +28,27 @@ extension View {
     }
 }
 
+extension UIImage {
+    
+    func resize(newWidth: CGFloat) -> UIImage {
+        let scale = newWidth / self.size.width
+        let newHeight = self.size.height * scale
+        
+        let size = CGSize(width: newWidth, height: newHeight)
+        let render = UIGraphicsImageRenderer(size: size)
+        let renderImage = render.image { context in
+            self.draw(in: CGRect(origin: .zero, size: size))
+        }
 
+        return renderImage
+    }
+}
+
+extension Image {
+    func resizeImage(imgName: String) -> Image {
+        guard let img = UIImage(named: imgName)?.resize(newWidth: UIScreen.screenWidth * 1 / 5) else { fatalError("Fail to load image") }
+        return Image(uiImage: img)
+    }
+}
 
 

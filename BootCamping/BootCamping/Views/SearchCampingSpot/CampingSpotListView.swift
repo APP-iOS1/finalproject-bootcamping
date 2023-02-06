@@ -18,35 +18,45 @@ struct CampingSpotListView: View {
     var campingSpotList: [Item]
     
     var body: some View {
-           VStack{
-               ScrollView(showsIndicators: false){
-                   ForEach(campingSpotList, id: \.self) { camping in
-                       NavigationLink {
-                           CampingSpotDetailView(places: camping)
-                       } label: {
-                           VStack{
-                               CampingSpotListRaw(item: camping)
-                                   .padding(.bottom,40)
-                           }
-                       }
-                   }
-               }
-               .navigationBarTitleDisplayMode(.inline)
-               .toolbar{
-                   ToolbarItem(placement: .principal) {
-                       Text("캠핑 모아보기")
-                   }
-               }
-           }
-                   // MARK: 로티뷰... 일단 주석처리 해둘게요ㅠㅠ
-//        .overlay(content: {
-//            LottieView()
-//                .frame(width: 100, alignment: .center)
-//                .padding(.leading, 20)
-//        }) // 여기까지
-
-       }
-   }
+        VStack{
+            ScrollView(showsIndicators: false){
+                LazyVStack {
+                    if campingSpotList.count == 0 {
+                        ForEach(0...2, id: \.self) { _ in 
+                            EmptyCampingSpotListCell()
+                                .onAppear {
+                                    print("test")
+                                }
+                        }
+                    } else {
+                        ForEach(Array(campingSpotStore.campingSpotList.enumerated()), id: \.offset) { (index, camping) in
+                            NavigationLink {
+                                CampingSpotDetailView(places: camping)
+                            } label: {
+                                CampingSpotListRaw(item: camping)
+                                    .padding(.bottom,40)
+                            }
+                            .onAppear {
+                                if index == campingSpotStore.campingSpotList.count - 1 {
+                                    Task {
+                                        campingSpotStore.readCampingSpotListCombine()
+                                        campingSpotStore.campingSpotList.append(contentsOf: campingSpotStore.campingSpots)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar{
+                ToolbarItem(placement: .principal) {
+                    Text("캠핑 모아보기")
+                }
+            }
+        }
+    }
+}
 
 
 struct CampingSpotListView_Previews: PreviewProvider {
@@ -54,81 +64,6 @@ struct CampingSpotListView_Previews: PreviewProvider {
         NavigationStack{
             CampingSpotListView(campingSpotList: [])
                 .environmentObject(CampingSpotStore())
-                
-/*
-    var body: some View{
-        VStack(alignment: .leading){
-            
-            // 캠핑장 사진
-            if item.firstImageUrl.isEmpty {
-                // 이미지 없는 것도 있어서 어떻게 할 지 고민 중~
-                Image("noImage")
-                    .resizable()
-                    .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
-                    .padding(.bottom, 5)
-            } else {
-                WebImage(url: URL(string: item.firstImageUrl))
-                    .resizable()
-                    .placeholder {
-                        Rectangle().foregroundColor(.gray)
-                    }
-                    .scaledToFill()
-                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
-                    .clipped()
-                    .padding(.bottom, 5)
-            }
-            
-            // 전망
-            if !item.lctCl.isEmpty {
-                HStack {
-                    ForEach(item.lctCl.components(separatedBy: ","), id: \.self) { view in
-                        RoundedRectangle(cornerRadius: 10)
-//                            .frame(width: 35, height: 20)
-                            .frame(width: 40 ,height: 20)
-                            .foregroundColor(.bcGreen)
-                            .overlay{
-                                Text(view)
-                                    .font(.caption2.bold())
-                                    .foregroundColor(.white)
-                            }
-                    }
-                }
-                .padding(.horizontal, UIScreen.screenWidth*0.03)
-            }
-            
-            
-            // 캠핑장 이름
-            Text(item.facltNm)
-                .font(.title3.bold())
-                .foregroundColor(.bcBlack)
-                .padding(.horizontal, UIScreen.screenWidth*0.03)
-
-            // 캠핑장 간단 주소
-            HStack {
-                Image(systemName: "mappin.and.ellipse")
-                    .font(.callout)
-                    .foregroundColor(.gray)
-                    .padding(.trailing, -7)
-                Text("\(item.doNm) \(item.sigunguNm)")
-                    .font(.callout)
-                    .foregroundColor(.gray)
-            }
-            .padding(.bottom, 5)
-            .padding(.horizontal, UIScreen.screenWidth*0.03)
-
-            // 캠핑장 설명 3줄
-            if item.lineIntro != "" {
-                Text(item.lineIntro)
-                    .font(.callout)
-                    .multilineTextAlignment(.leading)
-                    .foregroundColor(.bcBlack)
-                    .padding(.horizontal, UIScreen.screenWidth*0.03)
-            }
-            //                        .lineLimit(3)//optional
-            //                        .expandButton(TextSet(text: "more", font: .body, color: .blue))//optional
-            //                        .collapseButton(TextSet(text: "less", font: .body, color: .blue))//optional
-            //                        .expandAnimation(.easeOut)//optional
-        */
         }
     }
 }

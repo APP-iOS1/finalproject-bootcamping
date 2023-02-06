@@ -12,7 +12,7 @@ import Firebase
 struct DiaryCellView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var diaryStore: DiaryStore
-//    @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var authStore: AuthStore
     //선택한 다이어리 정보 변수입니다.
     var item: Diary
     //삭제 알림
@@ -59,6 +59,7 @@ private extension DiaryCellView {
                     .scaledToFill()
                     .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     .clipped()
+                //MARK: - 북마크 버튼
                     .overlay(alignment: .topTrailing){
                         Button {
                             isBookmarked.toggle()
@@ -89,59 +90,66 @@ private extension DiaryCellView {
         
         HStack {
             //TODO: -유저 프로필 사진
-//            ForEach(authStore.userList) { user in
-//                if item.uid == user.id && user.profileImage != "" {
-//                    WebImage(url: URL(string: user.profileImage))
-//                        .resizable()
-//                        .placeholder {
-//                            Rectangle().foregroundColor(.gray)
-//                        }
-//                        .scaledToFill()
-//                        .frame(width: UIScreen.screenWidth * 0.01)
-//                        .clipShape(Circle())
-//                } else {
-                    Image(systemName: "person.fill")
-                        .overlay {
-                            Circle().stroke(lineWidth: 1)
-                        }
-//                }
-//            }
+            //            ForEach(authStore.userList) { user in
+            //                if item.uid == user.id && user.profileImage != "" {
+            //                    WebImage(url: URL(string: user.profileImage))
+            //                        .resizable()
+            //                        .placeholder {
+            //                            Rectangle().foregroundColor(.gray)
+            //                        }
+            //                        .scaledToFill()
+            //                        .frame(width: UIScreen.screenWidth * 0.01)
+            //                        .clipShape(Circle())
+            //                } else {
+            Image(systemName: "person.fill")
+                .overlay {
+                    Circle().stroke(lineWidth: 1)
+                }
+            //                }
+            //            }
             //유저 닉네임
             Text(item.diaryUserNickName)
                 .font(.headline).fontWeight(.semibold)
             Spacer()
-            //MARK: - ... 버튼입니다.
-            Menu {
-                Button {
-                    //TODO: -수정기능 추가
-                } label: {
-                    Text("수정하기")
-                }
-                
-                Button {
-                    isShowingDeleteAlert = true
-                } label: {
-                    Text("삭제하기")
-                }
-                
-            } label: {
-                Image(systemName: "ellipsis")
-            }
-            //MARK: - 일기 삭제 알림
-            .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
-                Button("취소", role: .cancel) {
-                    isShowingDeleteAlert = false
-                }
-                Button("삭제", role: .destructive) {
-                    diaryStore.deleteDiaryCombine(diary: item)
-                }
-            }
-
+            //...버튼 글 쓴 유저일때만 ...나타나도록
+            alertMenu
+                .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                .padding(.top, 5)
+            
+            
         }
-        .padding(.horizontal, UIScreen.screenWidth * 0.03)
-        .padding(.top, 5)
     }
+    
 
+    //MARK: - Alert Menu 버튼
+    var alertMenu: some View {
+        //MARK: - ... 버튼입니다.
+        Menu {
+            Button {
+                //TODO: -수정기능 추가
+            } label: {
+                Text("수정하기")
+            }
+            
+            Button {
+                isShowingDeleteAlert = true
+            } label: {
+                Text("삭제하기")
+            }
+            
+        } label: {
+            Image(systemName: "ellipsis")
+        }
+        //MARK: - 일기 삭제 알림
+        .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
+            Button("취소", role: .cancel) {
+                isShowingDeleteAlert = false
+            }
+            Button("삭제", role: .destructive) {
+                diaryStore.deleteDiaryCombine(diary: item)
+            }
+        }
+    }
     
     //MARK: - 제목
     var diaryTitle: some View {
@@ -185,14 +193,11 @@ private extension DiaryCellView {
 
         }
         .padding()
-        .background {
-            RoundedRectangle(cornerRadius: 20)
-                .foregroundColor(.gray)
-                .opacity(0.2)
-                .shadow(color: .gray, radius: 3)
-
-        }
-        .foregroundColor(.clear)
+        .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(Color.gray, lineWidth: 3)
+                    .opacity(0.2)
+            )
     }
 
     
@@ -216,6 +221,7 @@ struct DiaryCellView_Previews: PreviewProvider {
             "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "", diaryIsPrivate: true))
         .environmentObject(AuthStore())
         .environmentObject(DiaryStore())
+        .environmentObject(BookmarkStore())
         
     }
 }

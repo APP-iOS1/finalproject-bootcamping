@@ -51,7 +51,7 @@ struct ContentView: View {
                 
                 //MARK: - 네번째 마이페이지 탭입니다.
                 NavigationStack {
-                    MyPageView(isSignIn: $isSignIn)
+                    MyPageView()
                 }.tabItem {
                     Label("마이 페이지", systemImage: "person")
                 }.tag(TabViewScreen.four)
@@ -65,7 +65,7 @@ struct ContentView: View {
                 scheduleStore.readScheduleCombine()
             }
         } else {
-            LoginView(isSignIn: $isSignIn)
+            LoginView()
                 .task {
                     if Auth.auth().currentUser?.uid != nil {
                         isSignIn = true

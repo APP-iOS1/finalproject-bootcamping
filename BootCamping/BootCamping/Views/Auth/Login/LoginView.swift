@@ -14,7 +14,7 @@ import KakaoSDKUser
 import SwiftUI
 
 struct LoginView: View {
-    @Binding var isSignIn: Bool
+    @AppStorage("login") var isSignIn: Bool?
     
     @EnvironmentObject var authStore: AuthStore
     @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
@@ -134,7 +134,7 @@ extension LoginView {
     // 이메일로 회원가입 버튼
     var emailSignUpButton: some View {
         NavigationLink {
-            LoginPasswordView(isSignIn: $isSignIn)
+            LoginPasswordView()
         } label: {
             Text("이메일로 로그인  |  회원가입")
                 .underline()
@@ -146,7 +146,7 @@ extension LoginView {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView(isSignIn: .constant(true))
+        LoginView()
             .environmentObject(AuthStore())
     }
 }

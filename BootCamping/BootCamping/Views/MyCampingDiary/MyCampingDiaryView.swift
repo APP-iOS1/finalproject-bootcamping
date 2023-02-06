@@ -48,7 +48,6 @@ struct MyCampingDiaryView: View {
                                 print("\(diaryStore.diaryList)")
                             }
                         }
-                        
                     }
                 }
                 

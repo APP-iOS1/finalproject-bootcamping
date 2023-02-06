@@ -28,42 +28,11 @@ struct ContentView: View {
         ZStack {
             if isLoading {
                 SplashScreenView().transition(.identity).zIndex(1)
-        if isSignIn {
-            TabView(selection: $tabSelection.screen) {
-                //MARK: - 첫번째 홈탭 입니다.
-                NavigationStack {
-                    HomeView()
-                }.tabItem {
-                    Label("메인", systemImage: "tent")
-                }.tag(TabViewScreen.one)
-                
-                //MARK: - 두번째 캠핑장 탭입니다.
-                NavigationStack {
-                    SearchCampingSpotView()
-                }.tabItem {
-                    Label("캠핑장 검색", systemImage: "magnifyingglass")
-                }.tag(TabViewScreen.two)
-                
-                //MARK: -세번째 캠핑일기 탭입니다.
-                NavigationStack {
-                    if diaryStore.diaryList.count == 0 {
-                        DiaryAddView()
-                    } else {
-                        MyCampingDiaryView()
+                    .task {
+                        diaryStore.readDiarysCombine()
+                        scheduleStore.readScheduleCombine()
                     }
-                }.tabItem {
-                    Label("내 캠핑일기", systemImage: "book")
-                }.tag(TabViewScreen.three)
-                
-                //MARK: - 네번째 마이페이지 탭입니다.
-                NavigationStack {
-                    MyPageView()
-                }.tabItem {
-                    Label("마이 페이지", systemImage: "person")
-                }.tag(TabViewScreen.four)
             }
-            
-            
             if isSignIn {
                 TabView(selection: $tabSelection.screen) {
                     //MARK: - 첫번째 홈탭 입니다.
@@ -93,33 +62,22 @@ struct ContentView: View {
                     
                     //MARK: - 네번째 마이페이지 탭입니다.
                     NavigationStack {
-                        MyPageView(isSignIn: $isSignIn)
+                        MyPageView()
                     }.tabItem {
                         Label("마이 페이지", systemImage: "person")
                     }.tag(TabViewScreen.four)
                 }
-                //MARK: - 유저 로그인 여부에 따라 로그인 뷰 구현
-                diaryStore.getData()
-                wholeAuthStore.readUserListCombine()
-            }
-        } else {
-            LoginView()
-                .task {
-                    if Auth.auth().currentUser?.uid == nil {
-                        isSignIn = false
-                    }
-                    diaryStore.getData()
-                    scheduleStore.readScheduleCombine()
-                }
             } else {
-                LoginView(isSignIn: $isSignIn)
+                LoginView()
                     .task {
-                        if Auth.auth().currentUser?.uid != nil {
-                            isSignIn = true
+                        if Auth.auth().currentUser?.uid == nil {
+                            isSignIn = false
                         }
                     }
+                
             }
-        }.onAppear {
+        }
+        .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
                 withAnimation { isLoading.toggle() }
             }) }

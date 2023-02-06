@@ -14,7 +14,7 @@ struct LoginPasswordView: View {
     @State var isShowingAlert: Bool = false
     
     
-    @Binding var isSignIn: Bool
+    @AppStorage("login") var isSignIn: Bool?
     
     @EnvironmentObject var authStore: AuthStore
     
@@ -114,6 +114,6 @@ extension LoginPasswordView {
 
 struct LoginPasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginPasswordView(userEmail: "", isSignIn: .constant(true))
+        LoginPasswordView(userEmail: "")
     }
 }

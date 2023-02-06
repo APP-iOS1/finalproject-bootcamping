@@ -13,6 +13,26 @@ import SwiftUI
 import GoogleSignIn
 import Combine
 
+enum AuthServiceError: Error {
+    case emailDuplicated
+    case signInError
+    case signUpError
+    case signOutError
+    
+    var errorDescription: String? {
+        switch self {
+        case .emailDuplicated:
+            return "중복된 이메일 입니다."
+        case .signInError:
+            return "로그인에 실패하였습니다."
+        case .signOutError:
+            return "로그아웃에 실패하였습니다."
+        case .signUpError:
+            return "회원가입에 실패하였습니다."
+        }
+    }
+}
+
 //Google 로그인의 로그인 및 로그아웃 상태에 대한 enum
 enum SignInState {
     case splash
@@ -46,11 +66,11 @@ class WholeAuthStore: ObservableObject {
     //서비스 오류 상태
     @Published var showErrorAlertMessage: String = "오류"
 
-    //파이어베이스 서비스 오류
+    //파이어베이스 유저 서비스 오류
     @Published var firebaseUserServiceError: FirebaseUserServiceError = .badSnapshot
     
-    //이메일 서비스 오류
-    @Published var authImailLoginServiceError: AuthImailLoginServiceError = .emailDuplicated
+    //로그인 서비스 오류
+    @Published var authServiceError: AuthServiceError = .emailDuplicated
     
     // 이메일 중복상태
     @Published var duplicatedEmailState: Bool = true
@@ -170,7 +190,7 @@ class WholeAuthStore: ObservableObject {
     /// false = 중복 안됨
 
     func checkUserEmailDuplicatedCombine(userEmail: String){
-        AuthImailLoginService().checkUserEmailDuplicatedService(userEmail: userEmail)
+        AuthEmailService().checkUserEmailDuplicatedService(userEmail: userEmail)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -208,20 +228,24 @@ class WholeAuthStore: ObservableObject {
     // MARK: Auth SignIn Combine
 
     func authSignInCombine(userEmail: String, password: String) {
-        AuthImailLoginService().authSignInService(userEmail: userEmail, password: password)
+        AuthEmailService().authSignInService(userEmail: userEmail, password: password)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
                 case .failure(let error):
                     print(error)
                     print("Failed SingUp User")
-                    self.authImailLoginServiceError = .signInError
-                    self.showErrorAlertMessage = self.authImailLoginServiceError.errorDescription!
-                    self.isLogin = false
+                    self.authServiceError = .signInError
+                    self.showErrorAlertMessage = self.authServiceError.errorDescription!
+                    self.loginState = .fail
+                    self.loginPlatform = .none
                     return
                 case .finished:
                     print("Finished SingIn User")
                     self.isLogin = true
+                    self.state = .signIn
+                    self.loginState = .success
+                    self.loginPlatform = .email
                     return
                 }
             } receiveValue: { user in
@@ -233,43 +257,145 @@ class WholeAuthStore: ObservableObject {
     // MARK: Auth LogOut
     
     func authSignOut() {
-        try? Auth.auth().signOut()
-        self.isLogin = false
-        self.currentUser = Auth.auth().currentUser
+        
+        do {
+            try Auth.auth().signOut()
+            self.isLogin = false
+            self.state = .signOut
+            self.loginState = .none
+            self.loginPlatform = .email
+            self.currentUser = nil
+        } catch {
+            print(#function, error.localizedDescription)
+            self.authServiceError = .signOutError
+            self.showErrorAlertMessage = self.authServiceError.errorDescription!
+        }
     }
     
     // MARK: Auth SignUp Combine
     
-    func authSignUpCombine(userEmail: String, password: String, confirmPassword: String) {
-        AuthImailLoginService().authSignUpService(userEmail: userEmail, password: password, confirmPassword: confirmPassword)
+    func authSignUpCombine(nickName: String, userEmail: String, password: String, confirmPassword: String) {
+        AuthEmailService().authSignUpService(userEmail: userEmail, password: password, confirmPassword: confirmPassword)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
                 case .failure(let error):
                     print("Failed SingUp User")
                     print(error)
-                    self.authImailLoginServiceError = .signUpError
-                    self.showErrorAlertMessage = self.authImailLoginServiceError.errorDescription!
+                    self.authServiceError = .signUpError
+                    self.showErrorAlertMessage = self.authServiceError.errorDescription!
                     return
                 case .finished:
                     print("Finished SingUp User")
                     return
                 }
-            } receiveValue: { _ in
-                
+            } receiveValue: { userUID in
+                self.createUserCombine(user: User(id: userUID, profileImageName: "", profileImageURL: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: [], bookMarkedSpot: []))
             }
             .store(in: &cancellables)
     }
     
     // MARK: - 구글 로그인
     
+    // MARK: 구글 로그인 함수
+    func googleSignIn() {
+        // 한번 로그인한 적이 있음(previous Sign-In ?)
+        if GIDSignIn.sharedInstance.hasPreviousSignIn() {
+            // 있으면 복원 (yes then restore)
+            GIDSignIn.sharedInstance.restorePreviousSignIn { [unowned self] user, error in
+                authenticateUser(for: user, with: error)
+                
+            }
+        } else {// 처음 로그인
+            guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+            
+            // 3
+            let configuration = GIDConfiguration(clientID: clientID)
+            
+            // 4 .first 맨 위에 뜨게 하도록
+            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+            guard let rootViewController = windowScene.windows.first?.rootViewController else { return }
+            
+            GIDSignIn.sharedInstance.configuration = configuration
+            GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { [unowned self] result, error in
+                guard let user = result?.user else { return }
+                authenticateUser(for: user, with: error)
+                
+            }
+            
+        }
+    }
+    
+    //MARK: 구글 인증 함수
+    private func authenticateUser(for user: GIDGoogleUser?, with error: Error?) {
+        // 1
+        if let error = error {
+            print(#function, error.localizedDescription)
+            self.authServiceError = .signInError
+            self.showErrorAlertMessage = self.authServiceError.errorDescription!
+            self.isLogin = false
+            self.loginState = .fail
+            self.loginPlatform = .none
+            return
+        }
+        
+        // 2 user 인스턴스에서 idToken 과 accessToken을 받아온다
+        // 인증
+        /* 원래
+         guard let authentication = user?.authentication, let idToken = authentication.idToken else { return }
+         
+         let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: authentication.accessToken)
+         */
+        
+        guard let accessToken = user?.accessToken, let idToken = user?.idToken else {return }
+        
+        let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString, accessToken: accessToken.tokenString)
+        
+        // 3
+        Auth.auth().signIn(with: credential) { [unowned self] (result, error) in
+            if let error = error {
+                print(#function, error.localizedDescription)
+                self.authServiceError = .signInError
+                self.showErrorAlertMessage = self.authServiceError.errorDescription!
+                self.isLogin = false
+                self.loginState = .fail
+                self.loginPlatform = .none
+            } else {
+                UserDefaults.standard.set(result?.user.uid, forKey: "userIdToken")
+                self.createUserCombine(user: User(id: (result?.user.uid)!, profileImageName: "", profileImageURL: "", nickName: (result?.user.uid)!, userEmail: (result?.user.uid)!, bookMarkedDiaries: [], bookMarkedSpot: []))
+                self.currentUser = result?.user
+                self.isLogin = true
+                self.state = .signIn
+                self.loginState = .success
+                self.loginPlatform = .google
+            }
+        }
+    }
+    
+    // MARK: 구글 로그아웃 함수
+    func googleSignOut() {
+        // 1
+        GIDSignIn.sharedInstance.signOut()
+        
+        do {
+            // 2
+            try Auth.auth().signOut()
+            
+            self.isLogin = false
+            self.state = .signOut
+            self.loginState = .none
+            self.loginPlatform = .none
+            
+        } catch {
+            print(#function, error.localizedDescription)
+            self.authServiceError = .signOutError
+            self.showErrorAlertMessage = self.authServiceError.errorDescription!
+        }
+    }
     
     // MARK: - 카카오 로그인
     
     
     // MARK: - 애플 로그인
-    
-
-
     
 }

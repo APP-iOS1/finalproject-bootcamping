@@ -15,6 +15,8 @@ struct ContentView: View {
     //로그인 유무 변수
     @AppStorage("login") var isSignIn: Bool = false
     
+    let wholeAuthStore = WholeAuthStore.shared
+    
     //탭뷰 화면전환 셀렉션 변수
     @EnvironmentObject var tabSelection: TabSelector
     //diaryStore.getData() 위한 변수
@@ -62,7 +64,7 @@ struct ContentView: View {
                     isSignIn = false
                 }
                 diaryStore.getData()
-                scheduleStore.readScheduleCombine()
+                wholeAuthStore.readUserListCombine()
             }
         } else {
             LoginView()

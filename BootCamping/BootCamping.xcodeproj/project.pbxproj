@@ -83,6 +83,7 @@
 		CA27A6252989FCD700A6AEE5 /* SearchCampingSpotListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A6242989FCD700A6AEE5 /* SearchCampingSpotListView.swift */; };
 		CA27A627298CA81700A6AEE5 /* TaskCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A626298CA81700A6AEE5 /* TaskCellView.swift */; };
 		CA27A62D298CE95500A6AEE5 /* FirebaseBookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A62C298CE95500A6AEE5 /* FirebaseBookmarkService.swift */; };
+		CA27A6302990F0E200A6AEE5 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CA27A62F2990F0E200A6AEE5 /* FirebaseMessaging */; };
 		CA729F3329792DE000CCC3BB /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F3229792DE000CCC3BB /* CalendarView.swift */; };
 		CA729F352979315400CCC3BB /* CustomDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F342979315400CCC3BB /* CustomDatePickerView.swift */; };
 		CA729F392979340600CCC3BB /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F382979340600CCC3BB /* Schedule.swift */; };
@@ -165,6 +166,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA27A6302990F0E200A6AEE5 /* FirebaseMessaging in Frameworks */,
 				6E996E83297A4E290085D914 /* GoogleSignInSwift in Frameworks */,
 				63AF45A42977CD9C0014B1E1 /* FirebaseAuth in Frameworks */,
 				6E996E81297A4E290085D914 /* GoogleSignIn in Frameworks */,
@@ -193,6 +195,7 @@
 			children = (
 				630ADB4D2977CC6C000A517B /* BootCamping */,
 				630ADB4C2977CC6C000A517B /* Products */,
+				CA27A62E2990F0E200A6AEE5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -375,6 +378,13 @@
 			path = Service;
 			sourceTree = "<group>";
 		};
+		CA27A62E2990F0E200A6AEE5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CA729F3029792D7200CCC3BB /* MyPageView */ = {
 			isa = PBXGroup;
 			children = (
@@ -423,6 +433,7 @@
 				790B62F3297A28E00048C110 /* KakaoSDKUser */,
 				7C3FC49629877C7200E96A01 /* SDWebImageSwiftUI */,
 				6E11BE2C298C8FD60019E963 /* Lottie */,
+				CA27A62F2990F0E200A6AEE5 /* FirebaseMessaging */,
 			);
 			productName = BootCamping;
 			productReference = 630ADB4B2977CC6C000A517B /* BootCamping.app */;
@@ -903,6 +914,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7C3FC49529877C7200E96A01 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
+		};
+		CA27A62F2990F0E200A6AEE5 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

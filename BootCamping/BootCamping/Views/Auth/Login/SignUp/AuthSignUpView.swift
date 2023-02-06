@@ -22,6 +22,7 @@ struct AuthSignUpView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
     
     var trimUserEmail: String {
         userEmail.trimmingCharacters(in: .whitespaces)
@@ -185,25 +186,26 @@ extension AuthSignUpView {
     
     // 회원가입 확인 버튼
     var signUpButton: some View {
-        Button {
-            Task {
-                isProgressing = true
-                let _ = try await authStore.authSignUp(userEmail: userEmail, password: password, confirmPassword: confirmPassword)
-                try await authStore.authSignIn(userEmail: userEmail, password: password)
-                let _ = try await authStore.addUserList(User(id: String(Auth.auth().currentUser!.uid), profileImageName: "", profileImageURL: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: [], bookMarkedSpot: [""]))
-                authStore.authSignOut()
-                isProgressing = false
-                isShowingAlertForSignUp.toggle()
+            Button {
+                Task {
+                    isProgressing = true
+                    let _ = try await authStore.authSignUp(userEmail: userEmail, password: password, confirmPassword: confirmPassword)
+                    try await authStore.authSignIn(userEmail: userEmail, password: password)
+                    let _ = try await authStore.addUserList(User(id: String(Auth.auth().currentUser!.uid), profileImageName: "", profileImageURL: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: [], bookMarkedSpot: []))
+                    authStore.authSignOut()
+                    isProgressing = false
+                    isShowingAlertForSignUp.toggle()
+                }
+            } label: {
+                Text("동의하고 계속하기")
+                    .font(.headline)
+                    .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)
+                    .foregroundColor(.white)
+                    .background(isSignUpButtonAvailable ? Color.bcGreen : Color.secondary)
+                    .cornerRadius(10)
             }
-        } label: {
-            Text("동의하고 계속하기")
-                .font(.headline)
-                .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)
-                .foregroundColor(.white)
-                .background(isSignUpButtonAvailable ? Color.bcGreen : Color.secondary)
-                .cornerRadius(10)
+            .disabled(!isSignUpButtonAvailable)
         }
-        .disabled(!isSignUpButtonAvailable)
     }
     
     // 개인정보 수집 여부 뷰

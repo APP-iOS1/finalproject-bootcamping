@@ -18,6 +18,7 @@ struct SettingView: View {
     //로그아웃 알럿
     @State var showingAlertLogOut: Bool = false
     @AppStorage("login") var isSignIn: Bool?
+
     
     var body: some View {
         List{

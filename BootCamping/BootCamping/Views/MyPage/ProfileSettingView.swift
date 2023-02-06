@@ -20,10 +20,10 @@ struct ProfileSettingView: View {
     
     @State private var updateNickname: String = ""
     
-    @State private var currentPassword: String = ""
-    @State private var newPassword: String = ""
-    @State private var newPasswordCheck: String = ""
-    
+//    @State private var currentPassword: String = ""
+//    @State private var newPassword: String = ""
+//    @State private var newPasswordCheck: String = ""
+//    
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: UIScreen.screenHeight * 0.03){
@@ -33,9 +33,7 @@ struct ProfileSettingView: View {
                     Spacer()
                 }
                 updateUserNameTextField
-                updatePasswordTextField
                     .padding(.bottom)
-                ///이러면 또 질문이 있는데 14pro에서 키보드 올리면 키보드 위에 그린버튼이 살짝 걸치거든용, 키보드 치다가 그린버튼 눌려서 빡치는 상황이 나올수도 있겠다 싶네용...
                 editButton
                 
                 
@@ -60,7 +58,7 @@ extension ProfileSettingView {
                         .clipShape(Circle())
                         .frame(width: 100, height: 100)
                 } else {
-                    Image(systemName: "person")
+                    Image(systemName: "person.fill")
                         .resizable()
                         .clipShape(Circle())
                         .frame(width: 100, height: 100)
@@ -111,28 +109,28 @@ extension ProfileSettingView {
     }
     
     //MARK: -View: 비밀번호 수정
-    private var updatePasswordTextField : some View {
-        VStack(alignment: .leading, spacing: 10){
-            Text("비밀번호")
-                .font(.title3)
-                .bold()
-            SecureField("비밀번호", text: $currentPassword, prompt: Text("현재 비밀번호를 입력해주세요"))
-                .textFieldStyle(.roundedBorder)
-                .disableAutocorrection(true)
-                .textInputAutocapitalization(.never)
-            SecureField("비밀번호", text: $newPassword,prompt: Text("새로운 비밀번호를 입력해주세요"))
-                .textFieldStyle(.roundedBorder)
-                .disableAutocorrection(true)
-                .textInputAutocapitalization(.never)
-            SecureField("비밀번호", text: $newPasswordCheck,prompt: Text("새로운 비밀번호를 다시 입력해주세요"))
-                .textFieldStyle(.roundedBorder)
-                .disableAutocorrection(true)
-                .textInputAutocapitalization(.never)
-
-            Text("* 영어 + 숫자 + 특수문자 최소 8자 이상")
-                .font(.footnote).foregroundColor(.secondary)
-        }
-    }
+//    private var updatePasswordTextField : some View {
+//        VStack(alignment: .leading, spacing: 10){
+//            Text("비밀번호")
+//                .font(.title3)
+//                .bold()
+//            SecureField("비밀번호", text: $currentPassword, prompt: Text("현재 비밀번호를 입력해주세요"))
+//                .textFieldStyle(.roundedBorder)
+//                .disableAutocorrection(true)
+//                .textInputAutocapitalization(.never)
+//            SecureField("비밀번호", text: $newPassword,prompt: Text("새로운 비밀번호를 입력해주세요"))
+//                .textFieldStyle(.roundedBorder)
+//                .disableAutocorrection(true)
+//                .textInputAutocapitalization(.never)
+//            SecureField("비밀번호", text: $newPasswordCheck,prompt: Text("새로운 비밀번호를 다시 입력해주세요"))
+//                .textFieldStyle(.roundedBorder)
+//                .disableAutocorrection(true)
+//                .textInputAutocapitalization(.never)
+//
+//            Text("* 영어 + 숫자 + 특수문자 최소 8자 이상")
+//                .font(.footnote).foregroundColor(.secondary)
+//        }
+//    }
     
 
     // MARK: -View : editButton
@@ -144,7 +142,7 @@ extension ProfileSettingView {
             Text("수정")
                 .modifier(GreenButtonModifier())
         }
-        .disabled(updateNickname == "" && (currentPassword == "" || newPassword == "" || newPasswordCheck == ""))
+        .disabled(updateNickname == "")
     }
 
 }

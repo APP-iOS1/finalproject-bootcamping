@@ -63,6 +63,8 @@
 		790B62F2297A28E00048C110 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62F1297A28E00048C110 /* KakaoSDKTemplate */; };
 		790B62F4297A28E00048C110 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62F3297A28E00048C110 /* KakaoSDKUser */; };
 		790B62F7297A36BB0048C110 /* KakaoAuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62F6297A36BB0048C110 /* KakaoAuthStore.swift */; };
+		792C42422990CAD200B7772C /* PrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42412990CAD200B7772C /* PrivacyView.swift */; };
+		792C42442990D0A800B7772C /* PasswordChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42432990D0A800B7772C /* PasswordChangeView.swift */; };
 		7C3FC49729877C7200E96A01 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7C3FC49629877C7200E96A01 /* SDWebImageSwiftUI */; };
 		7C715C982977E056009BC678 /* Diary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C715C972977E056009BC678 /* Diary.swift */; };
 		7C95F18F298A42B10095A6BC /* AppleAuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C95F18E298A42B10095A6BC /* AppleAuthCoordinator.swift */; };
@@ -138,6 +140,8 @@
 		790B62DC297936840048C110 /* DiaryLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryLike.swift; sourceTree = "<group>"; };
 		790B62F5297A2D710048C110 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		790B62F6297A36BB0048C110 /* KakaoAuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthStore.swift; sourceTree = "<group>"; };
+		792C42412990CAD200B7772C /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
+		792C42432990D0A800B7772C /* PasswordChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeView.swift; sourceTree = "<group>"; };
 		7C715C972977E056009BC678 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
 		7C95F18E298A42B10095A6BC /* AppleAuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthCoordinator.swift; sourceTree = "<group>"; };
 		7C95F190298A55120095A6BC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -366,10 +370,20 @@
 			isa = PBXGroup;
 			children = (
 				63AF45D52977CE4C0014B1E1 /* ProfileSettingView.swift */,
-				63AF45D42977CE4C0014B1E1 /* SettingView.swift */,
+				792C42452990D18700B7772C /* Setting */,
 				CA729F3029792D7200CCC3BB /* MyPageView */,
 			);
 			path = MyPage;
+			sourceTree = "<group>";
+		};
+		792C42452990D18700B7772C /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				63AF45D42977CE4C0014B1E1 /* SettingView.swift */,
+				792C42412990CAD200B7772C /* PrivacyView.swift */,
+				792C42432990D0A800B7772C /* PasswordChangeView.swift */,
+			);
+			path = Setting;
 			sourceTree = "<group>";
 		};
 		ADF535D22988B3980003AD13 /* Service */ = {
@@ -518,6 +532,7 @@
 				63AF45AF2977CDB40014B1E1 /* Date.swift in Sources */,
 				63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */,
 				63F8426C298FB5FF006A9433 /* CampingSpotListRaw.swift in Sources */,
+				792C42442990D0A800B7772C /* PasswordChangeView.swift in Sources */,
 				AD1FED36298B930F001FB3E5 /* FirebaseScheduleService.swift in Sources */,
 				63AF45DA2977CE4C0014B1E1 /* SettingView.swift in Sources */,
 				7C95F18F298A42B10095A6BC /* AppleAuthCoordinator.swift in Sources */,
@@ -532,6 +547,7 @@
 				63AF45B52977CDD20014B1E1 /* AuthStore.swift in Sources */,
 				63BC803B298C8EF30088AC02 /* EmptyCampingSpotListCell.swift in Sources */,
 				63AF45D72977CE4C0014B1E1 /* MyPageView.swift in Sources */,
+				792C42422990CAD200B7772C /* PrivacyView.swift in Sources */,
 				CA27A62D298CE95500A6AEE5 /* FirebaseBookmarkService.swift in Sources */,
 				CA729F3329792DE000CCC3BB /* CalendarView.swift in Sources */,
 				AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */,

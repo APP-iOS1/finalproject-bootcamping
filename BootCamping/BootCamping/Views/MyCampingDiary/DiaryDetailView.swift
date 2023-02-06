@@ -291,5 +291,6 @@ struct DiaryDetailView_Previews: PreviewProvider {
             "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "", diaryIsPrivate: true))
         .environmentObject(AuthStore())
         .environmentObject(DiaryStore())
+        .environmentObject(BookmarkStore())
     }
 }

@@ -15,7 +15,7 @@ struct SettingView: View {
     //로그아웃 시 탭 변경하기 위한 변수
     @EnvironmentObject var tabSelection: TabSelector
     //로그아웃시 isSignIn을 false로 변경
-    @Binding var isSignIn: Bool
+    @AppStorage("login") var isSignIn: Bool?
     
     var body: some View {
         List{
@@ -58,6 +58,6 @@ struct SettingView: View {
 
 struct SettingView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingView(isSignIn:.constant(false))
+        SettingView()
     }
 }

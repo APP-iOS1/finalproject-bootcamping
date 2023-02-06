@@ -81,7 +81,7 @@ struct FirebaseUserService {
                 "nickName": user.nickName,
                 "userEmail": user.userEmail,
                 "bookMarkedDiaries": user.bookMarkedDiaries,
-                "bookMarkedSpot": user.bookMarkedSpot,
+                "bookMarkedSpot": user.bookMarkedSpot
             ]) { error in
                 if let error = error {
                     print(error)

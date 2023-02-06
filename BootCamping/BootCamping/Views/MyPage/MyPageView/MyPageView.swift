@@ -96,7 +96,7 @@ extension MyPageView{
     // MARK: -ViewBuilder : 탭으로 일정, 북마크 표시
     @ViewBuilder
     private func animate() -> some View {
-        HStack(spacing: 25) {
+        HStack {
             ForEach(TapMypage.allCases, id: \.self) { item in
                 VStack {
                     Text(item.rawValue)
@@ -115,7 +115,7 @@ extension MyPageView{
                             .frame(height: 2)
                     }
                 }
-                .frame(width: UIScreen.screenWidth * 0.4)
+                .frame(width: UIScreen.screenWidth * 0.47)
                 .onTapGesture {
                     withAnimation(.easeInOut(duration: 0.1)) {
                         self.selectedPicker2 = item

@@ -49,11 +49,14 @@ enum LogInState {
 enum LoginPlatform {
     case email
     case google
+    case kakao
     case none
 }
 
 
 class WholeAuthStore: ObservableObject {
+    
+    @AppStorage("login") var isSignIn: Bool?
     
     @Published var isLogin: Bool = false
     @Published var userList: [User]
@@ -199,7 +202,7 @@ class WholeAuthStore: ObservableObject {
                     self.duplicatedEmailState = true
                     return
                 case .finished:
-                    print("Finished delete User")
+                    print("Finished check User Email Duplicated")
                     return
                 }
             } receiveValue: { value in
@@ -280,13 +283,13 @@ class WholeAuthStore: ObservableObject {
             .sink { completion in
                 switch completion {
                 case .failure(let error):
-                    print("Failed SingUp User")
+                    print("Failed SignUp User")
                     print(error)
                     self.authServiceError = .signUpError
                     self.showErrorAlertMessage = self.authServiceError.errorDescription!
                     return
                 case .finished:
-                    print("Finished SingUp User")
+                    print("Finished SignUp User")
                     return
                 }
             } receiveValue: { userUID in
@@ -361,13 +364,22 @@ class WholeAuthStore: ObservableObject {
                 self.loginState = .fail
                 self.loginPlatform = .none
             } else {
-                UserDefaults.standard.set(result?.user.uid, forKey: "userIdToken")
-                self.createUserCombine(user: User(id: (result?.user.uid)!, profileImageName: "", profileImageURL: "", nickName: (result?.user.uid)!, userEmail: (result?.user.uid)!, bookMarkedDiaries: [], bookMarkedSpot: []))
-                self.currentUser = result?.user
+                guard let result = result else { return }
+                UserDefaults.standard.set(result.user.uid, forKey: "userIdToken")
+                self.currentUser = result.user
                 self.isLogin = true
                 self.state = .signIn
                 self.loginState = .success
                 self.loginPlatform = .google
+                isSignIn = true
+                let query = database.collection("UserList").whereField("id", isEqualTo: (result.user.uid))
+                query.getDocuments { (snapshot, error) in
+                    if let error = error {
+                        print(error)
+                    }
+                    self.createUserCombine(user: User(id: (result.user.uid), profileImageName: "", profileImageURL: "", nickName: (result.user.uid), userEmail: (result.user.uid), bookMarkedDiaries: [], bookMarkedSpot: []))
+                    
+                }
             }
         }
     }
@@ -395,6 +407,58 @@ class WholeAuthStore: ObservableObject {
     
     // MARK: - 카카오 로그인
     
+    // MARK: 카카오 로그인
+    func kakaoLogInCombine() {
+        AuthKakaoService().kakaoLogInService()
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Failed SignIn User")
+                    print(error)
+                    self.authServiceError = .signInError
+                    self.showErrorAlertMessage = self.authServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished SignIn User")
+                    self.isLogin = true
+                    self.state = .signIn
+                    self.loginState = .success
+                    self.loginPlatform = .kakao
+                    self.isSignIn = true
+                    return
+                }
+            } receiveValue: { user in
+                self.currentUser = user
+            }
+            .store(in: &cancellables)
+    }
+    
+    // MARK: 카카오 로그아웃
+    
+    func kakaoLogOutCombine() {
+        AuthKakaoService().kakaoLogOutService()
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Failed LogOut User")
+                    print(error)
+                    self.authServiceError = .signInError
+                    self.showErrorAlertMessage = self.authServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished LogOut User")
+                    self.isLogin = false
+                    self.state = .signOut
+                    self.loginState = .none
+                    self.loginPlatform = .none
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
+
     
     // MARK: - 애플 로그인
     

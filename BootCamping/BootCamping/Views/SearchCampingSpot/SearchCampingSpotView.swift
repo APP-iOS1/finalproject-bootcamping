@@ -202,8 +202,6 @@ extension SearchCampingSpotView {
             .foregroundColor(Color.bcBlack)
             .padding(.bottom, 30)
         }
-        .frame(minWidth: .infinity)
-        .frame(maxWidth: .infinity)
     }
     
     //MARK: 전망 선택 부분 lctCl
@@ -211,106 +209,34 @@ extension SearchCampingSpotView {
         VStack(alignment: .leading){
             Text("전망 선택")
                 .font(.title.bold())
-            HStack{
-                VStack{
+            LazyVGrid(columns: cols, spacing: 10) {
+                ForEach(campingSpotListForViewFilter, id: \.id) { campingSpot in
                     NavigationLink {
                         CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("산") })
                     } label: {
-                        Image("mountain")
-                            .resizeImage(imgName: "mountain")
-                            .resizable()
-                            .cornerRadius(50)
-                            .frame(width: 90, height: 90)
-                            .aspectRatio(contentMode: .fit)
+                        VStack {
+                            Image("\(campingSpot.filterViewLocation)")
+                                .resizeImage(imgName: "\(campingSpot.filterViewLocation)")
+                                .resizable()
+                                .cornerRadius(50)
+                                .frame(width: 90, height: 90)
+                                .aspectRatio(contentMode: .fit)
+                            if campingSpot.filters.count > 1 {
+                                HStack {
+                                    ForEach(campingSpot.filters, id: \.id) { location in
+                                        Text("\(location.filterName)")
+                                    }
+                                }
+                            } else {
+                                Text("\(campingSpot.filters.first!.filterName)")
+                            }
+                        }
                     }
-                    Text("산")
                 }
-                Spacer()
-
-                VStack{
-                    NavigationLink {
-                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("바다") || $0.lctCl.contains("해변") })
-                    } label: {
-                        Image("ocean")
-                            .resizeImage(imgName: "ocean")
-                            .resizable()
-                            .cornerRadius(50)
-                            .frame(width: 90, height: 90)
-                            .aspectRatio(contentMode: .fit)
-                    }
-                    Text("바다 / 해변")
-                }
-                Spacer()
-
-                VStack{
-                    NavigationLink {
-                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("계곡")})
-                    } label: {
-                        Image("valley")
-                            .resizeImage(imgName: "valley")
-                            .resizable()
-                            .cornerRadius(50)
-                            .frame(width: 90, height: 90)
-                            .aspectRatio(contentMode: .fit)
-                    }
-                    Text("계곡")
-                }
-
             }
-            .frame(maxWidth: .infinity)
-            
-            
-            HStack{
-                VStack{
-                    NavigationLink {
-                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("숲") })
-                    } label: {
-                        Image("forest")
-                            .resizeImage(imgName: "forest")
-                            .resizable()
-                            .cornerRadius(50)
-                            .frame(width: 90, height: 90)
-                            .aspectRatio(contentMode: .fit)
-                    }
-                    Text("숲")
-                }
-                Spacer()
-
-                VStack{
-                    NavigationLink {
-                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("강") || $0.lctCl.contains("호수") })
-                    } label: {
-                        Image("river")
-                            .resizeImage(imgName: "river")
-                            .resizable()
-                            .cornerRadius(50)
-                            .frame(width: 90, height: 90)
-                            .aspectRatio(contentMode: .fit)
-                    }
-                    Text("강 / 호수")
-                }
-                Spacer()
-
-                VStack{
-                    NavigationLink {
-                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("섬") })
-                    } label: {
-                        Image("island")
-                            .resizeImage(imgName: "island")
-                            .resizable()
-                            .cornerRadius(50)
-                            .frame(width: 90, height: 90)
-                            .aspectRatio(contentMode: .fit)
-                    }
-                    Text("섬")
-                }
-
-            }
-            .frame(maxWidth: .infinity)
-            
-
-            .padding(.bottom, 30)
         }
+        .foregroundColor(Color.bcBlack)
+        .padding(.bottom, 30)
     }
     
     //MARK: 추천 캠핑장 선택 부분

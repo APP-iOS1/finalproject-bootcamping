@@ -32,6 +32,14 @@ struct MyPageView: View {
         }
         return nil
     }
+    var userImage: String? {
+        for user in authStore.userList {
+            if user.id == Auth.auth().currentUser?.uid {
+                return user.profileImageURL
+            }
+        }
+        return nil
+    }
     
     var body: some View {
         VStack {
@@ -41,7 +49,7 @@ struct MyPageView: View {
                     .padding(.top, UIScreen.screenHeight*0.02)
                 myPageTap
             }
-            .padding(.horizontal, UIScreen.screenWidth * 0.1)
+            .padding(.horizontal, UIScreen.screenWidth * 0.03)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("마이페이지")
@@ -56,6 +64,9 @@ struct MyPageView: View {
             }
         .navigationBarTitleDisplayMode(.inline)
         }
+        .onAppear{
+            authStore.fetchUserList()
+        }
     }
     
 }
@@ -64,13 +75,14 @@ extension MyPageView{
     // MARK: -View : 유저 프로필이미지, 닉네임 표시
     private var userProfileSection : some View {
         HStack{
-            Image(systemName: "person")
+            Image(systemName: userImage != "" ? userImage ?? "person.fill" : "person.fill")
                 .resizable()
                 .clipShape(Circle())
                 .frame(width: 60, height: 60)
-            Text("\(userNickName ?? "민콩콩") 님")
+                
+            Text("\(userNickName ?? "BootCamper") 님")
             NavigationLink {
-                ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "밍콩", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
+                ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "\(userNickName ?? "")", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
                 
             } label: {
                 Image(systemName: "chevron.right")
@@ -84,7 +96,7 @@ extension MyPageView{
     // MARK: -ViewBuilder : 탭으로 일정, 북마크 표시
     @ViewBuilder
     private func animate() -> some View {
-        HStack {
+        HStack(spacing: 25) {
             ForEach(TapMypage.allCases, id: \.self) { item in
                 VStack {
                     Text(item.rawValue)

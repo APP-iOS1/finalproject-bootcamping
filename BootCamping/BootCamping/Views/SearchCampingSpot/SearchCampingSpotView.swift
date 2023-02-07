@@ -226,7 +226,7 @@ extension SearchCampingSpotView {
                                     }
                                 }
                             } else {
-                                Text("\(campingSpot.filters.first!)")
+                                Text("\(campingSpot.filterNames.first!)")
                             }
                         }
                     }

@@ -377,7 +377,7 @@ class WholeAuthStore: ObservableObject {
                     if let error = error {
                         print(error)
                     }
-                    self.createUserCombine(user: User(id: (result.user.uid), profileImageName: "", profileImageURL: "", nickName: (result.user.uid), userEmail: (result.user.uid), bookMarkedDiaries: [], bookMarkedSpot: []))
+                    self.createUserCombine(user: User(id: (result.user.uid), profileImageName: "", profileImageURL: "", nickName: (result.user.email!), userEmail: (result.user.email!), bookMarkedDiaries: [], bookMarkedSpot: []))
                 }
             }
         }

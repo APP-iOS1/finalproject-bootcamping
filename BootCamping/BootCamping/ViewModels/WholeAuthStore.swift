@@ -371,14 +371,13 @@ class WholeAuthStore: ObservableObject {
                 self.state = .signIn
                 self.loginState = .success
                 self.loginPlatform = .google
-                isSignIn = true
+                self.isSignIn = true
                 let query = database.collection("UserList").whereField("id", isEqualTo: (result.user.uid))
                 query.getDocuments { (snapshot, error) in
                     if let error = error {
                         print(error)
                     }
                     self.createUserCombine(user: User(id: (result.user.uid), profileImageName: "", profileImageURL: "", nickName: (result.user.uid), userEmail: (result.user.uid), bookMarkedDiaries: [], bookMarkedSpot: []))
-                    
                 }
             }
         }
@@ -397,6 +396,8 @@ class WholeAuthStore: ObservableObject {
             self.state = .signOut
             self.loginState = .none
             self.loginPlatform = .none
+            self.isSignIn = false
+
             
         } catch {
             print(#function, error.localizedDescription)
@@ -425,6 +426,7 @@ class WholeAuthStore: ObservableObject {
                     self.loginState = .success
                     self.loginPlatform = .kakao
                     self.isSignIn = true
+
                     return
                 }
             } receiveValue: { user in
@@ -451,6 +453,8 @@ class WholeAuthStore: ObservableObject {
                     self.state = .signOut
                     self.loginState = .none
                     self.loginPlatform = .none
+                    self.isSignIn = false
+
                     return
                 }
             } receiveValue: { _ in

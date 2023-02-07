@@ -79,7 +79,7 @@ extension LoginView {
                 .overlay {
                     HStack {
                         Spacer()
-                        Image(systemName: "message.fill").padding(.trailing, -15)
+                        Image(systemName: "message.fill").padding(.trailing, -12)
                         Text("  카카오로 로그인하기")
                         Spacer()
                     }

@@ -10,10 +10,6 @@ import Foundation
 struct Filtering: Identifiable, Hashable {
     var id = UUID()
     var filterViewLocation: String
-    var filters: [Filterings]
-}
-
-struct Filterings: Identifiable, Hashable {
-    var id = UUID()
-    var filterName: String
+    var filters: [String]
+    var filterNames: [String]
 }

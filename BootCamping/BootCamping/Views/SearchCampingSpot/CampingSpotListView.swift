@@ -25,7 +25,6 @@ struct CampingSpotListView: View {
                         ForEach(0...2, id: \.self) { _ in
                             EmptyCampingSpotListCell()
                                 .task {
-                                    print(readDocuments)
                                     campingSpotStore.readCampingSpotListCombine(readDocument: readDocuments)
                                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                                         isLoading.toggle()

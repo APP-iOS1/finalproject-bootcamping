@@ -28,6 +28,9 @@ struct SettingView: View {
             NavigationLink(destination: EmptyView()) {
                 Text("자주 묻는 질문")
             }
+            NavigationLink(destination: ContactUsView()) {
+                Text("고객센터")
+            }
             NavigationLink(destination: EmptyView()) {
                 Text("앱 정보")
             }

@@ -12,6 +12,8 @@ import Foundation
 import SwiftUI
 import GoogleSignIn
 import Combine
+import CryptoKit
+import AuthenticationServices
 
 enum AuthServiceError: Error {
     case emailDuplicated
@@ -50,6 +52,7 @@ enum LoginPlatform {
     case email
     case google
     case kakao
+    case apple
     case none
 }
 
@@ -81,6 +84,9 @@ class WholeAuthStore: ObservableObject {
     
     // 이메일 중복상태
     @Published var duplicatedEmailState: Bool = true
+    
+    //애플 로그인 Published
+    @Published var nonce = ""
     
     init() {
         currentUser = Auth.auth().currentUser
@@ -254,6 +260,9 @@ class WholeAuthStore: ObservableObject {
                     self.state = .signIn
                     self.loginState = .success
                     self.loginPlatform = .email
+                    withAnimation(.easeInOut) {
+                        self.isSignIn = true
+                    }
                     return
                 }
             } receiveValue: { user in
@@ -275,6 +284,9 @@ class WholeAuthStore: ObservableObject {
             self.loginPlatform = .email
             self.currentUser = nil
             self.currnetUserInfo = nil
+            withAnimation(.easeInOut) {
+                self.isSignIn = false
+            }
 
         } catch {
             print(#function, error.localizedDescription)
@@ -388,7 +400,9 @@ class WholeAuthStore: ObservableObject {
                             self.state = .signIn
                             self.loginState = .success
                             self.loginPlatform = .google
-                            self.isSignIn = true
+                            withAnimation(.easeInOut) {
+                                self.isSignIn = true
+                            }
                         } else {
                             print("파이어베이스에 저장된 유저정보가 있습니다..")
                             self.currentUser = result.user
@@ -396,8 +410,10 @@ class WholeAuthStore: ObservableObject {
                             self.state = .signIn
                             self.loginState = .success
                             self.loginPlatform = .google
-                            self.isSignIn = true
                             self.getUserInfo(userUID: result.user.uid)
+                            withAnimation(.easeInOut) {
+                                self.isSignIn = true
+                            }
                         }
                     }
                 }
@@ -418,9 +434,11 @@ class WholeAuthStore: ObservableObject {
             self.state = .signOut
             self.loginState = .none
             self.loginPlatform = .none
-            self.isSignIn = false
             self.currentUser = nil
             self.currnetUserInfo = nil
+            withAnimation(.easeInOut) {
+                self.isSignIn = false
+            }
             
         } catch {
             print(#function, error.localizedDescription)
@@ -448,7 +466,9 @@ class WholeAuthStore: ObservableObject {
                     self.state = .signIn
                     self.loginState = .success
                     self.loginPlatform = .kakao
-                    self.isSignIn = true
+                    withAnimation(.easeInOut) {
+                        self.isSignIn = true
+                    }
                     return
                 }
             } receiveValue: { user in
@@ -492,9 +512,11 @@ class WholeAuthStore: ObservableObject {
                     self.state = .signOut
                     self.loginState = .none
                     self.loginPlatform = .none
-                    self.isSignIn = false
                     self.currentUser = nil
                     self.currnetUserInfo = nil
+                    withAnimation(.easeInOut) {
+                        self.isSignIn = false
+                    }
                     return
                 }
             } receiveValue: { _ in
@@ -506,8 +528,116 @@ class WholeAuthStore: ObservableObject {
     
     // MARK: - 애플 로그인
     
+    func appleLogin(credential: ASAuthorizationAppleIDCredential) {
+        // getting Token...
+        guard let token = credential.identityToken else {
+            print("error with firebase")
+            self.authServiceError = .signOutError
+            self.showErrorAlertMessage = self.authServiceError.errorDescription!
+            return
+        }
+        // Token Stirng...
+        guard let tokenString = String(data: token, encoding: .utf8) else {
+            print("error with Token")
+            self.authServiceError = .signOutError
+            self.showErrorAlertMessage = self.authServiceError.errorDescription!
+            return
+        }
+        let firebaseCredential = OAuthProvider.credential(withProviderID: "apple.com", idToken: tokenString, rawNonce: nonce)
+        
+        Auth.auth().signIn(with: firebaseCredential) { result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                self.authServiceError = .signOutError
+                self.showErrorAlertMessage = self.authServiceError.errorDescription!
+                return
+            }
+            // User Successfully Logged Into Firebase
+            print("Logged In success")
+            
+            
+            
+            let query = self.database.collection("UserList").whereField("id", isEqualTo: (result?.user.uid)!)
+            query.getDocuments { (snapshot, error) in
+                
+                if let error = error {
+                    print(error)
+                } else {
+                    if snapshot?.documents.count == 0 {
+                        print("파이어베이스에 유저정보가 없습니다.")
+                        self.createUserCombine(user: User(id: (result?.user.uid)!, profileImageName: "", profileImageURL: "", nickName: String(describing: (result?.user.email)!), userEmail: String(describing: (result?.user.email)!), bookMarkedDiaries: [], bookMarkedSpot: []))
+                    } else {
+                        print("파이어베이스에 유저정보가 있습니다..")
+                        self.getUserInfo(userUID: (result?.user.uid)!)
+                    }
+                }
+            }
+            
+            // Directing User To Hom page...
+            self.currentUser = result?.user
+            self.isLogin = true
+            self.state = .signIn
+            self.loginState = .success
+            self.loginPlatform = .apple
+            withAnimation(.easeInOut) {
+                self.isSignIn = true
+            }
+        }
+    }
+    
+    func appleLogOut() {
+        do {
+            try Auth.auth().signOut()
+            
+            self.isLogin = false
+            self.state = .signOut
+            self.loginState = .none
+            self.loginPlatform = .none
+            self.currentUser = nil
+            self.currnetUserInfo = nil
+            withAnimation(.easeInOut) {
+                self.isSignIn = false
+            }
+            
+        } catch {
+            print(#function, error.localizedDescription)
+            self.authServiceError = .signOutError
+            self.showErrorAlertMessage = self.authServiceError.errorDescription!
+        }
+    }
     
     // MARK: - 회원탈퇴
+    
+    func userWithdrawal() {
+        let database = Firestore.firestore()
+
+        Auth.auth().currentUser?.delete { error in
+            if let error = error {
+                print(error)
+                print("회원 삭제 실패")
+            } else {
+                print("회원 삭제 성공")
+                self.database.collection("UserList")
+                    .document((self.currentUser?.uid)!).delete() { error in
+                        if let error = error {
+                            print(error)
+                        }
+                        print("파이어베이스 유저 삭제 성공")
+                        self.isLogin = false
+                        self.state = .signOut
+                        self.loginState = .none
+                        self.loginPlatform = .none
+                        self.currentUser = nil
+                        self.currnetUserInfo = nil
+                        withAnimation(.easeInOut) {
+                            self.isSignIn = false
+                        }
+                    }
+            }
+        }
+    }
+
+
     
     // MARK: - 파이어베이스 유저 정보 읽기
 
@@ -535,6 +665,50 @@ class WholeAuthStore: ObservableObject {
         }
     }
 }
+
+// MARK: - 애플 로그인 함수
+func randomNonceString(length: Int = 32) -> String {
+    precondition(length > 0)
+    let charset: Array<Character> =
+    Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+    var result = ""
+    var remainingLength = length
+    
+    while remainingLength > 0 {
+        let randoms: [UInt8] = (0 ..< 16).map { _ in
+            var random: UInt8 = 0
+            let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+            if errorCode != errSecSuccess {
+                fatalError("Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)")
+            }
+            return random
+        }
+        
+        randoms.forEach { random in
+            if remainingLength == 0 {
+                return
+            }
+            
+            if random < charset.count {
+                result.append(charset[Int(random)])
+                remainingLength -= 1
+            }
+        }
+    }
+    
+    return result
+}
+
+func sha256(_ input: String) -> String {
+    let inputData = Data(input.utf8)
+    let hashedData = SHA256.hash(data: inputData)
+    let hashString = hashedData.compactMap {
+        return String(format: "%02x", $0)
+    }.joined()
+    
+    return hashString
+}
+
 
 // 회원 탈퇴시키려면 어스 삭제, 파베 삭제
 

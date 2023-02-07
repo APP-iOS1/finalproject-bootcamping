@@ -39,128 +39,199 @@ struct AuthKakaoService {
     
     func kakaoLogInService() -> AnyPublisher<Firebase.User, Error> {
         Future<Firebase.User, Error> { promise in
-            
-            if AuthApi.hasToken() {
-                UserApi.shared.accessTokenInfo { _, error in
+            if (UserApi.isKakaoTalkLoginAvailable()) {
+                UserApi.shared.loginWithKakaoTalk { oauthToken, error in
                     if let error = error {
-                        print("_________login error_________")
                         print(error)
-                        if UserApi.isKakaoTalkLoginAvailable() {
-                            UserApi.shared.loginWithKakaoTalk { oauthToken, error in
-                                if let error = error {
-                                    print(error)
-                                } else {
-                                    print("New Kakao Login")
-                                    
-                                    //do something
-                                    _ = oauthToken
-                                    
-                                    // 로그인 성공 시
-                                    UserApi.shared.me { user, error in
-                                        if let error = error {
-                                            print("KAKAO : user loading failed")
-                                            print(error)
-                                        } else {
-                                            Auth.auth().createUser(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
-                                                if let error = error {
-                                                    print("FB : signup failed")
-                                                    print(error)
-                                                    Auth.auth().signIn(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
-                                                        if let error = error {
-                                                            print(error)
-                                                            promise(.failure(AuthServiceError.signInError))
-                                                        } else {
-                                                            if result != nil {
-                                                                promise(.success(result!.user))
-                                                            } else {
-                                                                promise(.failure(AuthServiceError.signInError))
-                                                            }
-                                                        }
-                                                    }
+                    } else {
+                        _ = oauthToken
+                        UserApi.shared.me { user, error in
+                            if let error = error {
+                                print("KAKAO : user loading failed")
+                                print(error)
+                            } else {
+                                Auth.auth().createUser(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
+                                    if let error = error {
+                                        print("FB : signup failed")
+                                        print(error)
+                                        Auth.auth().signIn(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
+                                            if let error = error {
+                                                print(error)
+                                                promise(.failure(AuthServiceError.signInError))
+                                            } else {
+                                                if result != nil {
+                                                    promise(.success(result!.user))
                                                 } else {
-                                                    Auth.auth().signIn(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
-                                                        if let error = error {
-                                                            print(error)
-                                                            promise(.failure(AuthServiceError.signInError))
-                                                        } else {
-                                                            if result != nil {
-                                                                promise(.success(result!.user))
-                                                            } else {
-                                                                promise(.failure(AuthServiceError.signInError))
-                                                            }
-                                                        }
-                                                    }
+                                                    promise(.failure(AuthServiceError.signInError))
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        Auth.auth().signIn(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
+                                            if let error = error {
+                                                print(error)
+                                                promise(.failure(AuthServiceError.signInError))
+                                            } else {
+                                                if result != nil {
+                                                    promise(.success(result!.user))
+                                                } else {
+                                                    promise(.failure(AuthServiceError.signInError))
                                                 }
                                             }
                                         }
                                     }
-                                    
-                                    
                                 }
                             }
                         }
-                    } else {
-                        print("good login")
                     }
                 }
-                
             } else {
-                if UserApi.isKakaoTalkLoginAvailable() {
-                    UserApi.shared.loginWithKakaoTalk { oauthToken, error in
-                        if let error = error {
-                            print(error)
-                        } else {
-                            print("New Kakao Login")
-                            
-                            //do something
-                            _ = oauthToken
-                            
-                            // 로그인 성공 시
-                            UserApi.shared.me { user, error in
-                                if let error = error {
-                                    print("KAKAO : user loading failed")
-                                    print(error)
-                                } else {
-                                    Auth.auth().createUser(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
-                                        if let error = error {
-                                            print("FB : signup failed")
-                                            print(error)
-                                            Auth.auth().signIn(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
-                                                if let error = error {
-                                                    print(error)
-                                                    promise(.failure(AuthServiceError.signInError))
+                UserApi.shared.loginWithKakaoAccount { oauthToken, error in
+                    if let error = error {
+                        print(error)
+                    } else {
+                        _ = oauthToken
+                        UserApi.shared.me { user, error in
+                            if let error = error {
+                                print("KAKAO : user loading failed")
+                                print(error)
+                            } else {
+                                Auth.auth().createUser(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
+                                    if let error = error {
+                                        print("FB : signup failed")
+                                        print(error)
+                                        Auth.auth().signIn(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
+                                            if let error = error {
+                                                print(error)
+                                                promise(.failure(AuthServiceError.signInError))
+                                            } else {
+                                                if result != nil {
+                                                    promise(.success(result!.user))
                                                 } else {
-                                                    if result != nil {
-                                                        promise(.success(result!.user))
-                                                    } else {
-                                                        promise(.failure(AuthServiceError.signInError))
-                                                    }
+                                                    promise(.failure(AuthServiceError.signInError))
                                                 }
                                             }
-                                        } else {
-                                            Auth.auth().signIn(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
-                                                if let error = error {
-                                                    print(error)
-                                                    promise(.failure(AuthServiceError.signInError))
+                                        }
+                                    } else {
+                                        Auth.auth().signIn(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
+                                            if let error = error {
+                                                print(error)
+                                                promise(.failure(AuthServiceError.signInError))
+                                            } else {
+                                                if result != nil {
+                                                    promise(.success(result!.user))
                                                 } else {
-                                                    if result != nil {
-                                                        promise(.success(result!.user))
-                                                    } else {
-                                                        promise(.failure(AuthServiceError.signInError))
-                                                    }
+                                                    promise(.failure(AuthServiceError.signInError))
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
-                            
                         }
                     }
                 }
             }
         }
         .eraseToAnyPublisher()
-
     }
+    
 }
+
+//
+//    func handleKakaoLogin() {
+//        if (UserApi.isKakaoTalkLoginAvailable()) {
+//            UserApi.shared.loginWithKakaoTalk { oauthToken, error in
+//                if let error = error {
+//                    print(error)
+//                } else {
+//                    _ = oauthToken
+//                    UserApi.shared.me { user, error in
+//                        if let error = error {
+//                            print("KAKAO : user loading failed")
+//                            print(error)
+//                        } else {
+//                            Auth.auth().createUser(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
+//                                if let error = error {
+//                                    print("FB : signup failed")
+//                                    print(error)
+//                                    Auth.auth().signIn(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
+//                                        if let error = error {
+//                                            print(error)
+//                                            promise(.failure(AuthServiceError.signInError))
+//                                        } else {
+//                                            if result != nil {
+//                                                promise(.success(result!.user))
+//                                            } else {
+//                                                promise(.failure(AuthServiceError.signInError))
+//                                            }
+//                                        }
+//                                    }
+//                                } else {
+//                                    Auth.auth().signIn(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
+//                                        if let error = error {
+//                                            print(error)
+//                                            promise(.failure(AuthServiceError.signInError))
+//                                        } else {
+//                                            if result != nil {
+//                                                promise(.success(result!.user))
+//                                            } else {
+//                                                promise(.failure(AuthServiceError.signInError))
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        } else {
+//            UserApi.shared.loginWithKakaoAccount { oauthToken, error in
+//                if let error = error {
+//                    print(error)
+//                } else {
+//                    _ = oauthToken
+//                    UserApi.shared.me { user, error in
+//                        if let error = error {
+//                            print("KAKAO : user loading failed")
+//                            print(error)
+//                        } else {
+//                            Auth.auth().createUser(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
+//                                if let error = error {
+//                                    print("FB : signup failed")
+//                                    print(error)
+//                                    Auth.auth().signIn(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
+//                                        if let error = error {
+//                                            print(error)
+//                                            promise(.failure(AuthServiceError.signInError))
+//                                        } else {
+//                                            if result != nil {
+//                                                promise(.success(result!.user))
+//                                            } else {
+//                                                promise(.failure(AuthServiceError.signInError))
+//                                            }
+//                                        }
+//                                    }
+//                                } else {
+//                                    Auth.auth().signIn(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
+//                                        if let error = error {
+//                                            print(error)
+//                                            promise(.failure(AuthServiceError.signInError))
+//                                        } else {
+//                                            if result != nil {
+//                                                promise(.success(result!.user))
+//                                            } else {
+//                                                promise(.failure(AuthServiceError.signInError))
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}

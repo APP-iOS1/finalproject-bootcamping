@@ -12,6 +12,8 @@
 //import FirebaseAuth
 //import SwiftUI
 //
+//참고
+//https://medium.com/hcleedev/swift-apple-로그인-firebase와-연동해-만들기-swiftui-9e0e3106d4c5
 //class AppleAuthCoordinator: NSObject {
 //    
 //    var currentNonce: String?

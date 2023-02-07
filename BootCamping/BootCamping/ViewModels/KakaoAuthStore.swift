@@ -12,6 +12,7 @@ import KakaoSDKUser
 import Firebase
 import FirebaseCore
 import FirebaseFirestore
+import FirebaseAuth
 
 class KakaoAuthStore: ObservableObject {
     

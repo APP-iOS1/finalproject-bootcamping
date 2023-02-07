@@ -60,8 +60,8 @@ struct FirebaseCommentService {
                                        nickName: d["diaryUserNickName"] as? String ?? "",
                                        profileImage: d["profileImage"] as? String ?? "",
                                        commentContent: d["diaryContent"] as? String ?? "",
-                                       commentCreatedDate: d["commentCreatedDate"] as? Timestamp ?? Timestamp(),
-                                       commentLike: d["commentLike"] as? [String] ?? []
+                                       commentCreatedDate: d["commentCreatedDate"] as? Timestamp ?? Timestamp()
+//                                       ,commentLike: d["commentLike"] as? [String] ?? []
                                        
                         )}
                     promise(.success(comments))
@@ -82,7 +82,7 @@ struct FirebaseCommentService {
                 "profileImage": comment.profileImage,
                 "commentContent": comment.commentContent,
                 "commentCreatedDate": comment.commentCreatedDate,
-                "commentLike": comment.commentLike,
+//                "commentLike": comment.commentLike,
             ]) { error in
                     if let error = error {
                         print(error)

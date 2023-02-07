@@ -10,7 +10,7 @@ import LocalAuthentication
 
 class FaceId: ObservableObject {
     //TODO: -시뮬에서 돌려야되서 false로, 기능 사용하려면 true
-    @Published var isUnlocked: Bool = false
+    @Published var islocked: Bool = true
     
     //    func auth() {
     //        let context = LAContext()
@@ -35,10 +35,10 @@ class FaceId: ObservableObject {
                 // authentication has now completed
                 DispatchQueue.main.async {
                     if success {
-                        self.isUnlocked = false
+                        self.islocked = false
                     } else {
                         // there was a problem
-                        self.isUnlocked = true
+                        self.islocked = true
                     }
                 }
                 

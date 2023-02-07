@@ -89,6 +89,7 @@ struct BootCampingApp: App {
                 .environmentObject(BookmarkStore())
                 .environmentObject(BookmarkSpotStore())
                 .environmentObject(WholeAuthStore())
+                .environmentObject(CommentStore())
                 .onOpenURL { url in
                     GIDSignIn.sharedInstance.handle(url)
                 }

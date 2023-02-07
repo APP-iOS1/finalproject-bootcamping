@@ -13,11 +13,16 @@ struct DiaryCellView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var authStore: AuthStore
+    
+    @State var isBookmarked: Bool = false
+    
     //선택한 다이어리 정보 변수입니다.
     var item: Diary
     //삭제 알림
     @State private var isShowingDeleteAlert = false
-    @State var isBookmarked: Bool = false
+    //유저 신고/ 차단 알림
+    @State private var isShowingUserReportAlert = false
+    @State private var isShowingUserBlockedAlert = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -42,11 +47,37 @@ struct DiaryCellView: View {
         }
         .onAppear{
             isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
+            authStore.fetchUserList()
         }
     }
 }
 
 private extension DiaryCellView {
+    //글 작성 유저
+    var user: User {
+        authStore.userList.filter { $0.id == Auth.auth().currentUser?.uid }.first!
+    }
+    
+    //글 작성 유저 닉네임 변수
+    var userNickName: String? {
+        for user in authStore.userList {
+            if user.id == Auth.auth().currentUser?.uid {
+                return user.nickName
+            }
+        }
+        return nil
+    }
+    
+    //글 작성 유저 프로필 변수
+    var userImage: String? {
+        for user in authStore.userList {
+            if user.id == Auth.auth().currentUser?.uid {
+                return user.profileImageURL
+            }
+        }
+        return nil
+    }
+    
     //MARK: - 메인 이미지
     var diaryImage: some View {
         TabView{
@@ -87,37 +118,35 @@ private extension DiaryCellView {
     
     //MARK: - 다이어리 작성자 프로필
     var diaryUserProfile: some View {
-        
         HStack {
-            //TODO: -유저 프로필 사진
-            //            ForEach(authStore.userList) { user in
-            //                if item.uid == user.id && user.profileImage != "" {
-            //                    WebImage(url: URL(string: user.profileImage))
-            //                        .resizable()
-            //                        .placeholder {
-            //                            Rectangle().foregroundColor(.gray)
-            //                        }
-            //                        .scaledToFill()
-            //                        .frame(width: UIScreen.screenWidth * 0.01)
-            //                        .clipShape(Circle())
-            //                } else {
-            Image(systemName: "person.fill")
-                .overlay {
-                    Circle().stroke(lineWidth: 1)
+            WebImage(url: URL(string: userImage ?? "기본이미지 넣기"))
+                .resizable()
+                .placeholder {
+                    Rectangle().foregroundColor(.gray)
                 }
-            //                }
-            //            }
+                .scaledToFill()
+                .frame(width: UIScreen.screenWidth * 0.01)
+                .clipShape(Circle())
+            
             //유저 닉네임
-            Text(item.diaryUserNickName)
+            Text(userNickName ?? "부트캠퍼")
                 .font(.headline).fontWeight(.semibold)
             Spacer()
-            //...버튼 글 쓴 유저일때만 ...나타나도록
-            alertMenu
-                .padding(.horizontal, UIScreen.screenWidth * 0.03)
-                .padding(.top, 5)
-            
+            //MARK: -...버튼 글 쓴 유저일때만 ...나타나도록
+            if item.uid == Auth.auth().currentUser?.uid {
+                alertMenu
+                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                    .padding(.top, 5)
+            }
+            //TODO: -글 쓴 유저가 아닐때는 신고기능 넣기
+            else {
+                reportAlertMenu
+                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                    .padding(.top, 5)
+            }
             
         }
+        .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
 
@@ -147,6 +176,44 @@ private extension DiaryCellView {
             }
             Button("삭제", role: .destructive) {
                 diaryStore.deleteDiaryCombine(diary: item)
+            }
+        }
+    }
+    
+    //MARK: - 유저 신고 / 차단 버튼
+    var reportAlertMenu: some View {
+        //MARK: - ... 버튼입니다.
+        Menu {
+            Button {
+                isShowingUserReportAlert = true
+            } label: {
+                Text("신고하기")
+            }
+            
+            Button {
+                isShowingDeleteAlert = true
+            } label: {
+                Text("차단하기")
+            }
+            
+        } label: {
+            Image(systemName: "ellipsis")
+        }
+        //MARK: - 유저 신고 알림
+        .alert("유저를 신고하시겠습니까?", isPresented: $isShowingUserReportAlert) {
+            Button("취소", role: .cancel) {
+                isShowingUserReportAlert = false
+            }
+            Button("신고하기", role: .destructive) {
+                //신고 컴바인..
+            }
+        }
+        .alert("유저를 차단하시겠습니까?", isPresented: $isShowingUserBlockedAlert) {
+            Button("취소", role: .cancel) {
+                isShowingUserBlockedAlert = false
+            }
+            Button("차단하기", role: .destructive) {
+                //차단 컴바인..
             }
         }
     }
@@ -225,3 +292,5 @@ struct DiaryCellView_Previews: PreviewProvider {
         
     }
 }
+
+

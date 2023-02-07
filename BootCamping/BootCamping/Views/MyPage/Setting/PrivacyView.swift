@@ -9,15 +9,14 @@ import SwiftUI
 
 struct PrivacyView: View {
     @State var showingAlert: Bool = false
+    @EnvironmentObject var faceId: FaceId
     @Environment(\.dismiss) private var dismiss
+    
+    @AppStorage("faceId") var usingFaceId: Bool = true
 
     var body: some View {
         List{
-            NavigationLink {
-                EmptyView() // 더쿤님 페이스아이디 부탁드립니닷
-            } label: {
-                Text("앱 잠금 설정")
-            }
+            isUsingFaceIdSetting
             NavigationLink {
                 PasswordChangeView()
             } label: {
@@ -43,8 +42,19 @@ struct PrivacyView: View {
     }
 }
 
+private extension PrivacyView {
+    //MARK: - faceId 설정 토글입니다
+    var isUsingFaceIdSetting: some View {
+        Toggle(isOn: $usingFaceId) {
+            Text("내 캠핑일기 잠그기")
+        }
+    }
+
+}
+
 struct PrivacyView_Previews: PreviewProvider {
     static var previews: some View {
         PrivacyView()
+            .environmentObject(FaceId())
     }
 }

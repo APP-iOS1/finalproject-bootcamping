@@ -25,7 +25,6 @@ struct DiaryAddView: View {
     //키보드 dismiss 변수
     @FocusState private var inputFocused: Bool
     
-    //TODO: - 닉네임 안대여..고치기
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
         get {

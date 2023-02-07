@@ -21,10 +21,10 @@ struct MyCampingDiaryView: View {
         
         ZStack {
             VStack {
+                if usingFaceId ?? true && faceId.islocked {
+                    DiaryLockedView()
+                } else {
                 ScrollView(showsIndicators: false) {
-                    if usingFaceId ?? true && faceId.islocked {
-                        DiaryLockedView()
-                    } else {
                         ForEach(diaryStore.diaryList) { diaryData in
                             if diaryData.uid == Auth.auth().currentUser?.uid {
                                 VStack {
@@ -34,12 +34,12 @@ struct MyCampingDiaryView: View {
                             }
                         }
                     }
-                    
                 }
-                .background(Color.bcWhite)
+
             }
+            .background(Color.bcWhite)
             //다이어리 비어있을때 추가 화면
-            diaryEmptyView.zIndex(-1)
+            DiaryEmptyView().zIndex(-1)
         }
         .onAppear {
             diaryStore.readDiarysCombine()
@@ -62,26 +62,6 @@ struct MyCampingDiaryView: View {
         }
     }
 }
-
-
-private extension MyCampingDiaryView {
-    var diaryEmptyView: some View {
-        VStack {
-            Text("다이어리가 비어있습니다.")
-                .font(.title3)
-                .padding()
-
-            NavigationLink {
-                DiaryAddView()
-            } label: {
-                Text("다이어리 작성하러 가기")
-            }
-            .modifier(GreenButtonModifier())
-
-        }
-    }
-}
-
 
 struct MyCampingDiaryView_Previews: PreviewProvider {
     static var previews: some View {

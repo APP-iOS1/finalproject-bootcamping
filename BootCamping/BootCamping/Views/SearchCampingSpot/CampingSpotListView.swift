@@ -15,23 +15,26 @@ struct CampingSpotListView: View {
     
     @State private var isLoading: Bool = false
     
-    @State var readDocuments: ReadDocuments
+    var readDocuments: ReadDocuments
     
     var body: some View {
-        VStack{
-            ScrollView(showsIndicators: false){
-                LazyVStack {
-                    if !isLoading {
-                        ForEach(0...2, id: \.self) { _ in 
+        VStack {
+            ScrollView(showsIndicators: false) {
+                if !isLoading {
+                    LazyVStack {
+                        ForEach(0...2, id: \.self) { _ in
                             EmptyCampingSpotListCell()
-                                .onAppear {
-                                    campingSpotStore.readCampingSpotListCombine()
+                                .task {
+                                    print(readDocuments)
+                                    campingSpotStore.readCampingSpotListCombine(readDocument: readDocuments)
                                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                                         isLoading.toggle()
                                     }
                                 }
                         }
-                    } else {
+                    }
+                } else {
+                    LazyVStack {
                         ForEach(campingSpotStore.campingSpotList.indices, id: \.self) { index in
                             NavigationLink {
                                 CampingSpotDetailView(places: campingSpotStore.campingSpotList[index])
@@ -42,8 +45,7 @@ struct CampingSpotListView: View {
                             .onAppear {
                                 if index == campingSpotStore.campingSpotList.count - 1 {
                                     Task {
-                                        campingSpotStore.readCampingSpotListCombine()
-                                        campingSpotStore.campingSpotList.append(contentsOf: campingSpotStore.campingSpots)
+                                        campingSpotStore.readCampingSpotListCombine(readDocument: readDocuments)
                                     }
                                 }
                             }
@@ -51,11 +53,11 @@ struct CampingSpotListView: View {
                     }
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar{
-                ToolbarItem(placement: .principal) {
-                    Text("캠핑 모아보기")
-                }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar{
+            ToolbarItem(placement: .principal) {
+                Text("캠핑 모아보기")
             }
         }
     }

@@ -136,6 +136,7 @@ struct SearchCampingSpotView: View {
             Task {
                 campingSpotStore.campingSpotList = []
                 campingSpotStore.campingSpots = []
+//                campingSpotStore.lastDoc = nil
             }
         }
     }
@@ -174,7 +175,7 @@ extension SearchCampingSpotView {
             LazyVGrid(columns: cols, spacing: 10) {
                 ForEach(campingSpotListForLocationFilter, id: \.id) { campingSpot in
                     NavigationLink {
-                        CampingSpotListView(readDocuments: ReadDocuments(campingSpotLocation: campingSpot.filterViewLocation))
+                        CampingSpotListView(readDocuments: ReadDocuments(campingSpotLocation: "경기도"))
                     } label: {
                         VStack {
                             Image("\(campingSpot.filterViewLocation)")
@@ -209,7 +210,7 @@ extension SearchCampingSpotView {
             LazyVGrid(columns: cols, spacing: 10) {
                 ForEach(campingSpotListForViewFilter, id: \.id) { campingSpot in
                     NavigationLink {
-                        CampingSpotListView(readDocuments: ReadDocuments(campingSpotLocation: campingSpot.filterViewLocation))
+                        CampingSpotListView(readDocuments: ReadDocuments(campingSpotView: []))
                     } label: {
                         VStack {
                             Image("\(campingSpot.filterViewLocation)")

@@ -167,10 +167,7 @@ extension AddScheduleView {
                 scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: startDate))
             }
             if isSettingNotification{
-                UNUserNotificationCenter.current().requestAuthorization(
-                    options: [.alert,.sound,.badge], completionHandler: { didAllow, Error in
-                        print(didAllow) //
-                    })
+                scheduleStore.setNotification(startDate: startDate)
             }
             dismiss()
         } label: {

@@ -289,9 +289,15 @@ class CampingSpotStore: ObservableObject {
         fetchCampingSpot()
     }
     
+    /*
+     campingSpotLocation
+     campingSpotView
+     campingSpotName
+     campingSpotContenId
+     */
     //MARK: 캠핑장리스트 combine으로 읽어오는 함수
-    func readCampingSpotListCombine() {
-        FirebaseCampingSpotService().readCampingSpotService(readDocument: ReadDocuments(lastDoc: lastDoc))
+    func readCampingSpotListCombine(readDocument: ReadDocuments) {
+        FirebaseCampingSpotService().readCampingSpotService(readDocument: ReadDocuments(campingSpotLocation: readDocument.campingSpotLocation, campingSpotView: readDocument.campingSpotView, campingSpotName: readDocument.campingSpotName, campingSpotContenId: readDocument.campingSpotContenId))
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -308,6 +314,7 @@ class CampingSpotStore: ObservableObject {
             } receiveValue: { [weak self] lastDocument in
                 self?.lastDoc = lastDocument.lastDoc
                 self?.campingSpots = lastDocument.campingSpots ?? []
+                self?.campingSpotList.append(contentsOf: self?.campingSpots ?? [])
             }
             .store(in: &cancellables)
     }

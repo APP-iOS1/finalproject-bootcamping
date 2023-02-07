@@ -15,32 +15,38 @@ struct CampingSpotListView: View {
     
     @State private var isLoading: Bool = false
     
-    var campingSpotList: [Item]
+    var readDocuments: ReadDocuments
     
     var body: some View {
-        VStack{
-            ScrollView(showsIndicators: false){
-                LazyVStack {
-                    if campingSpotList.count == 0 {
-                        ForEach(0...2, id: \.self) { _ in 
+        VStack {
+            ScrollView(showsIndicators: false) {
+                if !isLoading {
+                    LazyVStack {
+                        ForEach(0...2, id: \.self) { _ in
                             EmptyCampingSpotListCell()
-                                .onAppear {
-                                    print("test")
+                                .task {
+                                    campingSpotStore.readCampingSpotListCombine(readDocument: readDocuments)
+                                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                                        if !campingSpotStore.campingSpotList.isEmpty {
+                                            isLoading.toggle()
+                                        }
+                                    }
                                 }
                         }
-                    } else {
-                        ForEach(Array(campingSpotStore.campingSpotList.enumerated()), id: \.offset) { (index, camping) in
+                    }
+                } else {
+                    LazyVStack {
+                        ForEach(campingSpotStore.campingSpotList.indices, id: \.self) { index in
                             NavigationLink {
-                                CampingSpotDetailView(places: camping)
+                                CampingSpotDetailView(places: campingSpotStore.campingSpotList[index])
                             } label: {
-                                CampingSpotListRaw(item: camping)
+                                CampingSpotListRaw(item: campingSpotStore.campingSpotList[index])
                                     .padding(.bottom,40)
                             }
                             .onAppear {
                                 if index == campingSpotStore.campingSpotList.count - 1 {
                                     Task {
-                                        campingSpotStore.readCampingSpotListCombine()
-                                        campingSpotStore.campingSpotList.append(contentsOf: campingSpotStore.campingSpots)
+                                        campingSpotStore.readCampingSpotListCombine(readDocument: readDocuments)
                                     }
                                 }
                             }
@@ -48,11 +54,11 @@ struct CampingSpotListView: View {
                     }
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar{
-                ToolbarItem(placement: .principal) {
-                    Text("캠핑 모아보기")
-                }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar{
+            ToolbarItem(placement: .principal) {
+                Text("캠핑 모아보기")
             }
         }
     }
@@ -62,7 +68,7 @@ struct CampingSpotListView: View {
 struct CampingSpotListView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            CampingSpotListView(campingSpotList: [])
+            CampingSpotListView(readDocuments: ReadDocuments())
                 .environmentObject(CampingSpotStore())
         }
     }

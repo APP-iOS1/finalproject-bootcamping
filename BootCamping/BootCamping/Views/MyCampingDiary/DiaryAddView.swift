@@ -10,8 +10,6 @@ import PhotosUI
 import Firebase
 
 struct DiaryAddView: View {
-    @State private var selectedItems = [PhotosPickerItem]()
-    @State private var selectedImages = [Data]()
     @State private var diaryTitle: String = ""
     @State private var locationInfo: String = ""
     @State private var visitDate: String = ""
@@ -41,11 +39,18 @@ struct DiaryAddView: View {
     //MARK: - DatePicker 변수
     @State private var selectedDate: Date = .now
     
+    //이미지 피커
+    @State private var imagePickerPresented = false // 이미지 피커를 띄울 변수
+    @State private var selectedImages: [UIImage]?   // 이미지 피커에서 선택한 이미지저장. [UIImage] 타입
+    @State private var diaryImages: [Data]?         // selectedImages를 [Data] 타입으로 저장
+    
+    var images: [UIImage] = [UIImage()]
+    
     var body: some View {
         VStack {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading) {
-                    photoPicker
+                    imagePicker
                     addViewTitle
                     addViewLocationInfo
                     addViewVisitDate
@@ -69,49 +74,35 @@ struct DiaryAddView: View {
 
 
 private extension DiaryAddView {
-    //MARK: - 포토피커
-    var photoPicker: some View {
-        HStack {
-            VStack{
-                PhotosPicker(
-                    selection: $selectedItems,
-                    maxSelectionCount: 10,
-                    matching: .any(of: [.images, .not(.videos)])) {
-                        ZStack {
-                            Image(systemName: "plus")
-                            VStack{
-                                Spacer()
-                                Text("\(selectedImages.count) / 10")
-                                    .padding(.bottom, 5)
-                            }
-                        }
-                        .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
-                        .background {
-                            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .stroke(.gray, lineWidth: 2)
-                        }
-                    }
-                    .onChange(of: selectedItems) { newValue in
-                        Task {
-                            selectedImages = []
-                            for value in newValue {
-                                if let imageData = try? await value.loadTransferable(type: Data.self) {
-                                    selectedImages.append(imageData)
+    
+    private var imagePicker: some View {
+        Button(action: {
+            imagePickerPresented.toggle()
+        }, label: {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    if diaryImages == nil {
+                        HStack{
+                            ZStack {
+                                Image(systemName: "plus")
+                                VStack{
+                                    Spacer()
+                                    Text("\(diaryImages?.count ?? 0) / 10")
+                                        .padding(.bottom, 5)
                                 }
                             }
+                            .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
+                            .background {
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .stroke(.gray, lineWidth: 2)
+                            }
+                            Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "")
+                                .foregroundColor(.secondary)
+                                .opacity(0.5)
+                                .padding(.leading, UIScreen.screenWidth * 0.05)
                         }
-                    }
-            }
-            
-            Text(selectedImages.isEmpty ? "사진을 추가해주세요" : "")
-                .foregroundColor(.secondary)
-                .opacity(0.5)
-                .padding(.leading, UIScreen.screenWidth * 0.05)
-            
-            if selectedImages.count > 0 {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        ForEach(Array(zip(0..<selectedImages.count, selectedImages)), id: \.0) { index, image in
+                    } else{
+                        ForEach(Array(zip(0..<(diaryImages?.count ?? 0), diaryImages ?? [Data()])), id: \.0) { index, image in
                             Image(uiImage: UIImage(data: image)!)
                                 .resizable()
                                 .scaledToFill()
@@ -127,11 +118,22 @@ private extension DiaryAddView {
                                 )
                         }
                     }
+                    
                 }
             }
-            
+        })
+        .sheet(isPresented: $imagePickerPresented,
+               onDismiss: loadData,
+               content: { PhotoPicker(images: $selectedImages, selectionLimit: 10) })
+    }
+    // selectedImage: UIImage 타입을 Data타입으로 저장하는 함수
+    func loadData() {
+        var arr = [Data]()
+        guard let selectedImages = selectedImages else { return }
+        for selectedImage in selectedImages {
+            arr.append((selectedImage.jpegData(compressionQuality: 0.8)!))
         }
-        .padding(.bottom)
+        diaryImages = arr
     }
     
     //MARK: - 제목 작성
@@ -215,19 +217,19 @@ private extension DiaryAddView {
         HStack {
             Spacer()
             Button {
-                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: "", diaryIsPrivate: diaryIsPrivate), images: selectedImages)
+                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: "", diaryIsPrivate: diaryIsPrivate), images: diaryImages ?? [Data()])
                 dismiss()
             } label: {
-                Text(selectedImages.isEmpty ? "사진을 추가해주세요" : "일기 쓰기")
+                Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "일기 쓰기")
             }
             .font(.headline)
             .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)
             .foregroundColor(.white)
-            .background(selectedImages.isEmpty ? .secondary : Color.bcGreen)
+            .background(diaryImages?.isEmpty ?? true ? .secondary : Color.bcGreen)
             .cornerRadius(10)
-            .disabled(selectedImages.isEmpty)
+            .disabled(diaryImages?.isEmpty ?? true)
             Spacer()
-
+            
         }
     }
     
@@ -242,6 +244,71 @@ private extension DiaryAddView {
         } else {
             dismissKeyboard()
         }
+    }
+}
+
+// MARK: 이미지피커 여러 장 고르기
+struct PhotoPicker: UIViewControllerRepresentable {
+    
+    typealias UIViewControllerType = PHPickerViewController
+    
+    @Binding var images: [UIImage]?
+    var selectionLimit: Int
+    var filter: PHPickerFilter?
+    var itemProviders: [NSItemProvider] = []
+    
+    func makeUIViewController(context: Context) -> PHPickerViewController {
+        var configuration = PHPickerConfiguration()
+        configuration.selectionLimit = self.selectionLimit
+        configuration.filter = self.filter
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = context.coordinator
+        return picker
+    }
+    
+    func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {
+        
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        return PhotoPicker.Coordinator(parent: self)
+    }
+    
+    class Coordinator: NSObject, PHPickerViewControllerDelegate, UINavigationControllerDelegate {
+        
+        var parent: PhotoPicker
+        
+        init(parent: PhotoPicker) {
+            self.parent = parent
+        }
+        
+        func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+            //Dismiss picker
+            picker.dismiss(animated: true)
+            
+            if !results.isEmpty {
+                parent.itemProviders = []
+                parent.images = []
+            }
+            
+            parent.itemProviders = results.map(\.itemProvider)
+            loadImage()
+        }
+        
+        private func loadImage() {
+            for itemProvider in parent.itemProviders {
+                if itemProvider.canLoadObject(ofClass: UIImage.self) {
+                    itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+                        if let image = image as? UIImage {
+                            self.parent.images?.append(image)
+                        } else {
+                            print("Could not load image", error?.localizedDescription ?? "")
+                        }
+                    }
+                }
+            }
+        }
+        
     }
 }
 

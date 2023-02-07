@@ -179,6 +179,15 @@
         "revision" : "ab3a58b7209a17d781c0d1dbb3e1ff3da306bae8",
         "version" : "1.20.3"
       }
+    },
+    {
+      "identity" : "swiftui-mail-view",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/globulus/swiftui-mail-view",
+      "state" : {
+        "branch" : "main",
+        "revision" : "dad1d289cb904d477f2fbabcca5ba82bfcfb2ea6"
+      }
     }
   ],
   "version" : 2

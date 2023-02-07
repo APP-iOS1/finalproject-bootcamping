@@ -16,9 +16,7 @@ struct ProfileSettingView: View {
     //이미지 피커
     @State private var imagePickerPresented = false // 이미지 피커를 띄울 변수
     @State private var selectedImage: UIImage?      // 이미지 피커에서 선택한 이미지저장. UIImage 타입
-    @State private var profileImage: Data?         // selectedImage를 Data 타입으로 저장
-    
-    
+    @State private var profileImage: Data?          // selectedImage를 Data 타입으로 저장
     
     var user: User
     
@@ -35,8 +33,6 @@ struct ProfileSettingView: View {
                 updateUserNameTextField
                     .padding(.bottom)
                 editButton
-                
-                
             }
         }
         .padding(.horizontal, UIScreen.screenWidth * 0.03)
@@ -101,7 +97,7 @@ extension ProfileSettingView {
 }
 
 
-//MARK: 이미지피커
+//MARK: 이미지피커, 한 장 고르기
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var image: UIImage?
     @Environment(\.presentationMode) var mode

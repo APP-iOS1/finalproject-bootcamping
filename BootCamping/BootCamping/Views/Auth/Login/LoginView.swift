@@ -18,6 +18,7 @@ struct LoginView: View {
     
     @EnvironmentObject var authStore: AuthStore
     @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
     
     @Environment(\.window) var window: UIWindow?
     @State private var appleLoginCoordinator: AppleAuthCoordinator?
@@ -70,7 +71,7 @@ extension LoginView {
     // 카카오 로그인 버튼
     var kakaoLoginButton: some View {
         Button {
-            kakaoAuthStore.handleKakaoLogin()
+            wholeAuthStore.kakaoLogInCombine()
         } label: {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(.yellow)
@@ -89,7 +90,7 @@ extension LoginView {
     // 구글 로그인 버튼
     var googleLoginButton: some View {
         Button {
-            authStore.googleSignIn()
+            wholeAuthStore.googleSignIn()
         } label: {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(.white)

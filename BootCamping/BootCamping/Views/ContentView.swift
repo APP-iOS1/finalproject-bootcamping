@@ -14,6 +14,7 @@ import SwiftUI
 struct ContentView: View {
     //로그인 유무 변수
     @AppStorage("login") var isSignIn: Bool = false
+    @AppStorage("_isFirstLaunching") var isFirstLaunching: Bool = true
     
     let wholeAuthStore = WholeAuthStore.shared
     
@@ -81,6 +82,9 @@ struct ContentView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
                 withAnimation { isLoading.toggle() }
             }) }
+        .fullScreenCover(isPresented: $isFirstLaunching) {
+            OnboardingTabView(isFirstLaunching: $isFirstLaunching)
+        }
     }
 }
 

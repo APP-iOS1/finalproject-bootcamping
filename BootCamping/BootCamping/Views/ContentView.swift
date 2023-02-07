@@ -75,7 +75,7 @@ struct ContentView: View {
                             isSignIn = false
                         }
                     }
-                
+
             }
         }
         .onAppear {
@@ -88,13 +88,14 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-            .environmentObject(DiaryStore())
-            .environmentObject(AuthStore())
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//            .environmentObject(DiaryStore())
+//            .environmentObject(AuthStore())
+//            .environmentObject(TabSelector())
+//    }
+//}
 
 //MARK: - 탭뷰 화면전환 함수
 enum TabViewScreen {

@@ -76,10 +76,12 @@
 		790B62F7297A36BB0048C110 /* KakaoAuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62F6297A36BB0048C110 /* KakaoAuthStore.swift */; };
 		792C42422990CAD200B7772C /* PrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42412990CAD200B7772C /* PrivacyView.swift */; };
 		792C42442990D0A800B7772C /* PasswordChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42432990D0A800B7772C /* PasswordChangeView.swift */; };
+		7C3E8BDA2992222600A6C1D6 /* DiaryCommentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */; };
 		7C3FC49729877C7200E96A01 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7C3FC49629877C7200E96A01 /* SDWebImageSwiftUI */; };
 		7C715C982977E056009BC678 /* Diary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C715C972977E056009BC678 /* Diary.swift */; };
 		7C95F18F298A42B10095A6BC /* AppleAuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C95F18E298A42B10095A6BC /* AppleAuthCoordinator.swift */; };
 		7C95F191298A55120095A6BC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C95F190298A55120095A6BC /* GoogleService-Info.plist */; };
+		7CA272FE2991CE6600443111 /* DiaryLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA272FD2991CE6600443111 /* DiaryLockedView.swift */; };
 		7CC3AD4E29890970002EF992 /* DiaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3AD4D29890970002EF992 /* DiaryStore.swift */; };
 		7CC3AD5029890974002EF992 /* FirebaseDiaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3AD4F29890974002EF992 /* FirebaseDiaryService.swift */; };
 		7CD6570B298C91B000889FF3 /* LocalAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD6570A298C91B000889FF3 /* LocalAuthentication.swift */; };
@@ -100,6 +102,8 @@
 		CA27A627298CA81700A6AEE5 /* TaskCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A626298CA81700A6AEE5 /* TaskCellView.swift */; };
 		CA27A62D298CE95500A6AEE5 /* FirebaseBookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A62C298CE95500A6AEE5 /* FirebaseBookmarkService.swift */; };
 		CA27A6302990F0E200A6AEE5 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CA27A62F2990F0E200A6AEE5 /* FirebaseMessaging */; };
+		CA27A63229920D2300A6AEE5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CA27A63129920D2300A6AEE5 /* FirebaseAnalytics */; };
+		CA27A63429920D2300A6AEE5 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CA27A63329920D2300A6AEE5 /* FirebaseAnalyticsSwift */; };
 		CA729F3329792DE000CCC3BB /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F3229792DE000CCC3BB /* CalendarView.swift */; };
 		CA729F352979315400CCC3BB /* CustomDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F342979315400CCC3BB /* CustomDatePickerView.swift */; };
 		CA729F392979340600CCC3BB /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F382979340600CCC3BB /* Schedule.swift */; };
@@ -163,9 +167,11 @@
 		790B62F6297A36BB0048C110 /* KakaoAuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthStore.swift; sourceTree = "<group>"; };
 		792C42412990CAD200B7772C /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
 		792C42432990D0A800B7772C /* PasswordChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeView.swift; sourceTree = "<group>"; };
+		7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCommentCellView.swift; sourceTree = "<group>"; };
 		7C715C972977E056009BC678 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
 		7C95F18E298A42B10095A6BC /* AppleAuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthCoordinator.swift; sourceTree = "<group>"; };
 		7C95F190298A55120095A6BC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7CA272FD2991CE6600443111 /* DiaryLockedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryLockedView.swift; sourceTree = "<group>"; };
 		7CC3AD4D29890970002EF992 /* DiaryStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryStore.swift; sourceTree = "<group>"; };
 		7CC3AD4F29890974002EF992 /* FirebaseDiaryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseDiaryService.swift; sourceTree = "<group>"; };
 		7CD6570A298C91B000889FF3 /* LocalAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthentication.swift; sourceTree = "<group>"; };
@@ -201,6 +207,7 @@
 				6E996E83297A4E290085D914 /* GoogleSignInSwift in Frameworks */,
 				63AF45A42977CD9C0014B1E1 /* FirebaseAuth in Frameworks */,
 				6E996E81297A4E290085D914 /* GoogleSignIn in Frameworks */,
+				CA27A63429920D2300A6AEE5 /* FirebaseAnalyticsSwift in Frameworks */,
 				790B62E2297A28E00048C110 /* KakaoSDK in Frameworks */,
 				7C3FC49729877C7200E96A01 /* SDWebImageSwiftUI in Frameworks */,
 				790B62E8297A28E00048C110 /* KakaoSDKCommonCore in Frameworks */,
@@ -215,6 +222,7 @@
 				790B62E6297A28E00048C110 /* KakaoSDKCommon in Frameworks */,
 				6E688E3F29923827006DCEE5 /* SwiftUIMailView in Frameworks */,
 				790B62E4297A28E00048C110 /* KakaoSDKAuth in Frameworks */,
+				CA27A63229920D2300A6AEE5 /* FirebaseAnalytics in Frameworks */,
 				790B62EC297A28E00048C110 /* KakaoSDKShare in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -385,6 +393,8 @@
 				63AF45DE2977CE5E0014B1E1 /* DiaryDetailView.swift */,
 				AD373AF92977D68A00E1236A /* DiaryCellView.swift */,
 				63AF45DD2977CE5E0014B1E1 /* DiaryAddView.swift */,
+				7CA272FD2991CE6600443111 /* DiaryLockedView.swift */,
+				7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */,
 			);
 			path = MyCampingDiary;
 			sourceTree = "<group>";
@@ -506,6 +516,8 @@
 				6E11BE2C298C8FD60019E963 /* Lottie */,
 				CA27A62F2990F0E200A6AEE5 /* FirebaseMessaging */,
 				6E688E3E29923827006DCEE5 /* SwiftUIMailView */,
+				CA27A63129920D2300A6AEE5 /* FirebaseAnalytics */,
+				CA27A63329920D2300A6AEE5 /* FirebaseAnalyticsSwift */,
 			);
 			productName = BootCamping;
 			productReference = 630ADB4B2977CC6C000A517B /* BootCamping.app */;
@@ -607,6 +619,7 @@
 				6E688DFE2991E153006DCEE5 /* OnboardingTabView.swift in Sources */,
 				CA729F3329792DE000CCC3BB /* CalendarView.swift in Sources */,
 				AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */,
+				7CA272FE2991CE6600443111 /* DiaryLockedView.swift in Sources */,
 				790B62F7297A36BB0048C110 /* KakaoAuthStore.swift in Sources */,
 				639129E92979291D00F6EDD7 /* Places.swift in Sources */,
 				7CD6570E298D07EB00889FF3 /* BookmarkSpotStore.swift in Sources */,
@@ -622,6 +635,7 @@
 				6E688DFA2991E136006DCEE5 /* DescribePictureView.swift in Sources */,
 				6E688E3A29923506006DCEE5 /* ContactMail.swift in Sources */,
 				63AF45E12977CE5E0014B1E1 /* DiaryDetailView.swift in Sources */,
+				7C3E8BDA2992222600A6C1D6 /* DiaryCommentCellView.swift in Sources */,
 				CA27A627298CA81700A6AEE5 /* TaskCellView.swift in Sources */,
 				CA27A6252989FCD700A6AEE5 /* SearchCampingSpotListView.swift in Sources */,
 				7CFCE12D2987549F00E196AF /* WeeklyPopulerCampingView.swift in Sources */,
@@ -1020,6 +1034,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
+		};
+		CA27A63129920D2300A6AEE5 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		CA27A63329920D2300A6AEE5 /* FirebaseAnalyticsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

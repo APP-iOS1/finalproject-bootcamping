@@ -10,6 +10,7 @@ import Firebase
 import FirebaseCore
 import FirebaseAuth
 import FirebaseMessaging
+import FirebaseAnalytics
 import GoogleSignIn
 import KakaoSDKCommon
 import KakaoSDKAuth
@@ -20,6 +21,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
+
+        /* It sets how much Firebase will log. Setting this to min reduces the amount of data you’ll see in your debugger. */
+        FirebaseConfiguration.shared.setLoggerLevel(.min)
         
         /* Push Notification 대리자 설정 */
         Messaging.messaging().delegate = self
@@ -28,12 +32,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
             
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            
-            UNUserNotificationCenter.current().requestAuthorization(
-                options: authOptions,
-                completionHandler: { _, _ in }
-            )
+//            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+//
+//            UNUserNotificationCenter.current().requestAuthorization(
+//                options: authOptions,
+//                completionHandler: { _, _ in }
+//            )
         } else {
             let settings: UIUserNotificationSettings =
             UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
@@ -89,6 +93,7 @@ struct BootCampingApp: App {
                 .environmentObject(BookmarkStore())
                 .environmentObject(BookmarkSpotStore())
                 .environmentObject(WholeAuthStore())
+                .environmentObject(CommentStore())
                 .onOpenURL { url in
                     GIDSignIn.sharedInstance.handle(url)
                 }

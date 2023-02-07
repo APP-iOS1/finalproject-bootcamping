@@ -12,6 +12,7 @@ import SDWebImageSwiftUI
 struct DiaryDetailView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var commentStore: CommentStore
     
     @State var diaryComment: String = ""
     //삭제 알림
@@ -19,94 +20,139 @@ struct DiaryDetailView: View {
     
     @EnvironmentObject var diaryStore: DiaryStore
     
-    
     @State var isBookmarked: Bool = false
+    
     var item: Diary
     
     var body: some View {
         VStack {
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading) {
-                    diaryUserProfile
-                    diaryDetailImage
-                    Group {
-                        diaryDetailTitle
-                        diaryDetailContent
-                        diaryCampingLink
-                        diaryDetailInfo
-                        Divider()
-                        diaryCommetView
-                    }
-                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                ScrollView(showsIndicators: false) {
+                        LazyVStack(alignment: .leading) {
+                            diaryUserProfile
+                            diaryDetailImage
+                            Group {
+                                //                        diaryDetailTitle //본문에 빼고 타이틀 위로 올리기?
+                                diaryDetailContent
+                                diaryCampingLink
+                                diaryDetailInfo
+                                Divider()
+                                
+                                //                        diaryCommetView //기존 더미 댓글
+                                //                        List { //list로 댓글 삭제 기능 넣으려고 했는데 잘 안되네용ㅎㅎ
+                                ForEach(commentStore.comments) { comment in
+                                    if comment.diaryId == item.id {
+                                        DiaryCommentCellView(item: comment)
+                                    }
+                                }
+                                //                            .onDelete(perform: user.id == item.uid ? delete: nil)
+                                //                        }
+                            }
+                            .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                        }
                 }
-            }
             Divider()
+            //댓글 작성
             diaryCommetInputView
         }
+        .navigationTitle(item.diaryTitle)
         .onAppear{
             isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
+            commentStore.fetchComment()
         }
-        
     }
 }
 
 
 private extension DiaryDetailView {
-    //MARK: - 유저 프로필, 글 수정버튼
+    
+    //글 작성 유저
+    var user: User {
+        authStore.userList.filter { $0.id == Auth.auth().currentUser?.uid }.first!
+    }
+    
+    //MARK: - 댓글 삭제 기능
+    func delete(at offsets: IndexSet) {
+        commentStore.comments.remove(atOffsets: offsets)
+    }
+    
+    //글 작성 유저 닉네임 변수
+    var userNickName: String? {
+        for user in authStore.userList {
+            if user.id == Auth.auth().currentUser?.uid {
+                return user.nickName
+            }
+        }
+        return nil
+    }
+    //글 작성 유저 프로필 변수
+    var userImage: String? {
+        for user in authStore.userList {
+            if user.id == Auth.auth().currentUser?.uid {
+                return user.profileImageURL
+            }
+        }
+        return nil
+    }
+    //MARK: - 다이어리 작성자 프로필
     var diaryUserProfile: some View {
         HStack {
-            //TODO: -유저 프로필 사진
-            //            ForEach(authStore.userList) { user in
-            //                if item.uid == user.id && user.profileImage != "" {
-            //                    WebImage(url: URL(string: user.profileImage))
-            //                        .resizable()
-            //                        .placeholder {
-            //                            Rectangle().foregroundColor(.gray)
-            //                        }
-            //                        .scaledToFill()
-            //                        .frame(width: UIScreen.screenWidth * 0.01)
-            //                        .clipShape(Circle())
-            //                } else {
-            Image(systemName: "person.fill")
-                .overlay {
-                    Circle().stroke(lineWidth: 1)
+            WebImage(url: URL(string: userImage ?? "기본이미지 넣기"))
+                .resizable()
+                .placeholder {
+                    Rectangle().foregroundColor(.gray)
                 }
-            //                }
-            //            }
+                .scaledToFill()
+                .frame(width: UIScreen.screenWidth * 0.01)
+                .clipShape(Circle())
+            
             //유저 닉네임
-            Text(item.diaryUserNickName)
+            Text(userNickName ?? "부트캠퍼")
                 .font(.headline).fontWeight(.semibold)
             Spacer()
-            //MARK: - ... 버튼입니다.
-            Menu {
-                Button {
-                    //TODO: -수정기능 추가
-                } label: {
-                    Text("수정하기")
-                }
-                
-                Button {
-                    isShowingDeleteAlert = true
-                } label: {
-                    Text("삭제하기")
-                }
-                
-            } label: {
-                Image(systemName: "ellipsis")
+            //MARK: -...버튼 글 쓴 유저일때만 ...나타나도록
+            if item.uid == Auth.auth().currentUser?.uid {
+                alertMenu
+                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                    .padding(.top, 5)
             }
-            //MARK: - 일기 삭제 알림
-            .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
-                Button("취소", role: .cancel) {
-                    isShowingDeleteAlert = false
-                }
-                Button("삭제", role: .destructive) {
-                    diaryStore.deleteDiaryCombine(diary: item)
-                }
+            //TODO: -글 쓴 유저가 아닐때는 신고기능 넣기
+            else {
+                
             }
             
         }
-        .padding(.horizontal, UIScreen.screenWidth * 0.05)
-        .padding(.top, 5)
+        .padding(.horizontal, UIScreen.screenWidth * 0.03)
+    }
+    
+
+    //MARK: - Alert Menu 버튼
+    var alertMenu: some View {
+        //MARK: - ... 버튼입니다.
+        Menu {
+            Button {
+                //TODO: -수정기능 추가
+            } label: {
+                Text("수정하기")
+            }
+            
+            Button {
+                isShowingDeleteAlert = true
+            } label: {
+                Text("삭제하기")
+            }
+            
+        } label: {
+            Image(systemName: "ellipsis")
+        }
+        //MARK: - 일기 삭제 알림
+        .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
+            Button("취소", role: .cancel) {
+                isShowingDeleteAlert = false
+            }
+            Button("삭제", role: .destructive) {
+                diaryStore.deleteDiaryCombine(diary: item)
+            }
+        }
     }
     
     // MARK: -View : 다이어리 사진
@@ -223,49 +269,6 @@ private extension DiaryDetailView {
         .padding(.vertical, 5)
     }
     
-    // MARK: -View : 댓글 뷰
-    //TODO: -댓글 연동
-    private var diaryCommetView : some View {
-        VStack(alignment: .leading) {
-            
-            HStack {
-                Text("댓글")
-                    .font(.title3)
-                    .foregroundColor(.gray)
-                    .padding(.bottom, 1)
-                Spacer()
-            }
-            HStack{
-                Circle()
-                    .frame(width: 35)
-                VStack(alignment: .leading) {
-                    Text("햄뿡이")
-                        .font(.title3)
-                    Text("너무 좋아보여요")
-                }
-            }
-            HStack{
-                Circle()
-                    .frame(width: 35)
-                VStack(alignment: .leading) {
-                    Text("햄뿡이")
-                        .font(.title3)
-                    Text("너무 좋아보여요")
-                }
-            }
-            HStack{
-                Circle()
-                    .frame(width: 35)
-                VStack(alignment: .leading) {
-                    Text("햄뿡이")
-                        .font(.title3)
-                    Text("너무 좋아보여요")
-                }
-            }
-        }
-        .padding(.horizontal)
-    }
-    
     // MARK: -View : 댓글 작성
     private var diaryCommetInputView : some View {
         
@@ -273,7 +276,13 @@ private extension DiaryDetailView {
             Circle()
                 .frame(width: 35)
             TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
-            Button(action: {}) {
+            
+            Button {
+                commentStore.addComment(Comment(id: UUID().uuidString, diaryId: item.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: userNickName ?? "", profileImage: userImage ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp()))
+                commentStore.fetchComment()
+                //todo 버튼 누르면 댓글 젤 밑으로 화면 이동
+                
+            } label: {
                 Image(systemName: "arrowshape.turn.up.right.circle")
                     .resizable()
                     .frame(width: 30, height: 30)

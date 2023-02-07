@@ -45,6 +45,8 @@ struct WeeklyPopulerCampingView: View {
 
 //MARK: - 포토카드 위 글씨
 struct PhotoMainStory: View {
+    @EnvironmentObject var authStore: AuthStore
+    
     var item: Diary
     
     var body: some View {
@@ -65,16 +67,30 @@ struct PhotoMainStory: View {
                     .fontWeight(.bold)
                     .padding(.bottom, 0.01)
                 
-                Text("by \(item.diaryUserNickName)")
+                Text("by \(userNickName ?? "BootCamper")")
                     .font(.subheadline)
-                
-                
             }
             .foregroundColor(.white)
             .kerning(-0.7)
             .padding(.horizontal)
         }
+        .onAppear {
+            authStore.fetchUserList()
+        }
     }
+}
+
+private extension PhotoMainStory {
+    //글 작성 유저 닉네임 변수
+    var userNickName: String? {
+        for user in authStore.userList {
+            if user.id == Auth.auth().currentUser?.uid {
+                return user.nickName
+            }
+        }
+        return nil
+    }
+    
 }
 
 //MARK: - 포토카드 프레임
@@ -102,5 +118,6 @@ struct PhotoCardFrame: View {
 //    static var previews: some View {
 //        WeeklyPopulerCampingView()
 //            .environmentObject(DiaryStore())
+//            .environmentObject(AuthStore())
 //    }
 //}

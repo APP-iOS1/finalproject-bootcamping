@@ -47,6 +47,26 @@ struct LogInAlertModifier : ViewModifier {
     }
 }
 
+////신고하기, 차단하기
+////신고하기 알림
+//struct UserReportAlertModifier : ViewModifier {
+//    @Binding var isShowingLoginAlert: Bool
+//    
+//    func body(content: Content) -> some View {
+//        content
+//            .alert("유저를 커뮤니티 위반으로 신고하시겠습니까?", isPresented: $isShowingLoginAlert) {
+//                Button("취소", role: .cancel) {
+//                    isShowingUserReportAlert = false
+//                }
+//                    NavigationLink {
+//                        LoginView()
+//                    } label: {
+//                        Text("로그인하기")
+//                    }
+//            }
+//    }
+//}
+
 /* 예시
  struct BodyTextModifier : ViewModifier {
      func body(content: Content) -> some View {

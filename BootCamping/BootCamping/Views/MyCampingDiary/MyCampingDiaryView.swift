@@ -6,44 +6,46 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct MyCampingDiaryView: View {
     
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var faceId: FaceId
     
+    @AppStorage("faceId") var usingFaceId: Bool? //페이스id 설정 사용하는지
+    //faceId.isLocked // 페이스 아이디가 잠겨있는지.
+    @AppStorage("isDiaryEmpty") var isDiaryEmpty: Bool = false
+    
     var body: some View {
+        
         VStack {
             ScrollView(showsIndicators: false) {
-                if faceId.isUnlocked {
-                    VStack(alignment: .center) {
-                        Text("일기가 잠겨있습니다.")
-                            .padding()
-                        
-                        Button {
-                            faceId.authenticate()
-                        } label: {
-                            Label("잠금 해제하기", systemImage: "lock")
-                        }
-                    }
-                    
+                if usingFaceId ?? true && faceId.islocked {
+                    DiaryLockedView()
                 } else {
                     ForEach(diaryStore.diaryList) { diaryData in
-                        VStack {
-                            RealtimeCampingCellView(item: diaryData)
-                                .padding(.bottom, 20)
+                        if diaryData.uid == Auth.auth().currentUser?.uid {
+                            VStack {
+                                DiaryCellView(item: diaryData)
+                                    .padding(.bottom, 20)
                             }
                         }
+                    }
                     .onAppear {
                         diaryStore.readDiarysCombine()
                         print("\(diaryStore.diaryList)")
                     }
-
+                    
                 }
                 
             }
         }
-        .onAppear(perform: faceId.authenticate)
+        .onAppear {
+            if usingFaceId == true {
+                faceId.authenticate()
+            }
+        }
         .toolbar{
             ToolbarItem(placement: .navigationBarLeading) {
                 Text("My Camping Diary")

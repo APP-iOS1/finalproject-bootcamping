@@ -12,90 +12,61 @@ import FirebaseAuth
 // FIXME: 현재 기획한 UserInfo 데이터 모델에 따라서 텍스트 필드 변경 필요
 /// 현재 기획 모델 그대로 가면 닉네임이랑 이메일, 비밀번호 변경하는 걸로 바꿔야 할 것 같습니다
 struct ProfileSettingView: View {
+    
+    //이미지 피커
+    @State private var imagePickerPresented = false // 이미지 피커를 띄울 변수
+    @State private var selectedImage: UIImage?      // 이미지 피커에서 선택한 이미지저장. UIImage 타입
+    @State private var profileImage: Data?          // selectedImage를 Data 타입으로 저장
+    
     var user: User
-//    @EnvironmentObject var authStore: AuthStore
-    @State private var selectedItem: PhotosPickerItem? = nil
-    @State private var selectedImageData: Data? = nil
-//    @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
     
     @State private var updateNickname: String = ""
-    
-    @State private var currentPassword: String = ""
-    @State private var newPassword: String = ""
-    @State private var newPasswordCheck: String = ""
     
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: UIScreen.screenHeight * 0.03){
                 HStack{
                     Spacer()
-                    photoPicker
+                    imagePicker
                     Spacer()
                 }
                 updateUserNameTextField
-                updatePasswordTextField
                     .padding(.bottom)
-                ///이러면 또 질문이 있는데 14pro에서 키보드 올리면 키보드 위에 그린버튼이 살짝 걸치거든용, 키보드 치다가 그린버튼 눌려서 빡치는 상황이 나올수도 있겠다 싶네용...
                 editButton
-                
-                
             }
         }
-        
-        //        .padding(.vertical, UIScreen.screenHeight * 0.05)
         .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
 }
 
 extension ProfileSettingView {
-    // MARK: -View : PhotoPicker
-    private var photoPicker : some View {
-        VStack{
-            ZStack{
-                if let selectedImageData,
-                   let uiImage = UIImage(data: selectedImageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .clipShape(Circle())
-                        .frame(width: 100, height: 100)
-                } else {
-                    Image(systemName: "person")
-                        .resizable()
-                        .clipShape(Circle())
-                        .frame(width: 100, height: 100)
+    
+    // MARK: View: 이미지피커
+    private var imagePicker: some View {
+        Button(action: {
+            imagePickerPresented.toggle()
+        }, label: {
+            let image = UIImage(data: profileImage ?? Data()) == nil ? UIImage(systemName: "person.fill") : UIImage(data: profileImage ?? Data()) ?? UIImage(systemName: "person.fill")
+            Image(uiImage: (image ?? UIImage(systemName: "person.fill"))!)
+                .resizable()
+                .frame(width: 100, height: 100)
+                .clipShape(Circle())
+                .overlay{
+                    // 수정된다는 거 표시. 펜모양심볼?
                 }
-                PhotosPicker(
-                    selection: $selectedItem,
-                    matching: .images,
-                    photoLibrary: .shared()) {
-                        ZStack{
-                            Image(systemName: "circlebadge.fill")
-                                .font(.largeTitle)
-                                .foregroundColor(.primary)
-                                .colorInvert()
-                                .offset(x: 40, y: 40)
-                                .frame(width: 100, height: 100)
-                            
-                            Image(systemName: "pencil.circle")
-                                .font(.title)
-                                .foregroundColor(.bcBlack)
-                                .offset(x: 40, y: 40)
-                                .frame(width: 100, height: 100)
-                            
-                        }
-                    }
-                    .onChange(of: selectedItem) { newItem in
-                        Task {
-                            // Retrieve selected asset in the form of Data
-                            if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                                selectedImageData = data
-                            }
-                        }
-                    }
-            }
-        }
+        })
+        .sheet(isPresented: $imagePickerPresented,
+               onDismiss: loadData,
+               content: { ImagePicker(image: $selectedImage) })
     }
+    // selectedImage: UIImage 타입을 Data타입으로 저장하는 함수
+    func loadData() {
+            guard let selectedImage = selectedImage else { return }
+        profileImage = selectedImage.jpegData(compressionQuality: 0.8)
+
+        }
+    
     
     // MARK: -View : updateUserNameTextField
     private var updateUserNameTextField : some View {
@@ -110,30 +81,6 @@ extension ProfileSettingView {
         }
     }
     
-    //MARK: -View: 비밀번호 수정
-    private var updatePasswordTextField : some View {
-        VStack(alignment: .leading, spacing: 10){
-            Text("비밀번호")
-                .font(.title3)
-                .bold()
-            SecureField("비밀번호", text: $currentPassword, prompt: Text("현재 비밀번호를 입력해주세요"))
-                .textFieldStyle(.roundedBorder)
-                .disableAutocorrection(true)
-                .textInputAutocapitalization(.never)
-            SecureField("비밀번호", text: $newPassword,prompt: Text("새로운 비밀번호를 입력해주세요"))
-                .textFieldStyle(.roundedBorder)
-                .disableAutocorrection(true)
-                .textInputAutocapitalization(.never)
-            SecureField("비밀번호", text: $newPasswordCheck,prompt: Text("새로운 비밀번호를 다시 입력해주세요"))
-                .textFieldStyle(.roundedBorder)
-                .disableAutocorrection(true)
-                .textInputAutocapitalization(.never)
-
-            Text("* 영어 + 숫자 + 특수문자 최소 8자 이상")
-                .font(.footnote).foregroundColor(.secondary)
-        }
-    }
-    
 
     // MARK: -View : editButton
     private var editButton : some View {
@@ -144,9 +91,43 @@ extension ProfileSettingView {
             Text("수정")
                 .modifier(GreenButtonModifier())
         }
-        .disabled(updateNickname == "" && (currentPassword == "" || newPassword == "" || newPasswordCheck == ""))
+        .disabled(updateNickname == "")
     }
 
+}
+
+
+//MARK: 이미지피커, 한 장 고르기
+struct ImagePicker: UIViewControllerRepresentable {
+    @Binding var image: UIImage?
+    @Environment(\.presentationMode) var mode
+    
+    func makeUIViewController(context: Context) -> some UIViewController {
+        let picker = UIImagePickerController()
+        picker.delegate = context.coordinator
+        return picker
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(self)
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
+    }
+    
+    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+        let parent: ImagePicker
+        
+        init(_ parent: ImagePicker) {
+            self.parent = parent
+        }
+        
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            guard let image = info[.originalImage] as? UIImage else { return }
+            self.parent.image = image
+            self.parent.mode.wrappedValue.dismiss()
+        }
+    }
 }
 
 struct ProfileSettingView_Previews: PreviewProvider {

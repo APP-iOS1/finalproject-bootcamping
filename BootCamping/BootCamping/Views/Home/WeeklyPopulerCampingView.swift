@@ -45,6 +45,8 @@ struct WeeklyPopulerCampingView: View {
 
 //MARK: - 포토카드 위 글씨
 struct PhotoMainStory: View {
+    @EnvironmentObject var authStore: AuthStore
+    
     var item: Diary
     
     var body: some View {
@@ -67,12 +69,13 @@ struct PhotoMainStory: View {
                 
                 Text("by \(item.diaryUserNickName)")
                     .font(.subheadline)
-                
-                
             }
             .foregroundColor(.white)
             .kerning(-0.7)
             .padding(.horizontal)
+        }
+        .onAppear {
+            authStore.fetchUserList()
         }
     }
 }
@@ -102,5 +105,6 @@ struct PhotoCardFrame: View {
 //    static var previews: some View {
 //        WeeklyPopulerCampingView()
 //            .environmentObject(DiaryStore())
+//            .environmentObject(AuthStore())
 //    }
 //}

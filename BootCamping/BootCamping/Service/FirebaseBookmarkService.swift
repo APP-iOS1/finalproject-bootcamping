@@ -61,8 +61,6 @@ struct FirebaseBookmarkService {
                     print(error)
                     promise(.failure(FirebaseBookmarkDiaryServiceError.addBookmarkDiaryError))
                 } else {
-                    // TODO: - fetch,,
-                    /// 현재 로그인된 유저의 데이터를 가져오는 게 bookmark에서의 fetch,, !
                     promise(.success(()))
                 }
             }
@@ -85,8 +83,6 @@ struct FirebaseBookmarkService {
                     print(error)
                     promise(.failure(FirebaseBookmarkDiaryServiceError.removeBookmarkDiaryError))
                 } else {
-                    // TODO: - fetch,,
-                    /// 현재 로그인된 유저의 데이터를 가져오는 게 bookmark에서의 fetch,, !
                     promise(.success(()))
                 }
             }
@@ -94,4 +90,50 @@ struct FirebaseBookmarkService {
         }
         .eraseToAnyPublisher()
     }
+    
+    //MARK: - Add BookmarkCampingSpotService
+    func addBookmarkSpotService(campingSpotId: String) -> AnyPublisher<Void, Error> {
+        Future<Void, Error> { promise in
+            guard let userUID = Auth.auth().currentUser?.uid else { return }
+            
+            self.database
+                .collection("UserList")
+                .document(userUID)
+                .updateData([
+                "bookMarkedSpot" : FieldValue.arrayUnion([campingSpotId])
+            ]) { error in
+                if let error = error {
+                    print(error)
+                    promise(.failure(FirebaseBookmarkSpotServiceError.addBookmarkSpotError))
+                } else {
+                    promise(.success(()))
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    //MARK: - Remove BookmarkCampingSpotService
+    func removeBookmarkSpotService(campingSpotId: String) -> AnyPublisher<Void, Error> {
+        Future<Void, Error> { promise in
+            guard let userUID = Auth.auth().currentUser?.uid else { return }
+            
+            self.database
+                .collection("UserList")
+                .document(userUID)
+                .updateData([
+                "bookMarkedSpot" : FieldValue.arrayRemove([campingSpotId])
+            ]) { error in
+                if let error = error {
+                    print(error)
+                    promise(.failure(FirebaseBookmarkSpotServiceError.removeBookmarkSpotError))
+                } else {
+                    promise(.success(()))
+                }
+            }
+            
+        }
+        .eraseToAnyPublisher()
+    }
+    
 }

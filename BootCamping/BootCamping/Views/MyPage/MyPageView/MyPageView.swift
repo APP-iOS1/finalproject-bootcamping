@@ -19,7 +19,7 @@ struct MyPageView: View {
     
     @State private var selectedPicker2: TapMypage = .myCamping
     //로그인 유무 함수
-    @Binding var isSignIn: Bool
+    @AppStorage("login") var isSignIn: Bool?
     
     @Namespace private var animation
     
@@ -28,6 +28,14 @@ struct MyPageView: View {
         for user in authStore.userList {
             if user.id == Auth.auth().currentUser?.uid {
                 return user.nickName
+            }
+        }
+        return nil
+    }
+    var userImage: String? {
+        for user in authStore.userList {
+            if user.id == Auth.auth().currentUser?.uid {
+                return user.profileImageURL
             }
         }
         return nil
@@ -41,20 +49,23 @@ struct MyPageView: View {
                     .padding(.top, UIScreen.screenHeight*0.02)
                 myPageTap
             }
-            .padding(.horizontal, UIScreen.screenWidth * 0.1)
+            .padding(.horizontal, UIScreen.screenWidth * 0.03)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("마이페이지")
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        SettingView(isSignIn: $isSignIn)
+                        SettingView()
                     } label: {
                         Image(systemName: "gearshape").foregroundColor(.bcBlack)
                     }
                 }
             }
         .navigationBarTitleDisplayMode(.inline)
+        }
+        .onAppear{
+            authStore.fetchUserList()
         }
     }
     
@@ -64,13 +75,14 @@ extension MyPageView{
     // MARK: -View : 유저 프로필이미지, 닉네임 표시
     private var userProfileSection : some View {
         HStack{
-            Image(systemName: "person")
+            Image(systemName: userImage != "" ? userImage ?? "person.fill" : "person.fill")
                 .resizable()
                 .clipShape(Circle())
                 .frame(width: 60, height: 60)
-            Text("\(userNickName ?? "민콩콩") 님")
+                
+            Text("\(userNickName ?? "BootCamper") 님")
             NavigationLink {
-                ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "밍콩", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
+                ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "\(userNickName ?? "")", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
                 
             } label: {
                 Image(systemName: "chevron.right")
@@ -103,7 +115,7 @@ extension MyPageView{
                             .frame(height: 2)
                     }
                 }
-                .frame(width: UIScreen.screenWidth * 0.4)
+                .frame(width: UIScreen.screenWidth * 0.47)
                 .onTapGesture {
                     withAnimation(.easeInOut(duration: 0.1)) {
                         self.selectedPicker2 = item
@@ -133,6 +145,6 @@ extension MyPageView{
 
 struct MyPageView_Previews: PreviewProvider {
     static var previews: some View {
-        MyPageView(isSignIn: .constant(true))
+        MyPageView()
     }
 }

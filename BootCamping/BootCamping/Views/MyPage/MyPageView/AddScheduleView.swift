@@ -11,11 +11,13 @@ struct AddScheduleView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var scheduleStore: ScheduleStore
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var authStore: AuthStore
     
     @State var startDate = Date()
     @State var endDate = Date()
     @State private var campingSpot: String = ""
     @State private var isAddingDisable = true
+    @State private var isSettingNotification = true
     
     // 캠핑 종료일이 시작일보다 늦어야 하므로 종료일 날짜 선택 범위를 제한해준다.
     var dateRange: ClosedRange<Date> {
@@ -67,6 +69,7 @@ struct AddScheduleView: View {
                     endDate = newStartDate
                 }
             }
+            setNotificationToggle
             Spacer()
                 .frame(maxHeight: .infinity)
             alertText
@@ -144,6 +147,12 @@ extension AddScheduleView {
             }
         }
     }
+    // MARK: -View : setNotificationToggleButton
+    private var setNotificationToggle: some View{
+        Toggle(isOn: self.$isSettingNotification) {
+                Text("스케줄에 대한 알림 수신")
+        }
+    }
     // MARK: -View : addScheduleButton
     private var addScheduleButton : some View {
         Button {
@@ -158,14 +167,16 @@ extension AddScheduleView {
             } else {
                 scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: startDate))
             }
+            if isSettingNotification{
+                scheduleStore.setNotification(startDate: startDate)
+            }
             dismiss()
         } label: {
             Text("등록")
                 .bold()
             //                    .modifier(GreenButtonModifier())
         }
-        .disabled(campingSpot == "" || isAddingDisable)
-        
+        .disabled(campingSpot == "" || isAddingDisable)        
     }
     // MARK: -View : alertText
     private var alertText : some View {

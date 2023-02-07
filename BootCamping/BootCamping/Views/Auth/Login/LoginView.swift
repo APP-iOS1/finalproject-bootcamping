@@ -12,6 +12,8 @@ import GoogleSignIn
 import GoogleSignInSwift
 import KakaoSDKUser
 import SwiftUI
+import AuthenticationServices
+
 
 struct LoginView: View {
     @AppStorage("login") var isSignIn: Bool?
@@ -20,8 +22,6 @@ struct LoginView: View {
     @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     
-    @Environment(\.window) var window: UIWindow?
-    @State private var appleLoginCoordinator: AppleAuthCoordinator?
     
     var body: some View {
         NavigationStack {
@@ -108,28 +108,27 @@ extension LoginView {
     
     // 애플 로그인 버튼
     var appleLoginButton: some View {
-        Button {
-            appleLogin()
-            
-        } label: {
-            RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(.black)
-                .frame(width: UIScreen.screenWidth * 0.9, height: 44)
-                .overlay {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "applelogo")
-                        Text("  Apple로 로그인하기")
-                        Spacer()
-                    }
-                    .foregroundColor(.white)
+        SignInWithAppleButton { (request) in
+            // requesting paramertes from apple login...
+            wholeAuthStore.nonce = randomNonceString()
+            request.requestedScopes = [.email, .fullName]
+            request.nonce = sha256(wholeAuthStore.nonce)
+        } onCompletion: { (result) in
+            switch result {
+            case .success(let user):
+                print("success")
+                // do login with firebase...
+                guard let credential = user.credential as? ASAuthorizationAppleIDCredential else {
+                    print("error with firebase")
+                    return
                 }
+                wholeAuthStore.appleLogin(credential: credential)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
-    }
-    //애풀 로그인 함수
-    func appleLogin() {
-      appleLoginCoordinator = AppleAuthCoordinator(window: window)
-      appleLoginCoordinator?.startAppleLogin()
+        .frame(width: UIScreen.screenWidth * 0.9, height: 44)
+        .cornerRadius(10)
     }
     
     // 이메일로 회원가입 버튼

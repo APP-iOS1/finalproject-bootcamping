@@ -129,7 +129,7 @@ private extension DiaryCellView {
                 .clipShape(Circle())
             
             //유저 닉네임
-            Text(userNickName ?? "부트캠퍼")
+            Text(item.diaryUserNickName)
                 .font(.headline).fontWeight(.semibold)
             Spacer()
             //MARK: -...버튼 글 쓴 유저일때만 ...나타나도록

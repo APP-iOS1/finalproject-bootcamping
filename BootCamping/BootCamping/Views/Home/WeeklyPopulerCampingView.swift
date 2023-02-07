@@ -67,7 +67,7 @@ struct PhotoMainStory: View {
                     .fontWeight(.bold)
                     .padding(.bottom, 0.01)
                 
-                Text("by \(userNickName ?? "BootCamper")")
+                Text("by \(item.diaryUserNickName)")
                     .font(.subheadline)
             }
             .foregroundColor(.white)
@@ -78,19 +78,6 @@ struct PhotoMainStory: View {
             authStore.fetchUserList()
         }
     }
-}
-
-private extension PhotoMainStory {
-    //글 작성 유저 닉네임 변수
-    var userNickName: String? {
-        for user in authStore.userList {
-            if user.id == Auth.auth().currentUser?.uid {
-                return user.nickName
-            }
-        }
-        return nil
-    }
-    
 }
 
 //MARK: - 포토카드 프레임

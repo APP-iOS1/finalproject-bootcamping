@@ -12,6 +12,7 @@ import SDWebImageSwiftUI
 struct DiaryDetailView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var commentStore: CommentStore
     
     @State var diaryComment: String = ""
     //삭제 알림
@@ -19,8 +20,8 @@ struct DiaryDetailView: View {
     
     @EnvironmentObject var diaryStore: DiaryStore
     
-    
     @State var isBookmarked: Bool = false
+    
     var item: Diary
     
     var body: some View {
@@ -35,17 +36,28 @@ struct DiaryDetailView: View {
                         diaryCampingLink
                         diaryDetailInfo
                         Divider()
-                        diaryCommetView
+                        
+//                        diaryCommetView //기존 더미 댓글
+//                        List { //list로 댓글 삭제 기능 넣으려고 했는데 잘 안되네용ㅎㅎ
+                            ForEach(commentStore.comments) { comment in
+                                if comment.diaryId == item.id {
+                                   DiaryCommentCellView(item: comment)
+                                }
+                            }
+//                            .onDelete(perform: user.id == item.uid ? delete: nil)
+//                        }
                     }
                     .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 }
             }
             Divider()
+            //댓글 작성
             diaryCommetInputView
         }
         .navigationTitle(item.diaryTitle)
         .onAppear{
             isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
+            commentStore.fetchComment()
         }
         
     }
@@ -53,6 +65,17 @@ struct DiaryDetailView: View {
 
 
 private extension DiaryDetailView {
+    
+    //글 작성 유저
+    var user: User {
+        authStore.userList.filter { $0.id == Auth.auth().currentUser?.uid }.first!
+    }
+    
+    //MARK: - 댓글 삭제 기능
+    func delete(at offsets: IndexSet) {
+        commentStore.comments.remove(atOffsets: offsets)
+    }
+    
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
         for user in authStore.userList {
@@ -296,7 +319,11 @@ private extension DiaryDetailView {
             Circle()
                 .frame(width: 35)
             TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
-            Button(action: {}) {
+            
+            Button {
+                commentStore.addComment(Comment(id: UUID().uuidString, diaryId: item.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: userNickName ?? "", profileImage: userImage ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp()))
+                commentStore.fetchComment()
+            } label: {
                 Image(systemName: "arrowshape.turn.up.right.circle")
                     .resizable()
                     .frame(width: 30, height: 30)

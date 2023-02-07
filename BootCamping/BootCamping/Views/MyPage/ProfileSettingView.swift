@@ -18,8 +18,6 @@ struct ProfileSettingView: View {
     @State private var selectedImage: UIImage?      // 이미지 피커에서 선택한 이미지저장. UIImage 타입
     @State private var profileImage: Data?         // selectedImage를 Data 타입으로 저장
     
-    
-    
     var user: User
     
     @State private var updateNickname: String = ""

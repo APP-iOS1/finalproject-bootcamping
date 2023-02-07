@@ -8,6 +8,7 @@
 import Foundation
 import Firebase
 
+//다이어리
 struct Diary: Hashable, Identifiable {
     let id: String //글
     let uid: String //유저
@@ -22,3 +23,4 @@ struct Diary: Hashable, Identifiable {
     let diaryLike: String //다이어리 좋아요
     let diaryIsPrivate: Bool //다이어리 공개여부, true면 비공개
 }
+

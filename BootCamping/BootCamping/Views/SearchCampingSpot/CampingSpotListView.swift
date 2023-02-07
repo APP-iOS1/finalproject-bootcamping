@@ -15,17 +15,20 @@ struct CampingSpotListView: View {
     
     @State private var isLoading: Bool = false
     
-    var campingSpotList: [Item]
+    @State var readDocuments: ReadDocuments
     
     var body: some View {
         VStack{
             ScrollView(showsIndicators: false){
                 LazyVStack {
-                    if campingSpotList.count != 0 {
+                    if !isLoading {
                         ForEach(0...2, id: \.self) { _ in 
                             EmptyCampingSpotListCell()
                                 .onAppear {
-                                    print("test")
+                                    campingSpotStore.readCampingSpotListCombine()
+                                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                                        isLoading.toggle()
+                                    }
                                 }
                         }
                     } else {
@@ -62,7 +65,7 @@ struct CampingSpotListView: View {
 struct CampingSpotListView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            CampingSpotListView(campingSpotList: [])
+            CampingSpotListView(readDocuments: ReadDocuments())
                 .environmentObject(CampingSpotStore())
         }
     }

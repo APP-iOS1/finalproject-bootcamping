@@ -210,7 +210,7 @@ extension SearchCampingSpotView {
             LazyVGrid(columns: cols, spacing: 10) {
                 ForEach(campingSpotListForViewFilter, id: \.id) { campingSpot in
                     NavigationLink {
-                        CampingSpotListView(readDocuments: ReadDocuments(campingSpotLocation: campingSpot.filters))
+                        CampingSpotListView(readDocuments: ReadDocuments(campingSpotView: campingSpot.filters))
                     } label: {
                         VStack {
                             Image("\(campingSpot.filterViewLocation)")

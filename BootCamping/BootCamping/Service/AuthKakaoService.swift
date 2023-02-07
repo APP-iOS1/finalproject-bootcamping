@@ -47,6 +47,7 @@ struct AuthKakaoService {
                         _ = oauthToken
                         UserApi.shared.me { user, error in
                             if let error = error {
+                                promise(.failure(AuthServiceError.signInError))
                                 print("KAKAO : user loading failed")
                                 print(error)
                             } else {
@@ -93,6 +94,7 @@ struct AuthKakaoService {
                         _ = oauthToken
                         UserApi.shared.me { user, error in
                             if let error = error {
+                                promise(.failure(AuthServiceError.signInError))
                                 print("KAKAO : user loading failed")
                                 print(error)
                             } else {

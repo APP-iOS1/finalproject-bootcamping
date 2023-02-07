@@ -14,7 +14,7 @@ import GoogleSignIn
 
 class AuthStore: ObservableObject {
     
-    @Published var isLogin: Bool = false
+    @Published var isLogin: Bool = false //이때 로그인 알림 나오게하면 되지 않을ㄲ
     @Published var userList: [User]
     @Published var currentUser: Firebase.User?
     

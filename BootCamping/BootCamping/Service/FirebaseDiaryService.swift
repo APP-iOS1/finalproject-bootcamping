@@ -9,6 +9,7 @@ import Combine
 import FirebaseFirestore
 import FirebaseStorage
 import FirebaseAuth
+import Firebase
 
 
 enum FirebaseDiaryServiceError: Error {

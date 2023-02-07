@@ -42,9 +42,9 @@ class CommentStore: ObservableObject {
                         let profileImage: String = docData["profileImage"] as? String ?? ""
                         let commentContent: String = docData["commentContent"] as? String ?? ""
                         let commentCreatedDate: Timestamp = docData["commentCreatedDate"] as? Timestamp ?? Timestamp(date: Date())
-                        let commentLike: [String] = docData["commentLike"] as? [String] ?? []
+//                        let commentLike: [String] = docData["commentLike"] as? [String] ?? []
                         
-                        let comment: Comment = Comment(id: id, diaryId: diaryId, uid: uid,  nickName: nickName, profileImage: profileImage, commentContent: commentContent, commentCreatedDate: commentCreatedDate, commentLike: commentLike)
+                        let comment: Comment = Comment(id: id, diaryId: diaryId, uid: uid,  nickName: nickName, profileImage: profileImage, commentContent: commentContent, commentCreatedDate: commentCreatedDate)
                         
                         self.comments.append(comment)
                         
@@ -63,7 +63,7 @@ class CommentStore: ObservableObject {
                       "profileImage": comment.profileImage,
                       "commentContent": comment.commentContent,
                       "commentCreatedDate": comment.commentCreatedDate,
-                      "commentLike": comment.commentLike,
+//                      "commentLike": comment.commentLike,
                      ])
         fetchComment()
     }

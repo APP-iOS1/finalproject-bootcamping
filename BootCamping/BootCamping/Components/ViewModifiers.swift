@@ -28,7 +28,44 @@ struct PhotoCardModifier : ViewModifier {
     }
 }
 
+//TODO: -로그인 알림
+struct LogInAlertModifier : ViewModifier {
+    @Binding var isShowingLoginAlert: Bool
+    
+    func body(content: Content) -> some View {
+        content
+            .alert("로그인이 필요한 기능입니다.\n 로그인 하시겠습니까?", isPresented: $isShowingLoginAlert) {
+                Button("취소", role: .cancel) {
+                    isShowingLoginAlert = false
+                }
+                    NavigationLink {
+                        LoginView()
+                    } label: {
+                        Text("로그인하기")
+                    }
+            }
+    }
+}
 
+////신고하기, 차단하기
+////신고하기 알림
+//struct UserReportAlertModifier : ViewModifier {
+//    @Binding var isShowingLoginAlert: Bool
+//    
+//    func body(content: Content) -> some View {
+//        content
+//            .alert("유저를 커뮤니티 위반으로 신고하시겠습니까?", isPresented: $isShowingLoginAlert) {
+//                Button("취소", role: .cancel) {
+//                    isShowingUserReportAlert = false
+//                }
+//                    NavigationLink {
+//                        LoginView()
+//                    } label: {
+//                        Text("로그인하기")
+//                    }
+//            }
+//    }
+//}
 
 /* 예시
  struct BodyTextModifier : ViewModifier {

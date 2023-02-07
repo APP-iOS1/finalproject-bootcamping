@@ -21,7 +21,7 @@ struct CampingSpotListView: View {
         VStack{
             ScrollView(showsIndicators: false){
                 LazyVStack {
-                    if campingSpotList.count == 0 {
+                    if campingSpotList.count != 0 {
                         ForEach(0...2, id: \.self) { _ in 
                             EmptyCampingSpotListCell()
                                 .onAppear {
@@ -29,11 +29,11 @@ struct CampingSpotListView: View {
                                 }
                         }
                     } else {
-                        ForEach(Array(campingSpotStore.campingSpotList.enumerated()), id: \.offset) { (index, camping) in
+                        ForEach(campingSpotStore.campingSpotList.indices, id: \.self) { index in
                             NavigationLink {
-                                CampingSpotDetailView(places: camping)
+                                CampingSpotDetailView(places: campingSpotStore.campingSpotList[index])
                             } label: {
-                                CampingSpotListRaw(item: camping)
+                                CampingSpotListRaw(item: campingSpotStore.campingSpotList[index])
                                     .padding(.bottom,40)
                             }
                             .onAppear {

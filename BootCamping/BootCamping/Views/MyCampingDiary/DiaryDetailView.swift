@@ -26,30 +26,30 @@ struct DiaryDetailView: View {
     
     var body: some View {
         VStack {
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading) {
-                    diaryUserProfile
-                    diaryDetailImage
-                    Group {
-//                        diaryDetailTitle //본문에 빼고 타이틀 위로 올리기?
-                        diaryDetailContent
-                        diaryCampingLink
-                        diaryDetailInfo
-                        Divider()
-                        
-//                        diaryCommetView //기존 더미 댓글
-//                        List { //list로 댓글 삭제 기능 넣으려고 했는데 잘 안되네용ㅎㅎ
-                            ForEach(commentStore.comments) { comment in
-                                if comment.diaryId == item.id {
-                                   DiaryCommentCellView(item: comment)
+                ScrollView(showsIndicators: false) {
+                        LazyVStack(alignment: .leading) {
+                            diaryUserProfile
+                            diaryDetailImage
+                            Group {
+                                //                        diaryDetailTitle //본문에 빼고 타이틀 위로 올리기?
+                                diaryDetailContent
+                                diaryCampingLink
+                                diaryDetailInfo
+                                Divider()
+                                
+                                //                        diaryCommetView //기존 더미 댓글
+                                //                        List { //list로 댓글 삭제 기능 넣으려고 했는데 잘 안되네용ㅎㅎ
+                                ForEach(commentStore.comments) { comment in
+                                    if comment.diaryId == item.id {
+                                        DiaryCommentCellView(item: comment)
+                                    }
                                 }
+                                //                            .onDelete(perform: user.id == item.uid ? delete: nil)
+                                //                        }
                             }
-//                            .onDelete(perform: user.id == item.uid ? delete: nil)
-//                        }
-                    }
-                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                            .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                        }
                 }
-            }
             Divider()
             //댓글 작성
             diaryCommetInputView
@@ -59,7 +59,6 @@ struct DiaryDetailView: View {
             isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
             commentStore.fetchComment()
         }
-        
     }
 }
 
@@ -270,48 +269,6 @@ private extension DiaryDetailView {
         .padding(.vertical, 5)
     }
     
-    // MARK: -View : 댓글 뷰
-    //TODO: -댓글 연동
-    private var diaryCommetView : some View {
-        VStack(alignment: .leading) {
-            
-            HStack {
-                Text("댓글")
-                    .font(.title3)
-                    .foregroundColor(.gray)
-                    .padding(.bottom, 1)
-                Spacer()
-            }
-            HStack{
-                Circle()
-                    .frame(width: 35)
-                VStack(alignment: .leading) {
-                    Text("햄뿡이")
-                        .font(.title3)
-                    Text("너무 좋아보여요")
-                }
-            }
-            HStack{
-                Circle()
-                    .frame(width: 35)
-                VStack(alignment: .leading) {
-                    Text("햄뿡이")
-                        .font(.title3)
-                    Text("너무 좋아보여요")
-                }
-            }
-            HStack{
-                Circle()
-                    .frame(width: 35)
-                VStack(alignment: .leading) {
-                    Text("햄뿡이")
-                        .font(.title3)
-                    Text("너무 좋아보여요")
-                }
-            }
-        }
-    }
-    
     // MARK: -View : 댓글 작성
     private var diaryCommetInputView : some View {
         
@@ -323,6 +280,8 @@ private extension DiaryDetailView {
             Button {
                 commentStore.addComment(Comment(id: UUID().uuidString, diaryId: item.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: userNickName ?? "", profileImage: userImage ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp()))
                 commentStore.fetchComment()
+                //todo 버튼 누르면 댓글 젤 밑으로 화면 이동
+                
             } label: {
                 Image(systemName: "arrowshape.turn.up.right.circle")
                     .resizable()

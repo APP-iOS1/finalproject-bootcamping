@@ -134,12 +134,9 @@ struct SearchCampingSpotView: View {
         .textInputAutocapitalization(.never)
         .onAppear{
             Task {
-                campingSpotStore.readCampingSpotListCombine()
-                campingSpotStore.campingSpotList = campingSpotStore.campingSpots
+                campingSpotStore.campingSpotList = []
+                campingSpotStore.campingSpots = []
             }
-//            Task {
-//                campingSpotStore.campingSpotList = try await fecthData.fetchData(page: page)
-//            }
         }
     }
 }
@@ -177,7 +174,7 @@ extension SearchCampingSpotView {
             LazyVGrid(columns: cols, spacing: 10) {
                 ForEach(campingSpotListForLocationFilter, id: \.id) { campingSpot in
                     NavigationLink {
-                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.doNm.contains("서울") })
+                        CampingSpotListView(readDocuments: ReadDocuments(campingSpotLocation: campingSpot.filterViewLocation))
                     } label: {
                         VStack {
                             Image("\(campingSpot.filterViewLocation)")
@@ -212,7 +209,7 @@ extension SearchCampingSpotView {
             LazyVGrid(columns: cols, spacing: 10) {
                 ForEach(campingSpotListForViewFilter, id: \.id) { campingSpot in
                     NavigationLink {
-                        CampingSpotListView(campingSpotList: campingSpotStore.campingSpotList.filter{ $0.lctCl.contains("산") })
+                        CampingSpotListView(readDocuments: ReadDocuments(campingSpotLocation: campingSpot.filterViewLocation))
                     } label: {
                         VStack {
                             Image("\(campingSpot.filterViewLocation)")

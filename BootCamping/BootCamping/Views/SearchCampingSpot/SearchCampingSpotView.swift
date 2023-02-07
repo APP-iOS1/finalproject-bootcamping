@@ -49,7 +49,7 @@ struct SearchCampingSpotView: View {
         Filtering(filterViewLocation: "ocean", filters: ["바다", "해변"], filterNames: ["바다", "해변"]),
         Filtering(filterViewLocation: "valley", filters: ["계곡"], filterNames: ["계곡"]),
         Filtering(filterViewLocation: "forest", filters: ["숲"], filterNames: ["숲"]),
-        Filtering(filterViewLocation: "river", filters: ["강", "호수"], filterNames: ["강", "호수"]),
+        Filtering(filterViewLocation: "river", filters: ["강", "호수"], filterNames: ["호수", "호수"]),
         Filtering(filterViewLocation: "island", filters: ["섬"], filterNames: ["섬"]),
     ]
     

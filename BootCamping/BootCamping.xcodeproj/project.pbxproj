@@ -78,6 +78,7 @@
 		792C42442990D0A800B7772C /* PasswordChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42432990D0A800B7772C /* PasswordChangeView.swift */; };
 		7C3E8BDA2992222600A6C1D6 /* DiaryCommentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */; };
 		7C3FC49729877C7200E96A01 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7C3FC49629877C7200E96A01 /* SDWebImageSwiftUI */; };
+		7C6A94AC2992BE6900B0E125 /* DiaryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */; };
 		7C715C982977E056009BC678 /* Diary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C715C972977E056009BC678 /* Diary.swift */; };
 		7C95F18F298A42B10095A6BC /* AppleAuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C95F18E298A42B10095A6BC /* AppleAuthCoordinator.swift */; };
 		7C95F191298A55120095A6BC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C95F190298A55120095A6BC /* GoogleService-Info.plist */; };
@@ -167,6 +168,7 @@
 		792C42412990CAD200B7772C /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
 		792C42432990D0A800B7772C /* PasswordChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeView.swift; sourceTree = "<group>"; };
 		7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCommentCellView.swift; sourceTree = "<group>"; };
+		7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryEmptyView.swift; sourceTree = "<group>"; };
 		7C715C972977E056009BC678 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
 		7C95F18E298A42B10095A6BC /* AppleAuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthCoordinator.swift; sourceTree = "<group>"; };
 		7C95F190298A55120095A6BC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 				AD373AF92977D68A00E1236A /* DiaryCellView.swift */,
 				63AF45DD2977CE5E0014B1E1 /* DiaryAddView.swift */,
 				7CA272FD2991CE6600443111 /* DiaryLockedView.swift */,
+				7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */,
 				7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */,
 			);
 			path = MyCampingDiary;
@@ -599,6 +602,7 @@
 				792C42442990D0A800B7772C /* PasswordChangeView.swift in Sources */,
 				AD1FED36298B930F001FB3E5 /* FirebaseScheduleService.swift in Sources */,
 				63AF45DA2977CE4C0014B1E1 /* SettingView.swift in Sources */,
+				7C6A94AC2992BE6900B0E125 /* DiaryEmptyView.swift in Sources */,
 				7C95F18F298A42B10095A6BC /* AppleAuthCoordinator.swift in Sources */,
 				7CFCE12B2987549700E196AF /* RealtimeCampingView.swift in Sources */,
 				CA729F352979315400CCC3BB /* CustomDatePickerView.swift in Sources */,

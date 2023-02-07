@@ -35,11 +35,11 @@ struct LoginView: View {
                     
                     Spacer()
                     
+                    appleLoginButton
+                    
                     kakaoLoginButton
                     
                     googleLoginButton
-                    
-                    appleLoginButton
                     
                     emailSignUpButton
                         .padding(.vertical, UIScreen.screenHeight * 0.05)
@@ -79,12 +79,13 @@ extension LoginView {
                 .overlay {
                     HStack {
                         Spacer()
-                        Image(systemName: "message.fill")
+                        Image(systemName: "message.fill").padding(.trailing, -15)
                         Text("  카카오로 로그인하기")
                         Spacer()
                     }
                 }
         }
+
     }
     
     // 구글 로그인 버튼
@@ -98,7 +99,7 @@ extension LoginView {
                 .overlay {
                     HStack {
                         Spacer()
-                        Image(systemName: "g.circle.fill")
+                        Image(systemName: "g.circle.fill").padding(.trailing, -5)
                         Text("Google로 로그인하기")
                         Spacer()
                     }

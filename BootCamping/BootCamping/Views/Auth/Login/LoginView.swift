@@ -71,7 +71,7 @@ extension LoginView {
     // 카카오 로그인 버튼
     var kakaoLoginButton: some View {
         Button {
-            kakaoAuthStore.handleKakaoLogin()
+            wholeAuthStore.kakaoLogInCombine()
         } label: {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(.yellow)

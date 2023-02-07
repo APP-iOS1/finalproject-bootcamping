@@ -431,6 +431,13 @@ class WholeAuthStore: ObservableObject {
                 }
             } receiveValue: { user in
                 self.currentUser = user
+                let query = self.database.collection("UserList").whereField("id", isEqualTo: (user.uid))
+                query.getDocuments { (snapshot, error) in
+                    if let error = error {
+                        print(error)
+                    }
+                    self.createUserCombine(user: User(id: (user.uid), profileImageName: "", profileImageURL: "", nickName: (user.email)!, userEmail: (user.email!), bookMarkedDiaries: [], bookMarkedSpot: []))
+                }
             }
             .store(in: &cancellables)
     }

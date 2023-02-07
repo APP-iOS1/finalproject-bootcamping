@@ -42,11 +42,32 @@ struct DiaryCellView: View {
         }
         .onAppear{
             isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
+            authStore.fetchUserList()
         }
     }
 }
 
 private extension DiaryCellView {
+    
+    //글 작성 유저 닉네임 변수
+    var userNickName: String? {
+        for user in authStore.userList {
+            if user.id == Auth.auth().currentUser?.uid {
+                return user.nickName
+            }
+        }
+        return nil
+    }
+    //글 작성 유저 프로필 변수
+    var userImage: String? {
+        for user in authStore.userList {
+            if user.id == Auth.auth().currentUser?.uid {
+                return user.profileImageURL
+            }
+        }
+        return nil
+    }
+    
     //MARK: - 메인 이미지
     var diaryImage: some View {
         TabView{
@@ -87,37 +108,33 @@ private extension DiaryCellView {
     
     //MARK: - 다이어리 작성자 프로필
     var diaryUserProfile: some View {
-        
         HStack {
-            //TODO: -유저 프로필 사진
-            //            ForEach(authStore.userList) { user in
-            //                if item.uid == user.id && user.profileImage != "" {
-            //                    WebImage(url: URL(string: user.profileImage))
-            //                        .resizable()
-            //                        .placeholder {
-            //                            Rectangle().foregroundColor(.gray)
-            //                        }
-            //                        .scaledToFill()
-            //                        .frame(width: UIScreen.screenWidth * 0.01)
-            //                        .clipShape(Circle())
-            //                } else {
-            Image(systemName: "person.fill")
-                .overlay {
-                    Circle().stroke(lineWidth: 1)
+            WebImage(url: URL(string: userImage ?? "기본이미지 넣기"))
+                .resizable()
+                .placeholder {
+                    Rectangle().foregroundColor(.gray)
                 }
-            //                }
-            //            }
+                .scaledToFill()
+                .frame(width: UIScreen.screenWidth * 0.01)
+                .clipShape(Circle())
+            
             //유저 닉네임
-            Text(item.diaryUserNickName)
+            Text(userNickName ?? "부트캠퍼")
                 .font(.headline).fontWeight(.semibold)
             Spacer()
-            //...버튼 글 쓴 유저일때만 ...나타나도록
-            alertMenu
-                .padding(.horizontal, UIScreen.screenWidth * 0.03)
-                .padding(.top, 5)
-            
+            //MARK: -...버튼 글 쓴 유저일때만 ...나타나도록
+            if item.uid == Auth.auth().currentUser?.uid {
+                alertMenu
+                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                    .padding(.top, 5)
+            }
+            //TODO: -글 쓴 유저가 아닐때는 신고기능 넣기
+            else {
+                
+            }
             
         }
+        .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
 
@@ -225,3 +242,5 @@ struct DiaryCellView_Previews: PreviewProvider {
         
     }
 }
+
+

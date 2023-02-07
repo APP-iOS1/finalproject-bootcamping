@@ -13,47 +13,39 @@ struct MyCampingDiaryView: View {
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var faceId: FaceId
     
+    @AppStorage("faceId") var usingFaceId: Bool? //페이스id 설정 사용하는지
+    //faceId.isLocked // 페이스 아이디가 잠겨있는지.
+    @AppStorage("isDiaryEmpty") var isDiaryEmpty: Bool = false
+    
     var body: some View {
+        
         VStack {
-            //TODO: -자기 다이어리 없으면 DiaryAddView나오도록
-            //            ForEach(diaryStore.diaryList) { diaryData in
-            //                if diaryData.uid == Auth.auth().currentUser?.uid && diaryData == nil {
-            //                    DiaryAddView()
-            //                }
-            
             ScrollView(showsIndicators: false) {
-                if faceId.isUnlocked {
-                    VStack(alignment: .center) {
-                        Text("일기가 잠겨있습니다.")
-                            .padding()
-                        
-                        Button {
-                            faceId.authenticate()
-                        } label: {
-                            Label("잠금 해제하기", systemImage: "lock")
-                        }
-                    }
-                    
+                if usingFaceId ?? true && faceId.islocked {
+                    DiaryLockedView()
                 } else {
-                    //uid 비교해 자신이 쓴 글만 나오도록
                     ForEach(diaryStore.diaryList) { diaryData in
                         if diaryData.uid == Auth.auth().currentUser?.uid {
                             VStack {
-                                //                            RealtimeCampingCellView(item: diaryData)
                                 DiaryCellView(item: diaryData)
                                     .padding(.bottom, 20)
                             }
-                            .onAppear {
-                                diaryStore.readDiarysCombine()
-                                print("\(diaryStore.diaryList)")
-                            }
                         }
                     }
+                    .onAppear {
+                        diaryStore.readDiarysCombine()
+                        print("\(diaryStore.diaryList)")
+                    }
+                    
                 }
                 
             }
         }
-        .onAppear(perform: faceId.authenticate)
+        .onAppear {
+            if usingFaceId == true {
+                faceId.authenticate()
+            }
+        }
         .toolbar{
             ToolbarItem(placement: .navigationBarLeading) {
                 Text("My Camping Diary")

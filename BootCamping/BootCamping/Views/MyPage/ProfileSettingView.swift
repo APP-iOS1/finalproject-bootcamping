@@ -35,8 +35,6 @@ struct ProfileSettingView: View {
                 updateUserNameTextField
                     .padding(.bottom)
                 editButton
-                
-                
             }
         }
         .padding(.horizontal, UIScreen.screenWidth * 0.03)

@@ -11,6 +11,7 @@ struct AddScheduleView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var scheduleStore: ScheduleStore
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var authStore: AuthStore
     
     @State var startDate = Date()
     @State var endDate = Date()
@@ -164,8 +165,7 @@ extension AddScheduleView {
                 .bold()
             //                    .modifier(GreenButtonModifier())
         }
-        .disabled(campingSpot == "" || isAddingDisable)
-        
+        .disabled(campingSpot == "" || isAddingDisable)        
     }
     // MARK: -View : alertText
     private var alertText : some View {

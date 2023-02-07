@@ -63,7 +63,8 @@ struct DiaryAddView: View {
         }
         .padding(.horizontal, UIScreen.screenWidth*0.03)
         .padding(.vertical)
-        .navigationTitle(Text("캠핑 일기 쓰기"))
+//        .navigationTitle(Text("캠핑 일기 쓰기"))
+//        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

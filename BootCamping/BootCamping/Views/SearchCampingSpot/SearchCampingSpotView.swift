@@ -26,7 +26,7 @@ import SwiftUI
  */
 
 struct SearchCampingSpotView: View {
-    @EnvironmentObject var campingSpotStore: CampingSpotStore
+
     @State var page: Int = 2
     
     //MARK: 광고 사진 - 수정 필요
@@ -45,10 +45,10 @@ struct SearchCampingSpotView: View {
     ]
     var campingSpotListForViewFilter: [Filtering] = [
         Filtering(filterViewLocation: "mountain", filters: ["산"], filterNames: ["산"]),
-        Filtering(filterViewLocation: "ocean", filters: ["바다", "해변"], filterNames: ["바다", "해변"]),
+        Filtering(filterViewLocation: "ocean", filters: ["해변"], filterNames: ["해변", "바다"]),
         Filtering(filterViewLocation: "valley", filters: ["계곡"], filterNames: ["계곡"]),
         Filtering(filterViewLocation: "forest", filters: ["숲"], filterNames: ["숲"]),
-        Filtering(filterViewLocation: "river", filters: ["강", "호수"], filterNames: ["호수", "호수"]),
+        Filtering(filterViewLocation: "river", filters: ["강", "호수"], filterNames: ["강", "호수"]),
         Filtering(filterViewLocation: "island", filters: ["섬"], filterNames: ["섬"]),
     ]
     
@@ -69,73 +69,47 @@ struct SearchCampingSpotView: View {
     //MARK: searchable
     @State var searchText: String = ""
     
-    //MARK: 검색할때 필터링하여 저장
-    var filterCamping: [Item] {
-        if searchText == "" { return campingSpotStore.campingSpotList }
-        //MARK: 검색 조건 정하기 - 현재: "캠핑장 이름, 주소, 전망" 검색 가능. -> 좋은 조건 생각나면 더 추가해주세용
-        return campingSpotStore.campingSpotList.filter{$0.facltNm.lowercased().contains(searchText.lowercased()) || $0.addr1.lowercased().contains(searchText.lowercased()) || $0.lctCl.lowercased().contains(searchText.lowercased())}
-    }
+//    //MARK: 검색할때 필터링하여 저장
+//    var filterCamping: [Item] {
+//        if searchText == "" { return campingSpotStore.campingSpotList }
+//        //MARK: 검색 조건 정하기 - 현재: "캠핑장 이름, 주소, 전망" 검색 가능. -> 좋은 조건 생각나면 더 추가해주세용
+//        return campingSpotStore.campingSpotList.filter{$0.facltNm.lowercased().contains(searchText.lowercased()) || $0.addr1.lowercased().contains(searchText.lowercased()) || $0.lctCl.lowercased().contains(searchText.lowercased())}
+//    }
     
     
     
     var body: some View {
-        NavigationView {
-            if searchText == "" {
-                ScrollView {
-                    VStack(alignment: .leading){
-                        
-                        // 광고 부분
-                        adCamping
-                        
-                        // 지역 선택
-                        areaSelect
-                        
-                        // 전망 선택
-                        viewSelect
-                        
-                        // 추천 캠핑장
-                        recommendCampingSpot
-                        
-                    }//VStack 끝
-                    .padding(.horizontal, UIScreen.screenWidth*0.03)
-                    .toolbar{
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Text("BOOTCAMPING")
-                                .font(.title.bold())
-                        }
-                    }
-                }
-            }
-            else {
-                if !filterCamping.isEmpty {
-                    VStack{
-                        ScrollView(showsIndicators: false) {
-                            ForEach(filterCamping, id: \.self) { campingSpot in
-                                NavigationLink {
-                                    CampingSpotDetailView(places: campingSpot)
-                                } label: {
-                                    VStack{
-                                        CampingSpotListRaw(item: campingSpot)
-                                            .padding(.bottom,40)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    Text("해당되는 캠핑장이 없습니다.")
+        VStack {
+            ScrollView {
+                VStack(alignment: .leading){
                     
-                }
+                    // 광고 부분
+                    adCamping
+                    
+                    // 지역 선택
+                    areaSelect
+                    
+                    // 전망 선택
+                    viewSelect
+                    
+                    // 추천 캠핑장
+                    recommendCampingSpot
+                    
+                }//VStack 끝
+                .padding(.horizontal, UIScreen.screenWidth*0.03)
             }
-        }
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "캠핑장, 지역 등을 검색해보세요")
-        .disableAutocorrection(true)
-        .textInputAutocapitalization(.never)
-        .onAppear{
-            Task {
-                campingSpotStore.campingSpotList = []
-                campingSpotStore.campingSpots = []
-//                campingSpotStore.lastDoc = nil
+            .toolbar{
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Text("BOOTCAMPING")
+                        .font(.title.bold())
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink {
+                        CampingSpotListSearchingView()
+                    } label: {
+                        Image(systemName: "magnifyingglass")
+                    }
+                }
             }
         }
     }
@@ -190,7 +164,7 @@ extension SearchCampingSpotView {
                                     }
                                 }
                             } else {
-                                Text("\(campingSpot.filters.first!)")
+                                Text("\(campingSpot.filterNames.first!)")
                             }
                         }
                     }

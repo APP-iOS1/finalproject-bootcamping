@@ -49,32 +49,32 @@ struct DiaryAddView: View {
     
     var body: some View {
         VStack {
-                
-                ScrollView(showsIndicators: false) {
-                    VStack(alignment: .leading) {
-                        imagePicker
-                        addViewTitle
-                        addViewLocationInfo
-                        addViewVisitDate
-                        addViewIsPrivate
-                        Divider()
-                        addViewDiaryContent
-                        addViewAddButton
-                    }
+            
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading) {
+                    imagePicker
+                    addViewTitle
+                    addViewLocationInfo
+                    addViewVisitDate
+                    addViewIsPrivate
+                    Divider()
+                    addViewDiaryContent
+                    addViewAddButton
                 }
-                //MARK: - 키보드 옵션입니다.
-                .disableAutocorrection(true) //자동 수정 비활성화
-                .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
-                //            .toolbar {
-                //                ToolbarItemGroup(placement: .keyboard) {
-                //                    Spacer()
-                //
-                //                    Button(action: resignKeyboard) {
-                //                        Text("Done")
-                //                    }
-                //                }
-                //            }
-                //            .onSubmit(of: .text, submit) //done 누르면 submit 함수가 실행됨
+            }
+            //MARK: - 키보드 옵션입니다.
+            .disableAutocorrection(true) //자동 수정 비활성화
+            .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
+            //            .toolbar {
+            //                ToolbarItemGroup(placement: .keyboard) {
+            //                    Spacer()
+            //
+            //                    Button(action: resignKeyboard) {
+            //                        Text("Done")
+            //                    }
+            //                }
+            //            }
+            //            .onSubmit(of: .text, submit) //done 누르면 submit 함수가 실행됨
             
         }
         .padding(.horizontal, UIScreen.screenWidth*0.03)
@@ -93,49 +93,48 @@ private extension DiaryAddView {
         Button(action: {
             imagePickerPresented.toggle()
         }, label: {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    if diaryImages == nil {
-                        HStack{
-                            ZStack {
-                                Image(systemName: "plus")
-                                VStack{
-                                    Spacer()
-                                    Text("\(diaryImages?.count ?? 0) / 10")
-                                        .padding(.bottom, 5)
-                                }
-                            }
-                            .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
-                            .background {
-                                RoundedRectangle(cornerRadius: 3, style: .continuous)
-                                    .stroke(.gray, lineWidth: 1)
-                            }
-                            .padding(UIScreen.screenWidth * 0.005)
-
+            HStack {
+                ZStack {
+                    Image(systemName: "plus")
+                    VStack{
+                        Spacer()
+                        Text("\(diaryImages?.count ?? 0) / 10")
+                            .padding(.bottom, 5)
+                    }
+                }
+                .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
+                .background {
+                    RoundedRectangle(cornerRadius: 3, style: .continuous)
+                        .stroke(.gray, lineWidth: 1)
+                }
+                .padding(UIScreen.screenWidth * 0.005)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack{
+                        if diaryImages == nil {
+                            
                             Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "")
                                 .foregroundColor(.secondary)
                                 .opacity(0.5)
                                 .padding(.leading, UIScreen.screenWidth * 0.05)
-                
-                        }
-                    } else{
-                        ForEach(Array(zip(0..<(diaryImages?.count ?? 0), diaryImages ?? [Data()])), id: \.0) { index, image in
-                            Image(uiImage: UIImage(data: image)!)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
-                                .clipped()
-                                .overlay(
-                                    Text("대표이미지")
-                                        .padding(2)
-                                        .foregroundColor(Color.white)
-                                        .background(Color.bcGreen)
-                                        .offset(y : UIScreen.screenWidth * 0.07)
-                                        .opacity(index == 0 ? 1 : 0)
-                                )
+                            
+                        } else{
+                            ForEach(Array(zip(0..<(diaryImages?.count ?? 0), diaryImages ?? [Data()])), id: \.0) { index, image in
+                                Image(uiImage: UIImage(data: image)!)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
+                                    .clipped()
+                                    .overlay(alignment: .topLeading) {
+                                        Text("대표이미지")
+                                            .padding(2)
+                                            .font(.caption2)
+                                            .foregroundColor(Color.white)
+                                            .background(Color.bcGreen)
+                                            .opacity(index == 0 ? 1 : 0)
+                                    }
+                            }
                         }
                     }
-                    
                 }
             }
         })
@@ -149,7 +148,7 @@ private extension DiaryAddView {
         var arr = [Data]()
         guard let selectedImages = selectedImages else { return }
         for selectedImage in selectedImages {
-            arr.append((selectedImage.jpegData(compressionQuality: 0.8)!))
+            arr.append((selectedImage.jpegData(compressionQuality: 0.5)!))
         }
         diaryImages = arr
     }
@@ -166,7 +165,7 @@ private extension DiaryAddView {
                 .padding( UIScreen.screenWidth * 0.005)
                 .padding(.bottom)
                 .submitLabel(.done) //작성 완료하면 키보드 return 버튼이 파란색 done으로 바뀜
-
+            
         } header: {
             Text("제목")
         }
@@ -186,7 +185,7 @@ private extension DiaryAddView {
                 .padding( UIScreen.screenWidth * 0.005)
                 .padding(.bottom)
                 .submitLabel(.done) //작성 완료하면 키보드 return 버튼이 파란색 done으로 바뀜
-
+            
         } header: {
             Text("위치 등록하기")
         }
@@ -215,12 +214,12 @@ private extension DiaryAddView {
                     Image(systemName: diaryIsPrivate ? "lock" : "lock.open" )
                         .animation(.none)
                         .padding(.trailing, diaryIsPrivate ? 1.5 : 0)
-
+                    
                     Text(diaryIsPrivate ? "비공개": "공개")
                         .animation(.none)
                         .font(.caption2)
                         .padding(.trailing, diaryIsPrivate ? 0 : 5)
-
+                    
                 }
             }
             .foregroundColor(.bcBlack)
@@ -231,21 +230,21 @@ private extension DiaryAddView {
     //MARK: - 일기 작성 뷰
     var addViewDiaryContent: some View {
         VStack {
-//            TextEditor(text: $diaryContent)
-//                .multilineTextAlignment(.leading)
-//                .frame(minHeight: 180)
-//                .focused($inputFocused)
-//            Text(diaryContent == "" ? "일기를 작성해주세요" : "")
-//                .foregroundColor(.secondary)
-//                .opacity(0.5)
-//                .position(x: 73, y: 19)
-//
+            //            TextEditor(text: $diaryContent)
+            //                .multilineTextAlignment(.leading)
+            //                .frame(minHeight: 180)
+            //                .focused($inputFocused)
+            //            Text(diaryContent == "" ? "일기를 작성해주세요" : "")
+            //                .foregroundColor(.secondary)
+            //                .opacity(0.5)
+            //                .position(x: 73, y: 19)
+            //
             
             TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.never)
                 .padding(.bottom, 100)
-                
+            
             
         }
     }

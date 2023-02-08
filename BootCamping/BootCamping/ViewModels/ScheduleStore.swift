@@ -21,52 +21,7 @@ class ScheduleStore: ObservableObject {
     
     let database = Firestore.firestore()
     private var cancellables = Set<AnyCancellable>()
-    
-    
-    // MARK: Add Schedule
-    func addSchedule(_ schedule: Schedule) {
-        guard let userUID = Auth.auth().currentUser?.uid else { return }
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        
-        database.collection("UserList")
-            .document(userUID)
-            .collection("Schedule")
-            .addDocument(data: ["id": schedule.id,
-                                "title": schedule.title,
-                                "date": dateFormatter.string(from: schedule.date)
-                               ])
-        fetchSchedule()
-    }
-    // MARK: fetch Schedule
-    func fetchSchedule()  {
-        guard let userUID = Auth.auth().currentUser?.uid else { return }
-        
-        database.collection("UserList")
-            .document(userUID)
-            .collection("Schedule")
-            .getDocuments { (snapshot, error) in
-                self.scheduleList.removeAll()
-                if let snapshot {
-                    for document in snapshot.documents {
-                        
-                        let docData = document.data()
-                        
-                        let id: String = docData["id"] as? String ?? ""
-                        let title: String = docData["title"] as? String ?? ""
-                        let date: String = docData["date"] as? String ?? ""
-                        
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "yyyy-MM-dd"
-                        
-                        let schedule: Schedule = Schedule(id: id, title: title, date: dateFormatter.date(from: date) ?? Date())
-                        self.scheduleList.append(schedule)
-                    }
-                }
-            }
-    }
-    
+
     //MARK: Read Schedule Combine
     
     func readScheduleCombine() {
@@ -106,7 +61,6 @@ class ScheduleStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished create Schedule")
-                    self.readScheduleCombine()
                     return
                 }
             } receiveValue: { _ in

@@ -20,6 +20,7 @@ struct ContentView: View {
     @EnvironmentObject var tabSelection: TabSelector
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var scheduleStore: ScheduleStore
     
     @State var isLoading: Bool = true
     
@@ -75,7 +76,7 @@ struct ContentView: View {
         .task {
             wholeAuthStore.readUserListCombine()
             diaryStore.readDiarysCombine()
-            
+            scheduleStore.readScheduleCombine()
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
                 withAnimation { isLoading.toggle() }
             })

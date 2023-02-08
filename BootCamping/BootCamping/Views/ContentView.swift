@@ -79,8 +79,8 @@ struct ContentView: View {
             scheduleStore.readScheduleCombine()
             //현재 로그인 되어있는지
             if isSignIn {
-                wholeAuthStore.getUserInfo(userUID: wholeAuthStore.currentUser?.uid) {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                wholeAuthStore.getUserInfo(userUID: wholeAuthStore.currentUser!.uid) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
                         withAnimation { isLoading.toggle() }
                     })
                 }

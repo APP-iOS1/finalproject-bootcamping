@@ -119,7 +119,6 @@ class WholeAuthStore: ObservableObject {
                 }
             } receiveValue: { users in
                 self.userList = users
-                print(self.userList)
             }
             .store(in: &cancellables)
     }

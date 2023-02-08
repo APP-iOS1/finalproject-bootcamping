@@ -85,7 +85,6 @@ struct BootCampingApp: App {
             ContentView()
                 .environmentObject(TabSelector())
                 .environmentObject(DiaryStore())
-                .environmentObject(CampingSpotStore())
                 .environmentObject(ScheduleStore())
                 .environmentObject(FaceId())
                 .environmentObject(BookmarkStore())

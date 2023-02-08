@@ -13,12 +13,16 @@ struct DiaryDetailView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var commentStore: CommentStore
+    @EnvironmentObject var diaryStore: DiaryStore
+    @EnvironmentObject var diaryLikeStore: DiaryLikeStore
     
-    @State var diaryComment: String = ""
+    @State private var diaryComment: String = ""
+    
+    @State private var diaryIsLike: Bool = false
     //삭제 알림
     @State private var isShowingDeleteAlert = false
     
-    @EnvironmentObject var diaryStore: DiaryStore
+
     
     @State var isBookmarked: Bool = false
     
@@ -229,6 +233,7 @@ private extension DiaryDetailView {
                             .font(.footnote)
                     }
                     .font(.subheadline)
+                    .foregroundColor(.secondary)
                 }
                 .foregroundColor(.bcBlack)
             }
@@ -248,24 +253,32 @@ private extension DiaryDetailView {
     var diaryDetailInfo: some View {
         HStack {
             Button {
-                //TODO: -좋아요 배열에 유저 추가되도록 연동
+                diaryIsLike.toggle()
+                //TODO: -좋아요 토글에 따라
+                diaryIsLike ? diaryLikeStore.addDiaryLikeCombine(diaryId: item.id) : diaryLikeStore.removeDiaryLikeCombine(diaryId: item.id)
+                diaryStore.readDiarysCombine()
             } label: {
-                Text("좋아요 \(item.diaryLike.count)")
-                    .font(.body)
-                    .padding(.horizontal, 3)
+                HStack {
+                    Image(systemName: !diaryIsLike ? "flame" : "flame.fill")
+                        .foregroundColor(!diaryIsLike ? .bcBlack : .red)
+                }
             }
+            Text("\(item.diaryLike.count)")
+            
             Button {
-                //TODO: -댓글 연동, 누르면 키보드 나오면서 댓글 쓸 수 있도록 수정
+                //"댓글 작성 버튼으로 이동"
             } label: {
-                Text("댓글 8")
+                Text("")
                     .font(.body)
                     .padding(.horizontal, 3)
             }
             Spacer()
             Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
         }
         .foregroundColor(.bcBlack)
-        .font(.system(.subheadline))
+        .font(.title3)
         .padding(.vertical, 5)
     }
     
@@ -280,6 +293,7 @@ private extension DiaryDetailView {
             Button {
                 commentStore.addComment(Comment(id: UUID().uuidString, diaryId: item.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: userNickName ?? "", profileImage: userImage ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp()))
                 commentStore.fetchComment()
+                diaryComment = ""
                 //todo 버튼 누르면 댓글 젤 밑으로 화면 이동
                 
             } label: {
@@ -297,9 +311,11 @@ private extension DiaryDetailView {
 struct DiaryDetailView_Previews: PreviewProvider {
     static var previews: some View {
         DiaryDetailView(item: Diary(id: "", uid: "", diaryUserNickName: "닉네임", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "용감하고 인류의 그들의 따뜻한 있음으로써 그러므로 봄바람이다. 힘차게 밥을 가슴이 용감하고 튼튼하며, 그들의 보는 새가 인간의 칼이다. 충분히 인생을 못할 곧 우리는 청춘은 인간의 황금시대다. 지혜는 찾아다녀도, 것은 못하다 어디 곳으로 꽃 봄날의 보라. 우는 예가 이상은 온갖 그것은 품었기 얼음 힘있다. 투명하되 그들의 밥을 창공에 주는 이상, 이상의 힘있다. 새 피가 가장 놀이 부패뿐이다. 그들은 원질이 든 무엇을 되려니와, 불어 우리는 노래하며 것이다. 대한 청춘의 곳이 바이며, 충분히 방황하였으며, 있는가? 그들은 거친 위하여, 살 때문이다.", diaryImageNames: [""], diaryImageURLs: [
-            "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "", diaryIsPrivate: true))
+            "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: ["동훈"], diaryIsPrivate: true))
         .environmentObject(WholeAuthStore())
         .environmentObject(DiaryStore())
         .environmentObject(BookmarkStore())
+        .environmentObject(DiaryLikeStore())
+        .environmentObject(CommentStore())
     }
 }

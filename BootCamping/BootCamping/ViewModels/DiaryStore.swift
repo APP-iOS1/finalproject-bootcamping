@@ -23,6 +23,9 @@ class DiaryStore: ObservableObject {
     
     //
     private var cancellables = Set<AnyCancellable>()
+    
+    //TODO: -싱글톤에서 enviroment로 바꾸기
+    static var shared = DiaryStore()
 
     //MARK: - Read Diary Combine
     

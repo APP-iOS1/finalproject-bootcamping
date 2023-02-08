@@ -77,9 +77,19 @@ struct ContentView: View {
             wholeAuthStore.readUserListCombine()
             diaryStore.readDiarysCombine()
             scheduleStore.readScheduleCombine()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
-                withAnimation { isLoading.toggle() }
-            })
+            //현재 로그인 되어있는지
+            if isSignIn {
+                wholeAuthStore.getUserInfo(userUID: wholeAuthStore.currentUser?.uid) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                        withAnimation { isLoading.toggle() }
+                    })
+                }
+            } else {
+                // 로그인 안되어있을경우
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
+                    withAnimation { isLoading.toggle() }
+                })
+            }
         }
         .fullScreenCover(isPresented: $isFirstLaunching) {
             OnboardingTabView(isFirstLaunching: $isFirstLaunching)

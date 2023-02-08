@@ -91,9 +91,10 @@ class WholeAuthStore: ObservableObject {
     init() {
         currentUser = Auth.auth().currentUser
         userList = []
-        currnetUserInfo = User(id: "", profileImageName: "", profileImageURL: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [])
+        currnetUserInfo = userInit
     }
     
+    let userInit: User = User(id: "", profileImageName: "", profileImageURL: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [])
     let database = Firestore.firestore()
     
     private var cancellables = Set<AnyCancellable>()
@@ -116,6 +117,7 @@ class WholeAuthStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished get UserList")
+                    print("여기야여기!!!!!!!!!!!!!!!!!!!!!! \(self.userList)")
                     return
                 }
             } receiveValue: { users in
@@ -170,7 +172,9 @@ class WholeAuthStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished update User")
-                    self.readUserListCombine()
+                    self.getUserInfo(userUID: Auth.auth().currentUser?.uid ?? ""){
+                        self.readUserListCombine()
+                    }
                     return
                 }
             } receiveValue: { _ in
@@ -291,7 +295,7 @@ class WholeAuthStore: ObservableObject {
             self.loginState = .none
             self.loginPlatform = .email
             self.currentUser = nil
-            self.currnetUserInfo = nil
+            self.currnetUserInfo = userInit
             withAnimation(.easeInOut) {
                 self.isSignIn = false
             }
@@ -445,7 +449,7 @@ class WholeAuthStore: ObservableObject {
             self.loginState = .none
             self.loginPlatform = .none
             self.currentUser = nil
-            self.currnetUserInfo = nil
+            self.currnetUserInfo = userInit
             withAnimation(.easeInOut) {
                 self.isSignIn = false
             }
@@ -528,7 +532,7 @@ class WholeAuthStore: ObservableObject {
                     self.loginState = .none
                     self.loginPlatform = .none
                     self.currentUser = nil
-                    self.currnetUserInfo = nil
+                    self.currnetUserInfo = self.userInit
                     withAnimation(.easeInOut) {
                         self.isSignIn = false
                     }
@@ -616,7 +620,7 @@ class WholeAuthStore: ObservableObject {
             self.loginState = .none
             self.loginPlatform = .none
             self.currentUser = nil
-            self.currnetUserInfo = nil
+            self.currnetUserInfo = userInit
             withAnimation(.easeInOut) {
                 self.isSignIn = false
             }
@@ -649,7 +653,7 @@ class WholeAuthStore: ObservableObject {
                         self.loginState = .none
                         self.loginPlatform = .none
                         self.currentUser = nil
-                        self.currnetUserInfo = nil
+                        self.currnetUserInfo = self.userInit
                         withAnimation(.easeInOut) {
                             self.isSignIn = false
                         }

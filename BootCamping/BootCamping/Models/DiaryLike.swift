@@ -9,6 +9,6 @@
 //
 //struct DiaryLike {
 //    let id: String
-//    let diaryId: String //좋아요 누른 다이어리 
+//    let diaryId: String //좋아요 누른 다이어리
 //    let uid: String     // 유저
 //}

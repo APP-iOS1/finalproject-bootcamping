@@ -17,7 +17,7 @@ struct DiaryDetailView: View {
     @EnvironmentObject var diaryLikeStore: DiaryLikeStore
     
     @State private var diaryComment: String = ""
-
+    
     //삭제 알림
     @State private var isShowingDeleteAlert = false
     
@@ -27,30 +27,27 @@ struct DiaryDetailView: View {
     
     var body: some View {
         VStack {
-                ScrollView(showsIndicators: false) {
-                        LazyVStack(alignment: .leading) {
-                            diaryUserProfile
-                            diaryDetailImage
-                            Group {
-                                diaryDetailTitle
-                                diaryDetailContent
-                                diaryCampingLink
-                                diaryDetailInfo
-                                Divider()
-                                
-                                //                        diaryCommetView //기존 더미 댓글
-                                //                        List { //list로 댓글 삭제 기능 넣으려고 했는데 잘 안되네용ㅎㅎ
-                                ForEach(commentStore.comments) { comment in
-                                    if comment.diaryId == item.id {
-                                        DiaryCommentCellView(item: comment)
-                                    }
-                                }
-                                //                            .onDelete(perform: user.id == item.uid ? delete: nil)
-                                //                        }
-                            }
-                            .padding(.horizontal, UIScreen.screenWidth * 0.03)
+            ScrollView(showsIndicators: false) {
+                LazyVStack(alignment: .leading) {
+                    diaryUserProfile
+                    diaryDetailImage
+                    Group {
+                        diaryDetailTitle
+                        diaryDetailContent
+                        diaryCampingLink
+                        diaryDetailInfo
+                        Divider()
+                        
+                        //댓글
+                        ForEach(commentStore.commentList) { comment in
+                            DiaryCommentCellView(item: comment)
                         }
+                        //리스트로 삭제기능 넣으려고 함                         .onDelete(perform: user.id == item.uid ? delete: nil)
+                        //                        }
+                    }
+                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 }
+            }
             Divider()
             //댓글 작성
             diaryCommetInputView
@@ -58,7 +55,7 @@ struct DiaryDetailView: View {
         .navigationTitle("BOOTCAMPING")
         .onAppear{
             isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
-            commentStore.fetchComment()
+            commentStore.readCommentsCombine(diaryId: item.id)
         }
     }
 }
@@ -66,14 +63,9 @@ struct DiaryDetailView: View {
 
 private extension DiaryDetailView {
     
-    //글 작성 유저
-    var user: User {
-        wholeAuthStore.userList.filter { $0.id == Auth.auth().currentUser?.uid }.first!
-    }
-    
     //MARK: - 댓글 삭제 기능
     func delete(at offsets: IndexSet) {
-        commentStore.comments.remove(atOffsets: offsets)
+        commentStore.commentList.remove(atOffsets: offsets)
     }
     
     //글 작성 유저 닉네임 변수
@@ -125,7 +117,7 @@ private extension DiaryDetailView {
         .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
-
+    
     //MARK: - Alert Menu 버튼
     var alertMenu: some View {
         //MARK: - ... 버튼입니다.
@@ -246,13 +238,13 @@ private extension DiaryDetailView {
         .foregroundColor(.clear)
     }
     
-
+    
     
     //MARK: - 좋아요, 댓글, 타임스탬프
     var diaryDetailInfo: some View {
         HStack {
             Button {
-                //TODO: -좋아요 토글에 따라
+                //좋아요 버튼, 카운드
                 if item.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") {
                     diaryLikeStore.removeDiaryLikeCombine(diaryId: item.id)
                 } else {
@@ -265,14 +257,18 @@ private extension DiaryDetailView {
             }
             Text("\(item.diaryLike.count)")
             
+            //댓글 버튼
             Button {
                 //"댓글 작성 버튼으로 이동"
             } label: {
-                Text("")
-                    .font(.body)
-                    .padding(.horizontal, 3)
+                Image(systemName: "message")
             }
+            Text("\(commentStore.commentList.count)")
+                .font(.body)
+                .padding(.horizontal, 3)
+            
             Spacer()
+            //작성 경과시간
             Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
                 .font(.footnote)
                 .foregroundColor(.secondary)
@@ -291,8 +287,8 @@ private extension DiaryDetailView {
             TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
             
             Button {
-                commentStore.addComment(Comment(id: UUID().uuidString, diaryId: item.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: userNickName ?? "", profileImage: userImage ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp()))
-                commentStore.fetchComment()
+                commentStore.addCommentCombine(comment: (Comment(id: UUID().uuidString, diaryId: item.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: userNickName ?? "", profileImage: userImage ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp())), diaryId: item.id)
+                commentStore.readCommentsCombine(diaryId: item.id)
                 diaryComment = ""
                 //todo 버튼 누르면 댓글 젤 밑으로 화면 이동
                 

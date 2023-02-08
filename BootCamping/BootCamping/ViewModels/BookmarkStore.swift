@@ -10,14 +10,10 @@ import Firebase
 
 
 class BookmarkStore: ObservableObject {
-    //저장된 다이어리 리스트
-    
-    let wholeAuthStore = WholeAuthStore.shared
     
     //파베 기본 경로
     let database = Firestore.firestore()
-    
-    //
+
     private var cancellables = Set<AnyCancellable>()
     
     //MARK: - Add bookmark to Diary Combine
@@ -32,7 +28,6 @@ class BookmarkStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Add bookmark to Diary")
-                    self.wholeAuthStore.readUserListCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -52,7 +47,6 @@ class BookmarkStore: ObservableObject {
                     print("Failed remove bookmark in Diary")
                     return
                 case .finished:
-                    self.wholeAuthStore.readUserListCombine()
                     print("Finished remove bookmark in Diary")
                     return
                 }
@@ -74,7 +68,6 @@ class BookmarkStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Add bookmark to CampingSpot")
-                    self.wholeAuthStore.readUserListCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -94,7 +87,6 @@ class BookmarkStore: ObservableObject {
                     print("Failed remove bookmark in CampingSpot")
                     return
                 case .finished:
-                    self.wholeAuthStore.readUserListCombine()
                     print("Finished remove bookmark in CampingSpot")
                     return
                 }
@@ -107,9 +99,9 @@ class BookmarkStore: ObservableObject {
 
 extension BookmarkStore{
     // MARK: - 북마크 된 다이어리인지 확인하기
-    func checkBookmarkedDiary(diaryId: String) -> Bool {
-        if let currentUser = wholeAuthStore.currentUser {
-            for user in wholeAuthStore.userList {
+    func checkBookmarkedDiary(currentUser: Firebase.User?, userList: [User], diaryId: String) -> Bool {
+        if let currentUser = currentUser {
+            for user in userList {
                 if user.id == currentUser.uid {
                     if user.bookMarkedDiaries.isEmpty { return false }
                     // TODO: - 자기가 쓴 다이어리도 북마크가 가능하게 할 것인가,, !
@@ -121,9 +113,9 @@ extension BookmarkStore{
     }
     
     // MARK: - 북마크 된 캠핑장인지 확인하기
-    func checkBookmarkedSpot(campingSpotId: String) -> Bool {
-        if let currentUser = wholeAuthStore.currentUser {
-            for user in wholeAuthStore.userList {
+    func checkBookmarkedSpot(currentUser: Firebase.User?, userList: [User], campingSpotId: String) -> Bool {
+        if let currentUser = currentUser {
+            for user in userList {
                 if user.id == currentUser.uid {
                     if user.bookMarkedSpot.isEmpty { return false }
                     print(user.bookMarkedSpot)

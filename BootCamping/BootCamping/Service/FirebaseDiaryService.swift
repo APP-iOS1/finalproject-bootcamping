@@ -67,7 +67,7 @@ struct FirebaseDiaryService {
                                      diaryImageURLs: d["diaryImageURLs"] as? [String] ?? [],
                                      diaryCreatedDate: d["diaryCreatedDate"] as? Timestamp ?? Timestamp(),
                                      diaryVisitedDate: d["diaryVisitedDate"] as? Date ?? Date(),
-                                     diaryLike: d["diaryLike"] as? String ?? "",
+                                     diaryLike: d["diaryLike"] as? [String] ?? [],
                                      diaryIsPrivate: d["diaryIsPrivate"] as? Bool ?? false)
                         
                     }
@@ -146,7 +146,7 @@ struct FirebaseDiaryService {
                 
                 group.notify(queue: myQueue) {
                     
-                    let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: diary.diaryIsPrivate)
+                    let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: diary.diaryLike, diaryIsPrivate: diary.diaryIsPrivate)
                     
                     self.database.collection("Diarys").document(diary.id).setData([
                         "id": newDiary.id,
@@ -242,7 +242,7 @@ struct FirebaseDiaryService {
                 }
                 group.notify(queue: myQueue) {
                     
-                    let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: diary.diaryIsPrivate)
+                    let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: diary.diaryLike, diaryIsPrivate: diary.diaryIsPrivate)
                     
                     self.database.collection("Diarys").document(diary.id).setData([
                         "id": newDiary.id,

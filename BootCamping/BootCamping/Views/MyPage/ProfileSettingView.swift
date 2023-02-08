@@ -9,8 +9,6 @@ import SwiftUI
 import PhotosUI
 import FirebaseAuth
 
-// FIXME: 현재 기획한 UserInfo 데이터 모델에 따라서 텍스트 필드 변경 필요
-/// 현재 기획 모델 그대로 가면 닉네임이랑 이메일, 비밀번호 변경하는 걸로 바꿔야 할 것 같습니다
 struct ProfileSettingView: View {
     
     //이미지 피커
@@ -54,9 +52,23 @@ extension ProfileSettingView {
             Image(uiImage: (image ?? UIImage(systemName: "person.fill"))!)
                 .resizable()
                 .frame(width: 100, height: 100)
+                .aspectRatio(contentMode: .fill)
                 .clipShape(Circle())
                 .overlay{
-                    // 수정된다는 거 표시. 펜모양심볼?
+                    ZStack{
+                        Image(systemName: "circlebadge.fill")
+                            .font(.largeTitle)
+//                            .frame(width: 25, height: 25)
+                            .foregroundColor(.primary)
+                            .colorInvert()
+                            .offset(x: 40, y: 40)
+                        
+                        Image(systemName: "pencil.circle")
+                            .font(.title)
+//                            .frame(width: 25, height: 25)
+                            .foregroundColor(.bcBlack)
+                            .offset(x: 40, y: 40)
+                    }
                 }
         })
         .sheet(isPresented: $imagePickerPresented,
@@ -65,10 +77,10 @@ extension ProfileSettingView {
     }
     // selectedImage: UIImage 타입을 Data타입으로 저장하는 함수
     func loadData() {
-            guard let selectedImage = selectedImage else { return }
+        guard let selectedImage = selectedImage else { return }
         profileImage = selectedImage.jpegData(compressionQuality: 0.8)
-
-        }
+        
+    }
     
     
     // MARK: -View : updateUserNameTextField
@@ -84,7 +96,7 @@ extension ProfileSettingView {
         }
     }
     
-
+    
     // MARK: -View : editButton
     private var editButton : some View {
         Button {
@@ -97,7 +109,7 @@ extension ProfileSettingView {
         }
         .disabled(updateNickname == "")
     }
-
+    
 }
 
 

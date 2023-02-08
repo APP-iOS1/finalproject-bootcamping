@@ -68,7 +68,6 @@ struct CampingSpotDetailView: View {
                                 .bold()
                             Spacer()
                             Button {
-                                // FIXME: - 북마크한 캠핑장 캠핑장의 contentId를 저장하는 거 맞는지 확인하기
                                 isBookmarked.toggle()
                                 if isBookmarked{
                                     bookmarkStore.addBookmarkSpotCombine(campingSpotId: places.contentId)

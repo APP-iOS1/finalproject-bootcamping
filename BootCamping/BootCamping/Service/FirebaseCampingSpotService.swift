@@ -50,7 +50,9 @@ struct FirebaseCampingSpotService {
     
     func readCampingSpotService(readDocument: ReadDocuments) -> AnyPublisher<ReadDocuments, Error> {
         Future<ReadDocuments, Error> { promise in
+            //MARK: - 최초 read
             if readDocument.lastDoc == nil {
+                //MARK: - 최초 캠핑장 위치로 read
                 if readDocument.campingSpotLocation != [] {
                     database.collection("CampingSpotList")
                         .whereField("doNm", in: readDocument.campingSpotLocation)
@@ -156,9 +158,11 @@ struct FirebaseCampingSpotService {
                             }
                             readDocument.lastDoc = snapshot.documents.last!
                             readDocument.campingSpots = campingSpots
+                            print(#function, "#############################ONE TIME#################################")
                             promise(.success(readDocument))
                         }
                 }
+                //MARK: - 최초 캠핑장 전망으로 read
                 if readDocument.campingSpotView != [] {
                     database.collection("CampingSpotList")
                         .whereField("lctCl", isGreaterThanOrEqualTo: "\(readDocument.campingSpotView.first!)")
@@ -267,6 +271,7 @@ struct FirebaseCampingSpotService {
                             promise(.success(readDocument))
                         }
                 }
+                //MARK: - 최초 캠핑장 이름으로 read
                 if readDocument.campingSpotName != "" {
                     database.collection("CampingSpotList")
                         .whereField("facltNm", arrayContains: String(readDocument.campingSpotName))
@@ -375,6 +380,7 @@ struct FirebaseCampingSpotService {
                             promise(.success(readDocument))
                         }
                 }
+                //MARK: - 최초 캠핑장 아이디로 read
                 if readDocument.campingSpotContenId != "" {
                     database.collection("CampingSpotList")
                         .whereField("contentId", isEqualTo: String(readDocument.campingSpotContenId))
@@ -483,7 +489,9 @@ struct FirebaseCampingSpotService {
                             promise(.success(readDocument))
                         }
                 }
+            //MARK: - 페이지네이션에서 쓰이는 read
             } else {
+                //MARK: - 페이지네이션에서 캠핑장 위치로 read
                 if readDocument.campingSpotLocation != [] {
                     database.collection("CampingSpotList")
                         .whereField("doNm", in: readDocument.campingSpotLocation)
@@ -593,6 +601,7 @@ struct FirebaseCampingSpotService {
                             promise(.success(readDocument))
                         }
                 }
+                //MARK: - 페이지네이션에서 캠핑장 전망으로 read
                 if readDocument.campingSpotView != [] {
                     database.collection("CampingSpotList")
                         .whereField("lctCl", isGreaterThanOrEqualTo: "\(readDocument.campingSpotView.first!)")
@@ -702,6 +711,7 @@ struct FirebaseCampingSpotService {
                             promise(.success(readDocument))
                         }
                 }
+                //MARK: - 페이지네이션에서 캠핑장 이름으로 read
                 if readDocument.campingSpotName != "" {
                     database.collection("CampingSpotList")
                         .whereField("facltNm", arrayContains: String(readDocument.campingSpotName))
@@ -811,6 +821,7 @@ struct FirebaseCampingSpotService {
                             promise(.success(readDocument))
                         }
                 }
+                //MARK: - 페이지네이션에서 캠핑장 아이디로 read
                 if readDocument.campingSpotContenId != "" {
                     database.collection("CampingSpotList")
                         .whereField("contentId", isEqualTo: String(readDocument.campingSpotContenId))

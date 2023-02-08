@@ -24,9 +24,9 @@ struct RealtimeCampingView: View {
             .padding(.top)
             .padding(.bottom, 1)
         }
-        .onAppear {
-            diaryStore.readDiarysCombine()
-        }
+//        .onAppear {
+//            diaryStore.readDiarysCombine()
+//        }
     }
 }
 

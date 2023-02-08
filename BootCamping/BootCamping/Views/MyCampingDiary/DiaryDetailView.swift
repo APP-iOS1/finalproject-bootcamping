@@ -54,7 +54,7 @@ struct DiaryDetailView: View {
         }
         .navigationTitle("BOOTCAMPING")
         .onAppear{
-            isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
+            isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.id)
             commentStore.readCommentsCombine(diaryId: item.id)
         }
     }
@@ -170,6 +170,7 @@ private extension DiaryDetailView {
                                 } else{
                                     bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
                                 }
+                                wholeAuthStore.readUserListCombine()
                             } label: {
                                 Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
                             }

@@ -169,7 +169,7 @@ struct FirebaseCampingSpotService {
                 if readDocument.campingSpotView != [] {
                     database.collection("CampingSpotList")
                         .whereField("lctCl", isGreaterThanOrEqualTo: "\(readDocument.campingSpotView.first!)")
-                        .whereField("lctCl", isLessThan: "\(readDocument.campingSpotView.first!)" + "\u{f8ff}")
+                        .whereField("lctCl", isLessThan: "\u{f8ff}" + "\(readDocument.campingSpotView.first!)" + "\u{f8ff}")
                         .limit(to: 10)
                         .getDocuments { snapshot, error in
                             if let error = error {
@@ -624,7 +624,7 @@ struct FirebaseCampingSpotService {
                 if readDocument.campingSpotView != [] {
                     database.collection("CampingSpotList")
                         .whereField("lctCl", isGreaterThanOrEqualTo: "\(readDocument.campingSpotView.first!)")
-                        .whereField("lctCl", isLessThan: "\(readDocument.campingSpotView.first!)" + "\u{f8ff}")
+                        .whereField("lctCl", isLessThan: "\u{f8ff}" + "\(readDocument.campingSpotView.first!)" + "\u{f8ff}")
                         .start(afterDocument: readDocument.lastDoc!)
                         .limit(to: 10)
                         .getDocuments { snapshot, error in

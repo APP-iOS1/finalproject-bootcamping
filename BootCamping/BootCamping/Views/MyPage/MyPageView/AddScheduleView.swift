@@ -9,9 +9,12 @@ import SwiftUI
 
 struct AddScheduleView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var scheduleStore: ScheduleStore
     @Environment(\.dismiss) private var dismiss
+    
+    @EnvironmentObject var scheduleStore: ScheduleStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var localNotification: LocalNotification
+    
     @State var startDate = Date()
     @State var endDate = Date()
     @State private var campingSpot: String = ""
@@ -166,7 +169,7 @@ extension AddScheduleView {
                 scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: startDate))
             }
             if isSettingNotification{
-                scheduleStore.setNotification(startDate: startDate)
+                localNotification.setNotification(startDate: startDate)
             }
             dismiss()
         } label: {
@@ -174,7 +177,7 @@ extension AddScheduleView {
                 .bold()
             //                    .modifier(GreenButtonModifier())
         }
-        .disabled(campingSpot == "" || isAddingDisable)        
+        .disabled(isAddingDisable)        
     }
     // MARK: -View : alertText
     private var alertText : some View {

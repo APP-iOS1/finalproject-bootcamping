@@ -310,9 +310,9 @@
 			isa = PBXGroup;
 			children = (
 				AD672120298CA983008C34B3 /* WholeAuthStore.swift */,
+				CA729F422988FCBA00CCC3BB /* ScheduleStore.swift */,
 				790B62DA29792B4C0048C110 /* CommentStore.swift */,
 				639129EE29792CB700F6EDD7 /* CapmingSpotStore.swift */,
-				CA729F422988FCBA00CCC3BB /* ScheduleStore.swift */,
 				7CC3AD4D29890970002EF992 /* DiaryStore.swift */,
 				7CD6570D298D07EB00889FF3 /* BookmarkStore.swift */,
 				7C20C30129938CC90030CB21 /* DiaryLIkeStore.swift */,

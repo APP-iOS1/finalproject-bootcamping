@@ -14,6 +14,7 @@ struct DiaryCellView: View {
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var diaryLikeStore: DiaryLikeStore
+    @EnvironmentObject var commentStore: CommentStore
 
     @State var isBookmarked: Bool = false
     
@@ -41,12 +42,21 @@ struct DiaryCellView: View {
                     diaryContent
                     diaryCampingLink
                     diaryDetailInfo
+                    Divider().padding(.bottom, 3)
+                    //디바이더.. 꽉 채우게..?
+//                    Rectangle()
+//                        .foregroundColor(.gray)
+//                        .opacity(0.1)
+//                        .frame(height: 5)
+//                        .padding(.horizontal, -UIScreen.screenWidth * 0.03)
+                    
                 }
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
             }
             .foregroundColor(.bcBlack)
         }
         .onAppear{
+            commentStore.readCommentsCombine(diaryId: item.id)
             isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
             wholeAuthStore.readUserListCombine()
         }
@@ -276,7 +286,7 @@ private extension DiaryCellView {
     var diaryDetailInfo: some View {
         HStack {
             Button {
-                //TODO: -좋아요 토글에 따라
+                //좋아요 버튼, 카운드
                 if item.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") {
                     diaryLikeStore.removeDiaryLikeCombine(diaryId: item.id)
                 } else {
@@ -289,15 +299,18 @@ private extension DiaryCellView {
             }
             Text("\(item.diaryLike.count)")
             
+            //댓글 버튼
             Button {
                 //"댓글 작성 버튼으로 이동"
             } label: {
-                Text("")
-                    .font(.body)
-                    .padding(.horizontal, 3)
+                Image(systemName: "message")
             }
+            Text("\(commentStore.commentList.count)")
+                .font(.body)
+                .padding(.horizontal, 3)
+            
             Spacer()
-            //TimeStamp
+            //작성 경과시간
             Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
                 .font(.footnote)
                 .foregroundColor(.secondary)
@@ -317,6 +330,7 @@ struct DiaryCellView_Previews: PreviewProvider {
         .environmentObject(DiaryStore())
         .environmentObject(BookmarkStore())
         .environmentObject(DiaryLikeStore())
+        .environmentObject(CommentStore())
         
     }
 }

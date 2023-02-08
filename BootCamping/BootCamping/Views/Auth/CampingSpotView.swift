@@ -10,7 +10,6 @@ import SwiftUI
 struct CampingSpotView: View {
     @ObservedObject var placeStore: PlaceStore = PlaceStore()
     @EnvironmentObject var campingSpotStore: CampingSpotStore
-    var fetchData: FetchData = FetchData()
     @State var page: Int = 1
     
     var body: some View {

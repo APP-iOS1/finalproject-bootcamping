@@ -9,8 +9,7 @@ import SwiftUI
 
 // TODO: 목업으로 뷰 추가해놓기
 struct SettingView: View {
-    @EnvironmentObject var authStore: AuthStore
-    @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
     
     //로그아웃 시 탭 변경하기 위한 변수
     @EnvironmentObject var tabSelection: TabSelector

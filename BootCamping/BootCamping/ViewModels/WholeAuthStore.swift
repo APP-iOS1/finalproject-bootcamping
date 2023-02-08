@@ -609,7 +609,6 @@ class WholeAuthStore: ObservableObject {
     // MARK: - 회원탈퇴
     
     func userWithdrawal() {
-        let database = Firestore.firestore()
 
         Auth.auth().currentUser?.delete { error in
             if let error = error {

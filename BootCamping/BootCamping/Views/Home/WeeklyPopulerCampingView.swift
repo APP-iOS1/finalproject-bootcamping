@@ -45,8 +45,8 @@ struct WeeklyPopulerCampingView: View {
 
 //MARK: - 포토카드 위 글씨
 struct PhotoMainStory: View {
-    @EnvironmentObject var authStore: AuthStore
-    
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+
     var item: Diary
     
     var body: some View {
@@ -75,7 +75,7 @@ struct PhotoMainStory: View {
             .padding(.horizontal)
         }
         .onAppear {
-            authStore.fetchUserList()
+            wholeAuthStore.readUserListCombine()
         }
     }
 }

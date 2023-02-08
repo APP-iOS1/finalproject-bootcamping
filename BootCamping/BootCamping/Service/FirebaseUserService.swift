@@ -98,7 +98,7 @@ struct FirebaseUserService {
 
     func updateUserService(image: Data?, user: User) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
-            if image != nil {
+            if let image = image {
                 let imageName = UUID().uuidString
                 var imageURS: String = ""
                 

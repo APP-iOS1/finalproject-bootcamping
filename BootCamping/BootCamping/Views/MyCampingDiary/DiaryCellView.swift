@@ -14,7 +14,7 @@ struct DiaryCellView: View {
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
 
-    @State var isBookmarked: Bool = false
+//    @State var isBookmarked: Bool = false
     
     //선택한 다이어리 정보 변수입니다.
     var item: Diary
@@ -45,9 +45,9 @@ struct DiaryCellView: View {
             }
             .foregroundColor(.bcBlack)
         }
-        .onAppear{
-            isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
-            wholeAuthStore.readUserListCombine()
+        .onAppear {
+//            isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
+//            wholeAuthStore.readUserListCombine()
         }
     }
 }
@@ -90,22 +90,22 @@ private extension DiaryCellView {
                     .scaledToFill()
                     .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     .clipped()
-                //MARK: - 북마크 버튼
-                    .overlay(alignment: .topTrailing){
-                        Button {
-                            isBookmarked.toggle()
-                            if isBookmarked{
-                                bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
-                            } else{
-                                bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
-                            }
-                        } label: {
-                            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                        }
-                        .foregroundColor(.white)
-                        .shadow(radius: 5)
-                        .padding()
-                    }
+//                //MARK: - 북마크 버튼
+//                    .overlay(alignment: .topTrailing){
+//                        Button {
+//                            isBookmarked.toggle()
+//                            if isBookmarked{
+//                                bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
+//                            } else{
+//                                bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
+//                            }
+//                        } label: {
+//                            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+//                        }
+//                        .foregroundColor(.white)
+//                        .shadow(radius: 5)
+//                        .padding()
+//                    }
                 
             }
         }
@@ -227,6 +227,7 @@ private extension DiaryCellView {
     
     //MARK: - 다이어리 공개 여부 - 잠금 했을때만 자물쇠 나오도록 설정
     var diaryIsPrivate: some View {
+        // FIXME: - No symbol named '' found in system symbol set 로그 수정해야 함
         Image(systemName: item.diaryIsPrivate ? "lock" : "" )
     }
     

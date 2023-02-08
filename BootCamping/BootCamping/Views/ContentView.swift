@@ -16,22 +16,17 @@ struct ContentView: View {
     @AppStorage("login") var isSignIn: Bool = false
     @AppStorage("_isFirstLaunching") var isFirstLaunching: Bool = true
     
-    let wholeAuthStore = WholeAuthStore.shared
-    
     //탭뷰 화면전환 셀렉션 변수
     @EnvironmentObject var tabSelection: TabSelector
     @EnvironmentObject var diaryStore: DiaryStore
-    @EnvironmentObject var scheduleStore: ScheduleStore
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    
     @State var isLoading: Bool = true
     
     var body: some View {
         ZStack {
             if isLoading {
                 SplashScreenView().transition(.identity).zIndex(1)
-                    .task {
-                        diaryStore.readDiarysCombine()
-                        scheduleStore.readScheduleCombine()
-                    }
             }
             if isSignIn {
                 TabView(selection: $tabSelection.screen) {
@@ -77,10 +72,14 @@ struct ContentView: View {
 
             }
         }
-        .onAppear {
+        .task {
+//            wholeAuthStore.readUserListCombine()
+            diaryStore.readDiarysCombine()
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
                 withAnimation { isLoading.toggle() }
-            }) }
+            })
+        }
         .fullScreenCover(isPresented: $isFirstLaunching) {
             OnboardingTabView(isFirstLaunching: $isFirstLaunching)
         }

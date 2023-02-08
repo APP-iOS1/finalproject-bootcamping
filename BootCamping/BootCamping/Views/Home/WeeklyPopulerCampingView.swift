@@ -81,9 +81,6 @@ struct PhotoMainStory: View {
             .kerning(-0.7)
             .padding(.horizontal)
         }
-        .onAppear {
-            wholeAuthStore.readUserListCombine()
-        }
     }
 }
 

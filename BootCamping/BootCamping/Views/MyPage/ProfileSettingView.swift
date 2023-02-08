@@ -9,8 +9,6 @@ import SwiftUI
 import PhotosUI
 import FirebaseAuth
 
-// FIXME: 현재 기획한 UserInfo 데이터 모델에 따라서 텍스트 필드 변경 필요
-/// 현재 기획 모델 그대로 가면 닉네임이랑 이메일, 비밀번호 변경하는 걸로 바꿔야 할 것 같습니다
 struct ProfileSettingView: View {
     
     //이미지 피커
@@ -18,9 +16,7 @@ struct ProfileSettingView: View {
     @State private var selectedImage: UIImage?      // 이미지 피커에서 선택한 이미지저장. UIImage 타입
     @State private var profileImage: Data?          // selectedImage를 Data 타입으로 저장
     @Environment(\.dismiss) private var dismiss
-    
-    var user: User
-    
+        
     @State private var updateNickname: String = ""
     
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
@@ -54,9 +50,23 @@ extension ProfileSettingView {
             Image(uiImage: (image ?? UIImage(systemName: "person.fill"))!)
                 .resizable()
                 .frame(width: 100, height: 100)
+                .aspectRatio(contentMode: .fill)
                 .clipShape(Circle())
                 .overlay{
-                    // 수정된다는 거 표시. 펜모양심볼?
+                    ZStack{
+                        Image(systemName: "circlebadge.fill")
+                            .font(.largeTitle)
+//                            .frame(width: 25, height: 25)
+                            .foregroundColor(.primary)
+                            .colorInvert()
+                            .offset(x: 40, y: 40)
+                        
+                        Image(systemName: "pencil.circle")
+                            .font(.title)
+//                            .frame(width: 25, height: 25)
+                            .foregroundColor(.bcBlack)
+                            .offset(x: 40, y: 40)
+                    }
                 }
         })
         .sheet(isPresented: $imagePickerPresented,
@@ -65,10 +75,10 @@ extension ProfileSettingView {
     }
     // selectedImage: UIImage 타입을 Data타입으로 저장하는 함수
     func loadData() {
-            guard let selectedImage = selectedImage else { return }
+        guard let selectedImage = selectedImage else { return }
         profileImage = selectedImage.jpegData(compressionQuality: 0.8)
-
-        }
+        
+    }
     
     
     // MARK: -View : updateUserNameTextField
@@ -77,19 +87,19 @@ extension ProfileSettingView {
             Text("닉네임")
                 .font(.title3)
                 .bold()
-            TextField("닉네임", text: $updateNickname,prompt: Text("\(user.nickName)"))
+            TextField("닉네임", text: $updateNickname,prompt: Text("\(wholeAuthStore.currnetUserInfo!.nickName)"))
                 .textFieldStyle(.roundedBorder)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.never)
         }
     }
     
-
+    
     // MARK: -View : editButton
     private var editButton : some View {
         Button {
             // TODO: UserInfo 수정하기
-            wholeAuthStore.updateUserCombine(image: profileImage ?? Data(), user: User(id: user.id, profileImageName: user.profileImageName, profileImageURL: user.profileImageURL, nickName: updateNickname, userEmail: user.userEmail, bookMarkedDiaries: user.bookMarkedDiaries, bookMarkedSpot: user.bookMarkedSpot))
+            wholeAuthStore.updateUserCombine(image: profileImage, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: wholeAuthStore.currnetUserInfo!.profileImageURL, nickName: updateNickname, userEmail: wholeAuthStore.currnetUserInfo!.userEmail, bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot))
             dismiss()
         } label: {
             Text("수정")
@@ -97,7 +107,7 @@ extension ProfileSettingView {
         }
         .disabled(updateNickname == "")
     }
-
+    
 }
 
 
@@ -134,9 +144,9 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 }
 
-struct ProfileSettingView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "chasomin", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
-            .environmentObject(WholeAuthStore())
-    }
-}
+//struct ProfileSettingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "chasomin", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
+//            .environmentObject(WholeAuthStore())
+//    }
+//}

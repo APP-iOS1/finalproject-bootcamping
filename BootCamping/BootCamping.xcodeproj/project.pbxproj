@@ -36,6 +36,7 @@
 		63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */; };
 		63BC803B298C8EF30088AC02 /* EmptyCampingSpotListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BC803A298C8EF30088AC02 /* EmptyCampingSpotListCell.swift */; };
 		63BC803F298C97380088AC02 /* FirebaseCampingSpotService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BC803E298C97380088AC02 /* FirebaseCampingSpotService.swift */; };
+		63D1822D2993D53B00293727 /* CampingSpotListSearchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D1822C2993D53B00293727 /* CampingSpotListSearchingView.swift */; };
 		63F8426C298FB5FF006A9433 /* CampingSpotListRaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F8426B298FB5FF006A9433 /* CampingSpotListRaw.swift */; };
 		6E11BE2D298C8FD60019E963 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 6E11BE2C298C8FD60019E963 /* Lottie */; };
 		6E11BE2F298C90390019E963 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E11BE2E298C90390019E963 /* LottieView.swift */; };
@@ -71,6 +72,8 @@
 		792C42422990CAD200B7772C /* PrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42412990CAD200B7772C /* PrivacyView.swift */; };
 		792C42442990D0A800B7772C /* PasswordChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42432990D0A800B7772C /* PasswordChangeView.swift */; };
 		792C42492993D6E500B7772C /* DiaryAddContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42482993D6E500B7772C /* DiaryAddContentView.swift */; };
+		7C20C300299380DF0030CB21 /* FirebaseDiaryLikeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C20C2FF299380DF0030CB21 /* FirebaseDiaryLikeService.swift */; };
+		7C20C30229938CC90030CB21 /* DiaryLIkeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C20C30129938CC90030CB21 /* DiaryLIkeStore.swift */; };
 		7C3E8BDA2992222600A6C1D6 /* DiaryCommentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */; };
 		7C3FC49729877C7200E96A01 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7C3FC49629877C7200E96A01 /* SDWebImageSwiftUI */; };
 		7C6A94AC2992BE6900B0E125 /* DiaryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */; };
@@ -94,9 +97,7 @@
 		CA27A6252989FCD700A6AEE5 /* SearchCampingSpotListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A6242989FCD700A6AEE5 /* SearchCampingSpotListView.swift */; };
 		CA27A627298CA81700A6AEE5 /* TaskCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A626298CA81700A6AEE5 /* TaskCellView.swift */; };
 		CA27A62D298CE95500A6AEE5 /* FirebaseBookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A62C298CE95500A6AEE5 /* FirebaseBookmarkService.swift */; };
-		CA27A6302990F0E200A6AEE5 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CA27A62F2990F0E200A6AEE5 /* FirebaseMessaging */; };
-		CA27A63229920D2300A6AEE5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CA27A63129920D2300A6AEE5 /* FirebaseAnalytics */; };
-		CA27A63429920D2300A6AEE5 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CA27A63329920D2300A6AEE5 /* FirebaseAnalyticsSwift */; };
+		CA27A63A29937DB400A6AEE5 /* LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A63929937DB400A6AEE5 /* LocalNotification.swift */; };
 		CA729F3329792DE000CCC3BB /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F3229792DE000CCC3BB /* CalendarView.swift */; };
 		CA729F352979315400CCC3BB /* CustomDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F342979315400CCC3BB /* CustomDatePickerView.swift */; };
 		CA729F392979340600CCC3BB /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F382979340600CCC3BB /* Schedule.swift */; };
@@ -133,6 +134,7 @@
 		63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCampingSpotView.swift; sourceTree = "<group>"; };
 		63BC803A298C8EF30088AC02 /* EmptyCampingSpotListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCampingSpotListCell.swift; sourceTree = "<group>"; };
 		63BC803E298C97380088AC02 /* FirebaseCampingSpotService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseCampingSpotService.swift; sourceTree = "<group>"; };
+		63D1822C2993D53B00293727 /* CampingSpotListSearchingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampingSpotListSearchingView.swift; sourceTree = "<group>"; };
 		63F8426B298FB5FF006A9433 /* CampingSpotListRaw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CampingSpotListRaw.swift; sourceTree = "<group>"; };
 		6E11BE2E298C90390019E963 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		6E11BE30298C905C0019E963 /* campfire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = campfire.json; sourceTree = "<group>"; };
@@ -155,6 +157,8 @@
 		792C42412990CAD200B7772C /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
 		792C42432990D0A800B7772C /* PasswordChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeView.swift; sourceTree = "<group>"; };
 		792C42482993D6E500B7772C /* DiaryAddContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryAddContentView.swift; sourceTree = "<group>"; };
+		7C20C2FF299380DF0030CB21 /* FirebaseDiaryLikeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDiaryLikeService.swift; sourceTree = "<group>"; };
+		7C20C30129938CC90030CB21 /* DiaryLIkeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryLIkeStore.swift; sourceTree = "<group>"; };
 		7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCommentCellView.swift; sourceTree = "<group>"; };
 		7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryEmptyView.swift; sourceTree = "<group>"; };
 		7C715C972977E056009BC678 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
@@ -177,6 +181,7 @@
 		CA27A6242989FCD700A6AEE5 /* SearchCampingSpotListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCampingSpotListView.swift; sourceTree = "<group>"; };
 		CA27A626298CA81700A6AEE5 /* TaskCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCellView.swift; sourceTree = "<group>"; };
 		CA27A62C298CE95500A6AEE5 /* FirebaseBookmarkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseBookmarkService.swift; sourceTree = "<group>"; };
+		CA27A63929937DB400A6AEE5 /* LocalNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotification.swift; sourceTree = "<group>"; };
 		CA729F3229792DE000CCC3BB /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		CA729F342979315400CCC3BB /* CustomDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerView.swift; sourceTree = "<group>"; };
 		CA729F382979340600CCC3BB /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
@@ -189,11 +194,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA27A6302990F0E200A6AEE5 /* FirebaseMessaging in Frameworks */,
 				6E996E83297A4E290085D914 /* GoogleSignInSwift in Frameworks */,
 				63AF45A42977CD9C0014B1E1 /* FirebaseAuth in Frameworks */,
 				6E996E81297A4E290085D914 /* GoogleSignIn in Frameworks */,
-				CA27A63429920D2300A6AEE5 /* FirebaseAnalyticsSwift in Frameworks */,
 				790B62E2297A28E00048C110 /* KakaoSDK in Frameworks */,
 				7C3FC49729877C7200E96A01 /* SDWebImageSwiftUI in Frameworks */,
 				790B62E8297A28E00048C110 /* KakaoSDKCommonCore in Frameworks */,
@@ -208,7 +211,6 @@
 				790B62E6297A28E00048C110 /* KakaoSDKCommon in Frameworks */,
 				6E688E3F29923827006DCEE5 /* SwiftUIMailView in Frameworks */,
 				790B62E4297A28E00048C110 /* KakaoSDKAuth in Frameworks */,
-				CA27A63229920D2300A6AEE5 /* FirebaseAnalytics in Frameworks */,
 				790B62EC297A28E00048C110 /* KakaoSDKShare in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -238,6 +240,7 @@
 			children = (
 				630ADB4E2977CC6C000A517B /* BootCampingApp.swift */,
 				6E11BE342990E6A80019E963 /* SplashScreenView.swift */,
+				CA27A63829937D9000A6AEE5 /* APNS */,
 				63AF45B02977CDBC0014B1E1 /* Models */,
 				ADF535D22988B3980003AD13 /* Service */,
 				63AF45B32977CDC90014B1E1 /* ViewModels */,
@@ -308,11 +311,12 @@
 			isa = PBXGroup;
 			children = (
 				AD672120298CA983008C34B3 /* WholeAuthStore.swift */,
+				CA729F422988FCBA00CCC3BB /* ScheduleStore.swift */,
 				790B62DA29792B4C0048C110 /* CommentStore.swift */,
 				639129EE29792CB700F6EDD7 /* CapmingSpotStore.swift */,
-				CA729F422988FCBA00CCC3BB /* ScheduleStore.swift */,
 				7CC3AD4D29890970002EF992 /* DiaryStore.swift */,
 				7CD6570D298D07EB00889FF3 /* BookmarkStore.swift */,
+				7C20C30129938CC90030CB21 /* DiaryLIkeStore.swift */,
 				7CD6570A298C91B000889FF3 /* LocalAuthentication.swift */,
 			);
 			path = ViewModels;
@@ -354,6 +358,7 @@
 			isa = PBXGroup;
 			children = (
 				63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */,
+				63D1822C2993D53B00293727 /* CampingSpotListSearchingView.swift */,
 				63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */,
 				63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */,
 				63F8426B298FB5FF006A9433 /* CampingSpotListRaw.swift */,
@@ -434,6 +439,7 @@
 				AD672124298CE2BB008C34B3 /* AuthEmailService.swift */,
 				ADDB3C0E2990C12600EF82E3 /* AuthKakaoService.swift */,
 				CA27A62C298CE95500A6AEE5 /* FirebaseBookmarkService.swift */,
+				7C20C2FF299380DF0030CB21 /* FirebaseDiaryLikeService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -443,6 +449,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CA27A63829937D9000A6AEE5 /* APNS */ = {
+			isa = PBXGroup;
+			children = (
+				CA27A63929937DB400A6AEE5 /* LocalNotification.swift */,
+			);
+			path = APNS;
 			sourceTree = "<group>";
 		};
 		CA729F3029792D7200CCC3BB /* MyPageView */ = {
@@ -493,10 +507,7 @@
 				790B62F3297A28E00048C110 /* KakaoSDKUser */,
 				7C3FC49629877C7200E96A01 /* SDWebImageSwiftUI */,
 				6E11BE2C298C8FD60019E963 /* Lottie */,
-				CA27A62F2990F0E200A6AEE5 /* FirebaseMessaging */,
 				6E688E3E29923827006DCEE5 /* SwiftUIMailView */,
-				CA27A63129920D2300A6AEE5 /* FirebaseAnalytics */,
-				CA27A63329920D2300A6AEE5 /* FirebaseAnalyticsSwift */,
 			);
 			productName = BootCamping;
 			productReference = 630ADB4B2977CC6C000A517B /* BootCamping.app */;
@@ -576,6 +587,7 @@
 				6E688E3C29923542006DCEE5 /* MailView.swift in Sources */,
 				7CD6570B298C91B000889FF3 /* LocalAuthentication.swift in Sources */,
 				63AF45AF2977CDB40014B1E1 /* Date.swift in Sources */,
+				7C20C30229938CC90030CB21 /* DiaryLIkeStore.swift in Sources */,
 				63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */,
 				63F8426C298FB5FF006A9433 /* CampingSpotListRaw.swift in Sources */,
 				792C42442990D0A800B7772C /* PasswordChangeView.swift in Sources */,
@@ -595,6 +607,7 @@
 				792C42422990CAD200B7772C /* PrivacyView.swift in Sources */,
 				CA27A62D298CE95500A6AEE5 /* FirebaseBookmarkService.swift in Sources */,
 				6E688DFE2991E153006DCEE5 /* OnboardingTabView.swift in Sources */,
+				63D1822D2993D53B00293727 /* CampingSpotListSearchingView.swift in Sources */,
 				CA729F3329792DE000CCC3BB /* CalendarView.swift in Sources */,
 				AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */,
 				7CA272FE2991CE6600443111 /* DiaryLockedView.swift in Sources */,
@@ -610,8 +623,10 @@
 				6E688DFA2991E136006DCEE5 /* DescribePictureView.swift in Sources */,
 				6E688E3A29923506006DCEE5 /* ContactMail.swift in Sources */,
 				63AF45E12977CE5E0014B1E1 /* DiaryDetailView.swift in Sources */,
+				CA27A63A29937DB400A6AEE5 /* LocalNotification.swift in Sources */,
 				7C3E8BDA2992222600A6C1D6 /* DiaryCommentCellView.swift in Sources */,
 				CA27A627298CA81700A6AEE5 /* TaskCellView.swift in Sources */,
+				7C20C300299380DF0030CB21 /* FirebaseDiaryLikeService.swift in Sources */,
 				CA27A6252989FCD700A6AEE5 /* SearchCampingSpotListView.swift in Sources */,
 				7CFCE12D2987549F00E196AF /* WeeklyPopulerCampingView.swift in Sources */,
 				63AF45D82977CE4C0014B1E1 /* BookmarkCellView.swift in Sources */,
@@ -1001,21 +1016,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7C3FC49529877C7200E96A01 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
-		};
-		CA27A62F2990F0E200A6AEE5 /* FirebaseMessaging */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseMessaging;
-		};
-		CA27A63129920D2300A6AEE5 /* FirebaseAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalytics;
-		};
-		CA27A63329920D2300A6AEE5 /* FirebaseAnalyticsSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalyticsSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

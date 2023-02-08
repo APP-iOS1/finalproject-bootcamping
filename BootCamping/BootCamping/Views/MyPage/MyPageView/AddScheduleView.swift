@@ -9,13 +9,16 @@ import SwiftUI
 
 struct AddScheduleView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var scheduleStore: ScheduleStore
     @Environment(\.dismiss) private var dismiss
+    
+    @EnvironmentObject var scheduleStore: ScheduleStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var localNotification: LocalNotification
+    
     @State var startDate = Date()
     @State var endDate = Date()
     @State private var campingSpot: String = ""
-    @State private var isAddingDisable = true
+    @State private var ischeckingDate = true
     @State private var isSettingNotification = true
     
     // 캠핑 종료일이 시작일보다 늦어야 하므로 종료일 날짜 선택 범위를 제한해준다.
@@ -27,19 +30,25 @@ struct AddScheduleView: View {
         )!
         return startDate...max
     }
-
+    
+    var isAddingDisable: Bool {
+        return ischeckingDate
+        // TODO: - 패치 함수 수정 후 campingSpot == "" || isAddingDisable로 수정해야 함
+        //        return campingSpot == "" || ischeckingDate
+    }
+    
     var alert: String {
         if campingSpot != "" {
-            if isAddingDisable { return "날짜를 다시 선택해주세요\n하루에 한 개의 캠핑일정만 등록 가능합니다"}
+            if ischeckingDate { return "날짜를 다시 선택해주세요\n하루에 한 개의 캠핑일정만 등록 가능합니다"}
             return ""
         }
         return "캠핑장 이름을 입력해주세요"
     }
-
+    
     //onAppear 시 캠핑장 데이터 패치
     @EnvironmentObject var campingSpotStore: CampingSpotStore
     @State var page: Int = 2
-
+    
     var body: some View {
         // FIXME: 여행 일정의 첫 날과 마지막 날을 선택하면 범위 선택이 가능해야 함
         VStack{
@@ -75,15 +84,15 @@ struct AddScheduleView: View {
                 .padding(.vertical, UIScreen.screenHeight*0.05)
         }
         .onAppear{
-            isAddingDisable = checkSchedule(startDate: startDate, endDate: endDate)
-        //TODO: -패치데이터
-//            Task {
-//                campingSpotStore.campingSpotList = try await fetchData.fetchData(page: page)
-//            }
+            ischeckingDate = checkSchedule(startDate: startDate, endDate: endDate)
+            //TODO: -패치데이터
+            //            Task {
+            //                campingSpotStore.campingSpotList = try await fetchData.fetchData(page: page)
+            //            }
             
         }
         .onChange(of: [self.startDate, self.endDate]) { newvalues in
-            isAddingDisable = checkSchedule(startDate: newvalues[0], endDate: newvalues[1])
+            ischeckingDate = checkSchedule(startDate: newvalues[0], endDate: newvalues[1])
         }
         .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
@@ -137,9 +146,9 @@ extension AddScheduleView {
                     } label: {
                         Image(systemName: "xmark")
                             .foregroundColor(.bcBlack)
-
+                        
                     }
-
+                    
                 }
                 
             }
@@ -148,7 +157,7 @@ extension AddScheduleView {
     // MARK: -View : setNotificationToggleButton
     private var setNotificationToggle: some View{
         Toggle(isOn: self.$isSettingNotification) {
-                Text("스케줄에 대한 알림 수신")
+            Text("스케줄에 대한 알림 수신")
         }
     }
     // MARK: -View : addScheduleButton
@@ -165,16 +174,20 @@ extension AddScheduleView {
             } else {
                 scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: startDate))
             }
+            scheduleStore.readScheduleCombine()
             if isSettingNotification{
-                scheduleStore.setNotification(startDate: startDate)
+                localNotification.setNotification(startDate: startDate)
             }
             dismiss()
         } label: {
             Text("등록")
-                .bold()
-            //                    .modifier(GreenButtonModifier())
+                .font(.headline)
+                .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)
+                .foregroundColor(.white)
+                .background(isAddingDisable ? Color.secondary : Color.bcGreen)
+                .cornerRadius(10)
         }
-        .disabled(campingSpot == "" || isAddingDisable)        
+        .disabled(isAddingDisable)
     }
     // MARK: -View : alertText
     private var alertText : some View {

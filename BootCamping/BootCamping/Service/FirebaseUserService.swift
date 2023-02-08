@@ -96,78 +96,94 @@ struct FirebaseUserService {
     
     //MARK: - Update FirebaseUserService
 
-    func updateUserService(image: Data, user: User) -> AnyPublisher<Void, Error> {
-        
+    func updateUserService(image: Data?, user: User) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
-            
-            let imageName = UUID().uuidString
-            var imageURS: String = ""
-            
-            let myQueue = DispatchQueue(label: "updatework",attributes: .concurrent)
-            let group = DispatchGroup()
-            
-            group.enter()
-            myQueue.sync {
-                let storageRef = Storage.storage().reference().child("UserImages")
+            if let image = image {
                 let imageName = UUID().uuidString
-                let metadata = StorageMetadata()
-                metadata.contentType = "image/jpeg"
-                let uploadTask = storageRef.child(imageName).putData(image, metadata: metadata)
-                uploadTask.observe(.success) { snapshot in
-                    group.leave()
-                }
-                uploadTask.observe(.failure) { snapshot in
-                    if let error = snapshot.error as? NSError {
-                        switch (StorageErrorCode(rawValue: error.code)!) {
-                        case .objectNotFound:
-                            promise(.failure(FirebaseUserServiceError.updateUserListError))
-                            print("File doesn't exist")
-                        case .unauthorized:
-                            promise(.failure(FirebaseUserServiceError.updateUserListError))
-                            print("User doesn't have permission to access file")
-                        case .cancelled:
-                            promise(.failure(FirebaseUserServiceError.updateUserListError))
-                            print("User canceled the upload")
-                        case .unknown:
-                            promise(.failure(FirebaseUserServiceError.updateUserListError))
-                            print("Unknown error occurred, inspect the server response")
-                        default:
-                            promise(.failure(FirebaseUserServiceError.updateUserListError))
-                            print("A separate error occurred. This is a good place to retry the upload.")
-                        }
-                    }
-                }
-            }
-            group.notify(queue: myQueue) {
+                var imageURS: String = ""
+                
+                let myQueue = DispatchQueue(label: "updatework",attributes: .concurrent)
+                let group = DispatchGroup()
+                
                 group.enter()
                 myQueue.sync {
                     let storageRef = Storage.storage().reference().child("UserImages")
-                    storageRef.child(imageName).downloadURL { url, error in
-                        if let error = error {
-                            print(error)
-                            promise(.failure(FirebaseUserServiceError.updateUserListError))
-                        } else {
-                            imageURS = url!.absoluteString
-                            group.leave()
+                    let metadata = StorageMetadata()
+                    metadata.contentType = "image/jpeg"
+                    let uploadTask = storageRef.child(imageName).putData(image, metadata: metadata)
+                    uploadTask.observe(.success) { snapshot in
+                        group.leave()
+                    }
+                    uploadTask.observe(.failure) { snapshot in
+                        if let error = snapshot.error as? NSError {
+                            switch (StorageErrorCode(rawValue: error.code)!) {
+                            case .objectNotFound:
+                                promise(.failure(FirebaseUserServiceError.updateUserListError))
+                                print("File doesn't exist")
+                            case .unauthorized:
+                                promise(.failure(FirebaseUserServiceError.updateUserListError))
+                                print("User doesn't have permission to access file")
+                            case .cancelled:
+                                promise(.failure(FirebaseUserServiceError.updateUserListError))
+                                print("User canceled the upload")
+                            case .unknown:
+                                promise(.failure(FirebaseUserServiceError.updateUserListError))
+                                print("Unknown error occurred, inspect the server response")
+                            default:
+                                promise(.failure(FirebaseUserServiceError.updateUserListError))
+                                print("A separate error occurred. This is a good place to retry the upload.")
+                            }
                         }
                     }
                 }
                 group.notify(queue: myQueue) {
-                    self.database.collection("UserList").document(user.id).setData([
-                        "id": user.id,
-                        "profileImageName": imageName,
-                        "profileImageURL": imageURS,
-                        "nickName": user.nickName,
-                        "userEmail": user.userEmail,
-                        "bookMarkedDiaries": user.bookMarkedDiaries,
-                        "bookMarkedSpot": user.bookMarkedSpot,
-                    ]) { error in
-                        if let error = error {
-                            print(error)
-                            promise(.failure(FirebaseUserServiceError.updateUserListError))
-                        } else {
-                            promise(.success(()))
+                    group.enter()
+                    myQueue.sync {
+                        let storageRef = Storage.storage().reference().child("UserImages")
+                        storageRef.child(imageName).downloadURL { url, error in
+                            if let error = error {
+                                print(error)
+                                promise(.failure(FirebaseUserServiceError.updateUserListError))
+                            } else {
+                                imageURS = url!.absoluteString
+                                group.leave()
+                            }
                         }
+                    }
+                    group.notify(queue: myQueue) {
+                        self.database.collection("UserList").document(user.id).setData([
+                            "id": user.id,
+                            "profileImageName": imageName,
+                            "profileImageURL": imageURS,
+                            "nickName": user.nickName,
+                            "userEmail": user.userEmail,
+                            "bookMarkedDiaries": user.bookMarkedDiaries,
+                            "bookMarkedSpot": user.bookMarkedSpot,
+                        ]) { error in
+                            if let error = error {
+                                print(error)
+                                promise(.failure(FirebaseUserServiceError.updateUserListError))
+                            } else {
+                                promise(.success(()))
+                            }
+                        }
+                    }
+                }
+            } else {
+                self.database.collection("UserList").document(user.id).setData([
+                    "id": user.id,
+                    "profileImageName": user.profileImageName,
+                    "profileImageURL": user.profileImageURL,
+                    "nickName": user.nickName,
+                    "userEmail": user.userEmail,
+                    "bookMarkedDiaries": user.bookMarkedDiaries,
+                    "bookMarkedSpot": user.bookMarkedSpot,
+                ]) { error in
+                    if let error = error {
+                        print(error)
+                        promise(.failure(FirebaseUserServiceError.updateUserListError))
+                    } else {
+                        promise(.success(()))
                     }
                 }
             }

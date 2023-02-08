@@ -13,12 +13,13 @@ struct DiaryDetailView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var commentStore: CommentStore
+    @EnvironmentObject var diaryStore: DiaryStore
+    @EnvironmentObject var diaryLikeStore: DiaryLikeStore
     
-    @State var diaryComment: String = ""
+    @State private var diaryComment: String = ""
+    
     //삭제 알림
     @State private var isShowingDeleteAlert = false
-    
-    @EnvironmentObject var diaryStore: DiaryStore
     
     @State var isBookmarked: Bool = false
     
@@ -26,38 +27,35 @@ struct DiaryDetailView: View {
     
     var body: some View {
         VStack {
-                ScrollView(showsIndicators: false) {
-                        LazyVStack(alignment: .leading) {
-                            diaryUserProfile
-                            diaryDetailImage
-                            Group {
-                                //                        diaryDetailTitle //본문에 빼고 타이틀 위로 올리기?
-                                diaryDetailContent
-                                diaryCampingLink
-                                diaryDetailInfo
-                                Divider()
-                                
-                                //                        diaryCommetView //기존 더미 댓글
-                                //                        List { //list로 댓글 삭제 기능 넣으려고 했는데 잘 안되네용ㅎㅎ
-                                ForEach(commentStore.comments) { comment in
-                                    if comment.diaryId == item.id {
-                                        DiaryCommentCellView(item: comment)
-                                    }
-                                }
-                                //                            .onDelete(perform: user.id == item.uid ? delete: nil)
-                                //                        }
-                            }
-                            .padding(.horizontal, UIScreen.screenWidth * 0.03)
+            ScrollView(showsIndicators: false) {
+                LazyVStack(alignment: .leading) {
+                    diaryUserProfile
+                    diaryDetailImage
+                    Group {
+                        diaryDetailTitle
+                        diaryDetailContent
+                        diaryCampingLink
+                        diaryDetailInfo
+                        Divider()
+                        
+                        //댓글
+                        ForEach(commentStore.commentList) { comment in
+                            DiaryCommentCellView(item: comment)
                         }
+                        //리스트로 삭제기능 넣으려고 함                         .onDelete(perform: user.id == item.uid ? delete: nil)
+                        //                        }
+                    }
+                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 }
+            }
             Divider()
             //댓글 작성
             diaryCommetInputView
         }
-        .navigationTitle(item.diaryTitle)
-        .task {
+        .navigationTitle("BOOTCAMPING")
+        .onAppear{
             isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.id)
-            commentStore.fetchComment()
+            commentStore.readCommentsCombine(diaryId: item.id)
         }
     }
 }
@@ -65,14 +63,9 @@ struct DiaryDetailView: View {
 
 private extension DiaryDetailView {
     
-    //글 작성 유저
-    var user: User {
-        wholeAuthStore.userList.filter { $0.id == Auth.auth().currentUser?.uid }.first!
-    }
-    
     //MARK: - 댓글 삭제 기능
     func delete(at offsets: IndexSet) {
-        commentStore.comments.remove(atOffsets: offsets)
+        commentStore.commentList.remove(atOffsets: offsets)
     }
     
     //글 작성 유저 닉네임 변수
@@ -124,7 +117,7 @@ private extension DiaryDetailView {
         .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
-
+    
     //MARK: - Alert Menu 버튼
     var alertMenu: some View {
         //MARK: - ... 버튼입니다.
@@ -143,6 +136,7 @@ private extension DiaryDetailView {
             
         } label: {
             Image(systemName: "ellipsis")
+                .font(.title)
         }
         //MARK: - 일기 삭제 알림
         .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
@@ -230,6 +224,7 @@ private extension DiaryDetailView {
                             .font(.footnote)
                     }
                     .font(.subheadline)
+                    .foregroundColor(.secondary)
                 }
                 .foregroundColor(.bcBlack)
             }
@@ -245,28 +240,42 @@ private extension DiaryDetailView {
     }
     
     
+    
     //MARK: - 좋아요, 댓글, 타임스탬프
     var diaryDetailInfo: some View {
         HStack {
             Button {
-                //TODO: -좋아요 배열에 유저 추가되도록 연동
+                //좋아요 버튼, 카운드
+                if item.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") {
+                    diaryLikeStore.removeDiaryLikeCombine(diaryId: item.id)
+                } else {
+                    diaryLikeStore.addDiaryLikeCombine(diaryId: item.id)
+                }
+                diaryStore.readDiarysCombine()
             } label: {
-                Text("좋아요 \(item.diaryLike.count)")
-                    .font(.body)
-                    .padding(.horizontal, 3)
+                Image(systemName: item.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? "flame.fill" : "flame")
+                    .foregroundColor(item.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? .red : .bcBlack)
             }
+            Text("\(item.diaryLike.count)")
+            
+            //댓글 버튼
             Button {
-                //TODO: -댓글 연동, 누르면 키보드 나오면서 댓글 쓸 수 있도록 수정
+                //"댓글 작성 버튼으로 이동"
             } label: {
-                Text("댓글 8")
-                    .font(.body)
-                    .padding(.horizontal, 3)
+                Image(systemName: "message")
             }
+            Text("\(commentStore.commentList.count)")
+                .font(.body)
+                .padding(.horizontal, 3)
+            
             Spacer()
+            //작성 경과시간
             Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
+                .font(.footnote)
+                .foregroundColor(.secondary)
         }
         .foregroundColor(.bcBlack)
-        .font(.system(.subheadline))
+        .font(.title3)
         .padding(.vertical, 5)
     }
     
@@ -279,8 +288,9 @@ private extension DiaryDetailView {
             TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
             
             Button {
-                commentStore.addComment(Comment(id: UUID().uuidString, diaryId: item.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: userNickName ?? "", profileImage: userImage ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp()))
-                commentStore.fetchComment()
+                commentStore.addCommentCombine(comment: (Comment(id: UUID().uuidString, diaryId: item.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: userNickName ?? "", profileImage: userImage ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp())), diaryId: item.id)
+                commentStore.readCommentsCombine(diaryId: item.id)
+                diaryComment = ""
                 //todo 버튼 누르면 댓글 젤 밑으로 화면 이동
                 
             } label: {
@@ -298,9 +308,11 @@ private extension DiaryDetailView {
 struct DiaryDetailView_Previews: PreviewProvider {
     static var previews: some View {
         DiaryDetailView(item: Diary(id: "", uid: "", diaryUserNickName: "닉네임", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "용감하고 인류의 그들의 따뜻한 있음으로써 그러므로 봄바람이다. 힘차게 밥을 가슴이 용감하고 튼튼하며, 그들의 보는 새가 인간의 칼이다. 충분히 인생을 못할 곧 우리는 청춘은 인간의 황금시대다. 지혜는 찾아다녀도, 것은 못하다 어디 곳으로 꽃 봄날의 보라. 우는 예가 이상은 온갖 그것은 품었기 얼음 힘있다. 투명하되 그들의 밥을 창공에 주는 이상, 이상의 힘있다. 새 피가 가장 놀이 부패뿐이다. 그들은 원질이 든 무엇을 되려니와, 불어 우리는 노래하며 것이다. 대한 청춘의 곳이 바이며, 충분히 방황하였으며, 있는가? 그들은 거친 위하여, 살 때문이다.", diaryImageNames: [""], diaryImageURLs: [
-            "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "", diaryIsPrivate: true))
+            "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: ["동훈"], diaryIsPrivate: true))
         .environmentObject(WholeAuthStore())
         .environmentObject(DiaryStore())
         .environmentObject(BookmarkStore())
+        .environmentObject(DiaryLikeStore())
+        .environmentObject(CommentStore())
     }
 }

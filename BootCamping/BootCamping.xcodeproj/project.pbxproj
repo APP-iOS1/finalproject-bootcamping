@@ -70,6 +70,8 @@
 		790B62F4297A28E00048C110 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62F3297A28E00048C110 /* KakaoSDKUser */; };
 		792C42422990CAD200B7772C /* PrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42412990CAD200B7772C /* PrivacyView.swift */; };
 		792C42442990D0A800B7772C /* PasswordChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42432990D0A800B7772C /* PasswordChangeView.swift */; };
+		7C20C300299380DF0030CB21 /* FirebaseDiaryLikeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C20C2FF299380DF0030CB21 /* FirebaseDiaryLikeService.swift */; };
+		7C20C30229938CC90030CB21 /* DiaryLIkeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C20C30129938CC90030CB21 /* DiaryLIkeStore.swift */; };
 		7C3E8BDA2992222600A6C1D6 /* DiaryCommentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */; };
 		7C3FC49729877C7200E96A01 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7C3FC49629877C7200E96A01 /* SDWebImageSwiftUI */; };
 		7C6A94AC2992BE6900B0E125 /* DiaryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */; };
@@ -151,6 +153,8 @@
 		790B62F5297A2D710048C110 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		792C42412990CAD200B7772C /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
 		792C42432990D0A800B7772C /* PasswordChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeView.swift; sourceTree = "<group>"; };
+		7C20C2FF299380DF0030CB21 /* FirebaseDiaryLikeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDiaryLikeService.swift; sourceTree = "<group>"; };
+		7C20C30129938CC90030CB21 /* DiaryLIkeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryLIkeStore.swift; sourceTree = "<group>"; };
 		7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCommentCellView.swift; sourceTree = "<group>"; };
 		7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryEmptyView.swift; sourceTree = "<group>"; };
 		7C715C972977E056009BC678 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
@@ -303,11 +307,12 @@
 			isa = PBXGroup;
 			children = (
 				AD672120298CA983008C34B3 /* WholeAuthStore.swift */,
+				CA729F422988FCBA00CCC3BB /* ScheduleStore.swift */,
 				790B62DA29792B4C0048C110 /* CommentStore.swift */,
 				639129EE29792CB700F6EDD7 /* CapmingSpotStore.swift */,
-				CA729F422988FCBA00CCC3BB /* ScheduleStore.swift */,
 				7CC3AD4D29890970002EF992 /* DiaryStore.swift */,
 				7CD6570D298D07EB00889FF3 /* BookmarkStore.swift */,
+				7C20C30129938CC90030CB21 /* DiaryLIkeStore.swift */,
 				7CD6570A298C91B000889FF3 /* LocalAuthentication.swift */,
 			);
 			path = ViewModels;
@@ -428,6 +433,7 @@
 				AD672124298CE2BB008C34B3 /* AuthEmailService.swift */,
 				ADDB3C0E2990C12600EF82E3 /* AuthKakaoService.swift */,
 				CA27A62C298CE95500A6AEE5 /* FirebaseBookmarkService.swift */,
+				7C20C2FF299380DF0030CB21 /* FirebaseDiaryLikeService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -574,6 +580,7 @@
 				6E688E3C29923542006DCEE5 /* MailView.swift in Sources */,
 				7CD6570B298C91B000889FF3 /* LocalAuthentication.swift in Sources */,
 				63AF45AF2977CDB40014B1E1 /* Date.swift in Sources */,
+				7C20C30229938CC90030CB21 /* DiaryLIkeStore.swift in Sources */,
 				63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */,
 				63F8426C298FB5FF006A9433 /* CampingSpotListRaw.swift in Sources */,
 				792C42442990D0A800B7772C /* PasswordChangeView.swift in Sources */,
@@ -611,6 +618,7 @@
 				CA27A63A29937DB400A6AEE5 /* LocalNotification.swift in Sources */,
 				7C3E8BDA2992222600A6C1D6 /* DiaryCommentCellView.swift in Sources */,
 				CA27A627298CA81700A6AEE5 /* TaskCellView.swift in Sources */,
+				7C20C300299380DF0030CB21 /* FirebaseDiaryLikeService.swift in Sources */,
 				CA27A6252989FCD700A6AEE5 /* SearchCampingSpotListView.swift in Sources */,
 				7CFCE12D2987549F00E196AF /* WeeklyPopulerCampingView.swift in Sources */,
 				63AF45D82977CE4C0014B1E1 /* BookmarkCellView.swift in Sources */,

@@ -79,7 +79,9 @@ struct ContentView: View {
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
-                withAnimation { isLoading.toggle() }
+                wholeAuthStore.getUserInfo(userUID: Auth.auth().currentUser?.uid ?? "") {
+                    withAnimation { isLoading.toggle() }
+                }
             }) }
         .fullScreenCover(isPresented: $isFirstLaunching) {
             OnboardingTabView(isFirstLaunching: $isFirstLaunching)

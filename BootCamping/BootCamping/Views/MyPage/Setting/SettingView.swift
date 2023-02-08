@@ -24,7 +24,7 @@ struct SettingView: View {
             NavigationLink(destination: EmptyView()) {
                 Text("공지사항")
             }
-            NavigationLink(destination: EmptyView()) {
+            NavigationLink(destination: ReportUserView(placeholder: "", options:[])) {
                 Text("자주 묻는 질문")
             }
             NavigationLink(destination: ContactUsView()) {

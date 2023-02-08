@@ -17,10 +17,13 @@ struct ProfileSettingView: View {
     @State private var imagePickerPresented = false // 이미지 피커를 띄울 변수
     @State private var selectedImage: UIImage?      // 이미지 피커에서 선택한 이미지저장. UIImage 타입
     @State private var profileImage: Data?          // selectedImage를 Data 타입으로 저장
+    @Environment(\.dismiss) private var dismiss
     
     var user: User
     
     @State private var updateNickname: String = ""
+    
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
     
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -86,7 +89,8 @@ extension ProfileSettingView {
     private var editButton : some View {
         Button {
             // TODO: UserInfo 수정하기
-            
+            wholeAuthStore.updateUserCombine(image: profileImage ?? Data(), user: User(id: user.id, profileImageName: user.profileImageName, profileImageURL: user.profileImageURL, nickName: updateNickname, userEmail: user.userEmail, bookMarkedDiaries: user.bookMarkedDiaries, bookMarkedSpot: user.bookMarkedSpot))
+            dismiss()
         } label: {
             Text("수정")
                 .modifier(GreenButtonModifier())
@@ -133,5 +137,6 @@ struct ImagePicker: UIViewControllerRepresentable {
 struct ProfileSettingView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "chasomin", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
+            .environmentObject(WholeAuthStore())
     }
 }

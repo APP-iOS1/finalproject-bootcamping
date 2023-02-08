@@ -20,7 +20,6 @@ struct ContentView: View {
     
     //탭뷰 화면전환 셀렉션 변수
     @EnvironmentObject var tabSelection: TabSelector
-    //diaryStore.getData() 위한 변수
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var scheduleStore: ScheduleStore
     @State var isLoading: Bool = true

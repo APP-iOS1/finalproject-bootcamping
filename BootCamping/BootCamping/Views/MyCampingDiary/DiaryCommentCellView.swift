@@ -33,9 +33,6 @@ struct DiaryCommentCellView: View {
                     Text(item.commentContent)
                 }
             }
-//            .onAppear {
-//                wholeAuthStore.readUserListCombine()
-//            }
     }
 }
 

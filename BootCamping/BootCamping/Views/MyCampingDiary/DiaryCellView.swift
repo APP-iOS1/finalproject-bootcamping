@@ -14,7 +14,7 @@ struct DiaryCellView: View {
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
 
-//    @State var isBookmarked: Bool = false
+    @State var isBookmarked: Bool = false
     
     //선택한 다이어리 정보 변수입니다.
     var item: Diary
@@ -46,8 +46,7 @@ struct DiaryCellView: View {
             .foregroundColor(.bcBlack)
         }
         .onAppear {
-//            isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
-//            wholeAuthStore.readUserListCombine()
+            isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.id)
         }
     }
 }
@@ -90,22 +89,22 @@ private extension DiaryCellView {
                     .scaledToFill()
                     .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     .clipped()
-//                //MARK: - 북마크 버튼
-//                    .overlay(alignment: .topTrailing){
-//                        Button {
-//                            isBookmarked.toggle()
-//                            if isBookmarked{
-//                                bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
-//                            } else{
-//                                bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
-//                            }
-//                        } label: {
-//                            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-//                        }
-//                        .foregroundColor(.white)
-//                        .shadow(radius: 5)
-//                        .padding()
-//                    }
+                //MARK: - 북마크 버튼
+                    .overlay(alignment: .topTrailing){
+                        Button {
+                            isBookmarked.toggle()
+                            if isBookmarked{
+                                bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
+                            } else{
+                                bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
+                            }
+                        } label: {
+                            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                        }
+                        .foregroundColor(.white)
+                        .shadow(radius: 5)
+                        .padding()
+                    }
                 
             }
         }

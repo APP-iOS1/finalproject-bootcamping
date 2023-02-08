@@ -24,14 +24,15 @@ struct CampingSpotListView: View {
                     LazyVStack {
                         ForEach(0...2, id: \.self) { _ in
                             EmptyCampingSpotListCell()
-                                .task {
-                                    campingSpotStore.readCampingSpotListCombine(readDocument: readDocuments)
-                                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                                        if !campingSpotStore.campingSpotList.isEmpty {
-                                            isLoading.toggle()
-                                        }
-                                    }
-                                }
+                                
+                        }
+                    }
+                    .task {
+                        campingSpotStore.readCampingSpotListCombine(readDocument: readDocuments)
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                            if !campingSpotStore.campingSpotList.isEmpty {
+                                isLoading.toggle()
+                            }
                         }
                     }
                 } else {
@@ -43,10 +44,10 @@ struct CampingSpotListView: View {
                                 CampingSpotListRaw(item: campingSpotStore.campingSpotList[index])
                                     .padding(.bottom,40)
                             }
-                            .onAppear {
+                            .task {
                                 if index == campingSpotStore.campingSpotList.count - 1 {
                                     Task {
-                                        campingSpotStore.readCampingSpotListCombine(readDocument: readDocuments)
+                                        campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotLocation: readDocuments.campingSpotLocation, campingSpotView: readDocuments.campingSpotView, campingSpotName: readDocuments.campingSpotName, campingSpotContenId: readDocuments.campingSpotContenId, lastDoc: campingSpotStore.lastDoc))
                                     }
                                 }
                             }

@@ -598,6 +598,7 @@ struct FirebaseCampingSpotService {
                             }
                             readDocument.lastDoc = snapshot.documents.last!
                             readDocument.campingSpots = campingSpots
+                            print("##########################이어서###############")
                             promise(.success(readDocument))
                         }
                 }

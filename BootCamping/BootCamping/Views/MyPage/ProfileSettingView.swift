@@ -16,9 +16,7 @@ struct ProfileSettingView: View {
     @State private var selectedImage: UIImage?      // 이미지 피커에서 선택한 이미지저장. UIImage 타입
     @State private var profileImage: Data?          // selectedImage를 Data 타입으로 저장
     @Environment(\.dismiss) private var dismiss
-    
-    var user: User
-    
+        
     @State private var updateNickname: String = ""
     
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
@@ -89,7 +87,7 @@ extension ProfileSettingView {
             Text("닉네임")
                 .font(.title3)
                 .bold()
-            TextField("닉네임", text: $updateNickname,prompt: Text("\(user.nickName)"))
+            TextField("닉네임", text: $updateNickname,prompt: Text("\(wholeAuthStore.currnetUserInfo!.nickName)"))
                 .textFieldStyle(.roundedBorder)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.never)
@@ -101,7 +99,7 @@ extension ProfileSettingView {
     private var editButton : some View {
         Button {
             // TODO: UserInfo 수정하기
-            wholeAuthStore.updateUserCombine(image: profileImage ?? Data(), user: User(id: user.id, profileImageName: user.profileImageName, profileImageURL: user.profileImageURL, nickName: updateNickname, userEmail: user.userEmail, bookMarkedDiaries: user.bookMarkedDiaries, bookMarkedSpot: user.bookMarkedSpot))
+            wholeAuthStore.updateUserCombine(image: profileImage, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: wholeAuthStore.currnetUserInfo!.profileImageURL, nickName: updateNickname, userEmail: wholeAuthStore.currnetUserInfo!.userEmail, bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot))
             dismiss()
         } label: {
             Text("수정")
@@ -146,9 +144,9 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 }
 
-struct ProfileSettingView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "chasomin", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
-            .environmentObject(WholeAuthStore())
-    }
-}
+//struct ProfileSettingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "chasomin", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
+//            .environmentObject(WholeAuthStore())
+//    }
+//}

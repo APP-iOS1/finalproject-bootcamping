@@ -91,8 +91,10 @@ class WholeAuthStore: ObservableObject {
     init() {
         currentUser = Auth.auth().currentUser
         userList = []
+        currnetUserInfo = userInit
     }
     
+    let userInit: User = User(id: "", profileImageName: "", profileImageURL: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [])
     let database = Firestore.firestore()
     
     private var cancellables = Set<AnyCancellable>()
@@ -115,6 +117,7 @@ class WholeAuthStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished get UserList")
+                    print("여기야여기!!!!!!!!!!!!!!!!!!!!!! \(self.userList)")
                     return
                 }
             } receiveValue: { users in
@@ -138,8 +141,14 @@ class WholeAuthStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished create User")
-                    self.readUserListCombine()
-                    self.getUserInfo(userUID: user.id)
+                    self.getUserInfo(userUID: (Auth.auth().currentUser?.uid ?? "")) {
+                        self.readUserListCombine()
+                        if self.loginPlatform != .email {
+                            withAnimation(.easeInOut) {
+                                self.isSignIn = true
+                            }
+                        }
+                    }
                     return
                 }
             } receiveValue: { _ in
@@ -150,7 +159,7 @@ class WholeAuthStore: ObservableObject {
     
     // MARK: updateUserCombine 유저 업데이트
     
-    func updateUserCombine(image: Data, user: User) {
+    func updateUserCombine(image: Data?, user: User) {
         FirebaseUserService().updateUserService(image: image, user: user)
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -163,7 +172,9 @@ class WholeAuthStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished update User")
-                    self.readUserListCombine()
+                    self.getUserInfo(userUID: Auth.auth().currentUser?.uid ?? ""){
+                        self.readUserListCombine()
+                    }
                     return
                 }
             } receiveValue: { _ in
@@ -256,6 +267,11 @@ class WholeAuthStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished SingIn User")
+                    return
+                }
+            } receiveValue: { user in
+                self.currentUser = user
+                self.getUserInfo(userUID: user.uid) {
                     self.isLogin = true
                     self.state = .signIn
                     self.loginState = .success
@@ -263,11 +279,7 @@ class WholeAuthStore: ObservableObject {
                     withAnimation(.easeInOut) {
                         self.isSignIn = true
                     }
-                    return
                 }
-            } receiveValue: { user in
-                self.currentUser = user
-                self.getUserInfo(userUID: userEmail)
             }
             .store(in: &cancellables)
     }
@@ -283,7 +295,7 @@ class WholeAuthStore: ObservableObject {
             self.loginState = .none
             self.loginPlatform = .email
             self.currentUser = nil
-            self.currnetUserInfo = nil
+            self.currnetUserInfo = userInit
             withAnimation(.easeInOut) {
                 self.isSignIn = false
             }
@@ -394,15 +406,12 @@ class WholeAuthStore: ObservableObject {
                     } else {
                         if snapshot?.documents.count == 0 {
                             print("파이어베이스에 저장된 유저정보가 없습니다.")
-                            self.createUserCombine(user: User(id: (result.user.uid), profileImageName: "", profileImageURL: "", nickName: (result.user.email!), userEmail: (result.user.email!), bookMarkedDiaries: [], bookMarkedSpot: []))
                             self.currentUser = result.user
                             self.isLogin = true
                             self.state = .signIn
                             self.loginState = .success
                             self.loginPlatform = .google
-                            withAnimation(.easeInOut) {
-                                self.isSignIn = true
-                            }
+                            self.createUserCombine(user: User(id: (result.user.uid), profileImageName: "", profileImageURL: "", nickName: (result.user.email!), userEmail: (result.user.email!), bookMarkedDiaries: [], bookMarkedSpot: []))
                         } else {
                             print("파이어베이스에 저장된 유저정보가 있습니다..")
                             self.currentUser = result.user
@@ -410,9 +419,14 @@ class WholeAuthStore: ObservableObject {
                             self.state = .signIn
                             self.loginState = .success
                             self.loginPlatform = .google
-                            self.getUserInfo(userUID: result.user.uid)
-                            withAnimation(.easeInOut) {
-                                self.isSignIn = true
+                            self.getUserInfo(userUID: result.user.uid) {
+                                self.isLogin = true
+                                self.state = .signIn
+                                self.loginState = .success
+                                self.loginPlatform = .google
+                                withAnimation(.easeInOut) {
+                                    self.isSignIn = true
+                                }
                             }
                         }
                     }
@@ -435,7 +449,7 @@ class WholeAuthStore: ObservableObject {
             self.loginState = .none
             self.loginPlatform = .none
             self.currentUser = nil
-            self.currnetUserInfo = nil
+            self.currnetUserInfo = userInit
             withAnimation(.easeInOut) {
                 self.isSignIn = false
             }
@@ -462,13 +476,6 @@ class WholeAuthStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished SignIn User")
-                    self.isLogin = true
-                    self.state = .signIn
-                    self.loginState = .success
-                    self.loginPlatform = .kakao
-                    withAnimation(.easeInOut) {
-                        self.isSignIn = true
-                    }
                     return
                 }
             } receiveValue: { user in
@@ -483,10 +490,22 @@ class WholeAuthStore: ObservableObject {
                     } else {
                         if snapshot?.documents.count == 0 {
                             print("파이어베이스에 유저정보가 없습니다.")
+                            self.isLogin = true
+                            self.state = .signIn
+                            self.loginState = .success
+                            self.loginPlatform = .kakao
                             self.createUserCombine(user: User(id: (user.uid), profileImageName: "", profileImageURL: "", nickName: (user.email)!, userEmail: (user.email!), bookMarkedDiaries: [], bookMarkedSpot: []))
                         } else {
                             print("파이어베이스에 유저정보가 있습니다..")
-                            self.getUserInfo(userUID: user.uid)
+                            self.getUserInfo(userUID: user.uid) {
+                                self.isLogin = true
+                                self.state = .signIn
+                                self.loginState = .success
+                                self.loginPlatform = .kakao
+                                withAnimation(.easeInOut) {
+                                    self.isSignIn = true
+                                }
+                            }
                         }
                     }
                 }
@@ -513,7 +532,7 @@ class WholeAuthStore: ObservableObject {
                     self.loginState = .none
                     self.loginPlatform = .none
                     self.currentUser = nil
-                    self.currnetUserInfo = nil
+                    self.currnetUserInfo = self.userInit
                     withAnimation(.easeInOut) {
                         self.isSignIn = false
                     }
@@ -565,23 +584,30 @@ class WholeAuthStore: ObservableObject {
                 } else {
                     if snapshot?.documents.count == 0 {
                         print("파이어베이스에 유저정보가 없습니다.")
+                        self.currentUser = result?.user
+                        self.isLogin = true
+                        self.state = .signIn
+                        self.loginState = .success
+                        self.loginPlatform = .apple
                         self.createUserCombine(user: User(id: (result?.user.uid)!, profileImageName: "", profileImageURL: "", nickName: String(describing: (result?.user.email)!), userEmail: String(describing: (result?.user.email)!), bookMarkedDiaries: [], bookMarkedSpot: []))
                     } else {
                         print("파이어베이스에 유저정보가 있습니다..")
-                        self.getUserInfo(userUID: (result?.user.uid)!)
+                        self.getUserInfo(userUID: (result?.user.uid)!) {
+                            self.currentUser = result?.user
+                            self.isLogin = true
+                            self.state = .signIn
+                            self.loginState = .success
+                            self.loginPlatform = .apple
+                            withAnimation(.easeInOut) {
+                                self.isSignIn = true
+                            }
+                        }
                     }
                 }
             }
             
             // Directing User To Hom page...
-            self.currentUser = result?.user
-            self.isLogin = true
-            self.state = .signIn
-            self.loginState = .success
-            self.loginPlatform = .apple
-            withAnimation(.easeInOut) {
-                self.isSignIn = true
-            }
+
         }
     }
     
@@ -594,7 +620,7 @@ class WholeAuthStore: ObservableObject {
             self.loginState = .none
             self.loginPlatform = .none
             self.currentUser = nil
-            self.currnetUserInfo = nil
+            self.currnetUserInfo = userInit
             withAnimation(.easeInOut) {
                 self.isSignIn = false
             }
@@ -627,7 +653,7 @@ class WholeAuthStore: ObservableObject {
                         self.loginState = .none
                         self.loginPlatform = .none
                         self.currentUser = nil
-                        self.currnetUserInfo = nil
+                        self.currnetUserInfo = self.userInit
                         withAnimation(.easeInOut) {
                             self.isSignIn = false
                         }
@@ -640,27 +666,31 @@ class WholeAuthStore: ObservableObject {
     
     // MARK: - 파이어베이스 유저 정보 읽기
 
-    func getUserInfo(userUID: String) {
-        let database = Firestore.firestore()
-        database.collection("UserList").document(userUID).getDocument { document, error in
-            if let error = error {
-                print(error)
-                return
+    func getUserInfo(userUID: String, completion: @escaping () -> ()) {
+        if userUID != "" {
+            let database = Firestore.firestore()
+            database.collection("UserList").document(userUID).getDocument { document, error in
+                if let error = error {
+                    print(error)
+                    return
+                }
+                guard let document = document else { return }
+                
+                let docData = document.data()
+                
+                let id: String = docData?["id"] as? String ?? ""
+                let profileImageName: String = docData?["profileImageName"] as? String ?? ""
+                let profileImageURL: String = docData?["profileImageURL"] as? String ?? ""
+                let nickName: String = docData?["nickName"] as? String ?? ""
+                let userEmail: String = docData?["userEmail"] as? String ?? ""
+                let bookMarkedDiaries: [String] = docData?["bookMarkedDiaries"] as? [String] ?? []
+                let bookMarkedSpot: [String] = docData?["bookMarkedSpot"] as? [String] ?? []
+                let user: User = User(id: id, profileImageName: profileImageName, profileImageURL: profileImageURL, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries, bookMarkedSpot: bookMarkedSpot)
+                self.currnetUserInfo = user
+                completion()
             }
-            guard let document = document else { return }
-            
-            let docData = document.data()
-            
-            let id: String = docData?["id"] as? String ?? ""
-            let profileImageName: String = docData?["profileImageName"] as? String ?? ""
-            let profileImageURL: String = docData?["profileImageURL"] as? String ?? ""
-            let nickName: String = docData?["nickName"] as? String ?? ""
-            let userEmail: String = docData?["userEmail"] as? String ?? ""
-            let bookMarkedDiaries: [String] = docData?["bookMarkedDiaries"] as? [String] ?? []
-            let bookMarkedSpot: [String] = docData?["bookMarkedSpot"] as? [String] ?? []
-            let user: User = User(id: id, profileImageName: profileImageName, profileImageURL: profileImageURL, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries, bookMarkedSpot: bookMarkedSpot)
-            self.currnetUserInfo = user
-            return
+        } else {
+            completion()
         }
     }
 }

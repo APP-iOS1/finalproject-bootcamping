@@ -101,7 +101,10 @@ extension BookmarkStore{
     // MARK: - 북마크 된 다이어리인지 확인하기
     func checkBookmarkedDiary(diaryId: String) -> Bool {
         if let currentUser = super.currentUser {
+            print("currentUser \(currentUser)")
+            print("super.userList\(super.userList)")
             for user in super.userList {
+                print("user \(user)")
                 if user.id == currentUser.uid {
                     if user.bookMarkedDiaries.isEmpty { return false }
                     // TODO: - 자기가 쓴 다이어리도 북마크가 가능하게 할 것인가,, !

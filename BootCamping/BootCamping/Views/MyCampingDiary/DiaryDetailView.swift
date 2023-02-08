@@ -55,8 +55,9 @@ struct DiaryDetailView: View {
             diaryCommetInputView
         }
         .navigationTitle(item.diaryTitle)
-        .onAppear{
+        .task {
             isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
+            print(isBookmarked)
             commentStore.fetchComment()
         }
     }

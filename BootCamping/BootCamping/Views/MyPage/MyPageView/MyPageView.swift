@@ -64,9 +64,9 @@ struct MyPageView: View {
             }
         .navigationBarTitleDisplayMode(.inline)
         }
-        .onAppear{
-            wholeAuthStore.readUserListCombine()
-        }
+//        .onAppear{
+//            wholeAuthStore.readUserListCombine()
+//        }
     }
     
 }

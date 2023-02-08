@@ -8,6 +8,7 @@
 import SwiftUI
 import PhotosUI
 import Firebase
+import Photos
 
 //TODO: 텍스트 필드 입력할 때 화면 따라가기,,,
 struct DiaryAddView: View {
@@ -90,10 +91,11 @@ private extension DiaryAddView {
     
     //MARK: 이미지 피커
     private var imagePicker: some View {
-        Button(action: {
-            imagePickerPresented.toggle()
-        }, label: {
-            HStack {
+        HStack{
+            Button(action: {
+                imagePickerPresented.toggle()
+                checkAlbumPermission()
+            }, label: {
                 ZStack {
                     Image(systemName: "plus")
                     VStack{
@@ -108,40 +110,41 @@ private extension DiaryAddView {
                         .stroke(.gray, lineWidth: 1)
                 }
                 .padding(UIScreen.screenWidth * 0.005)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack{
-                        if diaryImages == nil {
-                            
-                            Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "")
-                                .foregroundColor(.secondary)
-                                .opacity(0.5)
-                                .padding(.leading, UIScreen.screenWidth * 0.05)
-                            
-                        } else{
-                            ForEach(Array(zip(0..<(diaryImages?.count ?? 0), diaryImages ?? [Data()])), id: \.0) { index, image in
-                                Image(uiImage: UIImage(data: image)!)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
-                                    .clipped()
-                                    .overlay(alignment: .topLeading) {
-                                        Text("대표이미지")
-                                            .padding(2)
-                                            .font(.caption2)
-                                            .foregroundColor(Color.white)
-                                            .background(Color.bcGreen)
-                                            .opacity(index == 0 ? 1 : 0)
-                                    }
-                            }
+                
+            })
+            .sheet(isPresented: $imagePickerPresented,
+                   onDismiss: loadData,
+                   content: { PhotoPicker(images: $selectedImages, selectionLimit: 10) })
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack{
+                    if diaryImages == nil {
+                        
+                        Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "")
+                            .foregroundColor(.secondary)
+                            .opacity(0.5)
+                            .padding(.leading, UIScreen.screenWidth * 0.05)
+                        
+                    } else{
+                        ForEach(Array(zip(0..<(diaryImages?.count ?? 0), diaryImages ?? [Data()])), id: \.0) { index, image in
+                            Image(uiImage: UIImage(data: image)!)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
+                                .clipped()
+                                .overlay(alignment: .topLeading) {
+                                    Text("대표이미지")
+                                        .padding(2)
+                                        .font(.caption2)
+                                        .foregroundColor(Color.white)
+                                        .background(Color.bcGreen)
+                                        .opacity(index == 0 ? 1 : 0)
+                                }
                         }
                     }
                 }
             }
-        })
+        }
         .padding(.bottom)
-        .sheet(isPresented: $imagePickerPresented,
-               onDismiss: loadData,
-               content: { PhotoPicker(images: $selectedImages, selectionLimit: 10) })
     }
     // selectedImage: UIImage 타입을 Data타입으로 저장하는 함수
     func loadData() {
@@ -165,6 +168,11 @@ private extension DiaryAddView {
                 .padding( UIScreen.screenWidth * 0.005)
                 .padding(.bottom)
                 .submitLabel(.done) //작성 완료하면 키보드 return 버튼이 파란색 done으로 바뀜
+                .onChange(of: diaryTitle) { newValue in
+                    if newValue.count > 20 {
+                        diaryTitle = String(newValue.prefix(20))
+                    }
+                }
             
         } header: {
             Text("제목")
@@ -283,7 +291,25 @@ private extension DiaryAddView {
             dismissKeyboard()
         }
     }
+    
+    // MARK: 앨범 접근 권한 함수.
+    func checkAlbumPermission(){
+            PHPhotoLibrary.requestAuthorization( { status in
+                switch status{
+                case .authorized:
+                    print("Album: 권한 허용")
+                case .denied:
+                    print("Album: 권한 거부")
+                case .restricted, .notDetermined:
+                    print("Album: 선택하지 않음")
+                default:
+                    break
+                }
+            })
+        }
+
 }
+
 
 // MARK: 이미지피커 여러 장 고르기
 struct PhotoPicker: UIViewControllerRepresentable {

@@ -22,12 +22,11 @@ struct WeeklyPopulerCampingView: View {
                             NavigationLink {
                                 DiaryDetailView(item: item)
                             } label: {
-                                ZStack(alignment: .leading) {
+                                ZStack(alignment: .topLeading) {
                                     PhotoCardFrame(image: item.diaryImageURLs[0])
                                     LinearGradient(gradient: Gradient(colors: [Color.bcBlack.opacity(0.3), Color.clear]), startPoint: .top, endPoint: .bottom)
                                         .cornerRadius(20)
                                     PhotoMainStory(item: item)
-                                        .offset(y: -(UIScreen.screenHeight * 0.2))
                                 }
                                 .modifier(PhotoCardModifier())
                             }
@@ -55,6 +54,7 @@ struct PhotoMainStory: View {
                 Text("\(item.diaryVisitedDate.getKoreanDate())")
                     .font(.subheadline)
                     .padding(.bottom, 0.01)
+                    .padding(.top, 80)
                 
                 //TODO: -캠핑장 이름 연결
                 Text("난지캠핑장")
@@ -64,11 +64,18 @@ struct PhotoMainStory: View {
                 
                 Text(item.diaryTitle)
                     .font(.title2)
+                    .multilineTextAlignment(.leading)
                     .fontWeight(.bold)
                     .padding(.bottom, 0.01)
+                HStack{
+                    Text("by")
+                        .bold()
+                        .padding(.trailing, -5)
+                    Text("\(item.diaryUserNickName)")
+                        .lineLimit(1)
+                }
+                .font(.subheadline)
                 
-                Text("by \(item.diaryUserNickName)")
-                    .font(.subheadline)
             }
             .foregroundColor(.white)
             .kerning(-0.7)
@@ -92,10 +99,14 @@ struct PhotoCardFrame: View {
             .clipped()
             .cornerRadius(20)
             .overlay(alignment: .bottomTrailing, content: {
-                Text("자세히 보기 >")
-                    .font(.system(.subheadline, weight: .bold))
-                    .foregroundColor(.white)
-                    .padding()
+                HStack{
+                    Text("자세히 보기")
+                        .font(.system(.subheadline, weight: .bold))
+                        .foregroundColor(.white)
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.white)
+                }
+                .padding()
             })
     }
 }

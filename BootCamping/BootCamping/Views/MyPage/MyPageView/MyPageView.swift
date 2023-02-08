@@ -15,8 +15,8 @@ enum TapMypage : String, CaseIterable {
 
 // MARK: - 마이페이지 첫 화면에 나타나는 뷰
 struct MyPageView: View {
-    @EnvironmentObject var authStore: AuthStore
-    
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+
     @State private var selectedPicker2: TapMypage = .myCamping
     //로그인 유무 함수
     @AppStorage("login") var isSignIn: Bool?

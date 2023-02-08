@@ -18,8 +18,6 @@ import AuthenticationServices
 struct LoginView: View {
     @AppStorage("login") var isSignIn: Bool?
     
-    @EnvironmentObject var authStore: AuthStore
-    @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     
     
@@ -148,6 +146,6 @@ extension LoginView {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
-            .environmentObject(AuthStore())
+            .environmentObject(WholeAuthStore())
     }
 }

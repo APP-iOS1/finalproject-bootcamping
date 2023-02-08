@@ -16,8 +16,8 @@ struct LoginPasswordView: View {
     
     @AppStorage("login") var isSignIn: Bool?
     
-    @EnvironmentObject var authStore: AuthStore
-    
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+
     var trimUserEmail: String {
         userEmail.trimmingCharacters(in: .whitespaces)
     }
@@ -79,12 +79,12 @@ extension LoginPasswordView {
             }
     }
     
-    // 최종 로그인 버튼
+    // 최종 로그인 버튼 -> 수정필요(버튼)
     var loginButton: some View {
         Button {
             Task {
-                try await authStore.authSignIn(userEmail: userEmail, password: password)
-                if authStore.isLogin {
+                wholeAuthStore.authSignInCombine(userEmail: userEmail, password: password)
+                if wholeAuthStore.isLogin {
                     isSignIn = true
                 } else {
                     isShowingAlert.toggle()

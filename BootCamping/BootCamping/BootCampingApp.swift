@@ -84,14 +84,11 @@ struct BootCampingApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(TabSelector())
-                .environmentObject(AuthStore())
                 .environmentObject(DiaryStore())
-                .environmentObject(KakaoAuthStore())
                 .environmentObject(CampingSpotStore())
                 .environmentObject(ScheduleStore())
                 .environmentObject(FaceId())
                 .environmentObject(BookmarkStore())
-                .environmentObject(BookmarkSpotStore())
                 .environmentObject(WholeAuthStore())
                 .environmentObject(CommentStore())
                 .onOpenURL { url in

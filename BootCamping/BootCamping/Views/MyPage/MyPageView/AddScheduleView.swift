@@ -11,8 +11,7 @@ struct AddScheduleView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var scheduleStore: ScheduleStore
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var authStore: AuthStore
-    
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @State var startDate = Date()
     @State var endDate = Date()
     @State private var campingSpot: String = ""
@@ -40,7 +39,6 @@ struct AddScheduleView: View {
     //onAppear 시 캠핑장 데이터 패치
     @EnvironmentObject var campingSpotStore: CampingSpotStore
     @State var page: Int = 2
-    var fetchData: FetchData = FetchData()
 
     var body: some View {
         // FIXME: 여행 일정의 첫 날과 마지막 날을 선택하면 범위 선택이 가능해야 함

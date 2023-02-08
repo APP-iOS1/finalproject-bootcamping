@@ -26,7 +26,6 @@ import SwiftUI
  */
 
 struct SearchCampingSpotView: View {
-    var fecthData: FetchData = FetchData()
     @EnvironmentObject var campingSpotStore: CampingSpotStore
     @State var page: Int = 2
     

@@ -19,7 +19,7 @@ struct DiaryAddView: View {
     @State private var diaryContent: String = ""
     
     @EnvironmentObject var diaryStore: DiaryStore
-    @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @Environment(\.dismiss) private var dismiss
     
     //키보드 dismiss 변수
@@ -28,7 +28,7 @@ struct DiaryAddView: View {
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
         get {
-            for user in authStore.userList {
+            for user in wholeAuthStore.userList {
                 if user.id == Auth.auth().currentUser?.uid {
                     return user.nickName
                 }
@@ -355,15 +355,15 @@ struct PhotoPicker: UIViewControllerRepresentable {
 struct DiaryAddView_Previews: PreviewProvider {
     static var previews: some View {
         DiaryAddView()
-            .environmentObject(AuthStore())
+            .environmentObject(WholeAuthStore())
             .environmentObject(DiaryStore())
         
         DiaryAddView()
-            .environmentObject(AuthStore())
+            .environmentObject(WholeAuthStore())
             .environmentObject(DiaryStore())
             .previewDevice("iPhone 11")
         DiaryAddView()
-            .environmentObject(AuthStore())
+            .environmentObject(WholeAuthStore())
             .environmentObject(DiaryStore())
             .previewDevice("iPhone SE (3rd generation)")
     }

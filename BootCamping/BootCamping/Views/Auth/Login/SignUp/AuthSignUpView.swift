@@ -21,7 +21,6 @@ struct AuthSignUpView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
-    @EnvironmentObject var authStore: AuthStore
     
     var trimUserEmail: String {
         userEmail.trimmingCharacters(in: .whitespaces)

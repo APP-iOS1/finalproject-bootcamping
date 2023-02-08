@@ -12,8 +12,8 @@ import Firebase
 struct DiaryCellView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var diaryStore: DiaryStore
-    @EnvironmentObject var authStore: AuthStore
-    
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+
     @State var isBookmarked: Bool = false
     
     //선택한 다이어리 정보 변수입니다.
@@ -47,7 +47,7 @@ struct DiaryCellView: View {
         }
         .onAppear{
             isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
-            authStore.fetchUserList()
+            wholeAuthStore.readUserListCombine()
         }
     }
 }
@@ -55,12 +55,12 @@ struct DiaryCellView: View {
 private extension DiaryCellView {
     //글 작성 유저
     var user: User {
-        authStore.userList.filter { $0.id == Auth.auth().currentUser?.uid }.first!
+        wholeAuthStore.userList.filter { $0.id == Auth.auth().currentUser?.uid }.first!
     }
     
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
-        for user in authStore.userList {
+        for user in wholeAuthStore.userList {
             if user.id == Auth.auth().currentUser?.uid {
                 return user.nickName
             }
@@ -70,7 +70,7 @@ private extension DiaryCellView {
     
     //글 작성 유저 프로필 변수
     var userImage: String? {
-        for user in authStore.userList {
+        for user in wholeAuthStore.userList {
             if user.id == Auth.auth().currentUser?.uid {
                 return user.profileImageURL
             }
@@ -286,7 +286,7 @@ struct DiaryCellView_Previews: PreviewProvider {
     static var previews: some View {
         DiaryCellView(item: Diary(id: "", uid: "", diaryUserNickName: "닉네임", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "내용", diaryImageNames: [""], diaryImageURLs: [
             "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "", diaryIsPrivate: true))
-        .environmentObject(AuthStore())
+        .environmentObject(WholeAuthStore())
         .environmentObject(DiaryStore())
         .environmentObject(BookmarkStore())
         

@@ -76,10 +76,10 @@ struct AddScheduleView: View {
         }
         .onAppear{
             isAddingDisable = checkSchedule(startDate: startDate, endDate: endDate)
-            
-            Task {
-                campingSpotStore.campingSpotList = try await fetchData.fetchData(page: page)
-            }
+        //TODO: -패치데이터
+//            Task {
+//                campingSpotStore.campingSpotList = try await fetchData.fetchData(page: page)
+//            }
             
         }
         .onChange(of: [self.startDate, self.endDate]) { newvalues in

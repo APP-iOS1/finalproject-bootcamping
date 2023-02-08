@@ -21,7 +21,7 @@ struct SettingView: View {
     
     var body: some View {
         List{
-            NavigationLink(destination: CampingSpotView().environmentObject(CampingSpotStore())) {
+            NavigationLink(destination: EmptyView()) {
                 Text("공지사항")
             }
             NavigationLink(destination: EmptyView()) {
@@ -48,9 +48,9 @@ struct SettingView: View {
                 Alert(title: Text("로그아웃하시겠습니까?"),
                       primaryButton: .default(Text("취소"), action: {} ),
                       secondaryButton: .destructive(Text("로그아웃"),action: {
-                    authStore.googleSignOut()
-                    authStore.authSignOut()
-                    kakaoAuthStore.kakaoLogout()
+                    wholeAuthStore.googleSignOut()
+                    wholeAuthStore.authSignOut()
+                    wholeAuthStore.kakaoLogOutCombine()
                     isSignIn = false
                     tabSelection.change(to: .one)
                 })

@@ -25,7 +25,7 @@ struct MyPageView: View {
     
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
-        for user in authStore.userList {
+        for user in wholeAuthStore.userList {
             if user.id == Auth.auth().currentUser?.uid {
                 return user.nickName
             }
@@ -33,7 +33,7 @@ struct MyPageView: View {
         return nil
     }
     var userImage: String? {
-        for user in authStore.userList {
+        for user in wholeAuthStore.userList {
             if user.id == Auth.auth().currentUser?.uid {
                 return user.profileImageURL
             }
@@ -65,7 +65,7 @@ struct MyPageView: View {
         .navigationBarTitleDisplayMode(.inline)
         }
         .onAppear{
-            authStore.fetchUserList()
+            wholeAuthStore.readUserListCombine()
         }
     }
     

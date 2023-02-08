@@ -156,10 +156,13 @@ struct FirebaseCampingSpotService {
                                     modifiedtime: docData["modifiedtime"] as? String ?? ""
                                 )
                             }
-                            readDocument.lastDoc = snapshot.documents.last!
-                            readDocument.campingSpots = campingSpots
-                            print(#function, "#############################ONE TIME#################################")
-                            promise(.success(readDocument))
+                            if snapshot.documents.count > 0 {
+                                readDocument.lastDoc = snapshot.documents.last!
+                                readDocument.campingSpots = campingSpots
+                                promise(.success(readDocument))
+                            } else {
+                                promise(.failure(FirebaseCampingSpotServiceError.updateCampingSpotError))
+                            }
                         }
                 }
                 //MARK: - 최초 캠핑장 전망으로 read
@@ -266,9 +269,13 @@ struct FirebaseCampingSpotService {
                                     modifiedtime: docData["modifiedtime"] as? String ?? ""
                                 )
                             }
-                            readDocument.lastDoc = snapshot.documents.last!
-                            readDocument.campingSpots = campingSpots
-                            promise(.success(readDocument))
+                            if snapshot.documents.count > 0 {
+                                readDocument.lastDoc = snapshot.documents.last!
+                                readDocument.campingSpots = campingSpots
+                                promise(.success(readDocument))
+                            } else {
+                                promise(.failure(FirebaseCampingSpotServiceError.updateCampingSpotError))
+                            }
                         }
                 }
                 //MARK: - 최초 캠핑장 이름으로 read
@@ -375,9 +382,13 @@ struct FirebaseCampingSpotService {
                                     modifiedtime: docData["modifiedtime"] as? String ?? ""
                                 )
                             }
-                            readDocument.lastDoc = snapshot.documents.last!
-                            readDocument.campingSpots = campingSpots
-                            promise(.success(readDocument))
+                            if snapshot.documents.count > 0 {
+                                readDocument.lastDoc = snapshot.documents.last!
+                                readDocument.campingSpots = campingSpots
+                                promise(.success(readDocument))
+                            } else {
+                                promise(.failure(FirebaseCampingSpotServiceError.updateCampingSpotError))
+                            }
                         }
                 }
                 //MARK: - 최초 캠핑장 아이디로 read
@@ -484,9 +495,13 @@ struct FirebaseCampingSpotService {
                                     modifiedtime: docData["modifiedtime"] as? String ?? ""
                                 )
                             }
-                            readDocument.lastDoc = snapshot.documents.last!
-                            readDocument.campingSpots = campingSpots
-                            promise(.success(readDocument))
+                            if snapshot.documents.count > 0 {
+                                readDocument.lastDoc = snapshot.documents.last!
+                                readDocument.campingSpots = campingSpots
+                                promise(.success(readDocument))
+                            } else {
+                                promise(.failure(FirebaseCampingSpotServiceError.updateCampingSpotError))
+                            }
                         }
                 }
             //MARK: - 페이지네이션에서 쓰이는 read
@@ -596,10 +611,13 @@ struct FirebaseCampingSpotService {
                                     modifiedtime: docData["modifiedtime"] as? String ?? ""
                                 )
                             }
-                            readDocument.lastDoc = snapshot.documents.last!
-                            readDocument.campingSpots = campingSpots
-                            print("##########################이어서###############")
-                            promise(.success(readDocument))
+                            if snapshot.documents.count > 0 {
+                                readDocument.lastDoc = snapshot.documents.last!
+                                readDocument.campingSpots = campingSpots
+                                promise(.success(readDocument))
+                            } else {
+                                promise(.failure(FirebaseCampingSpotServiceError.updateCampingSpotError))
+                            }
                         }
                 }
                 //MARK: - 페이지네이션에서 캠핑장 전망으로 read
@@ -707,9 +725,14 @@ struct FirebaseCampingSpotService {
                                     modifiedtime: docData["modifiedtime"] as? String ?? ""
                                 )
                             }
-                            readDocument.lastDoc = snapshot.documents.last!
-                            readDocument.campingSpots = campingSpots
-                            promise(.success(readDocument))
+                            if snapshot.documents.count > 0 {
+                                readDocument.lastDoc = snapshot.documents.last!
+                                readDocument.campingSpots = campingSpots
+                                promise(.success(readDocument))
+                            } else {
+                                promise(.failure(FirebaseCampingSpotServiceError.updateCampingSpotError))
+                            }
+                            
                         }
                 }
                 //MARK: - 페이지네이션에서 캠핑장 이름으로 read
@@ -817,9 +840,13 @@ struct FirebaseCampingSpotService {
                                     modifiedtime: docData["modifiedtime"] as? String ?? ""
                                 )
                             }
-                            readDocument.lastDoc = snapshot.documents.last!
-                            readDocument.campingSpots = campingSpots
-                            promise(.success(readDocument))
+                            if snapshot.documents.count > 0 {
+                                readDocument.lastDoc = snapshot.documents.last!
+                                readDocument.campingSpots = campingSpots
+                                promise(.success(readDocument))
+                            } else {
+                                promise(.failure(FirebaseCampingSpotServiceError.updateCampingSpotError))
+                            }
                         }
                 }
                 //MARK: - 페이지네이션에서 캠핑장 아이디로 read
@@ -927,9 +954,13 @@ struct FirebaseCampingSpotService {
                                     modifiedtime: docData["modifiedtime"] as? String ?? ""
                                 )
                             }
-                            readDocument.lastDoc = snapshot.documents.last!
-                            readDocument.campingSpots = campingSpots
-                            promise(.success(readDocument))
+                            if snapshot.documents.count > 0 {
+                                readDocument.lastDoc = snapshot.documents.last!
+                                readDocument.campingSpots = campingSpots
+                                promise(.success(readDocument))
+                            } else {
+                                promise(.failure(FirebaseCampingSpotServiceError.updateCampingSpotError))
+                            }
                         }
                 }
                 

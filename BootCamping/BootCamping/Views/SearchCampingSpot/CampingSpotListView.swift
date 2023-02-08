@@ -59,7 +59,7 @@ struct CampingSpotListView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar{
             ToolbarItem(placement: .principal) {
-                Text("캠핑 모아보기")
+                Text("캠핑장 리스트")
             }
         }
     }

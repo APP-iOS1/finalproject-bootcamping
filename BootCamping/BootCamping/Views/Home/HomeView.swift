@@ -34,7 +34,7 @@ private extension HomeView {
         case weeklyPopulerCamping = "주간 인기 캠핑"
         case realtimeCamping = "실시간 캠핑"
     }
-
+    
     //MARK: - 홈 상단 탭
     struct mainTapView : View {
         var mainTap : tapInfo
@@ -62,7 +62,7 @@ private extension HomeView {
         VStack {
             HStack {
                 Spacer()
-    
+                
                 ForEach(tapInfo.allCases, id: \.self) { item in
                     VStack {
                         Text(item.rawValue)
@@ -85,9 +85,7 @@ private extension HomeView {
                     }
                     .frame(minWidth: 100)
                     .onTapGesture {
-                        withAnimation(.easeInOut(duration: 0.1)) {
-                            self.selectedPicker = item
-                        }
+                        self.selectedPicker = item
                     }
                 }
                 
@@ -95,7 +93,7 @@ private extension HomeView {
             }
             .padding(15)
         }
-
+        
     }
 }
 

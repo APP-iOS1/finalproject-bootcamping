@@ -55,8 +55,8 @@ struct DiaryDetailView: View {
             diaryCommetInputView
         }
         .navigationTitle(item.diaryTitle)
-        .onAppear{
-            isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
+        .task {
+            isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.id)
             commentStore.fetchComment()
         }
     }
@@ -176,6 +176,7 @@ private extension DiaryDetailView {
                                 } else{
                                     bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
                                 }
+                                wholeAuthStore.readUserListCombine()
                             } label: {
                                 Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
                             }

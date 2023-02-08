@@ -45,9 +45,8 @@ struct DiaryCellView: View {
             }
             .foregroundColor(.bcBlack)
         }
-        .onAppear{
-            isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
-            wholeAuthStore.readUserListCombine()
+        .onAppear {
+            isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.id)
         }
     }
 }
@@ -227,6 +226,7 @@ private extension DiaryCellView {
     
     //MARK: - 다이어리 공개 여부 - 잠금 했을때만 자물쇠 나오도록 설정
     var diaryIsPrivate: some View {
+        // FIXME: - No symbol named '' found in system symbol set 로그 수정해야 함
         Image(systemName: item.diaryIsPrivate ? "lock" : "" )
     }
     

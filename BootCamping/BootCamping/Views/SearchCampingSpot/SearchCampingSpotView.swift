@@ -45,10 +45,10 @@ struct SearchCampingSpotView: View {
     ]
     var campingSpotListForViewFilter: [Filtering] = [
         Filtering(filterViewLocation: "mountain", filters: ["산"], filterNames: ["산"]),
-        Filtering(filterViewLocation: "ocean", filters: ["해변", "바다"], filterNames: ["해변", "바다"]),
+        Filtering(filterViewLocation: "ocean", filters: ["해변"], filterNames: ["해변", "바다"]),
         Filtering(filterViewLocation: "valley", filters: ["계곡"], filterNames: ["계곡"]),
         Filtering(filterViewLocation: "forest", filters: ["숲"], filterNames: ["숲"]),
-        Filtering(filterViewLocation: "river", filters: ["호수", "호수"], filterNames: ["강", "호수"]),
+        Filtering(filterViewLocation: "river", filters: ["강", "호수"], filterNames: ["강", "호수"]),
         Filtering(filterViewLocation: "island", filters: ["섬"], filterNames: ["섬"]),
     ]
     

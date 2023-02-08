@@ -73,7 +73,7 @@ struct ContentView: View {
             }
         }
         .task {
-//            wholeAuthStore.readUserListCombine()
+            wholeAuthStore.readUserListCombine()
             diaryStore.readDiarysCombine()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {

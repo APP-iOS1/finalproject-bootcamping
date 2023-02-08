@@ -79,58 +79,39 @@ struct SearchCampingSpotView: View {
     
     
     var body: some View {
-        NavigationView {
-            if searchText == "" {
-                ScrollView {
-                    VStack(alignment: .leading){
-                        
-                        // 광고 부분
-                        adCamping
-                        
-                        // 지역 선택
-                        areaSelect
-                        
-                        // 전망 선택
-                        viewSelect
-                        
-                        // 추천 캠핑장
-                        recommendCampingSpot
-                        
-                    }//VStack 끝
-                    .padding(.horizontal, UIScreen.screenWidth*0.03)
-                    .toolbar{
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Text("BOOTCAMPING")
-                                .font(.title.bold())
-                        }
+        VStack {
+            ScrollView {
+                VStack(alignment: .leading){
+                    
+                    // 광고 부분
+                    adCamping
+                    
+                    // 지역 선택
+                    areaSelect
+                    
+                    // 전망 선택
+                    viewSelect
+                    
+                    // 추천 캠핑장
+                    recommendCampingSpot
+                    
+                }//VStack 끝
+                .padding(.horizontal, UIScreen.screenWidth*0.03)
+            }
+            .toolbar{
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Text("BOOTCAMPING")
+                        .font(.title.bold())
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink {
+                        SearchCampingSpotListView()
+                    } label: {
+                        Image(systemName: "magnifyingglass")
                     }
                 }
             }
-//            else {
-//                if !filterCamping.isEmpty {
-//                    VStack{
-//                        ScrollView(showsIndicators: false) {
-//                            ForEach(filterCamping, id: \.self) { campingSpot in
-//                                NavigationLink {
-//                                    CampingSpotDetailView(places: campingSpot)
-//                                } label: {
-//                                    VStack{
-//                                        CampingSpotListRaw(item: campingSpot)
-//                                            .padding(.bottom,40)
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    Text("해당되는 캠핑장이 없습니다.")
-//                    
-//                }
-//            }
         }
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "캠핑장, 지역 등을 검색해보세요")
-        .disableAutocorrection(true)
-        .textInputAutocapitalization(.never)
     }
 }
 

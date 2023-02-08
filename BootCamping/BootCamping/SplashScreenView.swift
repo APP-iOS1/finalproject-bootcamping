@@ -44,15 +44,7 @@ struct SplashScreenView: View {
 
             }
             .ignoresSafeArea()
-            .onAppear {
-                wholeAuthStore.getUserInfo(userUID: Auth.auth().currentUser?.uid ?? "") {
-                    print("get user info")
-                }
-            }
         }
-        
-
-        
     }
 }
 

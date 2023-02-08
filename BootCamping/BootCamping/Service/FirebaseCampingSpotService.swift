@@ -41,6 +41,9 @@ struct ReadDocuments {
     var campingSpotName: String = ""
     //contentId
     var campingSpotContenId: String = ""
+    //addr1
+    var campingSpotAddr: String = ""
+    
     var lastDoc: QueryDocumentSnapshot?
 }
 
@@ -504,6 +507,7 @@ struct FirebaseCampingSpotService {
                             }
                         }
                 }
+                
             //MARK: - 페이지네이션에서 쓰이는 read
             } else {
                 //MARK: - 페이지네이션에서 캠핑장 위치로 read

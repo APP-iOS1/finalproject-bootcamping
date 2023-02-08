@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import SDWebImageSwiftUI
 
 enum TapMypage : String, CaseIterable {
     case myCamping = "나의 캠핑 일정"
@@ -75,14 +76,14 @@ extension MyPageView{
     // MARK: -View : 유저 프로필이미지, 닉네임 표시
     private var userProfileSection : some View {
         HStack{
-            Image(systemName: userImage != "" ? userImage ?? "person.fill" : "person.fill")
+            WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
                 .resizable()
                 .clipShape(Circle())
                 .frame(width: 60, height: 60)
                 
-            Text("\(userNickName ?? "BootCamper") 님")
+            Text("\((wholeAuthStore.currnetUserInfo!.nickName)) 님")
             NavigationLink {
-                ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "\(userNickName ?? "")", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
+                ProfileSettingView()
                 
             } label: {
                 Image(systemName: "chevron.right")

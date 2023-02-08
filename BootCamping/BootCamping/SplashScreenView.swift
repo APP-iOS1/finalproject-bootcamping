@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct SplashScreenView: View {
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @State private var isActive = false
     @State private var size = 0.8
     @State private var opacity = 0.5
@@ -42,11 +44,11 @@ struct SplashScreenView: View {
 
             }
             .ignoresSafeArea()
-//            .onAppear {
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-//                    self.isActive = true
-//                }
-//            }
+            .onAppear {
+                wholeAuthStore.getUserInfo(userUID: Auth.auth().currentUser?.uid ?? "") {
+                    print("get user info")
+                }
+            }
         }
         
 

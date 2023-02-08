@@ -17,12 +17,9 @@ struct DiaryDetailView: View {
     @EnvironmentObject var diaryLikeStore: DiaryLikeStore
     
     @State private var diaryComment: String = ""
-    
-    @State private var diaryIsLike: Bool = false
+
     //삭제 알림
     @State private var isShowingDeleteAlert = false
-    
-
     
     @State var isBookmarked: Bool = false
     
@@ -35,7 +32,7 @@ struct DiaryDetailView: View {
                             diaryUserProfile
                             diaryDetailImage
                             Group {
-                                //                        diaryDetailTitle //본문에 빼고 타이틀 위로 올리기?
+                                diaryDetailTitle
                                 diaryDetailContent
                                 diaryCampingLink
                                 diaryDetailInfo
@@ -58,7 +55,7 @@ struct DiaryDetailView: View {
             //댓글 작성
             diaryCommetInputView
         }
-        .navigationTitle(item.diaryTitle)
+        .navigationTitle("BOOTCAMPING")
         .onAppear{
             isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
             commentStore.fetchComment()
@@ -147,6 +144,7 @@ private extension DiaryDetailView {
             
         } label: {
             Image(systemName: "ellipsis")
+                .font(.title)
         }
         //MARK: - 일기 삭제 알림
         .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
@@ -248,20 +246,22 @@ private extension DiaryDetailView {
         .foregroundColor(.clear)
     }
     
+
     
     //MARK: - 좋아요, 댓글, 타임스탬프
     var diaryDetailInfo: some View {
         HStack {
             Button {
-                diaryIsLike.toggle()
                 //TODO: -좋아요 토글에 따라
-                diaryIsLike ? diaryLikeStore.addDiaryLikeCombine(diaryId: item.id) : diaryLikeStore.removeDiaryLikeCombine(diaryId: item.id)
+                if item.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") {
+                    diaryLikeStore.removeDiaryLikeCombine(diaryId: item.id)
+                } else {
+                    diaryLikeStore.addDiaryLikeCombine(diaryId: item.id)
+                }
                 diaryStore.readDiarysCombine()
             } label: {
-                HStack {
-                    Image(systemName: !diaryIsLike ? "flame" : "flame.fill")
-                        .foregroundColor(!diaryIsLike ? .bcBlack : .red)
-                }
+                Image(systemName: item.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? "flame.fill" : "flame")
+                    .foregroundColor(item.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? .red : .bcBlack)
             }
             Text("\(item.diaryLike.count)")
             
@@ -274,7 +274,7 @@ private extension DiaryDetailView {
             }
             Spacer()
             Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
-                .font(.subheadline)
+                .font(.footnote)
                 .foregroundColor(.secondary)
         }
         .foregroundColor(.bcBlack)

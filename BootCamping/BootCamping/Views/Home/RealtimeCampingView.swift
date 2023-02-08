@@ -22,6 +22,7 @@ struct RealtimeCampingView: View {
                     }
                 }
             }
+            .padding(.top)
         }
         .onAppear {
             diaryStore.readDiarysCombine()

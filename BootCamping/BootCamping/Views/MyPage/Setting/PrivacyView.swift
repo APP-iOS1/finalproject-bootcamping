@@ -11,8 +11,8 @@ struct PrivacyView: View {
     @State var showingAlert: Bool = false
     @EnvironmentObject var faceId: FaceId
     @Environment(\.dismiss) private var dismiss
-    
-    @AppStorage("faceId") var usingFaceId: Bool = true
+    //faceId 사용 여부 토글 변수
+    @AppStorage("faceId") var usingFaceId: Bool = false
 
     var body: some View {
         List{
@@ -48,6 +48,12 @@ private extension PrivacyView {
         Toggle(isOn: $usingFaceId) {
             Text("내 캠핑일기 잠그기")
         }
+        //TODO: -토글 전에 faceid 확인
+//        .onChange(of: usingFaceId) { newValue in
+//            if usingFaceId ?? true && faceId.islocked {
+//                faceId.authenticate()
+//            }
+//        }
     }
 
 }

@@ -13,6 +13,7 @@ struct DiaryCellView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var diaryLikeStore: DiaryLikeStore
 
     @State var isBookmarked: Bool = false
     
@@ -39,7 +40,7 @@ struct DiaryCellView: View {
                     }
                     diaryContent
                     diaryCampingLink
-                    diaryInfo
+                    diaryDetailInfo
                 }
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
             }
@@ -168,6 +169,7 @@ private extension DiaryCellView {
             
         } label: {
             Image(systemName: "ellipsis")
+                .font(.title)
         }
         //MARK: - 일기 삭제 알림
         .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
@@ -198,6 +200,7 @@ private extension DiaryCellView {
             
         } label: {
             Image(systemName: "ellipsis")
+                .font(.title)
         }
         //MARK: - 유저 신고 알림
         .alert("유저를 신고하시겠습니까?", isPresented: $isShowingUserReportAlert) {
@@ -270,15 +273,38 @@ private extension DiaryCellView {
 
     
     //MARK: - 좋아요, 댓글, 타임스탬프
-    var diaryInfo: some View {
+    var diaryDetailInfo: some View {
         HStack {
-            Text("좋아요 \(item.diaryLike.count)")
-            Text("댓글 8")
+            Button {
+                //TODO: -좋아요 토글에 따라
+                if item.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") {
+                    diaryLikeStore.removeDiaryLikeCombine(diaryId: item.id)
+                } else {
+                    diaryLikeStore.addDiaryLikeCombine(diaryId: item.id)
+                }
+                diaryStore.readDiarysCombine()
+            } label: {
+                Image(systemName: item.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? "flame.fill" : "flame")
+                    .foregroundColor(item.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? .red : .bcBlack)
+            }
+            Text("\(item.diaryLike.count)")
+            
+            Button {
+                //"댓글 작성 버튼으로 이동"
+            } label: {
+                Text("")
+                    .font(.body)
+                    .padding(.horizontal, 3)
+            }
             Spacer()
+            //TimeStamp
             Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
+                .font(.footnote)
+                .foregroundColor(.secondary)
         }
-        .font(.system(.subheadline))
-        .padding(.vertical)
+        .foregroundColor(.bcBlack)
+        .font(.title3)
+        .padding(.vertical, 5)
     }
 }
 
@@ -290,6 +316,7 @@ struct DiaryCellView_Previews: PreviewProvider {
         .environmentObject(WholeAuthStore())
         .environmentObject(DiaryStore())
         .environmentObject(BookmarkStore())
+        .environmentObject(DiaryLikeStore())
         
     }
 }

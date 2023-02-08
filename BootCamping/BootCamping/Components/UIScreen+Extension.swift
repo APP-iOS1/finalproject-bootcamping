@@ -20,6 +20,16 @@ extension Color {
     static let bcDarkGray = Color("BCDarkGray")
     static let bcYellow = Color("BCYellow")
     static let bcWhite = Color("BCWhite")
+    
+    // MARK: - 스케줄 모델에 색상 선택시 사용하는 컬러 익스텐션입니다.
+    static let taskRed = Color("TaskRed")
+    static let taskOrange = Color("TaskOrange")
+    static let taskYellow = Color("TaskYellow")
+    static let taskGreen = Color("TaskGreen")
+    static let taskTeal = Color("TaskTeal")
+    static let taskBlue = Color("TaskBlue")
+    static let taskPurple = Color("TaskPurple")
+    
 }
 
 //MARK: - 키보드 dismiss extension함수입니다.

@@ -23,9 +23,9 @@ struct RealtimeCampingView: View {
                 }
             }
         }
-        .onAppear {
-            diaryStore.readDiarysCombine()
-        }
+//        .onAppear {
+//            diaryStore.readDiarysCombine()
+//        }
     }
 }
 

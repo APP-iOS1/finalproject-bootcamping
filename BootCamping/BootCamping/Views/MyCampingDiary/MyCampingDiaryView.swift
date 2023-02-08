@@ -13,6 +13,7 @@ struct MyCampingDiaryView: View {
     
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var faceId: FaceId
+    @EnvironmentObject var commentStore: CommentStore
     
     @AppStorage("faceId") var usingFaceId: Bool? //페이스id 설정 사용하는지
     //faceId.isLocked // 페이스 아이디가 잠겨있는지.
@@ -29,7 +30,6 @@ struct MyCampingDiaryView: View {
                             if diaryData.uid == Auth.auth().currentUser?.uid {
                                 VStack {
                                     DiaryCellView(item: diaryData)
-                                        .padding(.bottom, 20)
                                 }
                             }
                         }

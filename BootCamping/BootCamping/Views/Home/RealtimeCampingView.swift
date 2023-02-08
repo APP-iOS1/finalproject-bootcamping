@@ -18,14 +18,15 @@ struct RealtimeCampingView: View {
                 ForEach(diaryStore.diaryList) { item in
                     if item.diaryIsPrivate == false {
                         DiaryCellView(item: item)
-                            .padding(.bottom, 20)
                     }
                 }
             }
+            .padding(.top)
+            .padding(.bottom, 1)
         }
-        .onAppear {
-            diaryStore.readDiarysCombine()
-        }
+//        .onAppear {
+//            diaryStore.readDiarysCombine()
+//        }
     }
 }
 

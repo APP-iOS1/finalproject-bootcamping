@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import SDWebImageSwiftUI
 
 enum TapMypage : String, CaseIterable {
     case myCamping = "나의 캠핑 일정"
@@ -16,7 +17,7 @@ enum TapMypage : String, CaseIterable {
 // MARK: - 마이페이지 첫 화면에 나타나는 뷰
 struct MyPageView: View {
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
-
+    
     @State private var selectedPicker2: TapMypage = .myCamping
     //로그인 유무 함수
     @AppStorage("login") var isSignIn: Bool?
@@ -62,11 +63,11 @@ struct MyPageView: View {
                     }
                 }
             }
-        .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .onAppear{
-            wholeAuthStore.readUserListCombine()
-        }
+        //        .onAppear{
+        //            wholeAuthStore.readUserListCombine()
+        //        }
     }
     
 }
@@ -75,14 +76,13 @@ extension MyPageView{
     // MARK: -View : 유저 프로필이미지, 닉네임 표시
     private var userProfileSection : some View {
         HStack{
-            Image(systemName: userImage != "" ? userImage ?? "person.fill" : "person.fill")
+            WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
                 .resizable()
                 .clipShape(Circle())
-                .frame(width: 60, height: 60)
-                
-            Text("\(userNickName ?? "BootCamper") 님")
+                .frame(width: 60, height: 60)    
+            Text("\((wholeAuthStore.currnetUserInfo!.nickName)) 님")
             NavigationLink {
-                ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "\(userNickName ?? "")", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
+                ProfileSettingView()
                 
             } label: {
                 Image(systemName: "chevron.right")
@@ -117,9 +117,7 @@ extension MyPageView{
                 }
                 .frame(width: UIScreen.screenWidth * 0.47)
                 .onTapGesture {
-                    withAnimation(.easeInOut(duration: 0.1)) {
-                        self.selectedPicker2 = item
-                    }
+                    self.selectedPicker2 = item
                 }
             }
         }

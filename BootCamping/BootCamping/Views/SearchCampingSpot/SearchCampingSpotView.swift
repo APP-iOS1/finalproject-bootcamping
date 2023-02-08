@@ -105,7 +105,7 @@ struct SearchCampingSpotView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        SearchCampingSpotListView()
+                        CampingSpotListSearchingView()
                     } label: {
                         Image(systemName: "magnifyingglass")
                     }

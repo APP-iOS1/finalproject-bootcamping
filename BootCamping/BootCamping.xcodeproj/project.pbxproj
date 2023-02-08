@@ -70,6 +70,7 @@
 		790B62F4297A28E00048C110 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62F3297A28E00048C110 /* KakaoSDKUser */; };
 		792C42422990CAD200B7772C /* PrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42412990CAD200B7772C /* PrivacyView.swift */; };
 		792C42442990D0A800B7772C /* PasswordChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42432990D0A800B7772C /* PasswordChangeView.swift */; };
+		792C42492993D6E500B7772C /* DiaryAddContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42482993D6E500B7772C /* DiaryAddContentView.swift */; };
 		7C3E8BDA2992222600A6C1D6 /* DiaryCommentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */; };
 		7C3FC49729877C7200E96A01 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7C3FC49629877C7200E96A01 /* SDWebImageSwiftUI */; };
 		7C6A94AC2992BE6900B0E125 /* DiaryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */; };
@@ -153,6 +154,7 @@
 		790B62F5297A2D710048C110 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		792C42412990CAD200B7772C /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
 		792C42432990D0A800B7772C /* PasswordChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeView.swift; sourceTree = "<group>"; };
+		792C42482993D6E500B7772C /* DiaryAddContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryAddContentView.swift; sourceTree = "<group>"; };
 		7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCommentCellView.swift; sourceTree = "<group>"; };
 		7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryEmptyView.swift; sourceTree = "<group>"; };
 		7C715C972977E056009BC678 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 				63AF45DE2977CE5E0014B1E1 /* DiaryDetailView.swift */,
 				AD373AF92977D68A00E1236A /* DiaryCellView.swift */,
 				63AF45DD2977CE5E0014B1E1 /* DiaryAddView.swift */,
+				792C42482993D6E500B7772C /* DiaryAddContentView.swift */,
 				7CA272FD2991CE6600443111 /* DiaryLockedView.swift */,
 				7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */,
 				7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */,
@@ -565,6 +568,7 @@
 				630ADB512977CC6C000A517B /* ContentView.swift in Sources */,
 				6E688E17299220B7006DCEE5 /* ContactUsView.swift in Sources */,
 				7CFCE12F2987551F00E196AF /* LoginPasswordView.swift in Sources */,
+				792C42492993D6E500B7772C /* DiaryAddContentView.swift in Sources */,
 				63AF45DF2977CE5E0014B1E1 /* MyCampingDiaryView.swift in Sources */,
 				7CC3AD4E29890970002EF992 /* DiaryStore.swift in Sources */,
 				7CD6570F298D07EB00889FF3 /* BookmarkStore.swift in Sources */,

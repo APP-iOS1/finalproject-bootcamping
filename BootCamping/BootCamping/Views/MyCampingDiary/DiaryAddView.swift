@@ -13,6 +13,7 @@ import Photos
 //TODO: 텍스트 필드 입력할 때 화면 따라가기,,,
 struct DiaryAddView: View {
     
+    
     @State private var diaryTitle: String = ""
     @State private var locationInfo: String = ""
     @State private var visitDate: String = ""
@@ -51,21 +52,25 @@ struct DiaryAddView: View {
     var body: some View {
         VStack {
             
-            ScrollView(showsIndicators: false) {
+//            ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading) {
                     imagePicker
-                    addViewTitle
+//                    addViewTitle
+                    Divider()
                     addViewLocationInfo
+                    Divider()
+
                     addViewVisitDate
                     addViewIsPrivate
-                    Divider()
-                    addViewDiaryContent
-                    addViewAddButton
+                    Spacer()
+                    nextButton
+//                    addViewDiaryContent
+//                    addViewAddButton
                 }
-            }
+//            }
             //MARK: - 키보드 옵션입니다.
-            .disableAutocorrection(true) //자동 수정 비활성화
-            .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
+//            .disableAutocorrection(true) //자동 수정 비활성화
+//            .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
             //            .toolbar {
             //                ToolbarItemGroup(placement: .keyboard) {
             //                    Spacer()
@@ -94,7 +99,7 @@ private extension DiaryAddView {
         HStack{
             Button(action: {
                 imagePickerPresented.toggle()
-                checkAlbumPermission()
+//                checkAlbumPermission()
             }, label: {
                 ZStack {
                     Image(systemName: "plus")
@@ -159,7 +164,29 @@ private extension DiaryAddView {
     //MARK: - 제목 작성
     var addViewTitle: some View {
         Section {
-            TextField("제목을 입력해주세요(최대 10자)", text: $diaryTitle)
+            //            KitTextField (
+            //                label: "제목을 입력해주세요(최대 20자)",
+            //                text: $diaryTitle,
+            //                focusable: $fieldFocus,
+            //                returnKeyType: .next,
+            //                tag: 0
+            //            )
+            //            .padding(6)
+            //            .background {
+            //                RoundedRectangle(cornerRadius: 2, style: .continuous)
+            //                    .stroke(.gray, lineWidth: 1)
+            //            }
+            //            .padding( UIScreen.screenWidth * 0.005)
+            //            .padding(.bottom)
+            //            .submitLabel(.done) //작성 완료하면 키보드 return 버튼이 파란색 done으로 바뀜
+            //            .onChange(of: diaryTitle) { newValue in
+            //                if newValue.count > 20 {
+            //                    diaryTitle = String(newValue.prefix(20))
+            //                }
+            //            }
+            
+            
+            TextField("제목을 입력해주세요(최대 20자)", text: $diaryTitle)
                 .padding(6)
                 .background {
                     RoundedRectangle(cornerRadius: 2, style: .continuous)
@@ -167,8 +194,8 @@ private extension DiaryAddView {
                 }
                 .padding( UIScreen.screenWidth * 0.005)
                 .padding(.bottom)
-                .submitLabel(.done) //작성 완료하면 키보드 return 버튼이 파란색 done으로 바뀜
-                .onChange(of: diaryTitle) { newValue in
+                .submitLabel(.next) //작성 완료하면 키보드 return 버튼이 파란색 done으로 바뀜
+                .onChange(of: diaryTitle) { newValue in             // 제목 20글자까지 가능
                     if newValue.count > 20 {
                         diaryTitle = String(newValue.prefix(20))
                     }
@@ -183,20 +210,29 @@ private extension DiaryAddView {
     //MARK: - 위치 등록하기
     //TODO: - 캠핑장 연동하기
     var addViewLocationInfo: some View {
-        Section {
-            TextField("위치를 등록해주세요", text: $locationInfo)
-                .padding(6)
-                .background {
-                    RoundedRectangle(cornerRadius: 2, style: .continuous)
-                        .stroke(.gray, lineWidth: 1)
-                }
-                .padding( UIScreen.screenWidth * 0.005)
-                .padding(.bottom)
-                .submitLabel(.done) //작성 완료하면 키보드 return 버튼이 파란색 done으로 바뀜
-            
-        } header: {
-            Text("위치 등록하기")
-        }
+//        Section {
+//            TextField("위치를 등록해주세요", text: $locationInfo)
+//                .padding(6)
+//                .background {
+//                    RoundedRectangle(cornerRadius: 2, style: .continuous)
+//                        .stroke(.gray, lineWidth: 1)
+//                }
+//                .padding( UIScreen.screenWidth * 0.005)
+//                .padding(.bottom)
+//                .submitLabel(.done) //작성 완료하면 키보드 return 버튼이 파란색 done으로 바뀜
+//
+//        } header: {
+//            Text("위치 등록하기")
+//        }
+        Button(action: {
+            // 검색 뷰로 이동
+        }, label: {
+            HStack{
+                Text("위치 등록하러 가기")
+                Spacer()
+                Image(systemName: "chevron.right")
+            }.padding(.vertical)
+        })
         .focused($inputFocused)
     }
     
@@ -246,11 +282,17 @@ private extension DiaryAddView {
             //                .foregroundColor(.secondary)
             //                .opacity(0.5)
             //                .position(x: 73, y: 19)
-            //
+            
+            //            KitTextField (
+            //                label: "일기를 작성해주세요",
+            //                text: $diaryContent,
+            //                focusable: $fieldFocus,
+            //                returnKeyType: .done,
+            //                tag: 1
+            //            )
+            //            .padding(.bottom, 100)
             
             TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
-                .disableAutocorrection(true)
-                .textInputAutocapitalization(.never)
                 .padding(.bottom, 100)
             
             
@@ -267,6 +309,25 @@ private extension DiaryAddView {
                 dismiss()
             } label: {
                 Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "일기 쓰기")
+            }
+            .font(.headline)
+            .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)
+            .foregroundColor(.white)
+            .background(diaryImages?.isEmpty ?? true ? .secondary : Color.bcGreen)
+            .cornerRadius(10)
+            .disabled(diaryImages?.isEmpty ?? true)
+            Spacer()
+            
+        }
+    }
+    
+    var nextButton: some View {
+        HStack{
+            Spacer()
+            NavigationLink {
+                DiaryAddContentView(locationInfo: $locationInfo, visitDate: $visitDate, diaryIsPrivate: $diaryIsPrivate, selectedDate: $selectedDate, diaryImages: $diaryImages)
+            } label: {
+                Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "다음")
             }
             .font(.headline)
             .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)

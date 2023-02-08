@@ -255,6 +255,7 @@ private extension DiaryCellView {
                         .font(.footnote)
                 }
                 .font(.subheadline)
+                .foregroundColor(.secondary)
             }
             .foregroundColor(.bcBlack)
 
@@ -271,7 +272,7 @@ private extension DiaryCellView {
     //MARK: - 좋아요, 댓글, 타임스탬프
     var diaryInfo: some View {
         HStack {
-            Text("좋아요 \(item.diaryLike)")
+            Text("좋아요 \(item.diaryLike.count)")
             Text("댓글 8")
             Spacer()
             Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
@@ -285,7 +286,7 @@ private extension DiaryCellView {
 struct DiaryCellView_Previews: PreviewProvider {
     static var previews: some View {
         DiaryCellView(item: Diary(id: "", uid: "", diaryUserNickName: "닉네임", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "내용", diaryImageNames: [""], diaryImageURLs: [
-            "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "", diaryIsPrivate: true))
+            "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: ["동훈"], diaryIsPrivate: true))
         .environmentObject(WholeAuthStore())
         .environmentObject(DiaryStore())
         .environmentObject(BookmarkStore())

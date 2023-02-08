@@ -37,6 +37,7 @@
 		63BC803B298C8EF30088AC02 /* EmptyCampingSpotListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BC803A298C8EF30088AC02 /* EmptyCampingSpotListCell.swift */; };
 		63BC803F298C97380088AC02 /* FirebaseCampingSpotService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BC803E298C97380088AC02 /* FirebaseCampingSpotService.swift */; };
 		63F8426C298FB5FF006A9433 /* CampingSpotListRaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F8426B298FB5FF006A9433 /* CampingSpotListRaw.swift */; };
+		63F861F92993D2D300EDFA03 /* SearchCampingSpotListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F861F82993D2D300EDFA03 /* SearchCampingSpotListView.swift */; };
 		6E11BE2D298C8FD60019E963 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 6E11BE2C298C8FD60019E963 /* Lottie */; };
 		6E11BE2F298C90390019E963 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E11BE2E298C90390019E963 /* LottieView.swift */; };
 		6E11BE31298C905D0019E963 /* campfire.json in Resources */ = {isa = PBXBuildFile; fileRef = 6E11BE30298C905C0019E963 /* campfire.json */; };
@@ -133,6 +134,7 @@
 		63BC803A298C8EF30088AC02 /* EmptyCampingSpotListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCampingSpotListCell.swift; sourceTree = "<group>"; };
 		63BC803E298C97380088AC02 /* FirebaseCampingSpotService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseCampingSpotService.swift; sourceTree = "<group>"; };
 		63F8426B298FB5FF006A9433 /* CampingSpotListRaw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CampingSpotListRaw.swift; sourceTree = "<group>"; };
+		63F861F82993D2D300EDFA03 /* SearchCampingSpotListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCampingSpotListView.swift; sourceTree = "<group>"; };
 		6E11BE2E298C90390019E963 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		6E11BE30298C905C0019E963 /* campfire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = campfire.json; sourceTree = "<group>"; };
 		6E11BE342990E6A80019E963 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
@@ -352,6 +354,7 @@
 			isa = PBXGroup;
 			children = (
 				63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */,
+				63F861F82993D2D300EDFA03 /* SearchCampingSpotListView.swift */,
 				63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */,
 				63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */,
 				63F8426B298FB5FF006A9433 /* CampingSpotListRaw.swift */,
@@ -624,6 +627,7 @@
 				AD672123298CBFB0008C34B3 /* FirebaseUserService.swift in Sources */,
 				639129EF29792CB700F6EDD7 /* CapmingSpotStore.swift in Sources */,
 				63AF45AD2977CDB40014B1E1 /* UIScreen+Extension.swift in Sources */,
+				63F861F92993D2D300EDFA03 /* SearchCampingSpotListView.swift in Sources */,
 				AD672125298CE2BB008C34B3 /* AuthEmailService.swift in Sources */,
 				63AF45BD2977CDE20014B1E1 /* LoginView.swift in Sources */,
 				6E96013B298A32D6009C60F2 /* FullMapView.swift in Sources */,

@@ -15,10 +15,11 @@ struct TaskCellView: View{
     let month: String
     let day: String
     let schedule: Schedule
+    let color: String
     
     var body: some View {
         HStack {
-            ExDivider(color: Color.bcGreen)
+            ExDivider(color: Color[color])
                 .padding(.trailing, UIScreen.screenWidth*0.05)
             VStack(alignment: .leading, spacing: 5) {
                 Text("\(month).\(day) 캠핑 일정")
@@ -32,6 +33,7 @@ struct TaskCellView: View{
                 isShowingDeleteAlert = true
             } label: {
                 Image(systemName: "trash")
+                    .foregroundColor(Color[color])
             }
             /// ios15부터 .alert 형태로 사용
             .alert("이 일정을 정말 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {

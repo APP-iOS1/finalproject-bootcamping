@@ -61,11 +61,12 @@ struct FirebaseScheduleService {
                         let id: String = docData["id"] as? String ?? ""
                         let title: String = docData["title"] as? String ?? ""
                         let date: String = docData["date"] as? String ?? ""
+                        let color: String = docData["color"] as? String ?? ""
                         
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "yyyy-MM-dd"
                         
-                        let schedule: Schedule = Schedule(id: id, title: title, date: dateFormatter.date(from: date) ?? Date())
+                        let schedule: Schedule = Schedule(id: id, title: title, date: dateFormatter.date(from: date) ?? Date(), color: color)
                         schedules.append(schedule)
                     }
                     promise(.success(schedules))
@@ -89,7 +90,8 @@ struct FirebaseScheduleService {
                 .document(schedule.id)
                 .setData(["id": schedule.id,
                           "title": schedule.title,
-                          "date": dateFormatter.string(from: schedule.date)
+                          "date": dateFormatter.string(from: schedule.date),
+                          "color": schedule.color
                          ]) { error in
                     if let error = error {
                         print(error)
@@ -122,21 +124,3 @@ struct FirebaseScheduleService {
         .eraseToAnyPublisher()
     }
 }
-//    //MARK: Delete FirebaseCommentService
-//    func deleteCommentService(comment: Comment) -> AnyPublisher<Void, Error> {
-//        Future<Void, Error> { promise in
-//            self.database.collection("Comments")
-//                .document(comment.id).delete()
-//            { error in
-//                if let error = error {
-//                    print(error)
-//                    promise(.failure(FirebaseCommentServiceError.deleteCommentError))
-//                } else {
-//                    promise(.success(()))
-//                }
-//            }
-//
-//        }
-//        .eraseToAnyPublisher()
-//    }
-//}

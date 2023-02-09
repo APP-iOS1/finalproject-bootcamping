@@ -30,6 +30,7 @@ struct DiaryAddView: View {
     
     @State private var campingSpotItem: Item = CampingSpotStore().campingSpot
     @State private var campingSpot: String = ""
+    @State private var campingSpotContentId: String = ""
     
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
@@ -93,6 +94,9 @@ struct DiaryAddView: View {
         .navigationTitle(Text("캠핑 일기 쓰기"))
         .onTapGesture {
             dismissKeyboard()
+        }
+        .task {
+            campingSpotContentId = campingSpotItem.contentId
         }
     }
 }
@@ -237,16 +241,32 @@ private extension DiaryAddView {
 //        } header: {
 //            Text("위치 등록하기")
 //        }
-        NavigationLink {
-            SearchByCampingSpotNameView(campingSpot: $campingSpotItem)
-        } label: {
-            HStack{
-                Text("위치 등록하러 가기")
-                Spacer()
-                Image(systemName: "chevron.right")
-            }.padding(.vertical)
+        VStack {
+            if campingSpot == "" {
+                NavigationLink {
+                    SearchByCampingSpotNameView(campingSpot: $campingSpotItem)
+                } label: {
+                    HStack{
+                        Text("방문한 캠핑장 등록하러 가기")
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                    }.padding(.vertical)
+                }
+                .focused($inputFocused)
+            } else {
+                HStack {
+                    Text("\(campingSpot)")
+                        .lineLimit(1)
+                    Spacer()
+                    Button {
+                        campingSpot = ""
+                    } label: {
+                        Image(systemName: "xmark")
+                            .foregroundColor(.bcBlack)
+                    }
+                }
+            }
         }
-        .focused($inputFocused)
     }
     
     //MARK: - 방문일자 등록하기
@@ -351,7 +371,7 @@ private extension DiaryAddView {
         HStack{
             Spacer()
             NavigationLink {
-                DiaryAddContentView(isNavigationGoFirstView: $isNavigationGoFirstView, locationInfo: $locationInfo, visitDate: $visitDate, diaryIsPrivate: $diaryIsPrivate, selectedDate: $selectedDate, diaryImages: $diaryImages)
+                DiaryAddContentView(isNavigationGoFirstView: $isNavigationGoFirstView, locationInfo: $locationInfo, visitDate: $visitDate, diaryIsPrivate: $diaryIsPrivate, campingSpotContentId: campingSpotItem.contentId, selectedDate: $selectedDate, diaryImages: $diaryImages)
             } label: {
                 Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "다음")
                     .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07) // 이거 밖에 있으면 글씨 부분만 버튼 적용됨

@@ -14,7 +14,7 @@ struct Diary: Hashable, Identifiable {
     let uid: String //유저
     let diaryUserNickName: String //다이어리 작성 유저 닉네임
     let diaryTitle: String //다이어리 제목
-    let diaryAddress: String //장소
+    let diaryAddress: String //장소 contentId
     let diaryContent: String //다이어리 내용
     let diaryImageNames: [String]
     let diaryImageURLs: [String] //사진

@@ -24,7 +24,7 @@ struct DiaryDetailView: View {
     @State private var isShowingUserReportAlert = false
     @State private var isShowingUserBlockedAlert = false
     
-    @State var isBookmarked: Bool = false
+    @State private var isBookmarked: Bool = false
     
     var item: Diary
     
@@ -36,7 +36,14 @@ struct DiaryDetailView: View {
                     diaryUserProfile
                     diaryDetailImage
                     Group {
-                        diaryDetailTitle
+                        HStack(alignment: .center){
+                            if item.uid == wholeAuthStore.currnetUserInfo!.id {
+                                isPrivateImage
+                            }
+                            diaryDetailTitle
+                            Spacer()
+                            bookmarkButton
+                        }
                         diaryDetailContent
                         diaryCampingLink
                         diaryDetailInfo
@@ -48,10 +55,12 @@ struct DiaryDetailView: View {
                                 DiaryCommentCellView(item: comment)
                             }
                         }
+
                         .id("bottom")
 
                         //리스트로 삭제기능 넣으려고 함                         .onDelete(perform: user.id == item.uid ? delete: nil)
                         //                        }
+
                     }
                     .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 }
@@ -113,13 +122,14 @@ private extension DiaryDetailView {
                     Rectangle().foregroundColor(.gray)
                 }
                 .scaledToFill()
-                .frame(width: 45)
+                .frame(width: UIScreen.screenWidth * 0.07)
                 .clipShape(Circle())
             
             //유저 닉네임
             Text(item.diaryUserNickName)
-                .font(.headline).fontWeight(.semibold)
+                .font(.callout)
             Spacer()
+            
             //MARK: -...버튼 글 쓴 유저일때만 ...나타나도록
             if item.uid == Auth.auth().currentUser?.uid {
                 alertMenu
@@ -136,6 +146,30 @@ private extension DiaryDetailView {
         }
     }
     
+    // MARK: - 다이어리 공개 여부를 나타내는 이미지
+    private var isPrivateImage: some View {
+        Image(systemName: (item.diaryIsPrivate ? "lock" : "lock.open"))
+            .foregroundColor(Color.secondary)
+    }
+    
+    // MARK: - 북마크 버튼
+    private var bookmarkButton: some View {
+        Button{
+            isBookmarked.toggle()
+            if isBookmarked{
+                bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
+            } else {
+                bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
+            }
+            wholeAuthStore.readUserListCombine()
+        } label: {
+            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                .bold()
+                .foregroundColor(Color.accentColor)
+                .opacity((item.uid != wholeAuthStore.currnetUserInfo!.id ? 1 : 0))
+        }
+        .disabled(item.uid == wholeAuthStore.currnetUserInfo!.id)
+    }
     
     //MARK: - Alert Menu 버튼
     var alertMenu: some View {
@@ -220,23 +254,6 @@ private extension DiaryDetailView {
                         .scaledToFill()
                         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                         .clipped()
-                        .overlay(alignment: .topTrailing){
-                            Button {
-                                isBookmarked.toggle()
-                                if isBookmarked{
-                                    bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
-                                } else{
-                                    bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
-                                }
-                                wholeAuthStore.readUserListCombine()
-                            } label: {
-                                Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                            }
-                            .foregroundColor(.white)
-                            .shadow(radius: 5)
-                            .padding()
-                        }
-                    
                 }
             }
         }
@@ -277,9 +294,12 @@ private extension DiaryDetailView {
                     HStack {
                         Text("대구시 수성구") //TODO: 캠핑장 주소 -앞에 -시 -구 까지 짜르기
                         Spacer()
-                        //방문일
-                        Text("\(item.diaryVisitedDate.getKoreanDate())")
-                            .font(.footnote)
+                        Group {
+                            Text("자세히 보기")
+                            Image(systemName: "chevron.right")
+                        }
+                        .font(.footnote)
+
                     }
                     .font(.subheadline)
                     .foregroundColor(.secondary)
@@ -287,12 +307,11 @@ private extension DiaryDetailView {
                 .foregroundColor(.bcBlack)
             }
             .padding()
-            .background {
-                RoundedRectangle(cornerRadius: 20)
-                    .foregroundColor(.gray)
-                    .opacity(0.2)
-                    .shadow(color: .gray, radius: 3)
-            }
+            .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.bcDarkGray, lineWidth: 1)
+                        .opacity(0.3)
+                )
         }
         .foregroundColor(.clear)
     }

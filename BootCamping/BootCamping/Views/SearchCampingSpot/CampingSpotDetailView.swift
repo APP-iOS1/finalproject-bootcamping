@@ -24,13 +24,13 @@ struct CampingSpotDetailView: View {
     )
     @State var annotatedItem: [AnnotatedItem] = []
     @State private var isBookmarked: Bool = false
-
+    
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var bookmarkStore: BookmarkStore
     var places: Item
     
     var body: some View {
-//        let images = ["10", "9", "8"] //기존 샘플 사진
+        //        let images = ["10", "9", "8"] //기존 샘플 사진
         let diary = ["1", "2", "3"]
         
         ZStack {
@@ -76,6 +76,10 @@ struct CampingSpotDetailView: View {
                                 }
                             } label: {
                                 Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                                    .bold()
+                                    .foregroundColor(.white)
+                                    .shadow(color: .black, radius: 10)
+                                    .padding()
                             }
                             .padding()
                             
@@ -222,7 +226,7 @@ struct ServiceIcon: View {
                         .font(.caption)
                         .kerning(-1)
                 }
-               // .padding(4)
+                // .padding(4)
             }
         }
     }

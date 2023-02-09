@@ -55,6 +55,7 @@
 		6E688E3C29923542006DCEE5 /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E688E3B29923542006DCEE5 /* MailView.swift */; };
 		6E688E3F29923827006DCEE5 /* SwiftUIMailView in Frameworks */ = {isa = PBXBuildFile; productRef = 6E688E3E29923827006DCEE5 /* SwiftUIMailView */; };
 		6E8CACB029937E3F000C2274 /* ReportUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8CACAF29937E3F000C2274 /* ReportUserView.swift */; };
+		6E8CACBA2994D164000C2274 /* blockUserEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8CACB92994D164000C2274 /* blockUserEditView.swift */; };
 		6E96013B298A32D6009C60F2 /* FullMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E96013A298A32D6009C60F2 /* FullMapView.swift */; };
 		6E996E81297A4E290085D914 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 6E996E80297A4E290085D914 /* GoogleSignIn */; };
 		6E996E83297A4E290085D914 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6E996E82297A4E290085D914 /* GoogleSignInSwift */; };
@@ -154,6 +155,7 @@
 		6E688E3929923506006DCEE5 /* ContactMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactMail.swift; sourceTree = "<group>"; };
 		6E688E3B29923542006DCEE5 /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		6E8CACAF29937E3F000C2274 /* ReportUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportUserView.swift; sourceTree = "<group>"; };
+		6E8CACB92994D164000C2274 /* blockUserEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = blockUserEditView.swift; path = "../../../../../../../.Trash/finalproject-bootcamping 오후 2.26.45/BootCamping/BootCamping/Views/MyPage/Setting/blockUserEditView.swift"; sourceTree = "<group>"; };
 		6E96013A298A32D6009C60F2 /* FullMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullMapView.swift; sourceTree = "<group>"; };
 		790B62D829792A4D0048C110 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		790B62DA29792B4C0048C110 /* CommentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentStore.swift; sourceTree = "<group>"; };
@@ -432,6 +434,7 @@
 				792C42432990D0A800B7772C /* PasswordChangeView.swift */,
 				6E688E16299220B7006DCEE5 /* ContactUsView.swift */,
 				6E688E3B29923542006DCEE5 /* MailView.swift */,
+				6E8CACB92994D164000C2274 /* blockUserEditView.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -617,6 +620,7 @@
 				63BC803B298C8EF30088AC02 /* EmptyCampingSpotListCell.swift in Sources */,
 				63AF45D72977CE4C0014B1E1 /* MyPageView.swift in Sources */,
 				792C42422990CAD200B7772C /* PrivacyView.swift in Sources */,
+				6E8CACBA2994D164000C2274 /* blockUserEditView.swift in Sources */,
 				CA27A62D298CE95500A6AEE5 /* FirebaseBookmarkService.swift in Sources */,
 				6E688DFE2991E153006DCEE5 /* OnboardingTabView.swift in Sources */,
 				63D1822D2993D53B00293727 /* CampingSpotListSearchingView.swift in Sources */,

@@ -11,6 +11,8 @@ import FirebaseFirestore
 
 struct MyCampingDiaryView: View {
     
+    @State var isNavigationGoFirstView = false
+
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var faceId: FaceId
     @EnvironmentObject var commentStore: CommentStore
@@ -19,7 +21,6 @@ struct MyCampingDiaryView: View {
     //faceId.isLocked // 페이스 아이디가 잠겨있는지.
     
     var body: some View {
-        
         ZStack {
             VStack {
                 if usingFaceId ?? true && faceId.islocked {
@@ -42,7 +43,7 @@ struct MyCampingDiaryView: View {
             DiaryEmptyView().zIndex(-1)
         }
         .onAppear {
-            diaryStore.readDiarysCombine()
+//            diaryStore.readDiarysCombine()
             if usingFaceId == true {
                 faceId.authenticate()
             }
@@ -53,9 +54,8 @@ struct MyCampingDiaryView: View {
                     .font(.title.bold())
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink {
-                    DiaryAddView()
-                } label: {
+                NavigationLink (destination:DiaryAddView(isNavigationGoFirstView: $isNavigationGoFirstView), isActive: $isNavigationGoFirstView)
+                 {
                     Image(systemName: "plus")
                 }
             }

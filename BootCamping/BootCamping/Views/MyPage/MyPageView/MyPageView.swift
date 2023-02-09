@@ -52,9 +52,6 @@ struct MyPageView: View {
             }
             .padding(.horizontal, UIScreen.screenWidth * 0.03)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("마이페이지")
-                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
                         SettingView()

@@ -24,6 +24,8 @@ struct MyPageView: View {
     //로그인 유무 함수
     @AppStorage("login") var isSignIn: Bool?
     
+    @Namespace private var animation
+    
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
         for user in wholeAuthStore.userList {

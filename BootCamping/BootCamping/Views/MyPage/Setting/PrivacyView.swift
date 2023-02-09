@@ -15,10 +15,13 @@ struct PrivacyView: View {
     @Environment(\.dismiss) private var dismiss
     //faceId 사용 여부 토글 변수
     @AppStorage("faceId") var usingFaceId: Bool = false
+    //faceId 잠금 설정 변수
+    @State private var settingFaceId = false
 
     var body: some View {
         List{
             isUsingFaceIdSetting
+            
             NavigationLink {
                 PasswordChangeView()
             } label: {
@@ -48,18 +51,59 @@ struct PrivacyView: View {
 }
 
 private extension PrivacyView {
-    //MARK: - faceId 설정 토글입니다
+    //MARK: - faceId On/Off 설정 버튼입니다
     var isUsingFaceIdSetting: some View {
-        Toggle(isOn: $usingFaceId) {
+        
+        HStack {
             Text("내 캠핑일기 잠그기")
+            Spacer()
+            Button {
+                if faceId.islocked == true && settingFaceId == false {
+                    faceId.authenticate()
+                    faceId.islocked.toggle()
+                    settingFaceId.toggle()
+                } else {
+                    //                    faceId.authenticate()
+                    faceId.islocked.toggle()
+                    settingFaceId.toggle()
+                }
+            } label: {
+                HStack {
+                    Image(systemName: settingFaceId ? "lock" : "lock.open" )
+                               .animation(.none)
+                               .padding(.trailing, settingFaceId ? 1.5 : 0)
+                               .opacity(0)
+               
+               
+                           Text(settingFaceId ? "비공개": "공개")
+                               .animation(.none)
+                               .font(.caption2)
+                               .padding(.trailing, settingFaceId ? 0 : 5)
+                }
+            }
         }
+    }
+            
+            
+            
+//            Image(systemName: diaryIsPrivate ? "lock" : "lock.open" )
+//                .animation(.none)
+//                .padding(.trailing, diaryIsPrivate ? 1.5 : 0)
+//                .opacity(0)
+//
+//
+//            Text(diaryIsPrivate ? "비공개": "공개")
+//                .animation(.none)
+//                .font(.caption2)
+//                .padding(.trailing, diaryIsPrivate ? 0 : 5)
+            
+
         //TODO: -토글 전에 faceid 확인
 //        .onChange(of: usingFaceId) { newValue in
 //            if usingFaceId ?? true && faceId.islocked {
 //                faceId.authenticate()
 //            }
 //        }
-    }
 
 }
 

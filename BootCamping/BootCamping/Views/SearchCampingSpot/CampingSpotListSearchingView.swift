@@ -97,6 +97,7 @@ struct CampingSpotListSearchingView: View {
                 Spacer()
             }
         }
+        .padding(.horizontal, UIScreen.screenHeight * 0.03)
     }
 }
 

@@ -40,7 +40,7 @@ struct ReadDocuments {
     //facltNm
     var campingSpotName: String = ""
     //contentId
-    var campingSpotContenId: String = ""
+    var campingSpotContenId: [String] = []
     //addr1
     var campingSpotAddr: String = ""
     
@@ -395,10 +395,9 @@ struct FirebaseCampingSpotService {
                         }
                 }
                 //MARK: - 최초 캠핑장 아이디로 read
-                if readDocument.campingSpotContenId != "" {
+                if readDocument.campingSpotContenId != [] {
                     database.collection("CampingSpotList")
-                        .whereField("contentId", isEqualTo: String(readDocument.campingSpotContenId))
-                        .order(by: "contentId", descending: false)
+                        .whereField("contentId", in: readDocument.campingSpotContenId)
                         .limit(to: 10)
                         .getDocuments { snapshot, error in
                             if let error = error {
@@ -968,10 +967,9 @@ struct FirebaseCampingSpotService {
                         }
                 }
                 //MARK: - 페이지네이션에서 캠핑장 아이디로 read
-                if readDocument.campingSpotContenId != "" {
+                if readDocument.campingSpotContenId != [] {
                     database.collection("CampingSpotList")
-                        .whereField("contentId", isEqualTo: String(readDocument.campingSpotContenId))
-                        .order(by: "contentId", descending: false)
+                        .whereField("contentId", in: readDocument.campingSpotContenId)
                         .start(afterDocument: readDocument.lastDoc!)
                         .limit(to: 10)
                         .getDocuments { snapshot, error in

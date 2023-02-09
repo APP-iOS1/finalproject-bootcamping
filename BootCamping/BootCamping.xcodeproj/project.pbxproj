@@ -554,6 +554,7 @@
 				6E11BE2B298C8FD60019E963 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				6E688E3D29923827006DCEE5 /* XCRemoteSwiftPackageReference "swiftui-mail-view" */,
 				AD2DBF5029940009008534BA /* XCRemoteSwiftPackageReference "AlertToast" */,
+				7CF0DFDC2994E4E600F57D03 /* XCRemoteSwiftPackageReference "ChatScrollView" */,
 			);
 			productRefGroup = 630ADB4C2977CC6C000A517B /* Products */;
 			projectDirPath = "";
@@ -935,6 +936,14 @@
 			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
 			requirement = {
 				branch = master;
+				kind = branch;
+			};
+		};
+		7CF0DFDC2994E4E600F57D03 /* XCRemoteSwiftPackageReference "ChatScrollView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/cozzin/ChatScrollView.git";
+			requirement = {
+				branch = main;
 				kind = branch;
 			};
 		};

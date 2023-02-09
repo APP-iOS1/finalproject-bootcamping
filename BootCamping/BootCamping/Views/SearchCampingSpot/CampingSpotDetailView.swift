@@ -74,12 +74,11 @@ struct CampingSpotDetailView: View {
                                 } else{
                                     bookmarkStore.removeBookmarkCampingSpotCombine(campingSpotId: places.contentId)
                                 }
+                                wholeAuthStore.readUserListCombine()
                             } label: {
                                 Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
                                     .bold()
-                                    .foregroundColor(.white)
-                                    .shadow(color: .black, radius: 10)
-                                    .padding()
+                                    .foregroundColor(Color.accentColor)
                             }
                             .padding()
                             

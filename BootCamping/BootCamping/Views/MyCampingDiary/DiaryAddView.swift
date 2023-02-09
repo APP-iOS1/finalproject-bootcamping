@@ -12,6 +12,9 @@ import Photos
 
 //TODO: 텍스트 필드 입력할 때 화면 따라가기,,,
 struct DiaryAddView: View {
+    
+    
+    
     @Binding var isNavigationGoFirstView: Bool
 
     
@@ -94,6 +97,10 @@ struct DiaryAddView: View {
         .onTapGesture {
             dismissKeyboard()
         }
+        .task {
+            campingSpot = campingSpotItem.facltNm
+            locationInfo = campingSpotItem.contentId
+        }
     }
 }
 
@@ -124,9 +131,12 @@ private extension DiaryAddView {
                 
             })
             .sheet(isPresented: $imagePickerPresented,
-                   onDismiss: {DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+                   onDismiss:
+                    {DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
                 loadData()
-            }},
+            }
+                   }
+                   ,
                    content: { PhotoPicker(images: $selectedImages, selectionLimit: 10) })
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack{
@@ -237,16 +247,33 @@ private extension DiaryAddView {
 //        } header: {
 //            Text("위치 등록하기")
 //        }
-        NavigationLink {
-            SearchByCampingSpotNameView(campingSpot: $campingSpotItem)
-        } label: {
-            HStack{
-                Text("위치 등록하러 가기")
-                Spacer()
-                Image(systemName: "chevron.right")
-            }.padding(.vertical)
+
+        VStack {
+            if campingSpot == "" {
+                NavigationLink {
+                    SearchByCampingSpotNameView(campingSpot: $campingSpotItem)
+                } label: {
+                    HStack{
+                        Text("방문한 캠핑장 등록하러 가기")
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                    }.padding(.vertical)
+                }
+                .focused($inputFocused)
+            } else {
+                HStack {
+                    Text("\(campingSpot)")
+                        .lineLimit(1)
+                    Spacer()
+                    Button {
+                        campingSpot = ""
+                    } label: {
+                        Image(systemName: "xmark")
+                            .foregroundColor(.bcBlack)
+                    }
+                }
+            }
         }
-        .focused($inputFocused)
     }
     
     //MARK: - 방문일자 등록하기
@@ -330,7 +357,7 @@ private extension DiaryAddView {
         HStack {
             Spacer()
             Button {
-                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages ?? [Data()])
+                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: campingSpotItem.contentId, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages ?? [Data()])
                 dismiss()
             } label: {
                 Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "일기 쓰기")
@@ -463,6 +490,8 @@ struct PhotoPicker: UIViewControllerRepresentable {
         
     }
 }
+
+
 
 
 struct DiaryAddView_Previews: PreviewProvider {

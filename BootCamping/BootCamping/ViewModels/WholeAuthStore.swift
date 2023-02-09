@@ -35,19 +35,6 @@ enum AuthServiceError: Error {
     }
 }
 
-//Google 로그인의 로그인 및 로그아웃 상태에 대한 enum
-enum SignInState {
-    case splash
-    case signIn
-    case signOut
-}
-
-enum LogInState {
-    case success
-    case fail
-    case none
-}
-
 enum LoginPlatform {
     case email
     case google
@@ -60,31 +47,27 @@ enum LoginPlatform {
 class WholeAuthStore: ObservableObject {
     
     //로그인상태 저장
-    @AppStorage("login") var isSignIn: Bool?
-    
-    @Published var isLogin: Bool = false
+    @AppStorage("login") var isSignIn: Bool = false
+    //로그인 진행상태
+    @Published var isProcessing: Bool = false
+    //유저리스트
     @Published var userList: [User]
     //현재 Auth 로그인 유저 정보
     @Published var currentUser: Firebase.User?
     //현재 로그인한 유저의 파이어스토어 정보
     @Published var currnetUserInfo: User?
-    //인증 상태를 관리하는 변수
-    @Published var state: SignInState = .splash
-    @Published var loginState: LogInState = .none
+    //로그인 플랫폼
     @Published var loginPlatform: LoginPlatform = .none
-    
-    //서비스 오류 상태
+    //서비스 오류 존재여부  있으면 True 없으면 False
+    @Published var isError: Bool = false
+    //서비스 오류 상태 메세지
     @Published var showErrorAlertMessage: String = "오류"
-
     //파이어베이스 유저 서비스 오류
     @Published var firebaseUserServiceError: FirebaseUserServiceError = .badSnapshot
-    
     //로그인 서비스 오류
     @Published var authServiceError: AuthServiceError = .emailDuplicated
-    
     // 이메일 중복상태
     @Published var duplicatedEmailState: Bool = true
-    
     //애플 로그인 Published
     @Published var nonce = ""
     
@@ -138,6 +121,8 @@ class WholeAuthStore: ObservableObject {
                     print("Failed create User")
                     self.firebaseUserServiceError = .createUserListError
                     self.showErrorAlertMessage = self.firebaseUserServiceError.errorDescription!
+                    self.isError = true
+                    self.isProcessing = false
                     return
                 case .finished:
                     print("Finished create User")
@@ -145,8 +130,13 @@ class WholeAuthStore: ObservableObject {
                         self.readUserListCombine()
                         if self.loginPlatform != .email {
                             withAnimation(.easeInOut) {
+                                self.isError = false
+                                self.isProcessing = false
                                 self.isSignIn = true
                             }
+                        } else {
+                            self.isError = false
+                            self.isProcessing = false
                         }
                     }
                     return
@@ -207,6 +197,22 @@ class WholeAuthStore: ObservableObject {
             .store(in: &cancellables)
     }
     
+    // MARK: - 통합 로그아웃
+    func combineLogOut() {
+        switch loginPlatform {
+        case .email:
+            self.authSignOut()
+        case .apple:
+            self.appleLogOut()
+        case .google:
+            self.googleSignOut()
+        case .kakao:
+            self.kakaoLogOutCombine()
+        case .none:
+            break
+        }
+    }
+    
     // MARK: - 이메일 로그인 (Sign up, Sign In, Sign Out, Checking)
 
     // MARK: checkUserEmailDuplicated 이메일 중복 체크
@@ -262,8 +268,9 @@ class WholeAuthStore: ObservableObject {
                     print("Failed SingUp User")
                     self.authServiceError = .signInError
                     self.showErrorAlertMessage = self.authServiceError.errorDescription!
-                    self.loginState = .fail
                     self.loginPlatform = .none
+                    self.isError = true
+                    self.isProcessing = false
                     return
                 case .finished:
                     print("Finished SingIn User")
@@ -272,10 +279,9 @@ class WholeAuthStore: ObservableObject {
             } receiveValue: { user in
                 self.currentUser = user
                 self.getUserInfo(userUID: user.uid) {
-                    self.isLogin = true
-                    self.state = .signIn
-                    self.loginState = .success
                     self.loginPlatform = .email
+                    self.isProcessing = false
+                    self.isError = false
                     withAnimation(.easeInOut) {
                         self.isSignIn = true
                     }
@@ -290,9 +296,6 @@ class WholeAuthStore: ObservableObject {
         
         do {
             try Auth.auth().signOut()
-            self.isLogin = false
-            self.state = .signOut
-            self.loginState = .none
             self.loginPlatform = .email
             self.currentUser = nil
             self.currnetUserInfo = userInit
@@ -319,6 +322,8 @@ class WholeAuthStore: ObservableObject {
                     print(error)
                     self.authServiceError = .signUpError
                     self.showErrorAlertMessage = self.authServiceError.errorDescription!
+                    self.isError = true
+                    self.isProcessing = false
                     return
                 case .finished:
                     print("Finished SignUp User")
@@ -368,9 +373,9 @@ class WholeAuthStore: ObservableObject {
             print(#function, error.localizedDescription)
             self.authServiceError = .signInError
             self.showErrorAlertMessage = self.authServiceError.errorDescription!
-            self.isLogin = false
-            self.loginState = .fail
             self.loginPlatform = .none
+            self.isError = true
+            self.isProcessing = false
             return
         }
         
@@ -382,8 +387,13 @@ class WholeAuthStore: ObservableObject {
          let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: authentication.accessToken)
          */
         
-        guard let accessToken = user?.accessToken, let idToken = user?.idToken else {return }
+        guard let accessToken = user?.accessToken, let idToken = user?.idToken else {
+            self.isError = true
+            return
+        }
         
+        self.isProcessing = true
+
         let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString, accessToken: accessToken.tokenString)
         
         // 3
@@ -392,9 +402,9 @@ class WholeAuthStore: ObservableObject {
                 print(#function, error.localizedDescription)
                 self.authServiceError = .signInError
                 self.showErrorAlertMessage = self.authServiceError.errorDescription!
-                self.isLogin = false
-                self.loginState = .fail
                 self.loginPlatform = .none
+                self.isError = true
+                self.isProcessing = false
             } else {
                 guard let result = result else { return }
                 UserDefaults.standard.set(result.user.uid, forKey: "userIdToken")
@@ -407,22 +417,15 @@ class WholeAuthStore: ObservableObject {
                         if snapshot?.documents.count == 0 {
                             print("파이어베이스에 저장된 유저정보가 없습니다.")
                             self.currentUser = result.user
-                            self.isLogin = true
-                            self.state = .signIn
-                            self.loginState = .success
                             self.loginPlatform = .google
                             self.createUserCombine(user: User(id: (result.user.uid), profileImageName: "", profileImageURL: "", nickName: (result.user.email!), userEmail: (result.user.email!), bookMarkedDiaries: [], bookMarkedSpot: []))
                         } else {
                             print("파이어베이스에 저장된 유저정보가 있습니다..")
                             self.currentUser = result.user
-                            self.isLogin = true
-                            self.state = .signIn
-                            self.loginState = .success
                             self.loginPlatform = .google
                             self.getUserInfo(userUID: result.user.uid) {
-                                self.isLogin = true
-                                self.state = .signIn
-                                self.loginState = .success
+                                self.isError = false
+                                self.isProcessing = false
                                 self.loginPlatform = .google
                                 withAnimation(.easeInOut) {
                                     self.isSignIn = true
@@ -444,9 +447,6 @@ class WholeAuthStore: ObservableObject {
             // 2
             try Auth.auth().signOut()
             
-            self.isLogin = false
-            self.state = .signOut
-            self.loginState = .none
             self.loginPlatform = .none
             self.currentUser = nil
             self.currnetUserInfo = userInit
@@ -473,37 +473,40 @@ class WholeAuthStore: ObservableObject {
                     print(error)
                     self.authServiceError = .signInError
                     self.showErrorAlertMessage = self.authServiceError.errorDescription!
+                    self.isError = true
+                    self.isProcessing = false
                     return
                 case .finished:
                     print("Finished SignIn User")
                     return
                 }
             } receiveValue: { user in
+                self.isProcessing = true
                 self.currentUser = user
                 let query = self.database.collection("UserList").whereField("id", isEqualTo: (user.uid))
                 query.getDocuments { (snapshot, error) in
                     if let error = error {
                         print(error)
+                        self.isProcessing = false
+                        self.isError = true
                     }
                     if let error = error {
                         print(error)
+                        self.isProcessing = false
+                        self.isError = true
                     } else {
                         if snapshot?.documents.count == 0 {
                             print("파이어베이스에 유저정보가 없습니다.")
-                            self.isLogin = true
-                            self.state = .signIn
-                            self.loginState = .success
                             self.loginPlatform = .kakao
                             self.createUserCombine(user: User(id: (user.uid), profileImageName: "", profileImageURL: "", nickName: (user.email)!, userEmail: (user.email!), bookMarkedDiaries: [], bookMarkedSpot: []))
                         } else {
                             print("파이어베이스에 유저정보가 있습니다..")
                             self.getUserInfo(userUID: user.uid) {
-                                self.isLogin = true
-                                self.state = .signIn
-                                self.loginState = .success
                                 self.loginPlatform = .kakao
                                 withAnimation(.easeInOut) {
                                     self.isSignIn = true
+                                    self.isError = false
+                                    self.isProcessing = false
                                 }
                             }
                         }
@@ -527,9 +530,6 @@ class WholeAuthStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished LogOut User")
-                    self.isLogin = false
-                    self.state = .signOut
-                    self.loginState = .none
                     self.loginPlatform = .none
                     self.currentUser = nil
                     self.currnetUserInfo = self.userInit
@@ -564,11 +564,15 @@ class WholeAuthStore: ObservableObject {
         }
         let firebaseCredential = OAuthProvider.credential(withProviderID: "apple.com", idToken: tokenString, rawNonce: nonce)
         
+        self.isProcessing = true
+        
         Auth.auth().signIn(with: firebaseCredential) { result, error in
             if let error = error {
                 print(error.localizedDescription)
                 self.authServiceError = .signOutError
                 self.showErrorAlertMessage = self.authServiceError.errorDescription!
+                self.isError = true
+                self.isProcessing = false
                 return
             }
             // User Successfully Logged Into Firebase
@@ -581,23 +585,24 @@ class WholeAuthStore: ObservableObject {
                 
                 if let error = error {
                     print(error)
+                    self.authServiceError = .signOutError
+                    self.showErrorAlertMessage = self.authServiceError.errorDescription!
+                    self.isError = true
+                    self.isProcessing = false
+                    return
                 } else {
                     if snapshot?.documents.count == 0 {
                         print("파이어베이스에 유저정보가 없습니다.")
                         self.currentUser = result?.user
-                        self.isLogin = true
-                        self.state = .signIn
-                        self.loginState = .success
                         self.loginPlatform = .apple
                         self.createUserCombine(user: User(id: (result?.user.uid)!, profileImageName: "", profileImageURL: "", nickName: String(describing: (result?.user.email)!), userEmail: String(describing: (result?.user.email)!), bookMarkedDiaries: [], bookMarkedSpot: []))
                     } else {
                         print("파이어베이스에 유저정보가 있습니다..")
                         self.getUserInfo(userUID: (result?.user.uid)!) {
                             self.currentUser = result?.user
-                            self.isLogin = true
-                            self.state = .signIn
-                            self.loginState = .success
                             self.loginPlatform = .apple
+                            self.isError = false
+                            self.isProcessing = false
                             withAnimation(.easeInOut) {
                                 self.isSignIn = true
                             }
@@ -615,9 +620,6 @@ class WholeAuthStore: ObservableObject {
         do {
             try Auth.auth().signOut()
             
-            self.isLogin = false
-            self.state = .signOut
-            self.loginState = .none
             self.loginPlatform = .none
             self.currentUser = nil
             self.currnetUserInfo = userInit
@@ -648,9 +650,6 @@ class WholeAuthStore: ObservableObject {
                             print(error)
                         }
                         print("파이어베이스 유저 삭제 성공")
-                        self.isLogin = false
-                        self.state = .signOut
-                        self.loginState = .none
                         self.loginPlatform = .none
                         self.currentUser = nil
                         self.currnetUserInfo = self.userInit

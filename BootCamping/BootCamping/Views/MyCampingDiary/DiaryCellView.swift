@@ -45,7 +45,9 @@ struct DiaryCellView: View {
                         bookmarkButton
                     }
                     diaryContent
-                    diaryCampingLink
+                    if !campingSpotStore.campingSpotList.isEmpty {
+                        diaryCampingLink
+                    }
                     diaryDetailInfo
                     Divider().padding(.bottom, 3)
                     

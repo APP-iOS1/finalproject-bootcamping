@@ -121,7 +121,9 @@ private extension DiaryAddView {
                 
             })
             .sheet(isPresented: $imagePickerPresented,
-                   onDismiss: loadData,
+                   onDismiss: {DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+                loadData()
+            }},
                    content: { PhotoPicker(images: $selectedImages, selectionLimit: 10) })
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack{
@@ -135,6 +137,7 @@ private extension DiaryAddView {
                     } else{
                         ForEach(Array(zip(0..<(diaryImages?.count ?? 0), diaryImages ?? [Data()])), id: \.0) { index, image in
                             Image(uiImage: UIImage(data: image)!)
+                                .resizeImageData(data: image)
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
@@ -159,10 +162,13 @@ private extension DiaryAddView {
     func loadData() {
         var arr = [Data]()
         guard let selectedImages = selectedImages else { return }
+        print("!!!!!!!!!!!!!!!!!!!!!!arr: \(selectedImages.count)")
         for selectedImage in selectedImages {
             arr.append((selectedImage.jpegData(compressionQuality: 0.2)!))
         }
+        print("!!!!!!!!!!!!!!!!!!!!!!arr: \(arr.count)")
         diaryImages = arr
+        print("!!!!!!!!!!!!!!!!!!!!!!diaryImages\(diaryImages!.count)")
     }
     
     //MARK: - 제목 작성
@@ -443,6 +449,7 @@ struct PhotoPicker: UIViewControllerRepresentable {
                     itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
                         if let image = image as? UIImage {
                             self.parent.images?.append(image)
+                            print("````````````\(self.parent.images!.count)")
                         } else {
                             print("Could not load image", error?.localizedDescription ?? "")
                         }

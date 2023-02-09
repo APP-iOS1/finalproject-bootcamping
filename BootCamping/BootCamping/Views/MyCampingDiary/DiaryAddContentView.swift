@@ -8,7 +8,23 @@
 import SwiftUI
 import Firebase
 
+enum CurrentField{
+    case field1
+    case field2
+}
+ 
+    
+
+    
+
 struct DiaryAddContentView: View {
+    
+    @State var field1 = ""
+    @State var field2 = ""
+    
+    @FocusState var activeState: CurrentField?
+    
+    
     @Binding var isNavigationGoFirstView: Bool
 
     
@@ -68,7 +84,7 @@ struct DiaryAddContentView: View {
                 Spacer()
                 
                 Button {
-                    resignKeyboard()
+                    submit()
                     isTapTextField = false
                 } label: {
                     Text("Done")
@@ -104,13 +120,18 @@ extension DiaryAddContentView {
                         diaryTitle = String(newValue.prefix(20))
                     }
                 }
-                .onSubmit {
-                    isTapTextField = false
-                    //next 눌렀을 때 다음 필드로 넘어가면 없어도 됨.
-                }
+//                .onSubmit {
+//                    isTapTextField = false
+//                    //next 눌렀을 때 다음 필드로 넘어가면 없어도 됨.
+//                }
             
         }
         .focused($inputFocused)
+        .onSubmit{
+            activeState = .field2
+        }
+
+
         .onTapGesture {
             isTapTextField = true
         }
@@ -125,6 +146,8 @@ extension DiaryAddContentView {
                 .onTapGesture {
                     isTapTextField = true
                 }
+                .focused($activeState, equals: .field2)
+
             
             
         }

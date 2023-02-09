@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ReportUserView: View {
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @State var blockUser: Bool = false
     @State private var diaryContent: String = ""
     
@@ -50,6 +51,7 @@ struct ReportUserView: View {
                         .foregroundColor(Color.black)
                 }
             }
+            .zIndex(1)
             .padding(.horizontal)
             .cornerRadius(5)
             .frame(width: UIScreen.screenWidth * 0.94, height: 45)
@@ -73,8 +75,8 @@ struct ReportUserView: View {
                 RoundedRectangle(cornerRadius: 5).fill(Color.bcWhite)
             )
             // MARK: - 신고 사유 작성 텍스트필드 : 반투명...문제로 지워둠
-//                reportUserField
-//                .padding(.vertical)
+                reportUserField
+                .padding(.vertical)
             
             // MARK: - 유저 차단 체크박스
            Spacer()
@@ -147,6 +149,7 @@ struct Dropdown: View {
                     DropdownRow(option: option, onOptionSelected: self.onOptionSelected)
                 }
             }
+            
             .background(Color.bcWhite)
             .frame(width: UIScreen.screenWidth * 0.94, height: 210)
             .padding(.vertical, 5)
@@ -201,7 +204,7 @@ struct ReportUserView_Previews: PreviewProvider {
     ]
     
     static var previews: some View {
-        Group {
+        VStack {
             ReportUserView(
                 placeholder: "이 게시물을 신고하는 이유",
                 options: options,

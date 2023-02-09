@@ -198,7 +198,7 @@ private extension DiaryCellView {
                 isShowingUserReportAlert = false
             }
             Button("신고하기", role: .destructive) {
-                //신고 컴바인..
+                ReportUserView(placeholder: "", options: [])
             }
         }
         .alert("유저를 차단하시겠습니까?", isPresented: $isShowingUserBlockedAlert) {
@@ -255,17 +255,21 @@ private extension DiaryCellView {
         HStack {
             Image("1") //TODO: -캠핑장 사진 연동
                 .resizable()
-                .frame(width: 50, height: 50)
+                .frame(width: 60, height: 60)
+                .padding(.trailing, 5)
             
             VStack(alignment: .leading, spacing: 3) {
                 Text("캠핑장 이름")
                     .font(.headline)
                 HStack {
-                    Text("대구시 수성구") //TODO: 캠핑장 주소 -앞에 -시 -구 까지 짜르기
+                    Text("방문일자: \(item.diaryVisitedDate.getKoreanDate())")
+                    //TODO: 캠핑장 주소 -앞에 -시 -구 까지 짜르기
+                        .font(.footnote)
+                        .padding(.vertical, 2)
                     Spacer()
                     //방문일
-                    Text("\(item.diaryVisitedDate.getKoreanDate())")
-                        .font(.footnote)
+//                    Text("방문: \(item.diaryVisitedDate.getKoreanDate())")
+//                        .font(.footnote)
                 }
                 .font(.subheadline)
                 .foregroundColor(.secondary)
@@ -273,12 +277,14 @@ private extension DiaryCellView {
             .foregroundColor(.bcBlack)
             
         }
-        .padding()
+        .padding(10)
         .overlay(
-            RoundedRectangle(cornerRadius: 20)
-                .stroke(Color.gray, lineWidth: 3)
-                .opacity(0.2)
-        )
+
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.bcDarkGray, lineWidth: 1)
+                    .opacity(0.3)
+        
+            )
     }
     
     

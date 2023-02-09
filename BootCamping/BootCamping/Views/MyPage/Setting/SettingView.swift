@@ -30,7 +30,7 @@ struct SettingView: View {
             NavigationLink(destination: ContactUsView()) {
                 Text("고객센터")
             }
-            NavigationLink(destination: EmptyView()) {
+            NavigationLink(destination: blockUserEditView()) {
                 Text("앱 정보")
             }
             NavigationLink(destination: EmptyView()) {

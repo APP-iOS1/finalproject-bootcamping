@@ -100,13 +100,14 @@ private extension DiaryDetailView {
                     Rectangle().foregroundColor(.gray)
                 }
                 .scaledToFill()
-                .frame(width: UIScreen.screenWidth * 0.01)
+                .frame(width: UIScreen.screenWidth * 0.07)
                 .clipShape(Circle())
             
             //유저 닉네임
             Text(item.diaryUserNickName)
-                .font(.headline).fontWeight(.semibold)
+                .font(.callout)
             Spacer()
+            
             //MARK: -...버튼 글 쓴 유저일때만 ...나타나도록
             if item.uid == Auth.auth().currentUser?.uid {
                 alertMenu
@@ -231,9 +232,12 @@ private extension DiaryDetailView {
                     HStack {
                         Text("대구시 수성구") //TODO: 캠핑장 주소 -앞에 -시 -구 까지 짜르기
                         Spacer()
-                        //방문일
-                        Text("\(item.diaryVisitedDate.getKoreanDate())")
-                            .font(.footnote)
+                        Group {
+                            Text("자세히 보기")
+                            Image(systemName: "chevron.right")
+                        }
+                        .font(.footnote)
+
                     }
                     .font(.subheadline)
                     .foregroundColor(.secondary)
@@ -241,12 +245,11 @@ private extension DiaryDetailView {
                 .foregroundColor(.bcBlack)
             }
             .padding()
-            .background {
-                RoundedRectangle(cornerRadius: 20)
-                    .foregroundColor(.gray)
-                    .opacity(0.2)
-                    .shadow(color: .gray, radius: 3)
-            }
+            .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.bcDarkGray, lineWidth: 1)
+                        .opacity(0.3)
+                )
         }
         .foregroundColor(.clear)
     }

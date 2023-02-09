@@ -96,7 +96,7 @@ struct FirebaseDiaryService {
             
             let myQueue = DispatchQueue(label: "creatework",attributes: .concurrent)
             let group = DispatchGroup()
-
+            
             guard let userUID = Auth.auth().currentUser?.uid else { return }
             
             for image in images {
@@ -279,7 +279,25 @@ struct FirebaseDiaryService {
         .eraseToAnyPublisher()
     }
     
-    
+    // MARK: - 다이어리 공개 여부만 Update하는 함수
+    func updateIsPrivateDiaryService(diaryId: String, isPrivate: Bool) -> AnyPublisher<Void, Error> {
+        Future<Void, Error>  { promise in
+            database
+                .collection("Diarys")
+                .document(diaryId)
+                .updateData([
+                    "diaryIsPrivate" : isPrivate
+                ]) { error in
+                    if let error = error {
+                        print(error)
+                        promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
+                    } else {
+                        promise(.success(()))
+                    }
+                }
+        }
+        .eraseToAnyPublisher()
+    }
     
     
     //MARK: - Delete FirebaseDiaryService
@@ -290,7 +308,7 @@ struct FirebaseDiaryService {
             
             let myQueue = DispatchQueue(label: "updatework",attributes: .concurrent)
             let group = DispatchGroup()
-
+            
             for diaryImage in diary.diaryImageNames {
                 group.enter()
                 myQueue.sync {

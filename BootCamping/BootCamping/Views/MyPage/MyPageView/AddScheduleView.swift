@@ -15,11 +15,14 @@ struct AddScheduleView: View {
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var localNotification: LocalNotification
     
-    @State var startDate = Date()
-    @State var endDate = Date()
+    @State private var startDate = Date()
+    @State private var endDate = Date()
     @State private var campingSpot: String = ""
     @State private var ischeckingDate = true
     @State private var isSettingNotification = true
+    
+    @State private var selectedColor: String = "BCGreen"
+    @State private var showColorPicker = false
     
     // 캠핑 종료일이 시작일보다 늦어야 하므로 종료일 날짜 선택 범위를 제한해준다.
     var dateRange: ClosedRange<Date> {
@@ -58,25 +61,28 @@ struct AddScheduleView: View {
                 .padding(.vertical, 10)
             Divider()
                 .padding(.bottom, 10)
-            DatePicker(
-                "캠핑 시작일",
-                selection: $startDate,
-                displayedComponents: [.date]
-            )
-            .datePickerStyle(.automatic)
-            DatePicker(
-                "캠핑 종료일",
-                selection: $endDate,
-                in: dateRange,
-                displayedComponents: [.date]
-            )
-            .datePickerStyle(.automatic)
-            .onChange(of: startDate) { newStartDate in
-                if endDate < newStartDate {
-                    endDate = newStartDate
+            VStack{
+                DatePicker(
+                    "캠핑 시작일",
+                    selection: $startDate,
+                    displayedComponents: [.date]
+                )
+                .datePickerStyle(.automatic)
+                DatePicker(
+                    "캠핑 종료일",
+                    selection: $endDate,
+                    in: dateRange,
+                    displayedComponents: [.date]
+                )
+                .datePickerStyle(.automatic)
+                .onChange(of: startDate) { newStartDate in
+                    if endDate < newStartDate {
+                        endDate = newStartDate
+                    }
                 }
+                colorPicker
+                setNotificationToggle
             }
-            setNotificationToggle
             Spacer()
                 .frame(maxHeight: .infinity)
             alertText
@@ -165,14 +171,14 @@ extension AddScheduleView {
         Button {
             let calendar = Calendar.current
             if endDate.timeIntervalSince(startDate) > 0 {
-                let interval = endDate.timeIntervalSince(startDate)
-                let days = Int(interval / 86400)
+                let interval = Int(endDate.timeIntervalSince(startDate))
+                let days = (interval % 86400 == 0 ? (interval / 86400) : (interval / 86400) + 1)
                 for day in 0...days {
                     print(calendar.date(byAdding: .day, value: day, to: startDate) ?? Date())
-                    scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: calendar.date(byAdding: .day, value: day, to: startDate) ?? Date()))
+                    scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: calendar.date(byAdding: .day, value: day, to: startDate) ?? Date(), color: selectedColor))
                 }
             } else {
-                scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: startDate))
+                scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: startDate, color: selectedColor))
             }
             scheduleStore.readScheduleCombine()
             if isSettingNotification{
@@ -189,6 +195,43 @@ extension AddScheduleView {
         }
         .disabled(isAddingDisable)
     }
+    // MARK: -View : colorPicker
+    private var colorPicker: some View{
+        VStack(alignment: .leading){
+            DisclosureGroup(isExpanded: $showColorPicker, content: {
+                HStack(spacing: 10){
+                    Group{
+                        colorButton(selectedColor: $selectedColor, color: "taskRed")
+                        colorButton(selectedColor: $selectedColor, color: "taskOrange")
+                        colorButton(selectedColor: $selectedColor, color: "taskYellow")
+                        colorButton(selectedColor: $selectedColor, color: "taskGreen")
+                        colorButton(selectedColor: $selectedColor, color: "taskTeal")
+                        colorButton(selectedColor: $selectedColor, color: "taskBlue")
+                        colorButton(selectedColor: $selectedColor, color: "taskPurple")
+                        Button {
+                            selectedColor = "BCGreen"
+                        } label: {
+                            Circle()
+                                .stroke(Color.bcGreen, lineWidth: 2)
+                                .frame(width: 25, height: 25)
+                                .overlay(
+                                    Image(systemName: "xmark")
+                                        .font(.headline)
+                                )
+                        }
+                    }
+                }
+                .frame(width: UIScreen.screenWidth, height: 40)
+            },label: {
+                HStack {
+                    Text("색상")
+                        .foregroundColor(Color.bcBlack)
+                    Image(systemName: "flag.fill")
+                        .foregroundColor(Color[selectedColor])
+                }
+            })
+        }
+    }
     // MARK: -View : alertText
     private var alertText : some View {
         Text(alert)
@@ -198,12 +241,23 @@ extension AddScheduleView {
     }
 }
 
-
-
-struct AddScheduleView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddScheduleView()
-            .environmentObject(ScheduleStore())
-            .environmentObject(CampingSpotStore())
+struct colorButton: View{
+    @Binding var selectedColor: String
+    let color: String
+    
+    var body: some View{
+        Button {
+            selectedColor = color
+        } label: {
+            Circle()
+                .fill(Color[color])
+                .frame(width: 25, height: 25)
+                .overlay(
+                    Image(systemName: "checkmark.circle")
+                        .foregroundColor(Color.white)
+                        .opacity((selectedColor == color ? 1 : 0))
+                        .font(.headline)
+                )
+        }
     }
 }

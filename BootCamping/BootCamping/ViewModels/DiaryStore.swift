@@ -32,7 +32,7 @@ class DiaryStore: ObservableObject {
     
     //TODO: -싱글톤에서 enviroment로 바꾸기
     static var shared = DiaryStore()
-
+    
     //MARK: - Read Diary Combine
     
     func readDiarysCombine() {
@@ -45,7 +45,7 @@ class DiaryStore: ObservableObject {
                     print("Failed get Diarys")
                     self.firebaseDiaryServiceError = .badSnapshot
                     self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
-                        return
+                    return
                 case .finished:
                     print("Finished get Diarys")
                     return
@@ -56,9 +56,9 @@ class DiaryStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-
+    
     //MARK: - Create Diary Combine
-
+    
     func createDiaryCombine(diary: Diary, images: [Data]) {
         FirebaseDiaryService().createDiaryService(diary: diary, images: images)
             .receive(on: DispatchQueue.main)
@@ -105,6 +105,30 @@ class DiaryStore: ObservableObject {
             .store(in: &cancellables)
     }
     
+    //MARK: - update IsPrivate Diary Combine
+    
+    func updateIsPrivateDiaryCombine(diaryId: String, isPrivate: Bool) {
+        FirebaseDiaryService().updateIsPrivateDiaryService(diaryId: diaryId, isPrivate: isPrivate)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Update Diary")
+                    self.firebaseDiaryServiceError = .updateDiaryError
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished Update Diary")
+                    self.readDiarysCombine()
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
+    
     //MARK: - Delete Diary Combine
     
     func deleteDiaryCombine(diary: Diary) {
@@ -127,8 +151,8 @@ class DiaryStore: ObservableObject {
                 
             }
             .store(in: &cancellables)
-    }
-    
+    }  
+
     @Published var realtimeDiaryList: [Diary] = []
     @Published var docPage: Int = 0
     

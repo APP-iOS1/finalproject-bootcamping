@@ -15,7 +15,7 @@ struct DiaryCellView: View {
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var diaryLikeStore: DiaryLikeStore
     @EnvironmentObject var commentStore: CommentStore
-
+    
     @State var isBookmarked: Bool = false
     
     //선택한 다이어리 정보 변수입니다.
@@ -34,28 +34,25 @@ struct DiaryCellView: View {
                 DiaryDetailView(item: item)
             } label: {
                 VStack(alignment: .leading) {
-                    HStack {
+                    HStack(alignment: .center){
+                        if item.uid == wholeAuthStore.currnetUserInfo!.id {
+                            isPrivateImage
+                        }
                         diaryTitle
                         Spacer()
-                        diaryIsPrivate
+                        bookmarkButton
                     }
                     diaryContent
                     diaryCampingLink
                     diaryDetailInfo
                     Divider().padding(.bottom, 3)
-                    //디바이더.. 꽉 채우게..?
-//                    Rectangle()
-//                        .foregroundColor(.gray)
-//                        .opacity(0.1)
-//                        .frame(height: 5)
-//                        .padding(.horizontal, -UIScreen.screenWidth * 0.03)
                     
                 }
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
             }
             .foregroundColor(.bcBlack)
         }
-
+        
         .onAppear {
             commentStore.readCommentsCombine(diaryId: item.id)
             isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.id)
@@ -101,23 +98,6 @@ private extension DiaryCellView {
                     .scaledToFill()
                     .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     .clipped()
-                //MARK: - 북마크 버튼
-                    .overlay(alignment: .topTrailing){
-                        Button {
-                            isBookmarked.toggle()
-                            if isBookmarked{
-                                bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
-                            } else{
-                                bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
-                            }
-                        } label: {
-                            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                        }
-                        .foregroundColor(.white)
-                        .shadow(radius: 5)
-                        .padding()
-                    }
-                
             }
         }
         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
@@ -160,7 +140,7 @@ private extension DiaryCellView {
         .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
-
+    
     //MARK: - Alert Menu 버튼
     var alertMenu: some View {
         //MARK: - ... 버튼입니다.
@@ -238,10 +218,29 @@ private extension DiaryCellView {
             .padding(.vertical, 5)
     }
     
-    //MARK: - 다이어리 공개 여부 - 잠금 했을때만 자물쇠 나오도록 설정
-    var diaryIsPrivate: some View {
-        // FIXME: - No symbol named '' found in system symbol set 로그 수정해야 함
-        Image(systemName: item.diaryIsPrivate ? "lock" : "" )
+    // MARK: - 다이어리 공개 여부를 나타내는 이미지
+    private var isPrivateImage: some View {
+        Image(systemName: (item.diaryIsPrivate ? "lock" : "lock.open"))
+            .foregroundColor(Color.secondary)
+    }
+    
+    // MARK: - 북마크 버튼
+    private var bookmarkButton: some View {
+        Button{
+            isBookmarked.toggle()
+            if isBookmarked{
+                bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
+            } else {
+                bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
+            }
+            wholeAuthStore.readUserListCombine()
+        } label: {
+            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                .bold()
+                .foregroundColor(Color.accentColor)
+                .opacity((item.uid != wholeAuthStore.currnetUserInfo!.id ? 1 : 0))
+        }
+        .disabled(item.uid == wholeAuthStore.currnetUserInfo!.id)
     }
     
     //MARK: - 내용
@@ -276,17 +275,18 @@ private extension DiaryCellView {
                 .foregroundColor(.secondary)
             }
             .foregroundColor(.bcBlack)
-
+            
         }
         .padding(10)
         .overlay(
+
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(Color.bcDarkGray, lineWidth: 1)
                     .opacity(0.3)
         
             )
     }
-
+    
     
     //MARK: - 좋아요, 댓글, 타임스탬프
     var diaryDetailInfo: some View {

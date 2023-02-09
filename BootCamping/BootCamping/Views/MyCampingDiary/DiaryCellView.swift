@@ -26,7 +26,6 @@ struct DiaryCellView: View {
     @State private var isShowingDeleteAlert = false
     //유저 신고/ 차단 알림
     @State private var isShowingUserReportAlert = false
-    @State private var isShowingUserBlockedAlert = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -176,13 +175,6 @@ private extension DiaryCellView {
             } label: {
                 Text("신고하기")
             }
-            
-            Button {
-                isShowingDeleteAlert = true
-            } label: {
-                Text("차단하기")
-            }
-            
         } label: {
             Image(systemName: "ellipsis")
                 .font(.title3)
@@ -193,17 +185,10 @@ private extension DiaryCellView {
                 isShowingUserReportAlert = false
             }
             Button("신고하기", role: .destructive) {
-                ReportUserView(placeholder: "", options: [])
+                ReportUserView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []), placeholder: "", options: [])
             }
         }
-        .alert("유저를 차단하시겠습니까?", isPresented: $isShowingUserBlockedAlert) {
-            Button("취소", role: .cancel) {
-                isShowingUserBlockedAlert = false
-            }
-            Button("차단하기", role: .destructive) {
-                //차단 컴바인..
-            }
-        }
+
     }
     
     //MARK: - 제목

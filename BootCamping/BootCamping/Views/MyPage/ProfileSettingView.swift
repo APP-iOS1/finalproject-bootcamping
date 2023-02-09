@@ -100,7 +100,7 @@ extension ProfileSettingView {
     private var editButton : some View {
         Button {
             // TODO: UserInfo 수정하기
-            wholeAuthStore.updateUserCombine(image: profileImage, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: wholeAuthStore.currnetUserInfo!.profileImageURL, nickName: updateNickname, userEmail: wholeAuthStore.currnetUserInfo!.userEmail, bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot))
+            wholeAuthStore.updateUserCombine(image: profileImage, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: wholeAuthStore.currnetUserInfo!.profileImageURL, nickName: updateNickname, userEmail: wholeAuthStore.currnetUserInfo!.userEmail, bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot, blockedUser: wholeAuthStore.currnetUserInfo!.blockedUser))
             dismiss()
         } label: {
             Text("수정")

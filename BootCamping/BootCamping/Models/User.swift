@@ -15,4 +15,5 @@ struct User: Identifiable, Hashable {
     var userEmail: String
     var bookMarkedDiaries: [String]
     var bookMarkedSpot: [String]
+    var blockedUser: [String]
 }

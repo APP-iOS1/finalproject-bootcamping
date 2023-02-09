@@ -61,7 +61,8 @@ struct FirebaseUserService {
                                     nickName: d["nickName"] as? String ?? "",
                                     userEmail: d["userEmail"] as? String ?? "",
                                     bookMarkedDiaries: d["bookMarkedDiaries"] as? [String] ?? [],
-                                    bookMarkedSpot: d["bookMarkedSpot"] as? [String] ?? []
+                                    bookMarkedSpot: d["bookMarkedSpot"] as? [String] ?? [],
+                                    blockedUser: d["blockedUser"] as? [String] ?? []
                         )}
                     
                     promise(.success(users))
@@ -81,7 +82,8 @@ struct FirebaseUserService {
                 "nickName": user.nickName,
                 "userEmail": user.userEmail,
                 "bookMarkedDiaries": user.bookMarkedDiaries,
-                "bookMarkedSpot": user.bookMarkedSpot
+                "bookMarkedSpot": user.bookMarkedSpot,
+                "blockedUser": user.blockedUser
             ]) { error in
                 if let error = error {
                     print(error)
@@ -159,6 +161,7 @@ struct FirebaseUserService {
                             "userEmail": user.userEmail,
                             "bookMarkedDiaries": user.bookMarkedDiaries,
                             "bookMarkedSpot": user.bookMarkedSpot,
+                            "blockedUser": user.blockedUser,
                         ]) { error in
                             if let error = error {
                                 print(error)
@@ -178,6 +181,7 @@ struct FirebaseUserService {
                     "userEmail": user.userEmail,
                     "bookMarkedDiaries": user.bookMarkedDiaries,
                     "bookMarkedSpot": user.bookMarkedSpot,
+                    "blockedUser": user.blockedUser,
                 ]) { error in
                     if let error = error {
                         print(error)

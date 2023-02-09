@@ -19,29 +19,29 @@ struct WeeklyPopulerCampingView: View {
         VStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(diaryStore.diaryList) { item in
-                        if item.diaryIsPrivate == false {
+                    ForEach(diaryStore.userInfoDiaryList, id: \.self) { item in
                             NavigationLink {
                                 DiaryDetailView(item: item)
                             } label: {
                                 ZStack(alignment: .topLeading) {
-                                    PhotoCardFrame(image: item.diaryImageURLs[0])
+                                    PhotoCardFrame(image: item.diary.diaryImageURLs[0])
                                     LinearGradient(gradient: Gradient(colors: [Color.bcBlack.opacity(0.3), Color.clear]), startPoint: .top, endPoint: .bottom)
                                         .cornerRadius(20)
-                                    PhotoMainStory(item: item)
+                                    PhotoMainStory(item: item.diary)
                                 }
                                 .modifier(PhotoCardModifier())
                             }
-                        } else {
-                            EmptyView()
                         }
                             
                         
-                    }
+                    
 
                     
                 }
             }
+        }
+        .onAppear {
+            diaryStore.firstGetDiaryCombine()
         }
 
     }

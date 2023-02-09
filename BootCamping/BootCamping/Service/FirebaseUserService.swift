@@ -71,6 +71,41 @@ struct FirebaseUserService {
         .eraseToAnyPublisher()
     }
     
+    //MARK: - Read MyAuthInformation
+    func readMyInfoService(user: User) -> AnyPublisher<User, Error> {
+        Future<User, Error> { promise in
+            database.collection("UserList")
+                .document(user.id)
+                .getDocument { (snapshot, error) in
+                    if let error = error {
+                        print(error)
+                        promise(.failure(FirebaseUserServiceError.badSnapshot))
+                        return
+                        
+                    }
+                    guard let snapshot = snapshot else {
+                        promise(.failure(FirebaseUserServiceError.badSnapshot))
+                        return
+                    }
+                    let docData = snapshot.data()!
+                    
+                    let id: String = docData["id"] as? String ?? ""
+                    let profileImageName: String = docData["profileImageName"] as? String ?? ""
+                    let profileImageURL: String = docData["profileImageURL"] as? String ?? ""
+                    let nickName: String = docData["nickName"] as? String ?? ""
+                    let userEmail: String = docData["userEmail"] as? String ?? ""
+                    let bookMarkedDiaries: [String] = docData["bookMarkedDiaries"] as? [String] ?? []
+                    let bookMarkedSpot: [String] = docData["bookMarkedSpot"] as? [String] ?? []
+                    let blockedUser: [String] = docData["blockedUser"] as? [String] ?? []
+                        
+                    let user: User = User(id: id, profileImageName: profileImageName, profileImageURL: profileImageURL, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries, bookMarkedSpot: bookMarkedSpot, blockedUser: blockedUser)
+                    
+                    promise(.success(user))
+                }
+        }
+        .eraseToAnyPublisher()
+    }
+    
     //MARK: - Create FirebaseUserService
 
     func createUserService(user: User) -> AnyPublisher<Void, Error> {

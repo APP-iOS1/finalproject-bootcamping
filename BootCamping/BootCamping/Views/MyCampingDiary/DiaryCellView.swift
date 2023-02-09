@@ -60,7 +60,7 @@ struct DiaryCellView: View {
         .onAppear {
             isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.id)
             commentStore.readCommentsCombine(diaryId: item.id)
-            campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: item.diaryAddress))
+            campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diaryAddress]))
         }
     }
 }

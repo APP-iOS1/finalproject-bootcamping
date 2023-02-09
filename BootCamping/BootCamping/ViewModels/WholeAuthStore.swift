@@ -209,7 +209,7 @@ class WholeAuthStore: ObservableObject {
         case .kakao:
             self.kakaoLogOutCombine()
         case .none:
-            break
+            self.googleSignOut()
         }
     }
     

@@ -23,7 +23,7 @@ struct MyCampingDiaryView: View {
     var body: some View {
         ZStack {
             VStack {
-                if usingFaceId ?? false && faceId.islocked {
+                if usingFaceId ?? true && faceId.islocked {
                     DiaryLockedView()
                 } else {
                 ScrollView(showsIndicators: false) {

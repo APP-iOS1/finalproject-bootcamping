@@ -60,6 +60,10 @@ extension Image {
         guard let img = UIImage(named: imgName)?.resize(newWidth: UIScreen.screenWidth * 1 / 5) else { fatalError("Fail to load image") }
         return Image(uiImage: img)
     }
+    func resizeImageData(data: Data) -> Image {
+        guard let img = UIImage(data: data)?.resize(newWidth: UIScreen.screenWidth * 1 / 5) else { fatalError("Fail to load image") }
+        return Image(uiImage: img)
+        
+    }
 }
-
 

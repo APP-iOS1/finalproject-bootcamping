@@ -264,6 +264,7 @@ private extension DiaryAddView {
                         .animation(.none)
                         .padding(.trailing, diaryIsPrivate ? 1.5 : 0)
                         .opacity(0)
+                
                     
                     Text(diaryIsPrivate ? "비공개": "공개")
                         .animation(.none)

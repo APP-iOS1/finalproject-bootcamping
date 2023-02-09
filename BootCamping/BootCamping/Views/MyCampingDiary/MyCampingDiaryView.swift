@@ -21,10 +21,9 @@ struct MyCampingDiaryView: View {
     //faceId.isLocked // 페이스 아이디가 잠겨있는지.
     
     var body: some View {
-        
         ZStack {
             VStack {
-                if usingFaceId ?? true && faceId.islocked {
+                if usingFaceId ?? false && faceId.islocked {
                     DiaryLockedView()
                 } else {
                 ScrollView(showsIndicators: false) {

@@ -48,7 +48,6 @@ class CampingSpotStore: ObservableObject {
                 self?.lastDoc = lastDocument.lastDoc
                 self!.campingSpots = lastDocument.campingSpots!
                 self?.campingSpotList.append(contentsOf: lastDocument.campingSpots!)
-                print(self!.campingSpots)
             }
             .store(in: &cancellables)
     }

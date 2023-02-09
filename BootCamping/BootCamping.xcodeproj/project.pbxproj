@@ -55,7 +55,6 @@
 		6E688E3C29923542006DCEE5 /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E688E3B29923542006DCEE5 /* MailView.swift */; };
 		6E688E3F29923827006DCEE5 /* SwiftUIMailView in Frameworks */ = {isa = PBXBuildFile; productRef = 6E688E3E29923827006DCEE5 /* SwiftUIMailView */; };
 		6E8CACB029937E3F000C2274 /* ReportUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8CACAF29937E3F000C2274 /* ReportUserView.swift */; };
-		6E8CACBC2994D857000C2274 /* BlockUserEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8CACBB2994D857000C2274 /* BlockUserEditView.swift */; };
 		6E8CACBE2994E4BD000C2274 /* BlockUserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8CACBD2994E4BD000C2274 /* BlockUserStore.swift */; };
 		6E8CACC02994EAB1000C2274 /* FirebaseBlockedUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8CACBF2994EAB1000C2274 /* FirebaseBlockedUserService.swift */; };
 		6E96013B298A32D6009C60F2 /* FullMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E96013A298A32D6009C60F2 /* FullMapView.swift */; };
@@ -63,7 +62,6 @@
 		6E996E83297A4E290085D914 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6E996E82297A4E290085D914 /* GoogleSignInSwift */; };
 		790B62D929792A4D0048C110 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62D829792A4D0048C110 /* Comment.swift */; };
 		790B62DB29792B4C0048C110 /* CommentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62DA29792B4C0048C110 /* CommentStore.swift */; };
-		790B62DD297936840048C110 /* DiaryLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B62DC297936840048C110 /* DiaryLike.swift */; };
 		790B62E2297A28E00048C110 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E1297A28E00048C110 /* KakaoSDK */; };
 		790B62E4297A28E00048C110 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E3297A28E00048C110 /* KakaoSDKAuth */; };
 		790B62E6297A28E00048C110 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E5297A28E00048C110 /* KakaoSDKCommon */; };
@@ -79,6 +77,7 @@
 		792C42492993D6E500B7772C /* DiaryAddContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42482993D6E500B7772C /* DiaryAddContentView.swift */; };
 		7C20C300299380DF0030CB21 /* FirebaseDiaryLikeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C20C2FF299380DF0030CB21 /* FirebaseDiaryLikeService.swift */; };
 		7C20C30229938CC90030CB21 /* DiaryLIkeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C20C30129938CC90030CB21 /* DiaryLIkeStore.swift */; };
+		7C294CAC299513570024CEA9 /* BlockUserEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C294CAB299513570024CEA9 /* BlockUserEditView.swift */; };
 		7C3E8BDA2992222600A6C1D6 /* DiaryCommentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */; };
 		7C3FC49729877C7200E96A01 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7C3FC49629877C7200E96A01 /* SDWebImageSwiftUI */; };
 		7C6A94AC2992BE6900B0E125 /* DiaryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */; };
@@ -100,7 +99,6 @@
 		AD672123298CBFB0008C34B3 /* FirebaseUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD672122298CBFB0008C34B3 /* FirebaseUserService.swift */; };
 		AD672125298CE2BB008C34B3 /* AuthEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD672124298CE2BB008C34B3 /* AuthEmailService.swift */; };
 		ADDB3C0F2990C12600EF82E3 /* AuthKakaoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDB3C0E2990C12600EF82E3 /* AuthKakaoService.swift */; };
-		CA27A6252989FCD700A6AEE5 /* SearchCampingSpotListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A6242989FCD700A6AEE5 /* SearchCampingSpotListView.swift */; };
 		CA27A627298CA81700A6AEE5 /* TaskCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A626298CA81700A6AEE5 /* TaskCellView.swift */; };
 		CA27A62D298CE95500A6AEE5 /* FirebaseBookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A62C298CE95500A6AEE5 /* FirebaseBookmarkService.swift */; };
 		CA27A63A29937DB400A6AEE5 /* LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A63929937DB400A6AEE5 /* LocalNotification.swift */; };
@@ -157,19 +155,18 @@
 		6E688E3929923506006DCEE5 /* ContactMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactMail.swift; sourceTree = "<group>"; };
 		6E688E3B29923542006DCEE5 /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		6E8CACAF29937E3F000C2274 /* ReportUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportUserView.swift; sourceTree = "<group>"; };
-		6E8CACBB2994D857000C2274 /* BlockUserEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlockUserEditView.swift; path = "../../../../../../../.Trash/finalproject-bootcamping 오후 2.26.45/BootCamping/BootCamping/Views/MyPage/Setting/BlockUserEditView.swift"; sourceTree = "<group>"; };
 		6E8CACBD2994E4BD000C2274 /* BlockUserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserStore.swift; sourceTree = "<group>"; };
 		6E8CACBF2994EAB1000C2274 /* FirebaseBlockedUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseBlockedUserService.swift; sourceTree = "<group>"; };
 		6E96013A298A32D6009C60F2 /* FullMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullMapView.swift; sourceTree = "<group>"; };
 		790B62D829792A4D0048C110 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		790B62DA29792B4C0048C110 /* CommentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentStore.swift; sourceTree = "<group>"; };
-		790B62DC297936840048C110 /* DiaryLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryLike.swift; sourceTree = "<group>"; };
 		790B62F5297A2D710048C110 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		792C42412990CAD200B7772C /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
 		792C42432990D0A800B7772C /* PasswordChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeView.swift; sourceTree = "<group>"; };
 		792C42482993D6E500B7772C /* DiaryAddContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryAddContentView.swift; sourceTree = "<group>"; };
 		7C20C2FF299380DF0030CB21 /* FirebaseDiaryLikeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDiaryLikeService.swift; sourceTree = "<group>"; };
 		7C20C30129938CC90030CB21 /* DiaryLIkeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryLIkeStore.swift; sourceTree = "<group>"; };
+		7C294CAB299513570024CEA9 /* BlockUserEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserEditView.swift; sourceTree = "<group>"; };
 		7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCommentCellView.swift; sourceTree = "<group>"; };
 		7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryEmptyView.swift; sourceTree = "<group>"; };
 		7C715C972977E056009BC678 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
@@ -189,7 +186,6 @@
 		AD672122298CBFB0008C34B3 /* FirebaseUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUserService.swift; sourceTree = "<group>"; };
 		AD672124298CE2BB008C34B3 /* AuthEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthEmailService.swift; sourceTree = "<group>"; };
 		ADDB3C0E2990C12600EF82E3 /* AuthKakaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthKakaoService.swift; sourceTree = "<group>"; };
-		CA27A6242989FCD700A6AEE5 /* SearchCampingSpotListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCampingSpotListView.swift; sourceTree = "<group>"; };
 		CA27A626298CA81700A6AEE5 /* TaskCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCellView.swift; sourceTree = "<group>"; };
 		CA27A62C298CE95500A6AEE5 /* FirebaseBookmarkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseBookmarkService.swift; sourceTree = "<group>"; };
 		CA27A63929937DB400A6AEE5 /* LocalNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotification.swift; sourceTree = "<group>"; };
@@ -310,7 +306,6 @@
 				639129E82979291D00F6EDD7 /* Places.swift */,
 				63AF45B12977CDC60014B1E1 /* User.swift */,
 				790B62D829792A4D0048C110 /* Comment.swift */,
-				790B62DC297936840048C110 /* DiaryLike.swift */,
 				7C715C972977E056009BC678 /* Diary.swift */,
 				CA729F382979340600CCC3BB /* Schedule.swift */,
 				63463A442990EF260000F523 /* Filtering.swift */,
@@ -438,8 +433,8 @@
 				6E688E16299220B7006DCEE5 /* ContactUsView.swift */,
 				6E688E3B29923542006DCEE5 /* MailView.swift */,
 				792C42412990CAD200B7772C /* PrivacyView.swift */,
-				6E8CACBB2994D857000C2274 /* BlockUserEditView.swift */,
 				792C42432990D0A800B7772C /* PasswordChangeView.swift */,
+				7C294CAB299513570024CEA9 /* BlockUserEditView.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -483,7 +478,6 @@
 				63AF45D12977CE4B0014B1E1 /* MyPageView.swift */,
 				CA729F3229792DE000CCC3BB /* CalendarView.swift */,
 				CA729F3B297A6C4B00CCC3BB /* AddScheduleView.swift */,
-				CA27A6242989FCD700A6AEE5 /* SearchCampingSpotListView.swift */,
 				CA729F342979315400CCC3BB /* CustomDatePickerView.swift */,
 				CA27A626298CA81700A6AEE5 /* TaskCellView.swift */,
 			);
@@ -613,7 +607,7 @@
 				63AF45E72977CE650014B1E1 /* SearchCampingSpotView.swift in Sources */,
 				63F8426C298FB5FF006A9433 /* CampingSpotListRaw.swift in Sources */,
 				792C42442990D0A800B7772C /* PasswordChangeView.swift in Sources */,
-				6E8CACBC2994D857000C2274 /* BlockUserEditView.swift in Sources */,
+				7C294CAC299513570024CEA9 /* BlockUserEditView.swift in Sources */,
 				AD1FED36298B930F001FB3E5 /* FirebaseScheduleService.swift in Sources */,
 				63AF45DA2977CE4C0014B1E1 /* SettingView.swift in Sources */,
 				6E8CACC02994EAB1000C2274 /* FirebaseBlockedUserService.swift in Sources */,
@@ -638,7 +632,6 @@
 				639129E92979291D00F6EDD7 /* Places.swift in Sources */,
 				AD672121298CA983008C34B3 /* WholeAuthStore.swift in Sources */,
 				63463A452990EF260000F523 /* Filtering.swift in Sources */,
-				790B62DD297936840048C110 /* DiaryLike.swift in Sources */,
 				6E8CACBE2994E4BD000C2274 /* BlockUserStore.swift in Sources */,
 				CA729F3C297A6C4B00CCC3BB /* AddScheduleView.swift in Sources */,
 				790B62DB29792B4C0048C110 /* CommentStore.swift in Sources */,
@@ -652,7 +645,6 @@
 				7C3E8BDA2992222600A6C1D6 /* DiaryCommentCellView.swift in Sources */,
 				CA27A627298CA81700A6AEE5 /* TaskCellView.swift in Sources */,
 				7C20C300299380DF0030CB21 /* FirebaseDiaryLikeService.swift in Sources */,
-				CA27A6252989FCD700A6AEE5 /* SearchCampingSpotListView.swift in Sources */,
 				7CFCE12D2987549F00E196AF /* WeeklyPopulerCampingView.swift in Sources */,
 				63AF45D82977CE4C0014B1E1 /* BookmarkCellView.swift in Sources */,
 				6E688DF82991E127006DCEE5 /* DescribeCampView.swift in Sources */,

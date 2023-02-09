@@ -63,65 +63,17 @@ struct DiaryDetailView: View {
                     .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 }
             }
-            /*
-feature/230209_DiaryStoreRefactor_seongmin
-               //댓글 작성
-               HStack {
-                   if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
-                       WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
-                           .resizable()
-                           .clipShape(Circle())
-                       .frame(width: 30, height: 30)
-                   } else {
-                       Image(systemName: "person.fill")
-                           .resizable()
-                           .frame(width: 30, height: 30)
-                           .aspectRatio(contentMode: .fill)
-                           .clipShape(Circle())
-                           
-                   }
-                   TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
-                   
-                   Button {
-                       //TODO: -프로필 이미지 수정
-                       commentStore.createCommentCombine(diaryId: item.diary.id, comment: Comment(id: UUID().uuidString, diaryId: item.diary.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: item.diary.diaryUserNickName, profileImage: item.user.profileImageURL, commentContent: diaryComment, commentCreatedDate: Timestamp()))
-                       commentStore.readCommentsCombine(diaryId: item.diary.id)
-                       diaryComment = ""
-                       print("----------------\(commentStore.commentList)")
-                       DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-                           proxy.scrollTo("bottom")
-                       }
-                   } label: {
-                       Image(systemName: "paperplane")
-                           .resizable()
-                           .frame(width: 30, height: 30)
-
-                   }
-               }
-
-               .padding(.horizontal)
-               .padding(.bottom, 8)
-
-        }
-
-=======
+            
             diaryCommetInputView
             
- dev
         }
         .padding(.top)
         .padding(.bottom)
         .navigationTitle("BOOTCAMPING")
         .onAppear{
- feature/230209_DiaryStoreRefactor_seongmin
             isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.diary.id)
             commentStore.readCommentsCombine(diaryId: item.diary.id)
-=======
-            isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.id)
-            commentStore.readCommentsCombine(diaryId: item.id)
-            campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diaryAddress]))
- dev
-*/
+            campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
         }
     }
 }
@@ -342,63 +294,77 @@ private extension DiaryDetailView {
     
     
     //MARK: - 좋아요, 댓글, 타임스탬프
-    var diaryDetailInfo: some View {
-        HStack {
-            Button {
-                //좋아요 버튼, 카운드
-                if item.diary.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") {
-                    diaryLikeStore.removeDiaryLikeCombine(diaryId: item.diary.id)
-                } else {
-                    diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
+        var diaryDetailInfo: some View {
+            HStack {
+                Button {
+                    //좋아요 버튼, 카운드
+                    if item.diary.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") {
+                        diaryLikeStore.removeDiaryLikeCombine(diaryId: item.diary.id)
+                    } else {
+                        diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
+                    }
+                    diaryStore.readDiarysCombine()
+                } label: {
+                    Image(systemName: item.diary.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? "flame.fill" : "flame")
+                        .foregroundColor(item.diary.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? .red : .bcBlack)
                 }
-                diaryStore.readDiarysCombine()
-            } label: {
-                Image(systemName: item.diary.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? "flame.fill" : "flame")
-                    .foregroundColor(item.diary.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? .red : .bcBlack)
+                Text("\(item.diary.diaryLike.count)")
+                    .padding(.trailing, 7)
+
+                //댓글 버튼
+                Button {
+                    //"댓글 작성 버튼으로 이동"
+                } label: {
+                    Image(systemName: "message")
+                }
+                Text("\(commentStore.commentList.count)")
+                    .font(.body)
+                    .padding(.horizontal, 3)
+
+                Spacer()
+                //작성 경과시간
+                Text("\(TimestampToString.dateString(item.diary.diaryCreatedDate)) 전")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
             }
-            Text("\(item.diary.diaryLike.count)")
-                .padding(.trailing, 7)
-            
-            //댓글 버튼
-            Button {
-                //"댓글 작성 버튼으로 이동"
-            } label: {
-                Image(systemName: "message")
-            }
-            Text("\(commentStore.commentList.count)")
-                .font(.body)
-                .padding(.horizontal, 3)
-            
-            Spacer()
-            //작성 경과시간
-            Text("\(TimestampToString.dateString(item.diary.diaryCreatedDate)) 전")
-                .font(.footnote)
-                .foregroundColor(.secondary)
+            .foregroundColor(.bcBlack)
+            .font(.title3)
+            .padding(.vertical, 5)
         }
-        .foregroundColor(.bcBlack)
-        .font(.title3)
-        .padding(.vertical, 5)
-    }
     
     // MARK: -View : 댓글 작성
     var diaryCommetInputView : some View {
         HStack {
-            Circle()
-                .frame(width: 35)
+            if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
+                WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
+                    .resizable()
+                    .clipShape(Circle())
+                .frame(width: 30, height: 30)
+            } else {
+                Image(systemName: "person.fill")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .aspectRatio(contentMode: .fill)
+                    .clipShape(Circle())
+                    
+            }
             TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
             
             Button {
                 //TODO: -프로필 이미지 수정
-                commentStore.createCommentCombine(diaryId: item.id, comment: Comment(id: UUID().uuidString, diaryId: item.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: item.diaryUserNickName, profileImage: "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/UserImages%2F6A6EB85C-6113-4FDA-BC23-62C1285762EF?alt=media&token=ed35fe2c-4f99-4293-99e5-5c35ca14b291", commentContent: diaryComment, commentCreatedDate: Timestamp()))
-                commentStore.readCommentsCombine(diaryId: item.id)
+                commentStore.createCommentCombine(diaryId: item.diary.id, comment: Comment(id: UUID().uuidString, diaryId: item.diary.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: item.diary.diaryUserNickName, profileImage: item.user.profileImageURL, commentContent: diaryComment, commentCreatedDate: Timestamp()))
+                commentStore.readCommentsCombine(diaryId: item.diary.id)
                 diaryComment = ""
             } label: {
                 Image(systemName: "paperplane")
                     .resizable()
                     .frame(width: 30, height: 30)
+
             }
         }
-        .padding(.horizontal, UIScreen.screenWidth * 0.03)
+        .foregroundColor(.bcBlack)
+        .font(.title3)
+        .padding(.vertical, 5)
     }
     //MARK: - 댓글 아래로 구현
     struct CommentScrollView<Content: View>: View {

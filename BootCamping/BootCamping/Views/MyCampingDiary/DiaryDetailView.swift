@@ -21,7 +21,7 @@ struct DiaryDetailView: View {
     //삭제 알림
     @State private var isShowingDeleteAlert = false
     
-    @State var isBookmarked: Bool = false
+    @State private var isBookmarked: Bool = false
     
     var item: Diary
     
@@ -32,7 +32,14 @@ struct DiaryDetailView: View {
                     diaryUserProfile
                     diaryDetailImage
                     Group {
-                        diaryDetailTitle
+                        HStack(alignment: .center){
+                            if item.uid == wholeAuthStore.currnetUserInfo!.id {
+                                isPrivateImage
+                            }
+                            diaryDetailTitle
+                            Spacer()
+                            bookmarkButton
+                        }
                         diaryDetailContent
                         diaryCampingLink
                         diaryDetailInfo
@@ -42,8 +49,6 @@ struct DiaryDetailView: View {
                         ForEach(commentStore.commentList) { comment in
                             DiaryCommentCellView(item: comment)
                         }
-                        //리스트로 삭제기능 넣으려고 함                         .onDelete(perform: user.id == item.uid ? delete: nil)
-                        //                        }
                     }
                     .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 }
@@ -117,6 +122,30 @@ private extension DiaryDetailView {
         .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
+    // MARK: - 다이어리 공개 여부를 나타내는 이미지
+    private var isPrivateImage: some View {
+        Image(systemName: (item.diaryIsPrivate ? "lock" : "lock.open"))
+            .foregroundColor(Color.secondary)
+    }
+    
+    // MARK: - 북마크 버튼
+    private var bookmarkButton: some View {
+        Button{
+            isBookmarked.toggle()
+            if isBookmarked{
+                bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
+            } else {
+                bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
+            }
+            wholeAuthStore.readUserListCombine()
+        } label: {
+            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                .bold()
+                .foregroundColor(Color.accentColor)
+                .opacity((item.uid != wholeAuthStore.currnetUserInfo!.id ? 1 : 0))
+        }
+        .disabled(item.uid == wholeAuthStore.currnetUserInfo!.id)
+    }
     
     //MARK: - Alert Menu 버튼
     var alertMenu: some View {
@@ -162,23 +191,6 @@ private extension DiaryDetailView {
                         .scaledToFill()
                         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                         .clipped()
-                        .overlay(alignment: .topTrailing){
-                            Button {
-                                isBookmarked.toggle()
-                                if isBookmarked{
-                                    bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
-                                } else{
-                                    bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
-                                }
-                                wholeAuthStore.readUserListCombine()
-                            } label: {
-                                Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                            }
-                            .foregroundColor(.white)
-                            .shadow(radius: 5)
-                            .padding()
-                        }
-                    
                 }
             }
         }

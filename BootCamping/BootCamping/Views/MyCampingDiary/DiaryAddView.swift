@@ -12,7 +12,8 @@ import Photos
 
 //TODO: 텍스트 필드 입력할 때 화면 따라가기,,,
 struct DiaryAddView: View {
-    
+    @Binding var isNavigationGoFirstView: Bool
+
     
     @State private var diaryTitle: String = ""
     @State private var locationInfo: String = ""
@@ -61,6 +62,8 @@ struct DiaryAddView: View {
                     Divider()
 
                     addViewVisitDate
+                    Divider()
+
                     addViewIsPrivate
                     Spacer()
                     nextButton
@@ -149,14 +152,15 @@ private extension DiaryAddView {
                 }
             }
         }
-        .padding(.bottom)
+//        .padding(.bottom)
+        .padding(.vertical)
     }
     // selectedImage: UIImage 타입을 Data타입으로 저장하는 함수
     func loadData() {
         var arr = [Data]()
         guard let selectedImages = selectedImages else { return }
         for selectedImage in selectedImages {
-            arr.append((selectedImage.jpegData(compressionQuality: 0.5)!))
+            arr.append((selectedImage.jpegData(compressionQuality: 0.2)!))
         }
         diaryImages = arr
     }
@@ -242,7 +246,8 @@ private extension DiaryAddView {
             DatePicker("방문일자 등록하기",
                        selection: $selectedDate,
                        displayedComponents: [.date])
-            .padding(.bottom)
+//            .padding(.bottom)
+            .padding(.vertical)
         }
     }
     
@@ -258,6 +263,7 @@ private extension DiaryAddView {
                     Image(systemName: diaryIsPrivate ? "lock" : "lock.open" )
                         .animation(.none)
                         .padding(.trailing, diaryIsPrivate ? 1.5 : 0)
+                        .opacity(0)
                     
                     Text(diaryIsPrivate ? "비공개": "공개")
                         .animation(.none)
@@ -265,10 +271,19 @@ private extension DiaryAddView {
                         .padding(.trailing, diaryIsPrivate ? 0 : 5)
                     
                 }
+
             }
             .foregroundColor(.bcBlack)
+            .overlay{
+                Image(systemName: diaryIsPrivate ? "lock" : "lock.open" )
+                    .animation(.none)
+                    .padding(.trailing, diaryIsPrivate ? 1.5 : 0)
+                    .padding(.bottom, 15)
+            }
         }
-        .padding(.bottom)
+//        .padding(.bottom)
+        .padding(.vertical)
+
     }
     
     //MARK: - 일기 작성 뷰
@@ -321,16 +336,17 @@ private extension DiaryAddView {
         }
     }
     
+    // MARK: 다음 버튼
     var nextButton: some View {
         HStack{
             Spacer()
             NavigationLink {
-                DiaryAddContentView(locationInfo: $locationInfo, visitDate: $visitDate, diaryIsPrivate: $diaryIsPrivate, selectedDate: $selectedDate, diaryImages: $diaryImages)
+                DiaryAddContentView(isNavigationGoFirstView: $isNavigationGoFirstView, locationInfo: $locationInfo, visitDate: $visitDate, diaryIsPrivate: $diaryIsPrivate, selectedDate: $selectedDate, diaryImages: $diaryImages)
             } label: {
                 Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "다음")
+                    .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07) // 이거 밖에 있으면 글씨 부분만 버튼 적용됨
             }
             .font(.headline)
-            .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)
             .foregroundColor(.white)
             .background(diaryImages?.isEmpty ?? true ? .secondary : Color.bcGreen)
             .cornerRadius(10)
@@ -440,15 +456,15 @@ struct PhotoPicker: UIViewControllerRepresentable {
 
 struct DiaryAddView_Previews: PreviewProvider {
     static var previews: some View {
-        DiaryAddView()
+        DiaryAddView(isNavigationGoFirstView: .constant(false))
             .environmentObject(WholeAuthStore())
             .environmentObject(DiaryStore())
         
-        DiaryAddView()
+        DiaryAddView(isNavigationGoFirstView: .constant(false))
             .environmentObject(WholeAuthStore())
             .environmentObject(DiaryStore())
             .previewDevice("iPhone 11")
-        DiaryAddView()
+        DiaryAddView(isNavigationGoFirstView: .constant(false))
             .environmentObject(WholeAuthStore())
             .environmentObject(DiaryStore())
             .previewDevice("iPhone SE (3rd generation)")

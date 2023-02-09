@@ -9,7 +9,7 @@ import SwiftUI
 import Firebase
 
 struct DiaryAddContentView: View {
-    @EnvironmentObject var tabSelection: TabSelector
+    @Binding var isNavigationGoFirstView: Bool
 
     
     @State var isTapTextField = false
@@ -60,9 +60,9 @@ struct DiaryAddContentView: View {
         .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
         .padding(.horizontal, UIScreen.screenWidth*0.03)
         .navigationTitle(Text("캠핑 일기 쓰기"))
-        .onTapGesture {
-            dismissKeyboard()
-        }
+//        .onTapGesture {
+//            dismissKeyboard()
+//        }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
@@ -137,16 +137,17 @@ extension DiaryAddContentView {
             Button {
                 diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages ?? [Data()])
                 //TODO: 네비 두번 나가기. dismiss 안됨. path 어쩌구 찾아보기
+                isNavigationGoFirstView = false
 
             } label: {
-                Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "일기 쓰기")
+                Text(diaryTitle.isEmpty || diaryContent.isEmpty ? "내용을 작성해주세요" : "일기 쓰기")
+                    .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07) // 이거 밖에 있으면 글씨 부분만 버튼 적용됨
             }
             .font(.headline)
-            .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)
             .foregroundColor(.white)
-            .background(diaryImages?.isEmpty ?? true ? .secondary : Color.bcGreen)
+            .background(diaryTitle.isEmpty || diaryContent.isEmpty ? .secondary : Color.bcGreen)
             .cornerRadius(10)
-            .disabled(diaryImages?.isEmpty ?? true)
+            .disabled(diaryTitle.isEmpty || diaryContent.isEmpty)
             Spacer()
             
         }

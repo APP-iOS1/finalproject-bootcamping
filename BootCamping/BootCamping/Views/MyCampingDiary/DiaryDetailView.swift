@@ -267,7 +267,7 @@ private extension DiaryDetailView {
                     Text(campingSpotStore.campingSpotList.first?.facltNm ?? "")
                         .font(.headline)
                     HStack {
-                        Text(campingSpotStore.campingSpotList.first?.addr1 ?? "")
+                        Text("\(campingSpotStore.campingSpotList.first?.doNm ?? "") \(campingSpotStore.campingSpotList.first?.sigunguNm ?? "")")
                         Spacer()
                         Group {
                             Text("자세히 보기")

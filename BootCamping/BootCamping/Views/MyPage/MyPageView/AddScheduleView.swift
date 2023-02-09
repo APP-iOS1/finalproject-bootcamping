@@ -155,11 +155,8 @@ extension AddScheduleView {
                     } label: {
                         Image(systemName: "xmark")
                             .foregroundColor(.bcBlack)
-                        
                     }
-                    
                 }
-                
             }
         }
     }

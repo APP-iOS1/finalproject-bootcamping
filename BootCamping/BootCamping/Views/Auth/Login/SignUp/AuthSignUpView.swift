@@ -20,8 +20,8 @@ struct AuthSignUpView: View {
     @State var isProgressing: Bool = false
     
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
     
-    @EnvironmentObject var authStore: AuthStore
     
     var trimUserEmail: String {
         userEmail.trimmingCharacters(in: .whitespaces)
@@ -32,7 +32,7 @@ struct AuthSignUpView: View {
     }
     
     var isSignUpButtonAvailable: Bool {
-        return !trimUserEmail.isEmpty && !trimnickName.isEmpty && authStore.checkAuthFormat(userEmail: userEmail) && isAgree1
+        return !trimUserEmail.isEmpty && !trimnickName.isEmpty && wholeAuthStore.checkAuthFormat(userEmail: userEmail) && isAgree1
     }
     
     var body: some View {
@@ -122,14 +122,14 @@ extension AuthSignUpView {
                         Spacer()
                     }.padding()
                 }
-            if authStore.checkAuthFormat(userEmail: userEmail) {
+            if wholeAuthStore.checkAuthFormat(userEmail: userEmail) {
                 HStack {
                     Spacer()
                     Text("사용 가능").font(.footnote).foregroundColor(.green)
                 }
             } else if userEmail == "" {
                 Text(" ").font(.footnote)
-            } else if !authStore.checkAuthFormat(userEmail: userEmail) {
+            } else if !wholeAuthStore.checkAuthFormat(userEmail: userEmail) {
                 HStack {
                     Spacer()
                     Text("사용 불가능").font(.footnote).foregroundColor(.red)
@@ -167,14 +167,14 @@ extension AuthSignUpView {
                         .autocapitalization(.none)
                         .padding()
                 }
-            if authStore.checkPasswordFormat(password: password, confirmPassword: confirmPassword) {
+            if wholeAuthStore.checkPasswordFormat(password: password, confirmPassword: confirmPassword) {
                 HStack {
                     Spacer()
                     Text("일치\n ").font(.footnote).foregroundColor(.green)
                 }
             } else if password == "" || confirmPassword == "" {
                 Text("* 패스워드 양식은 영어 + 숫자 + 특수문자 최소 8자 이상입니다.\nex) password123!").font(.footnote).foregroundColor(.secondary)
-            } else if !authStore.checkPasswordFormat(password: password, confirmPassword: confirmPassword) {
+            } else if !wholeAuthStore.checkPasswordFormat(password: password, confirmPassword: confirmPassword) {
                 HStack {
                     Spacer()
                     Text("확인 필요\n ").font(.footnote).foregroundColor(.red)
@@ -187,11 +187,7 @@ extension AuthSignUpView {
     var signUpButton: some View {
         Button {
             Task {
-                isProgressing = true
-                let _ = try await authStore.authSignUp(userEmail: userEmail, password: password, confirmPassword: confirmPassword)
-                try await authStore.authSignIn(userEmail: userEmail, password: password)
-                let _ = try await authStore.addUserList(User(id: String(Auth.auth().currentUser!.uid), profileImageName: "", profileImageURL: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: [], bookMarkedSpot: [""]))
-                authStore.authSignOut()
+                wholeAuthStore.authSignUpCombine(nickName: nickName, userEmail: userEmail, password: password, confirmPassword: confirmPassword)
                 isProgressing = false
                 isShowingAlertForSignUp.toggle()
             }
@@ -373,6 +369,6 @@ extension AuthSignUpView {
 struct AuthSignUpView_Previews: PreviewProvider {
     static var previews: some View {
         AuthSignUpView(userEmail: "erun9414@gmail.com")
-            .environmentObject(AuthStore())
+            .environmentObject(WholeAuthStore())
     }
 }

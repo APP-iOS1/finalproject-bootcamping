@@ -18,133 +18,23 @@ class DiaryStore: ObservableObject {
     @Published var diaryList: [Diary] = []
     @Published var firebaseDiaryServiceError: FirebaseDiaryServiceError = .badSnapshot
     @Published var showErrorAlertMessage: String = "오류"
+    // 다이어리 CRUD 진행상태
+    @Published var isProcessing: Bool = false
+    // 다이어리 에러 상태
+    @Published var isError: Bool = false
+    // 마지막 다큐먼트
+    @Published var lastDoc: QueryDocumentSnapshot?
+    // 개선된 다이어리 리스트
+    @Published var userInfoDiaryList: [UserInfoDiary] = []
     //파베 기본 경로
     let database = Firestore.firestore()
     
     //
     private var cancellables = Set<AnyCancellable>()
     
-    //MARK: Create
-    func createDiary(diary: Diary, images: [Data]) {
-            Task {
-                do {
-                    guard let userUID = Auth.auth().currentUser?.uid else { return }
-                    var diaryImageURLs: [String] = []
-                    var diaryImageNames: [String] = []
-                    let storageRef = Storage.storage().reference().child("DiaryImages")
-                    for image in images {
-                        let imageName = UUID().uuidString
-                        let _ = try await storageRef.child(imageName).putDataAsync(image)
-                        let downlodURL = try await storageRef.child(imageName).downloadURL()
-                        diaryImageURLs.append(downlodURL.absoluteString)
-                        diaryImageNames.append(imageName)
-                    }
-                    
-                    let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: "56", diaryIsPrivate: true)
-                    
-                    let _ = try await Firestore.firestore().collection("Diarys").document(diary.id).setData([
-                        "id": newDiary.id,
-                        "uid": newDiary.uid,
-                        "diaryUserNickName": newDiary.diaryUserNickName,
-                        "diaryTitle": newDiary.diaryTitle,
-                        "diaryAddress": newDiary.diaryAddress,
-                        "diaryContent": newDiary.diaryContent,
-                        "diaryImageNames": newDiary.diaryImageNames,
-                        "diaryImageURLs": newDiary.diaryImageURLs,
-                        "diaryCreatedDate": newDiary.diaryCreatedDate,
-                        "diaryVisitedDate": newDiary.diaryVisitedDate,
-                        "diaryLike": newDiary.diaryLike,
-                        "diaryIsPrivate": newDiary.diaryIsPrivate,])
-                    getData()
-                } catch {
-                    await MainActor.run(body: {
-                        print("\(error.localizedDescription)")
-                    })
-                }
-            }
-        }
+    //TODO: -싱글톤에서 enviroment로 바꾸기
+    static var shared = DiaryStore()
     
-    //MARK: Read
-    func getData() {
-        database.collection("Diarys").getDocuments { snapshot, error in
-            //에러체크
-            if error == nil {
-                if let snapshot = snapshot {
-                    //백그라운드 스레드에서 실행되지만, 이 코드 실행시 UI가 변경됨. 스레드 메인으로 설정하기
-                    DispatchQueue.main.async {
-                        //document 가져오기
-                        self.diaryList = snapshot.documents.map { d in
-                            return Diary(id: d.documentID,
-                                         uid: d["uid"] as? String ?? "",
-                                         diaryUserNickName: d["diaryUserNickName"] as? String ?? "",
-                                         diaryTitle: d["diaryTitle"] as? String ?? "",
-                                         diaryAddress: d["diaryAddress"] as? String ?? "",
-                                         diaryContent: d["diaryContent"] as? String ?? "",
-                                         diaryImageNames: d["diaryImageNames"] as? [String] ?? [],
-                                         diaryImageURLs: d["diaryImageURLs"] as? [String] ?? [],
-                                         diaryCreatedDate: d["diaryCreatedDate"] as? Timestamp ?? Timestamp(),
-                                         diaryVisitedDate: d["diaryVisitedDate"] as? Date ?? Date(),
-                                         diaryLike: d["diaryLike"] as? String ?? "",
-                                         diaryIsPrivate: d["diaryIsPrivate"] as? Bool ?? false)
-                        }
-                    }
-                    
-                }
-                
-            } else {
-                //에러처리
-            }
-            
-        }
-    }
-    
-    //MARK: Update
-    func updateData(diaryToUpdate: Diary) {
-        database.collection("Diarys").document(diaryToUpdate.id).setData([  //data: document내부 데이터, completion: 완료시 실행됨
-            "uid": diaryToUpdate.uid,
-            "diaryUserNickName": diaryToUpdate.diaryUserNickName,
-            "diaryTitle": diaryToUpdate.diaryTitle,
-            "diaryAddress": diaryToUpdate.diaryAddress,
-            "diaryContent": diaryToUpdate.diaryContent,
-            "diaryImageNames": diaryToUpdate.diaryImageNames,
-            "diaryImageURL": diaryToUpdate.diaryImageURLs,
-            "diaryCreatedDate": diaryToUpdate.diaryCreatedDate,
-            "diaryVisitedDate": diaryToUpdate.diaryVisitedDate,
-            "diaryLike": diaryToUpdate.diaryLike,
-            "diaryIsPrivate": diaryToUpdate.diaryIsPrivate,], merge: true)                                                             //setData: 이 데이터로 새로 정의되고, 기존 데이터는 삭제됨 /merge하면 재정의하는 대신 합쳐짐
-        { error in
-            
-            //에러체크
-            if error == nil {
-                //업데이트
-                self.getData()
-            } else {
-                //에러처리
-            }
-        }
-    }
-    
-    //MARK: Delete
-    func deleteData(diaryToDelete: Diary) {
-        database.collection("Diarys").document(diaryToDelete.id).delete { error in
-            //에러 체크
-            if error == nil {
-                //삭제하면 UI가 바뀌므로 메인 스레드에서 업데이트
-                DispatchQueue.main.async {
-                    //Remove the diary that was just deleted
-                    self.diaryList.removeAll { diary in
-                        //Check for the diary to remove
-                        return diary.id == diaryToDelete.id
-                    }
-                }
-            } else {
-                //에러처리
-            }
-            
-        }
-        getData()
-    }
-
     //MARK: - Read Diary Combine
     
     func readDiarysCombine() {
@@ -157,7 +47,7 @@ class DiaryStore: ObservableObject {
                     print("Failed get Diarys")
                     self.firebaseDiaryServiceError = .badSnapshot
                     self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
-                        return
+                    return
                 case .finished:
                     print("Finished get Diarys")
                     return
@@ -168,9 +58,9 @@ class DiaryStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-
+    
     //MARK: - Create Diary Combine
-
+    
     func createDiaryCombine(diary: Diary, images: [Data]) {
         FirebaseDiaryService().createDiaryService(diary: diary, images: images)
             .receive(on: DispatchQueue.main)
@@ -217,6 +107,30 @@ class DiaryStore: ObservableObject {
             .store(in: &cancellables)
     }
     
+    //MARK: - update IsPrivate Diary Combine
+    
+    func updateIsPrivateDiaryCombine(diaryId: String, isPrivate: Bool) {
+        FirebaseDiaryService().updateIsPrivateDiaryService(diaryId: diaryId, isPrivate: isPrivate)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Update Diary")
+                    self.firebaseDiaryServiceError = .updateDiaryError
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished Update Diary")
+                    self.readDiarysCombine()
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
+    
     //MARK: - Delete Diary Combine
     
     func deleteDiaryCombine(diary: Diary) {
@@ -239,6 +153,64 @@ class DiaryStore: ObservableObject {
                 
             }
             .store(in: &cancellables)
+    }  
+    
+    //MARK: - 실시간 다이어리 불러오기 함수
+    
+    // 첫번째 불러오기 함수
+    func firstGetDiaryCombine() {
+        FirebaseDiaryService().firstGetDiaryService()
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed get Diarys")
+                    self.firebaseDiaryServiceError = .badSnapshot
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished get Diarys")
+                    return
+                }
+            } receiveValue: { [weak self] lastDocWithDiaryList in
+                self?.lastDoc = lastDocWithDiaryList.lastDoc
+                self?.userInfoDiaryList = lastDocWithDiaryList.userInfoDiarys
+            }
+            .store(in: &cancellables)
     }
+    
+    func nextGetDiaryCombine() {
+        FirebaseDiaryService().nextGetDiaryService(lastDoc: self.lastDoc)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed get Diarys")
+                    self.firebaseDiaryServiceError = .badSnapshot
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished get Diarys")
+                    return
+                }
+            } receiveValue: { [weak self] lastDocWithDiaryList in
+                self?.lastDoc = lastDocWithDiaryList.lastDoc
+                self?.userInfoDiaryList.append(contentsOf: lastDocWithDiaryList.userInfoDiarys)
+            }
+            .store(in: &cancellables)
+    }
+    
+    // 다음불러오기 함수
+    
+    
+    
+    // 다이어리 다큐먼트 20개 가져오기 20번돌리고
+    // 페이지네이션은 동훈님꺼 보자
+    // 다큐먼트 1개가져오고 > 이것 유아이디로 유저데이터 불러와야함. 데이터 불러오면 같이 나가야되는데
+    //
+
+    // 내 다이어리 페이지네이션, 리스너 추가만들기
 
 }

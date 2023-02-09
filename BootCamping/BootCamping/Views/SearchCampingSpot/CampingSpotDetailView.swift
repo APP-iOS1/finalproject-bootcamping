@@ -24,14 +24,13 @@ struct CampingSpotDetailView: View {
     )
     @State var annotatedItem: [AnnotatedItem] = []
     @State private var isBookmarked: Bool = false
-
-//    @EnvironmentObject var authStore: AuthStore
-//    @EnvironmentObject var bookmarkSpotStore: BookmarkSpotStore
+    
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var bookmarkStore: BookmarkStore
     var places: Item
     
     var body: some View {
-//        let images = ["10", "9", "8"] //기존 샘플 사진
+        //        let images = ["10", "9", "8"] //기존 샘플 사진
         let diary = ["1", "2", "3"]
         
         ZStack {
@@ -69,15 +68,17 @@ struct CampingSpotDetailView: View {
                                 .bold()
                             Spacer()
                             Button {
-                                // FIXME: - 북마크한 캠핑장 캠핑장의 contentId를 저장하는 거 맞는지 확인하기
                                 isBookmarked.toggle()
                                 if isBookmarked{
                                     bookmarkStore.addBookmarkSpotCombine(campingSpotId: places.contentId)
                                 } else{
                                     bookmarkStore.removeBookmarkCampingSpotCombine(campingSpotId: places.contentId)
                                 }
+                                wholeAuthStore.readUserListCombine()
                             } label: {
                                 Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                                    .bold()
+                                    .foregroundColor(Color.accentColor)
                             }
                             .padding()
                             
@@ -173,7 +174,7 @@ struct CampingSpotDetailView: View {
         .onAppear {
             region.center = CLLocationCoordinate2D(latitude: Double(places.mapY)!, longitude: Double(places.mapX)!)
             annotatedItem.append(AnnotatedItem(name: places.facltNm, coordinate: CLLocationCoordinate2D(latitude: Double(places.mapY)!, longitude: Double(places.mapX)!)))
-            isBookmarked = bookmarkStore.checkBookmarkedSpot(campingSpotId: places.contentId)
+            isBookmarked = bookmarkStore.checkBookmarkedSpot(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, campingSpotId: places.contentId)
         }
     }
 }
@@ -224,7 +225,7 @@ struct ServiceIcon: View {
                         .font(.caption)
                         .kerning(-1)
                 }
-               // .padding(4)
+                // .padding(4)
             }
         }
     }

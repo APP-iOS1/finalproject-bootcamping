@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import FirebaseFirestore
 import FirebaseAuth
+import Firebase
 
 
 enum FirebaseCommentServiceError: Error {
@@ -36,10 +37,12 @@ struct FirebaseCommentService {
     let database = Firestore.firestore()
     
     //MARK: - Read FirebaseCommentService
-    func readCommentsService() -> AnyPublisher<[Comment], Error> {
+    func readCommentsService(diaryId: String) -> AnyPublisher<[Comment], Error> {
         Future<[Comment], Error> { promise in
-            database.collection("Comments")
-                .order(by: "commentCreatedDate", descending: true)
+            database.collection("Diarys")
+                .document(diaryId)
+                .collection("Comment")
+                .order(by: "commentCreatedDate", descending: false)
                 .getDocuments { snapshot, error in
                     if let error = error {
                         promise(.failure(error))
@@ -57,9 +60,9 @@ struct FirebaseCommentService {
                         return Comment(id: d.documentID,
                                        diaryId: d["diaryId"] as? String ?? "",
                                        uid: d["uid"] as? String ?? "",
-                                       nickName: d["diaryUserNickName"] as? String ?? "",
+                                       nickName: d["nickName"] as? String ?? "",
                                        profileImage: d["profileImage"] as? String ?? "",
-                                       commentContent: d["diaryContent"] as? String ?? "",
+                                       commentContent: d["commentContent"] as? String ?? "",
                                        commentCreatedDate: d["commentCreatedDate"] as? Timestamp ?? Timestamp()
 //                                       ,commentLike: d["commentLike"] as? [String] ?? []
                                        
@@ -71,11 +74,13 @@ struct FirebaseCommentService {
     }
     
     //MARK: - Create FirebaseCommentService
-    func createCommentService(comment: Comment) -> AnyPublisher<Void, Error> {
+    func createCommentService(diaryId: String, comment: Comment) -> AnyPublisher<Void, Error> {
        
         Future<Void, Error> { promise in
 
-            self.database.collection("Comments").document(comment.id).setData([
+            self.database.collection("Diarys")
+                .document(diaryId)
+                .collection("Comment").document(comment.id).setData([
                 "diaryId": comment.diaryId,
                 "uid": comment.uid,
                 "nickName": comment.nickName,
@@ -97,32 +102,12 @@ struct FirebaseCommentService {
         .eraseToAnyPublisher()
     }
     
-    //MARK: - Update CommentLike FirebaseCommentService
-    func updateCommentLikeService(comment: Comment) -> AnyPublisher<Void, Error> {
-        
-        Future<Void, Error> { promise in
-            
-            self.database.collection("Comments").document(comment.id)
-                .updateData([
-                    "commentLike": FieldValue.arrayUnion([comment.uid])
-                ]) { error in
-                    if let error = error {
-                        print(error)
-                        promise(.failure(FirebaseCommentServiceError.updateCommentError))
-                    } else {
-                        promise(.success(()))
-                    }
-                    
-                }
-        }
-        .eraseToAnyPublisher()
-    }
-    
     //MARK: - Delete FirebaseCommentService
-    func deleteCommentService(comment: Comment) -> AnyPublisher<Void, Error> {
+    func deleteCommentService(diaryId: String, comment: Comment) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
-            self.database.collection("Comments")
-                .document(comment.id).delete()
+            self.database.collection("Diarys")
+                .document(diaryId)
+                .collection("Comment").document(comment.id).delete()
             { error in
                 if let error = error {
                     print(error)

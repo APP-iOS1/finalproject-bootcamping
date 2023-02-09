@@ -10,7 +10,7 @@ import Firebase
 import SDWebImageSwiftUI
 
 struct DiaryCommentCellView: View {
-    @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var commentStore: CommentStore
     
     var item: Comment
@@ -32,10 +32,11 @@ struct DiaryCommentCellView: View {
                         .font(.title3)
                     Text(item.commentContent)
                 }
+                .padding(.trailing, 3)
+                
+                Spacer()
             }
-            .onAppear {
-                authStore.fetchUserList()
-            }
+          
     }
 }
 
@@ -54,8 +55,6 @@ private extension DiaryCommentCellView {
     
     var diaryUserProfile: some View {
         HStack {
-
-            
             //유저 닉네임
             Text(item.nickName)
                 .font(.headline).fontWeight(.semibold)
@@ -149,7 +148,7 @@ private extension DiaryCommentCellView {
 struct DiaryCommentCellView_Previews: PreviewProvider {
     static var previews: some View {
         DiaryCommentCellView(item: Comment(id: "", diaryId: "", uid: "", nickName: "", profileImage: "", commentContent: "", commentCreatedDate: Timestamp()))
-            .environmentObject(AuthStore())
+            .environmentObject(WholeAuthStore())
             .environmentObject(CommentStore())
     }
 }

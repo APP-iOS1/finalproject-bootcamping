@@ -9,7 +9,6 @@ import Foundation
 import LocalAuthentication
 
 class FaceId: ObservableObject {
-    //TODO: -시뮬에서 돌려야되서 false로, 기능 사용하려면 true
     @Published var islocked: Bool = true
     
     //    func auth() {

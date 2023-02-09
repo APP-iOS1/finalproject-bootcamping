@@ -16,23 +16,18 @@ struct ContentView: View {
     @AppStorage("login") var isSignIn: Bool = false
     @AppStorage("_isFirstLaunching") var isFirstLaunching: Bool = true
     
-    let wholeAuthStore = WholeAuthStore.shared
-    
     //탭뷰 화면전환 셀렉션 변수
     @EnvironmentObject var tabSelection: TabSelector
-    //diaryStore.getData() 위한 변수
     @EnvironmentObject var diaryStore: DiaryStore
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var scheduleStore: ScheduleStore
+    
     @State var isLoading: Bool = true
     
     var body: some View {
         ZStack {
             if isLoading {
                 SplashScreenView().transition(.identity).zIndex(1)
-                    .task {
-                        diaryStore.readDiarysCombine()
-                        scheduleStore.readScheduleCombine()
-                    }
             }
             if isSignIn {
                 TabView(selection: $tabSelection.screen) {
@@ -51,9 +46,10 @@ struct ContentView: View {
                     }.tag(TabViewScreen.two)
                     
                     //MARK: -세번째 캠핑일기 탭입니다.
-                    NavigationStack {
+                    NavigationView {
                         if diaryStore.diaryList.count == 0 {
-                            DiaryAddView()
+                            DiaryEmptyView()
+//                            DiaryAddView(isNavigationGoFirstView: $isNavigationGoFirstView)
                         } else {
                             MyCampingDiaryView()
                         }
@@ -78,10 +74,24 @@ struct ContentView: View {
 
             }
         }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
-                withAnimation { isLoading.toggle() }
-            }) }
+        .task {
+            wholeAuthStore.readUserListCombine()
+            diaryStore.readDiarysCombine()
+            scheduleStore.readScheduleCombine()
+            //현재 로그인 되어있는지
+            if isSignIn {
+                wholeAuthStore.getUserInfo(userUID: wholeAuthStore.currentUser!.uid) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
+                        withAnimation { isLoading.toggle() }
+                    })
+                }
+            } else {
+                // 로그인 안되어있을경우
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
+                    withAnimation { isLoading.toggle() }
+                })
+            }
+        }
         .fullScreenCover(isPresented: $isFirstLaunching) {
             OnboardingTabView(isFirstLaunching: $isFirstLaunching)
         }

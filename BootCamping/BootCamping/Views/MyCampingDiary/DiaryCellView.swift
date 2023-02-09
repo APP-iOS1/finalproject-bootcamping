@@ -12,17 +12,20 @@ import Firebase
 struct DiaryCellView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var diaryStore: DiaryStore
-    @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var diaryLikeStore: DiaryLikeStore
+    @EnvironmentObject var commentStore: CommentStore
+    
+    @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     
     @State var isBookmarked: Bool = false
     
     //선택한 다이어리 정보 변수입니다.
-    var item: Diary
+    var item: UserInfoDiary
     //삭제 알림
     @State private var isShowingDeleteAlert = false
     //유저 신고/ 차단 알림
     @State private var isShowingUserReportAlert = false
-    @State private var isShowingUserBlockedAlert = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -32,56 +35,51 @@ struct DiaryCellView: View {
                 DiaryDetailView(item: item)
             } label: {
                 VStack(alignment: .leading) {
-                    HStack {
+                    HStack(alignment: .center){
+                        if item.diary.uid == wholeAuthStore.currnetUserInfo!.id {
+                            isPrivateImage
+                        }
                         diaryTitle
                         Spacer()
-                        diaryIsPrivate
+                        bookmarkButton
                     }
                     diaryContent
-                    diaryCampingLink
-                    diaryInfo
+                    if !campingSpotStore.campingSpotList.isEmpty {
+                        diaryCampingLink
+                    }
+                    diaryDetailInfo
+                    Divider().padding(.bottom, 3)
+                    
                 }
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
             }
             .foregroundColor(.bcBlack)
         }
-        .onAppear{
-            isBookmarked = bookmarkStore.checkBookmarkedDiary(diaryId: item.id)
-            authStore.fetchUserList()
+        
+        .onAppear {
+            isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.diary.id)
+            commentStore.readCommentsCombine(diaryId: item.diary.id)
+            campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
         }
     }
 }
 
 private extension DiaryCellView {
-    //글 작성 유저
-    var user: User {
-        authStore.userList.filter { $0.id == Auth.auth().currentUser?.uid }.first!
-    }
+    //TODO: -유저 프로필 이미지 연결
+//    var userProfileURL: String? {
+//        for user in wholeAuthStore.userList {
+//            if user.id == item.uid {
+//                return user.profileImageURL
+//            }
+//        }
+//        return ""
+//    }
     
-    //글 작성 유저 닉네임 변수
-    var userNickName: String? {
-        for user in authStore.userList {
-            if user.id == Auth.auth().currentUser?.uid {
-                return user.nickName
-            }
-        }
-        return nil
-    }
-    
-    //글 작성 유저 프로필 변수
-    var userImage: String? {
-        for user in authStore.userList {
-            if user.id == Auth.auth().currentUser?.uid {
-                return user.profileImageURL
-            }
-        }
-        return nil
-    }
     
     //MARK: - 메인 이미지
     var diaryImage: some View {
         TabView{
-            ForEach(item.diaryImageURLs, id: \.self) { url in
+            ForEach(item.diary.diaryImageURLs, id: \.self) { url in
                 WebImage(url: URL(string: url))
                     .resizable()
                     .placeholder {
@@ -90,23 +88,6 @@ private extension DiaryCellView {
                     .scaledToFill()
                     .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     .clipped()
-                //MARK: - 북마크 버튼
-                    .overlay(alignment: .topTrailing){
-                        Button {
-                            isBookmarked.toggle()
-                            if isBookmarked{
-                                bookmarkStore.addBookmarkDiaryCombine(diaryId: item.id)
-                            } else{
-                                bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
-                            }
-                        } label: {
-                            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                        }
-                        .foregroundColor(.white)
-                        .shadow(radius: 5)
-                        .padding()
-                    }
-                
             }
         }
         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
@@ -119,21 +100,26 @@ private extension DiaryCellView {
     //MARK: - 다이어리 작성자 프로필
     var diaryUserProfile: some View {
         HStack {
-            WebImage(url: URL(string: userImage ?? "기본이미지 넣기"))
-                .resizable()
-                .placeholder {
-                    Rectangle().foregroundColor(.gray)
-                }
-                .scaledToFill()
-                .frame(width: UIScreen.screenWidth * 0.01)
-                .clipShape(Circle())
-            
+            //TODO: -다이어리 작성자 url 추가 (연산프로퍼티 작동 안됨)
+            if item.user.profileImageURL != "" {
+                WebImage(url: URL(string: item.user.profileImageURL))
+                    .resizable()
+                    .placeholder {
+                        Rectangle().foregroundColor(.gray)
+                    }
+                    .scaledToFill()
+                    .frame(width: 45)
+                    .clipShape(Circle())
+            } else {
+                Circle()
+                    .frame(width: 45)
+            }
             //유저 닉네임
-            Text(item.diaryUserNickName)
+            Text(item.user.nickName)
                 .font(.headline).fontWeight(.semibold)
             Spacer()
             //MARK: -...버튼 글 쓴 유저일때만 ...나타나도록
-            if item.uid == Auth.auth().currentUser?.uid {
+            if item.diary.uid == Auth.auth().currentUser?.uid {
                 alertMenu
                     .padding(.horizontal, UIScreen.screenWidth * 0.03)
                     .padding(.top, 5)
@@ -146,10 +132,9 @@ private extension DiaryCellView {
             }
             
         }
-        .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
-
+    
     //MARK: - Alert Menu 버튼
     var alertMenu: some View {
         //MARK: - ... 버튼입니다.
@@ -168,6 +153,7 @@ private extension DiaryCellView {
             
         } label: {
             Image(systemName: "ellipsis")
+                .font(.title3)
         }
         //MARK: - 일기 삭제 알림
         .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
@@ -175,7 +161,7 @@ private extension DiaryCellView {
                 isShowingDeleteAlert = false
             }
             Button("삭제", role: .destructive) {
-                diaryStore.deleteDiaryCombine(diary: item)
+                diaryStore.deleteDiaryCombine(diary: item.diary)
             }
         }
     }
@@ -189,15 +175,9 @@ private extension DiaryCellView {
             } label: {
                 Text("신고하기")
             }
-            
-            Button {
-                isShowingDeleteAlert = true
-            } label: {
-                Text("차단하기")
-            }
-            
         } label: {
             Image(systemName: "ellipsis")
+                .font(.title3)
         }
         //MARK: - 유저 신고 알림
         .alert("유저를 신고하시겠습니까?", isPresented: $isShowingUserReportAlert) {
@@ -205,34 +185,47 @@ private extension DiaryCellView {
                 isShowingUserReportAlert = false
             }
             Button("신고하기", role: .destructive) {
-                //신고 컴바인..
+                ReportUserView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []), placeholder: "", options: [])
             }
         }
-        .alert("유저를 차단하시겠습니까?", isPresented: $isShowingUserBlockedAlert) {
-            Button("취소", role: .cancel) {
-                isShowingUserBlockedAlert = false
-            }
-            Button("차단하기", role: .destructive) {
-                //차단 컴바인..
-            }
-        }
+
     }
     
     //MARK: - 제목
     var diaryTitle: some View {
-        Text(item.diaryTitle)
+        Text(item.diary.diaryTitle)
             .font(.system(.title3, weight: .semibold))
             .padding(.vertical, 5)
     }
     
-    //MARK: - 다이어리 공개 여부 - 잠금 했을때만 자물쇠 나오도록 설정
-    var diaryIsPrivate: some View {
-        Image(systemName: item.diaryIsPrivate ? "lock" : "" )
+    // MARK: - 다이어리 공개 여부를 나타내는 이미지
+    private var isPrivateImage: some View {
+        Image(systemName: (item.diary.diaryIsPrivate ? "lock" : "lock.open"))
+            .foregroundColor(Color.secondary)
+    }
+    
+    // MARK: - 북마크 버튼
+    private var bookmarkButton: some View {
+        Button{
+            isBookmarked.toggle()
+            if isBookmarked{
+                bookmarkStore.addBookmarkDiaryCombine(diaryId: item.diary.id)
+            } else {
+                bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.diary.id)
+            }
+            wholeAuthStore.readUserListCombine()
+        } label: {
+            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                .bold()
+                .foregroundColor(Color.accentColor)
+                .opacity((item.diary.uid != wholeAuthStore.currnetUserInfo!.id ? 1 : 0))
+        }
+        .disabled(item.diary.uid == wholeAuthStore.currnetUserInfo!.id)
     }
     
     //MARK: - 내용
     var diaryContent: some View {
-        Text(item.diaryContent)
+        Text(item.diary.diaryContent)
             .lineLimit(3)
             .multilineTextAlignment(.leading)
     }
@@ -240,57 +233,87 @@ private extension DiaryCellView {
     //MARK: - 캠핑장 이동
     var diaryCampingLink: some View {
         HStack {
-            Image("1") //TODO: -캠핑장 사진 연동
+            WebImage(url: URL(string: campingSpotStore.campingSpotList.first?.firstImageUrl ?? "")) //TODO: -캠핑장 사진 연동
                 .resizable()
-                .frame(width: 50, height: 50)
+                .frame(width: 60, height: 60)
+                .padding(.trailing, 5)
             
             VStack(alignment: .leading, spacing: 3) {
-                Text("캠핑장 이름")
+                Text(campingSpotStore.campingSpotList.first?.facltNm ?? "")
                     .font(.headline)
                 HStack {
-                    Text("대구시 수성구") //TODO: 캠핑장 주소 -앞에 -시 -구 까지 짜르기
-                    Spacer()
-                    //방문일
-                    Text("\(item.diaryVisitedDate.getKoreanDate())")
+                    Text("방문일자: \(item.diary.diaryVisitedDate.getKoreanDate())")
                         .font(.footnote)
+                        .padding(.vertical, 2)
+                    Spacer()
                 }
                 .font(.subheadline)
+                .foregroundColor(.secondary)
             }
             .foregroundColor(.bcBlack)
-
+            
         }
-        .padding()
+        .padding(10)
         .overlay(
-                RoundedRectangle(cornerRadius: 20)
-                    .stroke(Color.gray, lineWidth: 3)
-                    .opacity(0.2)
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.bcDarkGray, lineWidth: 1)
+                    .opacity(0.3)
             )
     }
-
+    
     
     //MARK: - 좋아요, 댓글, 타임스탬프
-    var diaryInfo: some View {
+    var diaryDetailInfo: some View {
         HStack {
-            Text("좋아요 \(item.diaryLike)")
-            Text("댓글 8")
+            Button {
+                //좋아요 버튼, 카운드
+                if item.diary.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") {
+                    diaryLikeStore.removeDiaryLikeCombine(diaryId: item.diary.id)
+                } else {
+                    diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
+                }
+                diaryStore.readDiarysCombine()
+            } label: {
+                Image(systemName: item.diary.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? "flame.fill" : "flame")
+                    .foregroundColor(item.diary.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? .red : .bcBlack)
+            }
+            Text("\(item.diary.diaryLike.count)")
+                .padding(.trailing, 7)
+            
+            //댓글 버튼
+            Button {
+                //"댓글 작성 버튼으로 이동"
+            } label: {
+                Image(systemName: "message")
+            }
+            Text("\(commentStore.commentList.count)")
+                .font(.body)
+                .padding(.horizontal, 3)
+            
             Spacer()
-            Text("\(TimestampToString.dateString(item.diaryCreatedDate)) 전")
+            //작성 경과시간
+            Text("\(TimestampToString.dateString(item.diary.diaryCreatedDate)) 전")
+                .font(.footnote)
+                .foregroundColor(.secondary)
         }
-        .font(.system(.subheadline))
-        .padding(.vertical)
+        .foregroundColor(.bcBlack)
+        .font(.title3)
+        .padding(.vertical, 5)
     }
 }
 
 
-struct DiaryCellView_Previews: PreviewProvider {
-    static var previews: some View {
-        DiaryCellView(item: Diary(id: "", uid: "", diaryUserNickName: "닉네임", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "내용", diaryImageNames: [""], diaryImageURLs: [
-            "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: "", diaryIsPrivate: true))
-        .environmentObject(AuthStore())
-        .environmentObject(DiaryStore())
-        .environmentObject(BookmarkStore())
-        
-    }
-}
+//struct DiaryCellView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DiaryCellView(item: Diary(id: "", uid: "", diaryUserNickName: "닉네임", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "내용", diaryImageNames: [""], diaryImageURLs: [
+//            "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: ["동훈"], diaryIsPrivate: true))
+//        .environmentObject(WholeAuthStore())
+//        .environmentObject(DiaryStore())
+//        .environmentObject(BookmarkStore())
+//        .environmentObject(DiaryLikeStore())
+//        .environmentObject(CommentStore())
+//
+//    }
+//}
 
 

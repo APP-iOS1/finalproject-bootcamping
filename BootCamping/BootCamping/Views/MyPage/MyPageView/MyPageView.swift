@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import SDWebImageSwiftUI
 
 enum TapMypage : String, CaseIterable {
     case myCamping = "나의 캠핑 일정"
@@ -15,7 +16,9 @@ enum TapMypage : String, CaseIterable {
 
 // MARK: - 마이페이지 첫 화면에 나타나는 뷰
 struct MyPageView: View {
-    @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    
+    @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     
     @State private var selectedPicker2: TapMypage = .myCamping
     //로그인 유무 함수
@@ -25,7 +28,7 @@ struct MyPageView: View {
     
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
-        for user in authStore.userList {
+        for user in wholeAuthStore.userList {
             if user.id == Auth.auth().currentUser?.uid {
                 return user.nickName
             }
@@ -33,7 +36,7 @@ struct MyPageView: View {
         return nil
     }
     var userImage: String? {
-        for user in authStore.userList {
+        for user in wholeAuthStore.userList {
             if user.id == Auth.auth().currentUser?.uid {
                 return user.profileImageURL
             }
@@ -51,9 +54,6 @@ struct MyPageView: View {
             }
             .padding(.horizontal, UIScreen.screenWidth * 0.03)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("마이페이지")
-                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
                         SettingView()
@@ -62,11 +62,16 @@ struct MyPageView: View {
                     }
                 }
             }
-        .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.inline)
+            .task {
+                wholeAuthStore.readUserListCombine()
+                campingSpotStore.campingSpotList.removeAll()
+                campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: wholeAuthStore.currnetUserInfo?.bookMarkedSpot ?? []))
+            }
         }
-        .onAppear{
-            authStore.fetchUserList()
-        }
+        //        .onAppear{
+        //            wholeAuthStore.readUserListCombine()
+        //        }
     }
     
 }
@@ -75,14 +80,22 @@ extension MyPageView{
     // MARK: -View : 유저 프로필이미지, 닉네임 표시
     private var userProfileSection : some View {
         HStack{
-            Image(systemName: userImage != "" ? userImage ?? "person.fill" : "person.fill")
-                .resizable()
-                .clipShape(Circle())
+            if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
+                WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
+                    .resizable()
+                    .clipShape(Circle())
                 .frame(width: 60, height: 60)
-                
-            Text("\(userNickName ?? "BootCamper") 님")
+            } else {
+                Image(systemName: "person.fill")
+                    .resizable()
+                    .frame(width: 60, height: 60)
+                    .aspectRatio(contentMode: .fill)
+                    .clipShape(Circle())
+                    
+            }
+            Text("\((wholeAuthStore.currnetUserInfo!.nickName)) 님")
             NavigationLink {
-                ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "\(userNickName ?? "")", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
+                ProfileSettingView()
                 
             } label: {
                 Image(systemName: "chevron.right")
@@ -117,9 +130,7 @@ extension MyPageView{
                 }
                 .frame(width: UIScreen.screenWidth * 0.47)
                 .onTapGesture {
-                    withAnimation(.easeInOut(duration: 0.1)) {
-                        self.selectedPicker2 = item
-                    }
+                    self.selectedPicker2 = item
                 }
             }
         }
@@ -133,8 +144,12 @@ extension MyPageView{
                 CalendarView()
             case .bookmarkedCampingSpot:
                 VStack(spacing: 20){
-                    ForEach(0..<5) { _ in
-                        BookmarkCellView()
+                    ForEach(campingSpotStore.campingSpotList, id: \.contentId) { campingSpot in
+                        NavigationLink {
+                            CampingSpotDetailView(places: campingSpot)
+                        } label: {
+                            BookmarkCellView(campingSpot: campingSpot)
+                        }
                     }
                 }
             }

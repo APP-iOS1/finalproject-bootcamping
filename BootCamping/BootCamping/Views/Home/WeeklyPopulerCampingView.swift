@@ -12,41 +12,45 @@ import SDWebImageSwiftUI
 struct WeeklyPopulerCampingView: View {
     //TODO: - 좋아요 많이 받은 글 10개만 뜰 수 있도록
     @EnvironmentObject var diaryStore: DiaryStore
+    @EnvironmentObject var commentStore: CommentStore
+    @EnvironmentObject var diaryLikeStore: DiaryLikeStore
     
     var body: some View {
         VStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(diaryStore.diaryList, id: \.self) { item in
-                        if item.diaryIsPrivate == false {
+                    ForEach(diaryStore.userInfoDiaryList, id: \.self) { item in
                             NavigationLink {
                                 DiaryDetailView(item: item)
                             } label: {
-                                ZStack(alignment: .leading) {
-                                    PhotoCardFrame(image: item.diaryImageURLs[0])
+                                ZStack(alignment: .topLeading) {
+                                    PhotoCardFrame(image: item.diary.diaryImageURLs[0])
                                     LinearGradient(gradient: Gradient(colors: [Color.bcBlack.opacity(0.3), Color.clear]), startPoint: .top, endPoint: .bottom)
                                         .cornerRadius(20)
-                                    PhotoMainStory(item: item)
-                                        .offset(y: -(UIScreen.screenHeight * 0.2))
+                                    PhotoMainStory(item: item.diary)
                                 }
                                 .modifier(PhotoCardModifier())
                             }
-                        } else {
-                            EmptyView()
                         }
+                            
                         
-                    }
+                    
+
                     
                 }
             }
         }
+        .onAppear {
+            diaryStore.firstGetDiaryCombine()
+        }
+
     }
 }
 
 //MARK: - 포토카드 위 글씨
 struct PhotoMainStory: View {
-    @EnvironmentObject var authStore: AuthStore
-    
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+
     var item: Diary
     
     var body: some View {
@@ -55,6 +59,7 @@ struct PhotoMainStory: View {
                 Text("\(item.diaryVisitedDate.getKoreanDate())")
                     .font(.subheadline)
                     .padding(.bottom, 0.01)
+                    .padding(.top, 80)
                 
                 //TODO: -캠핑장 이름 연결
                 Text("난지캠핑장")
@@ -64,18 +69,22 @@ struct PhotoMainStory: View {
                 
                 Text(item.diaryTitle)
                     .font(.title2)
+                    .multilineTextAlignment(.leading)
                     .fontWeight(.bold)
                     .padding(.bottom, 0.01)
+                HStack{
+                    Text("by")
+                        .bold()
+                        .padding(.trailing, -5)
+                    Text("\(item.diaryUserNickName)")
+                        .lineLimit(1)
+                }
+                .font(.subheadline)
                 
-                Text("by \(item.diaryUserNickName)")
-                    .font(.subheadline)
             }
             .foregroundColor(.white)
             .kerning(-0.7)
             .padding(.horizontal)
-        }
-        .onAppear {
-            authStore.fetchUserList()
         }
     }
 }
@@ -92,10 +101,14 @@ struct PhotoCardFrame: View {
             .clipped()
             .cornerRadius(20)
             .overlay(alignment: .bottomTrailing, content: {
-                Text("자세히 보기 >")
-                    .font(.system(.subheadline, weight: .bold))
-                    .foregroundColor(.white)
-                    .padding()
+                HStack{
+                    Text("자세히 보기")
+                        .font(.system(.subheadline, weight: .bold))
+                        .foregroundColor(.white)
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.white)
+                }
+                .padding()
             })
     }
 }

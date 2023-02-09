@@ -13,13 +13,12 @@ import GoogleSignInSwift
 import KakaoSDKUser
 import SwiftUI
 import AuthenticationServices
+import AlertToast
 
 
 struct LoginView: View {
     @AppStorage("login") var isSignIn: Bool?
     
-    @EnvironmentObject var authStore: AuthStore
-    @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     
     
@@ -49,6 +48,15 @@ struct LoginView: View {
                 .padding(UIScreen.screenWidth * 0.05)
             }.ignoresSafeArea()
         }
+        .alert("로그인에 실패하였습니다. 다시 시도해 주세요.", isPresented: $wholeAuthStore.isError) {
+            Button("확인", role: .cancel) {
+                wholeAuthStore.isError = false
+            }
+        }
+        .toast(isPresenting: $wholeAuthStore.isProcessing) {
+            AlertToast(displayMode: .alert, type: .loading)
+        }
+        
     }
 }
 
@@ -105,6 +113,7 @@ extension LoginView {
                     }
                 }
         }
+        
     }
     
     // 애플 로그인 버튼
@@ -125,6 +134,7 @@ extension LoginView {
                 }
                 wholeAuthStore.appleLogin(credential: credential)
             case .failure(let error):
+                wholeAuthStore.isError = true
                 print(error.localizedDescription)
             }
         }
@@ -148,6 +158,6 @@ extension LoginView {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
-            .environmentObject(AuthStore())
+            .environmentObject(WholeAuthStore())
     }
 }

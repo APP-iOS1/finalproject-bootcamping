@@ -20,6 +20,39 @@ extension Color {
     static let bcDarkGray = Color("BCDarkGray")
     static let bcYellow = Color("BCYellow")
     static let bcWhite = Color("BCWhite")
+    
+    // MARK: - 스케줄 모델에 색상 선택시 사용하는 컬러 익스텐션입니다.
+    static let taskRed = Color("TaskRed")
+    static let taskOrange = Color("TaskOrange")
+    static let taskYellow = Color("TaskYellow")
+    static let taskGreen = Color("TaskGreen")
+    static let taskTeal = Color("TaskTeal")
+    static let taskBlue = Color("TaskBlue")
+    static let taskPurple = Color("TaskPurple")
+    
+}
+
+extension Color {
+    static subscript(name: String) -> Color {
+        switch name {
+        case "taskRed":
+            return Color.taskRed
+        case "taskOrange":
+            return Color.taskOrange
+        case "taskYellow":
+            return Color.taskYellow
+        case "taskGreen":
+            return Color.taskGreen
+        case "taskTeal":
+            return Color.taskTeal
+        case "taskBlue":
+            return Color.taskBlue
+        case "taskPurple":
+            return Color.taskPurple
+        default:
+            return Color.accentColor
+        }
+    }
 }
 
 //MARK: - 키보드 dismiss extension함수입니다.
@@ -50,6 +83,10 @@ extension Image {
         guard let img = UIImage(named: imgName)?.resize(newWidth: UIScreen.screenWidth * 1 / 5) else { fatalError("Fail to load image") }
         return Image(uiImage: img)
     }
+    func resizeImageData(data: Data) -> Image {
+        guard let img = UIImage(data: data)?.resize(newWidth: UIScreen.screenWidth * 1 / 5) else { fatalError("Fail to load image") }
+        return Image(uiImage: img)
+        
+    }
 }
-
 

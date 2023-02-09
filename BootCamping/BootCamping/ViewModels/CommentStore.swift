@@ -5,98 +5,53 @@
 //  Created by 차소민 on 2023/01/19.
 //
 
-import Foundation
-import FirebaseFirestore
 import Firebase
+import FirebaseAuth
+import FirebaseFirestore
+import Foundation
 import SwiftUI
+import FirebaseStorage
 import Combine
 
 class CommentStore: ObservableObject {
-    @Published var comments: [Comment] = []
+    
+    @Published var commentList: [Comment] = []
+    
     @Published var firebaseCommentServiceError: FirebaseCommentServiceError = .badSnapshot
     @Published var showErrorAlertMessage: String = "오류"
-    
+    @Published var currnetCommentInfo: Comment?
     
     let database = Firestore.firestore()
     private var cancellables = Set<AnyCancellable>()
-
-    init(){
-        comments = []
-    }
     
-    // MARK: fetch 함수
-    func fetchComment()  {
-        database.collection("Comment")
-            .order(by: "commentCreatedDate", descending: false)
-            .getDocuments { (snapshot, error) in
-                self.comments.removeAll()
-                if let snapshot {
-                    for document in snapshot.documents {
-                        let id: String = document.documentID
-                        
-                        let docData = document.data()
-                        
-                        let diaryId: String = docData["diaryId"] as? String ?? ""
-                        let uid: String = docData["uid"] as? String ?? ""
-                        let nickName: String = docData["nickName"] as? String ?? ""
-                        let profileImage: String = docData["profileImage"] as? String ?? ""
-                        let commentContent: String = docData["commentContent"] as? String ?? ""
-                        let commentCreatedDate: Timestamp = docData["commentCreatedDate"] as? Timestamp ?? Timestamp(date: Date())
-//                        let commentLike: [String] = docData["commentLike"] as? [String] ?? []
-                        
-                        let comment: Comment = Comment(id: id, diaryId: diaryId, uid: uid,  nickName: nickName, profileImage: profileImage, commentContent: commentContent, commentCreatedDate: commentCreatedDate)
-                        
-                        self.comments.append(comment)
-                        
-                    }
+    
+    //MARK: - Create Comment Combine
+    
+    func createCommentCombine(diaryId: String, comment: Comment) {
+        FirebaseCommentService().createCommentService(diaryId: diaryId, comment: comment)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Create Comment")
+                    self.firebaseCommentServiceError = .createCommentError
+                    self.showErrorAlertMessage = self.firebaseCommentServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished Create Comment")
+                    self.readCommentsCombine(diaryId: diaryId)
+                    return
                 }
+            } receiveValue: { _ in
+                
             }
-    }
-    
-    // MARK: 댓글 Add 함수
-    func addComment(_ comment: Comment) {
-        database.collection("Comment")
-            .document(comment.id)
-            .setData(["diaryId": comment.diaryId,
-                      "uid": comment.uid,
-                      "nickName": comment.nickName,
-                      "profileImage": comment.profileImage,
-                      "commentContent": comment.commentContent,
-                      "commentCreatedDate": comment.commentCreatedDate,
-//                      "commentLike": comment.commentLike,
-                     ])
-        fetchComment()
-    }
-    
-    
-    // MARK: 댓글 좋아요 update 함수
-    func updateCommentLike(_ comment: Comment) {
-        database.collection("Comment")
-            .document(comment.id)
-            .updateData([
-                "commentLike": FieldValue.arrayUnion([comment.uid])
-            ])
-        fetchComment()
-    }
-    
-    
-    // MARK: Remove 함수
-    func removeComment(_ comment: Comment)  async throws {
-        do {
-            
-            try await database.collection("Comment")
-                .document(comment.id).delete()
-             fetchComment()
-        }
-        catch {
-            print(error)
-        }
+            .store(in: &cancellables)
     }
     
     //MARK: - Read Comment Combine
-    
-    func readCommentsCombine() {
-        FirebaseCommentService().readCommentsService()
+    func readCommentsCombine(diaryId: String) {
+        FirebaseCommentService().readCommentsService(diaryId: diaryId)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -111,64 +66,16 @@ class CommentStore: ObservableObject {
                     return
                 }
             } receiveValue: { [weak self] commentsValue in
-                self?.comments = commentsValue
-            }
-            .store(in: &cancellables)
-    }
-    
-    //MARK: - Create Comment Combine
-    
-    func createCommentCombine(comment: Comment) {
-        FirebaseCommentService().createCommentService(comment: comment)
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .failure(let error):
-                    print(error)
-                    print("Failed Create Comment")
-                    self.firebaseCommentServiceError = .createCommentError
-                    self.showErrorAlertMessage = self.firebaseCommentServiceError.errorDescription!
-                    return
-                case .finished:
-                    print("Finished Create Comment")
-                    self.readCommentsCombine()
-                    return
-                }
-            } receiveValue: { _ in
-                
-            }
-            .store(in: &cancellables)
-    }
-    
-    //MARK: - Update CommentLike Combine
-    
-    func updateCommentLikeCombine(comment: Comment) {
-        FirebaseCommentService().updateCommentLikeService(comment: comment)
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .failure(let error):
-                    print(error)
-                    print("Failed Update CommentLike")
-                    self.firebaseCommentServiceError = .updateCommentError
-                    self.showErrorAlertMessage = self.firebaseCommentServiceError.errorDescription!
-
-                    return
-                case .finished:
-                    print("Finished Update CommentLike")
-                    self.readCommentsCombine()
-                    return
-                }
-            } receiveValue: { _ in
-                
+                self?.commentList = commentsValue
             }
             .store(in: &cancellables)
     }
 
+    
     //MARK: - Delete Comment Combine
     
-    func deleteCommentCombine(comment: Comment) {
-        FirebaseCommentService().deleteCommentService(comment: comment)
+    func deleteCommentCombine(diaryId:String, comment: Comment) {
+        FirebaseCommentService().deleteCommentService(diaryId: diaryId, comment: comment)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -180,7 +87,7 @@ class CommentStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Delete Comment")
-                    self.readCommentsCombine()
+                    self.readCommentsCombine(diaryId: diaryId)
                     return
                 }
             } receiveValue: { _ in
@@ -188,4 +95,5 @@ class CommentStore: ObservableObject {
             }
             .store(in: &cancellables)
     }
+    
 }

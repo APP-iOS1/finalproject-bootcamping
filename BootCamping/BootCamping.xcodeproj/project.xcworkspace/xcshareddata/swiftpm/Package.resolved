@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "alerttoast",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/elai950/AlertToast.git",
+      "state" : {
+        "revision" : "a437862bb6605080a5816e866cbd4ac8c8657b49",
+        "version" : "1.3.8"
+      }
+    },
+    {
       "identity" : "appauth-ios",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/openid/AppAuth-iOS.git",
@@ -34,6 +43,15 @@
       "state" : {
         "revision" : "dd3eda2b05a3f459fc3073695ad1b28659066eab",
         "version" : "0.9.1"
+      }
+    },
+    {
+      "identity" : "chatscrollview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cozzin/ChatScrollView.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "2b2b682ef62a8ce1423228d5d1159d0742c31a5b"
       }
     },
     {

@@ -9,8 +9,7 @@ import SwiftUI
 
 // TODO: 목업으로 뷰 추가해놓기
 struct SettingView: View {
-    @EnvironmentObject var authStore: AuthStore
-    @EnvironmentObject var kakaoAuthStore: KakaoAuthStore
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
     
     //로그아웃 시 탭 변경하기 위한 변수
     @EnvironmentObject var tabSelection: TabSelector
@@ -22,15 +21,16 @@ struct SettingView: View {
     
     var body: some View {
         List{
-            NavigationLink(destination: CampingSpotView().environmentObject(CampingSpotStore())) {
+            NavigationLink(destination: EmptyView()) {
                 Text("공지사항")
             }
-            NavigationLink(destination: EmptyView()) {
+            NavigationLink(destination: ReportUserView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []), placeholder: "", options:[])) {
                 Text("자주 묻는 질문")
             }
             NavigationLink(destination: ContactUsView()) {
                 Text("고객센터")
             }
+            //TODO: -유저차단뷰
             NavigationLink(destination: EmptyView()) {
                 Text("앱 정보")
             }
@@ -49,11 +49,7 @@ struct SettingView: View {
                 Alert(title: Text("로그아웃하시겠습니까?"),
                       primaryButton: .default(Text("취소"), action: {} ),
                       secondaryButton: .destructive(Text("로그아웃"),action: {
-                    authStore.googleSignOut()
-                    authStore.authSignOut()
-                    kakaoAuthStore.kakaoLogout()
-                    isSignIn = false
-                    tabSelection.change(to: .one)
+                    wholeAuthStore.combineLogOut()
                 })
                 )
             }
@@ -66,6 +62,12 @@ struct SettingView: View {
 
         }
         .listStyle(.plain)
+        .alert("로그아웃에 실패하였습니다. 다시 시도해 주세요.", isPresented: $wholeAuthStore.isError) {
+            Button("확인", role: .cancel) {
+                wholeAuthStore.isError = false
+            }
+        }
+        
     }
 }
 

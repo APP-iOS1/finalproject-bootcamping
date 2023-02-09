@@ -18,6 +18,10 @@ class DiaryStore: ObservableObject {
     @Published var diaryList: [Diary] = []
     @Published var firebaseDiaryServiceError: FirebaseDiaryServiceError = .badSnapshot
     @Published var showErrorAlertMessage: String = "오류"
+    // 다이어리 CRUD 진행상태
+    @Published var isProcessing: Bool = false
+    // 다이어리 에러 상태
+    @Published var isError: Bool = false
     //파베 기본 경로
     let database = Firestore.firestore()
     

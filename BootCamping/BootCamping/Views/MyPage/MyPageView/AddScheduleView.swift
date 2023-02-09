@@ -171,8 +171,8 @@ extension AddScheduleView {
         Button {
             let calendar = Calendar.current
             if endDate.timeIntervalSince(startDate) > 0 {
-                let interval = endDate.timeIntervalSince(startDate)
-                let days = Int(interval / 86400)
+                let interval = Int(endDate.timeIntervalSince(startDate))
+                let days = (interval % 86400 == 0 ? (interval / 86400) : (interval / 86400) + 1)
                 for day in 0...days {
                     print(calendar.date(byAdding: .day, value: day, to: startDate) ?? Date())
                     scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: calendar.date(byAdding: .day, value: day, to: startDate) ?? Date(), color: selectedColor))

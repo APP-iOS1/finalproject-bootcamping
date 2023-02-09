@@ -389,7 +389,8 @@ struct FirebaseDiaryService {
                         let userEmail: String = docData?["userEmail"] as? String ?? ""
                         let bookMarkedDiaries: [String] = docData?["bookMarkedDiaries"] as? [String] ?? []
                         let bookMarkedSpot: [String] = docData?["bookMarkedSpot"] as? [String] ?? []
-                        let user: User = User(id: id, profileImageName: profileImageName, profileImageURL: profileImageURL, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries, bookMarkedSpot: bookMarkedSpot)
+                        let blockedUser: [String] = docData?["blockedUser"] as? [String] ?? []
+                        let user: User = User(id: id, profileImageName: profileImageName, profileImageURL: profileImageURL, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries, bookMarkedSpot: bookMarkedSpot, blockedUser: blockedUser)
                         
                         userInfoDiarys.append(UserInfoDiary(diary: diary, User: user))
                         group.leave()

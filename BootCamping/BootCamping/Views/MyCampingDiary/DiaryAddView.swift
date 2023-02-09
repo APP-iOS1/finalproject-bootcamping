@@ -245,7 +245,7 @@ private extension DiaryAddView {
                 Spacer()
                 Image(systemName: "chevron.right")
             }.padding(.vertical)
-        })
+        }
         .focused($inputFocused)
     }
     

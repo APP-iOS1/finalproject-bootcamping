@@ -16,6 +16,8 @@ struct DiaryDetailView: View {
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var diaryLikeStore: DiaryLikeStore
     
+    @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
+    
     @State private var diaryComment: String = ""
     
     //삭제 알림
@@ -45,7 +47,9 @@ struct DiaryDetailView: View {
                             bookmarkButton
                         }
                         diaryDetailContent
-                        diaryCampingLink
+                        if !campingSpotStore.campingSpotList.isEmpty {
+                            diaryCampingLink
+                        }
                         diaryDetailInfo
                         Divider()
                         
@@ -100,6 +104,7 @@ struct DiaryDetailView: View {
         .onAppear{
             isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.id)
             commentStore.readCommentsCombine(diaryId: item.id)
+            campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diaryAddress]))
         }
     }
 }
@@ -281,18 +286,19 @@ private extension DiaryDetailView {
     var diaryCampingLink: some View {
         
         NavigationLink {
-            Text("캠핑장 정보 연결")
+            CampingSpotDetailView(places: campingSpotStore.campingSpotList.first ?? campingSpotStore.campingSpot)
         } label: {
             HStack {
-                Image("1") //TODO: -캠핑장 사진 연동
+                WebImage(url: URL(string: campingSpotStore.campingSpotList.first?.firstImageUrl ?? "")) //TODO: -캠핑장 사진 연동
                     .resizable()
-                    .frame(width: 50, height: 50)
+                    .frame(width: 60, height: 60)
+                    .padding(.trailing, 5)
                 
                 VStack(alignment: .leading, spacing: 3) {
-                    Text("캠핑장 이름")
+                    Text(campingSpotStore.campingSpotList.first?.facltNm ?? "")
                         .font(.headline)
                     HStack {
-                        Text("대구시 수성구") //TODO: 캠핑장 주소 -앞에 -시 -구 까지 짜르기
+                        Text(campingSpotStore.campingSpotList.first?.addr1 ?? "")
                         Spacer()
                         Group {
                             Text("자세히 보기")

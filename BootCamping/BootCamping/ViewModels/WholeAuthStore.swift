@@ -87,7 +87,7 @@ class WholeAuthStore: ObservableObject {
     // MARK: - Firebase UserList CRUD Combine
 
     // MARK: readUserListCombine 유저리스트 조회
-    func readUserListCombine() {
+                func readUserListCombine() {
         FirebaseUserService().readUserListService()
             .receive(on: DispatchQueue.main)
             .sink { completion in

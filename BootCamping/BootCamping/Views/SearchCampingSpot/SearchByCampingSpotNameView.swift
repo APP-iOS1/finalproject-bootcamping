@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct SearchByCampingSpotNameView: View {
     
@@ -22,7 +23,6 @@ struct SearchByCampingSpotNameView: View {
         VStack {
             TextField("여행지를 검색해주세요.", text: $keywordForSearching)
                 .textFieldStyle(.roundedBorder)
-                .padding(.horizontal, UIScreen.screenWidth*0.03)
                 .onSubmit {
                     keywordForParameter = keywordForSearching
                     isLoading = false
@@ -31,7 +31,7 @@ struct SearchByCampingSpotNameView: View {
                     campingSpotStore.lastDoc = nil
                 }
             if isSearching {
-                VStack(alignment: .leading) {
+                VStack() {
                     ScrollView(showsIndicators: false) {
                         if !isLoading {
                             VStack {
@@ -81,6 +81,7 @@ struct SearchByCampingSpotNameView: View {
                 Spacer()
             }
         }
+        .padding(.horizontal, UIScreen.screenHeight * 0.03)
     }
 }
 
@@ -88,11 +89,37 @@ struct SearchByCampingSpotNameRow: View {
     var campingSpot: Item
     
     var body: some View {
-        Text("\(campingSpot.facltNm)")
-            .foregroundColor(Color.bcBlack)
-            .font(.headline)
+        HStack {
+            WebImage(url: URL(string: campingSpot.firstImageUrl)) //TODO: -캠핑장 사진 연동
+                .resizable()
+                .frame(width: 60, height: 60)
+                .padding(.trailing, 5)
+            
+            VStack(alignment: .leading, spacing: 3) {
+                Text(campingSpot.facltNm)
+                    .font(.headline)
+                HStack {
+                    Text(campingSpot.addr1)
+                    //TODO: 캠핑장 주소 -앞에 -시 -구 까지 짜르기
+                        .font(.footnote)
+                        .padding(.vertical, 2)
+                    Spacer()
+                }
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            }
+            .foregroundColor(.bcBlack)
+            
+        }
+        .padding(10)
+        .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.bcDarkGray, lineWidth: 1)
+                    .opacity(0.3)
+            )
     }
 }
+
 struct SearchByCampingSpotNameView_Previews: PreviewProvider {
     static var previews: some View {
 //        SearchByCampingSpotNameView(campingSpot: .constant(""))

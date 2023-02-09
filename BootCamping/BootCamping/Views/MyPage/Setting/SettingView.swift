@@ -61,6 +61,12 @@ struct SettingView: View {
 
         }
         .listStyle(.plain)
+        .alert("로그아웃에 실패하였습니다. 다시 시도해 주세요.", isPresented: $wholeAuthStore.isError) {
+            Button("확인", role: .cancel) {
+                wholeAuthStore.isError = false
+            }
+        }
+        
     }
 }
 

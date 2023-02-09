@@ -51,10 +51,10 @@ class DiaryLikeStore: ObservableObject {
                 switch completion {
                 case .failure(let error):
                     print(error)
-                    print("Failed remove bookmark in Diary")
+                    print("Failed remove diaryLike in Diary")
                     return
                 case .finished:
-                    print("Finished remove bookmark in Diary")
+                    print("Finished remove diaryLike in Diary")
                     //TODO: -다이어리 패치
                     self.diaryStore.readDiarysCombine()
                     return

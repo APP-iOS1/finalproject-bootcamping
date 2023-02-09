@@ -43,8 +43,6 @@ struct DiaryAddContentView: View {
     //키보드 dismiss 변수
     @FocusState private var inputFocused: Bool
     
-    var campingSpotContentId: String
-    
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
         get {

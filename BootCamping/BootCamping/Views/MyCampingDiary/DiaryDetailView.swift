@@ -27,13 +27,15 @@ struct DiaryDetailView: View {
     @State private var isShowingUserBlockedAlert = false
     
     @State private var isBookmarked: Bool = false
+    //자동 스크롤
+    @Namespace var topID
+    @Namespace var bottomID
     
     var item: Diary
     
     var body: some View {
         VStack {
-           ScrollViewReader { proxy in
-            ScrollView(showsIndicators: false) {
+            CommentScrollView {
                 LazyVStack(alignment: .leading) {
                     diaryUserProfile
                     diaryDetailImage
@@ -54,52 +56,18 @@ struct DiaryDetailView: View {
                         Divider()
                         
                         //댓글
-                        VStack {
-                            ForEach(commentStore.commentList) { comment in
-                                DiaryCommentCellView(item: comment)
-                            }
+                        ForEach(commentStore.commentList) { comment in
+                            DiaryCommentCellView(item: comment)
                         }
-
-                        .id("bottom")
-
-                        //리스트로 삭제기능 넣으려고 함                         .onDelete(perform: user.id == item.uid ? delete: nil)
-                        //                        }
-
                     }
                     .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 }
-
             }
-
-               //댓글 작성
-               HStack {
-                   Circle()
-                       .frame(width: 35)
-                   TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
-                   
-                   Button {
-                       //TODO: -프로필 이미지 수정
-                       commentStore.createCommentCombine(diaryId: item.id, comment: Comment(id: UUID().uuidString, diaryId: item.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: item.diaryUserNickName, profileImage: "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/UserImages%2F6A6EB85C-6113-4FDA-BC23-62C1285762EF?alt=media&token=ed35fe2c-4f99-4293-99e5-5c35ca14b291", commentContent: diaryComment, commentCreatedDate: Timestamp()))
-                       commentStore.readCommentsCombine(diaryId: item.id)
-                       diaryComment = ""
-                       print("----------------\(commentStore.commentList)")
-                       DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-                           proxy.scrollTo("bottom")
-                       }
-                   } label: {
-                       Image(systemName: "paperplane")
-                           .resizable()
-                           .frame(width: 30, height: 30)
-
-                   }
-               }
-
-               .padding(.horizontal)
-               .padding(.bottom, 8)
-
+            diaryCommetInputView
+            
         }
-
-        }
+        .padding(.top)
+        .padding(.bottom)
         .navigationTitle("BOOTCAMPING")
         .onAppear{
             isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.id)
@@ -109,14 +77,13 @@ struct DiaryDetailView: View {
     }
 }
 
-
 private extension DiaryDetailView {
     
     //MARK: - 댓글 삭제 기능
     func delete(at offsets: IndexSet) {
         commentStore.commentList.remove(atOffsets: offsets)
     }
-
+    
     //MARK: - 다이어리 작성자 프로필
     var diaryUserProfile: some View {
         HStack {
@@ -149,6 +116,7 @@ private extension DiaryDetailView {
             }
             
         }
+        .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
     // MARK: - 다이어리 공개 여부를 나타내는 이미지
@@ -305,7 +273,7 @@ private extension DiaryDetailView {
                             Image(systemName: "chevron.right")
                         }
                         .font(.footnote)
-
+                        
                     }
                     .font(.subheadline)
                     .foregroundColor(.secondary)
@@ -314,10 +282,10 @@ private extension DiaryDetailView {
             }
             .padding()
             .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.bcDarkGray, lineWidth: 1)
-                        .opacity(0.3)
-                )
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.bcDarkGray, lineWidth: 1)
+                    .opacity(0.3)
+            )
         }
         .foregroundColor(.clear)
     }
@@ -363,29 +331,54 @@ private extension DiaryDetailView {
         .padding(.vertical, 5)
     }
     
-//    // MARK: -View : 댓글 작성
-//    var diaryCommetInputView : some View {
-//
-//        HStack {
-//            Circle()
-//                .frame(width: 35)
-//            TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
-//
-//            Button {
-//                commentStore.addCommentCombine(comment: (Comment(id: UUID().uuidString, diaryId: item.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: item.diaryUserNickName, profileImage: wholeAuthStore.currentUser?.uid ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp())), diaryId: item.id)
-//                commentStore.readCommentsCombine(diaryId: item.id)
-//                diaryComment = ""
-//                //todo 버튼 누르면 댓글 젤 밑으로 화면 이동
-//                proxy.scrollTo("Bottom")
-//            } label: {
-//                Image(systemName: "arrowshape.turn.up.right.circle")
-//                    .resizable()
-//                    .frame(width: 30, height: 30)
-//            }
-//        }
-//        .padding(.horizontal)
-//        .padding(.bottom, 8)
-//    }
+    // MARK: -View : 댓글 작성
+    var diaryCommetInputView : some View {
+        HStack {
+            Circle()
+                .frame(width: 35)
+            TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
+            
+            Button {
+                //TODO: -프로필 이미지 수정
+                commentStore.createCommentCombine(diaryId: item.id, comment: Comment(id: UUID().uuidString, diaryId: item.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: item.diaryUserNickName, profileImage: "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/UserImages%2F6A6EB85C-6113-4FDA-BC23-62C1285762EF?alt=media&token=ed35fe2c-4f99-4293-99e5-5c35ca14b291", commentContent: diaryComment, commentCreatedDate: Timestamp()))
+                commentStore.readCommentsCombine(diaryId: item.id)
+                diaryComment = ""
+            } label: {
+                Image(systemName: "paperplane")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+            }
+        }
+        .padding(.horizontal, UIScreen.screenWidth * 0.03)
+    }
+    //MARK: - 댓글 아래로 구현
+    struct CommentScrollView<Content: View>: View {
+        
+        private let alignment: HorizontalAlignment
+        private let spacing: CGFloat?
+        private let pinnedViews: PinnedScrollableViews
+        private let content: () -> Content
+        
+        public init(alignment: HorizontalAlignment = .center,
+                    spacing: CGFloat? = nil,
+                    pinnedViews: PinnedScrollableViews = .init(),
+                    @ViewBuilder content: @escaping () -> Content) {
+            self.alignment = alignment
+            self.spacing = spacing
+            self.pinnedViews = pinnedViews
+            self.content = content
+        }
+        
+        public var body: some View {
+            ScrollView(.vertical, showsIndicators: false) {
+                LazyVStack(alignment: alignment, spacing: spacing, pinnedViews: pinnedViews, content: content)
+                    .rotationEffect(Angle(degrees: 180))
+                    .scaleEffect(x: -1.0, y: 1.0, anchor: .center)
+            }
+            .rotationEffect(Angle(degrees: 180))
+            .scaleEffect(x: -1.0, y: 1.0, anchor: .center)
+        }
+    }
     
 }
 

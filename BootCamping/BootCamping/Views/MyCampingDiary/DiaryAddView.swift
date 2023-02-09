@@ -27,6 +27,9 @@ struct DiaryAddView: View {
     //키보드 dismiss 변수
     @FocusState private var inputFocused: Bool
     
+    @State private var campingSpotItem: Item = CampingSpotStore().campingSpot
+    @State private var campingSpot: String = ""
+    
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
         get {
@@ -224,9 +227,9 @@ private extension DiaryAddView {
 //        } header: {
 //            Text("위치 등록하기")
 //        }
-        Button(action: {
-            // 검색 뷰로 이동
-        }, label: {
+        NavigationLink {
+            SearchByCampingSpotNameView(campingSpot: $campingSpotItem)
+        } label: {
             HStack{
                 Text("위치 등록하러 가기")
                 Spacer()

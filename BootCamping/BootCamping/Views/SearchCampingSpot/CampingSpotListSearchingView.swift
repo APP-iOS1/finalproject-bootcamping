@@ -90,6 +90,7 @@ struct CampingSpotListSearchingView: View {
                             }
                         }
                     }
+                    .padding(.bottom, 0.1)
                 }
             } else {
                 Spacer()

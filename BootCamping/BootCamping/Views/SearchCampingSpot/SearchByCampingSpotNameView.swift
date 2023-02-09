@@ -73,6 +73,7 @@ struct SearchByCampingSpotNameView: View {
                             }
                         }
                     }
+                    .padding(.bottom, 0.1)
                 }
             }
             else {

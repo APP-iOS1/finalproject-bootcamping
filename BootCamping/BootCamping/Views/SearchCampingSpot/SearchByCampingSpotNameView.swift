@@ -1,27 +1,22 @@
 //
-//  CampingSpotListSearchingView.swift
+//  SearchByCampingSpotNameView.swift
 //  BootCamping
 //
-//  Created by Donghoon Bae on 2023/02/08.
+//  Created by Donghoon Bae on 2023/02/09.
 //
 
 import SwiftUI
 
-enum filterCase {
-    case campingSpotName
-    case campingSpotAddr
-    case campingSpotContenId
-}
-
-struct CampingSpotListSearchingView: View {
+struct SearchByCampingSpotNameView: View {
     
+    @Environment(\.dismiss) private var dismiss
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @State private var isLoading: Bool = false
     @State var keywordForSearching: String = ""
     @State var keywordForParameter: String = ""
     @State var isSearching: Bool = false
     
-    var selectedFilter: filterCase
+    @Binding var campingSpot: Item
     
     var body: some View {
         VStack {
@@ -36,23 +31,14 @@ struct CampingSpotListSearchingView: View {
                     campingSpotStore.lastDoc = nil
                 }
             if isSearching {
-                VStack {
+                VStack(alignment: .leading) {
                     ScrollView(showsIndicators: false) {
                         if !isLoading {
-                            LazyVStack {
-                                ForEach(0...2, id: \.self) { _ in
-                                    EmptyCampingSpotListCell()
-                                }
+                            VStack {
+                                ProgressView()
                             }
                             .task {
-                                switch selectedFilter {
-                                case .campingSpotName:
-                                    campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotName: keywordForParameter))
-                                case .campingSpotAddr:
-                                    campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotAddr: keywordForParameter))
-                                default:
-                                    print(#function, "")
-                                }
+                                campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotName: keywordForParameter))
                                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                                     isLoading.toggle()
                                 }
@@ -65,23 +51,20 @@ struct CampingSpotListSearchingView: View {
                                     Spacer()
                                 } else {
                                     ForEach(campingSpotStore.campingSpotList.indices, id: \.self) { index in
-                                        NavigationLink {
-                                            CampingSpotDetailView(places: campingSpotStore.campingSpotList[index])
+                                        Button {
+                                            campingSpot = campingSpotStore.campingSpotList[index]
+                                            dismiss()
                                         } label: {
-                                            CampingSpotListRaw(item: campingSpotStore.campingSpotList[index])
-                                                .padding(.bottom,40)
+                                            HStack {
+                                                SearchByCampingSpotNameRow(campingSpot: campingSpotStore.campingSpotList[index])
+                                                Spacer()
+                                            }
                                         }
                                         .task {
                                             if index == campingSpotStore.campingSpotList.count - 1 {
                                                 Task {
-                                                    switch selectedFilter {
-                                                    case .campingSpotName:
-                                                        campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotName: keywordForParameter, lastDoc: campingSpotStore.lastDoc))
-                                                    case .campingSpotAddr:
-                                                        campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotAddr: keywordForParameter, lastDoc: campingSpotStore.lastDoc))
-                                                    default:
-                                                        print(#function, "")
-                                                    }
+                                                    campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotName: keywordForParameter, lastDoc: campingSpotStore.lastDoc))
+                                                    
                                                 }
                                             }
                                         }
@@ -91,7 +74,8 @@ struct CampingSpotListSearchingView: View {
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 Spacer()
                 Text("최근검색 리스트로")
                 Spacer()
@@ -100,10 +84,18 @@ struct CampingSpotListSearchingView: View {
     }
 }
 
-
-
-struct CampingSpotListSearchingView_Previews: PreviewProvider {
+struct SearchByCampingSpotNameRow: View {
+    var campingSpot: Item
+    
+    var body: some View {
+        Text("\(campingSpot.facltNm)")
+            .foregroundColor(Color.bcBlack)
+            .font(.headline)
+    }
+}
+struct SearchByCampingSpotNameView_Previews: PreviewProvider {
     static var previews: some View {
-        CampingSpotListSearchingView(selectedFilter: filterCase.campingSpotName)
+//        SearchByCampingSpotNameView(campingSpot: .constant(""))
+        Text("")
     }
 }

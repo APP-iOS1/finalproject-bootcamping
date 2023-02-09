@@ -15,8 +15,11 @@ struct AddScheduleView: View {
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var localNotification: LocalNotification
     
+
     @State private var startDate = Date()
     @State private var endDate = Date()
+    @State private var campingSpotItem: Item = CampingSpotStore().campingSpot
+    
     @State private var campingSpot: String = ""
     @State private var ischeckingDate = true
     @State private var isSettingNotification = true
@@ -49,7 +52,6 @@ struct AddScheduleView: View {
     }
     
     //onAppear 시 캠핑장 데이터 패치
-    @EnvironmentObject var campingSpotStore: CampingSpotStore
     @State var page: Int = 2
     
     var body: some View {
@@ -91,6 +93,7 @@ struct AddScheduleView: View {
         }
         .onAppear{
             ischeckingDate = checkSchedule(startDate: startDate, endDate: endDate)
+            campingSpot = campingSpotItem.facltNm
             //TODO: -패치데이터
             //            Task {
             //                campingSpotStore.campingSpotList = try await fetchData.fetchData(page: page)
@@ -131,7 +134,7 @@ extension AddScheduleView {
             if campingSpot == "" {
                 HStack{
                     NavigationLink {
-                        SearchCampingSpotListView(campingSpotName: $campingSpot)
+                        SearchByCampingSpotNameView(campingSpot: $campingSpotItem)
                     } label: {
                         HStack{
                             Text("캠핑장 추가하기")

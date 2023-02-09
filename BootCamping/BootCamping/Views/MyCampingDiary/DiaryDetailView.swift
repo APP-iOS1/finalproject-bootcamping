@@ -20,6 +20,9 @@ struct DiaryDetailView: View {
     
     //삭제 알림
     @State private var isShowingDeleteAlert = false
+    //유저 신고/ 차단 알림
+    @State private var isShowingUserReportAlert = false
+    @State private var isShowingUserBlockedAlert = false
     
     @State private var isBookmarked: Bool = false
     
@@ -27,6 +30,7 @@ struct DiaryDetailView: View {
     
     var body: some View {
         VStack {
+           ScrollViewReader { proxy in
             ScrollView(showsIndicators: false) {
                 LazyVStack(alignment: .leading) {
                     diaryUserProfile
@@ -46,16 +50,51 @@ struct DiaryDetailView: View {
                         Divider()
                         
                         //댓글
-                        ForEach(commentStore.commentList) { comment in
-                            DiaryCommentCellView(item: comment)
+                        VStack {
+                            ForEach(commentStore.commentList) { comment in
+                                DiaryCommentCellView(item: comment)
+                            }
                         }
+
+                        .id("bottom")
+
+                        //리스트로 삭제기능 넣으려고 함                         .onDelete(perform: user.id == item.uid ? delete: nil)
+                        //                        }
+
                     }
                     .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 }
+
             }
-            Divider()
-            //댓글 작성
-            diaryCommetInputView
+
+               //댓글 작성
+               HStack {
+                   Circle()
+                       .frame(width: 35)
+                   TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
+                   
+                   Button {
+                       //TODO: -프로필 이미지 수정
+                       commentStore.createCommentCombine(diaryId: item.id, comment: Comment(id: UUID().uuidString, diaryId: item.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: item.diaryUserNickName, profileImage: "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/UserImages%2F6A6EB85C-6113-4FDA-BC23-62C1285762EF?alt=media&token=ed35fe2c-4f99-4293-99e5-5c35ca14b291", commentContent: diaryComment, commentCreatedDate: Timestamp()))
+                       commentStore.readCommentsCombine(diaryId: item.id)
+                       diaryComment = ""
+                       print("----------------\(commentStore.commentList)")
+                       DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+                           proxy.scrollTo("bottom")
+                       }
+                   } label: {
+                       Image(systemName: "paperplane")
+                           .resizable()
+                           .frame(width: 30, height: 30)
+
+                   }
+               }
+
+               .padding(.horizontal)
+               .padding(.bottom, 8)
+
+        }
+
         }
         .navigationTitle("BOOTCAMPING")
         .onAppear{
@@ -72,29 +111,12 @@ private extension DiaryDetailView {
     func delete(at offsets: IndexSet) {
         commentStore.commentList.remove(atOffsets: offsets)
     }
-    
-    //글 작성 유저 닉네임 변수
-    var userNickName: String? {
-        for user in wholeAuthStore.userList {
-            if user.id == Auth.auth().currentUser?.uid {
-                return user.nickName
-            }
-        }
-        return nil
-    }
-    //글 작성 유저 프로필 변수
-    var userImage: String? {
-        for user in wholeAuthStore.userList {
-            if user.id == Auth.auth().currentUser?.uid {
-                return user.profileImageURL
-            }
-        }
-        return nil
-    }
+
     //MARK: - 다이어리 작성자 프로필
     var diaryUserProfile: some View {
         HStack {
-            WebImage(url: URL(string: userImage ?? "기본이미지 넣기"))
+            //TODO: -다이어리 작성자 url 추가 (연산프로퍼티 작동 안됨)
+            WebImage(url: URL(string: "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/UserImages%2F6A6EB85C-6113-4FDA-BC23-62C1285762EF?alt=media&token=ed35fe2c-4f99-4293-99e5-5c35ca14b291"))
                 .resizable()
                 .placeholder {
                     Rectangle().foregroundColor(.gray)
@@ -116,11 +138,12 @@ private extension DiaryDetailView {
             }
             //TODO: -글 쓴 유저가 아닐때는 신고기능 넣기
             else {
-                
+                reportAlertMenu
+                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                    .padding(.top, 5)
             }
             
         }
-        .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
     // MARK: - 다이어리 공개 여부를 나타내는 이미지
@@ -166,7 +189,7 @@ private extension DiaryDetailView {
             
         } label: {
             Image(systemName: "ellipsis")
-                .font(.title)
+                .font(.title3)
         }
         //MARK: - 일기 삭제 알림
         .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
@@ -175,6 +198,45 @@ private extension DiaryDetailView {
             }
             Button("삭제", role: .destructive) {
                 diaryStore.deleteDiaryCombine(diary: item)
+            }
+        }
+    }
+    
+    //MARK: - 유저 신고 / 차단 버튼
+    var reportAlertMenu: some View {
+        //MARK: - ... 버튼입니다.
+        Menu {
+            Button {
+                isShowingUserReportAlert = true
+            } label: {
+                Text("신고하기")
+            }
+            
+            Button {
+                isShowingDeleteAlert = true
+            } label: {
+                Text("차단하기")
+            }
+            
+        } label: {
+            Image(systemName: "ellipsis")
+                .font(.title3)
+        }
+        //MARK: - 유저 신고 알림
+        .alert("유저를 신고하시겠습니까?", isPresented: $isShowingUserReportAlert) {
+            Button("취소", role: .cancel) {
+                isShowingUserReportAlert = false
+            }
+            Button("신고하기", role: .destructive) {
+                //신고 컴바인..
+            }
+        }
+        .alert("유저를 차단하시겠습니까?", isPresented: $isShowingUserBlockedAlert) {
+            Button("취소", role: .cancel) {
+                isShowingUserBlockedAlert = false
+            }
+            Button("차단하기", role: .destructive) {
+                //차단 컴바인..
             }
         }
     }
@@ -272,6 +334,7 @@ private extension DiaryDetailView {
                     .foregroundColor(item.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? .red : .bcBlack)
             }
             Text("\(item.diaryLike.count)")
+                .padding(.trailing, 7)
             
             //댓글 버튼
             Button {
@@ -294,29 +357,29 @@ private extension DiaryDetailView {
         .padding(.vertical, 5)
     }
     
-    // MARK: -View : 댓글 작성
-    private var diaryCommetInputView : some View {
-        
-        HStack {
-            Circle()
-                .frame(width: 35)
-            TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
-            
-            Button {
-                commentStore.addCommentCombine(comment: (Comment(id: UUID().uuidString, diaryId: item.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: userNickName ?? "", profileImage: userImage ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp())), diaryId: item.id)
-                commentStore.readCommentsCombine(diaryId: item.id)
-                diaryComment = ""
-                //todo 버튼 누르면 댓글 젤 밑으로 화면 이동
-                
-            } label: {
-                Image(systemName: "arrowshape.turn.up.right.circle")
-                    .resizable()
-                    .frame(width: 30, height: 30)
-            }
-        }
-        .padding(.horizontal)
-        .padding(.bottom, 8)
-    }
+//    // MARK: -View : 댓글 작성
+//    var diaryCommetInputView : some View {
+//
+//        HStack {
+//            Circle()
+//                .frame(width: 35)
+//            TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
+//
+//            Button {
+//                commentStore.addCommentCombine(comment: (Comment(id: UUID().uuidString, diaryId: item.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: item.diaryUserNickName, profileImage: wholeAuthStore.currentUser?.uid ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp())), diaryId: item.id)
+//                commentStore.readCommentsCombine(diaryId: item.id)
+//                diaryComment = ""
+//                //todo 버튼 누르면 댓글 젤 밑으로 화면 이동
+//                proxy.scrollTo("Bottom")
+//            } label: {
+//                Image(systemName: "arrowshape.turn.up.right.circle")
+//                    .resizable()
+//                    .frame(width: 30, height: 30)
+//            }
+//        }
+//        .padding(.horizontal)
+//        .padding(.bottom, 8)
+//    }
     
 }
 

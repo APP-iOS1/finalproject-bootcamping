@@ -12,12 +12,14 @@ import SDWebImageSwiftUI
 struct WeeklyPopulerCampingView: View {
     //TODO: - 좋아요 많이 받은 글 10개만 뜰 수 있도록
     @EnvironmentObject var diaryStore: DiaryStore
+    @EnvironmentObject var commentStore: CommentStore
+    @EnvironmentObject var diaryLikeStore: DiaryLikeStore
     
     var body: some View {
         VStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(diaryStore.diaryList, id: \.self) { item in
+                    ForEach(diaryStore.diaryList) { item in
                         if item.diaryIsPrivate == false {
                             NavigationLink {
                                 DiaryDetailView(item: item)
@@ -33,12 +35,15 @@ struct WeeklyPopulerCampingView: View {
                         } else {
                             EmptyView()
                         }
+                            
                         
                     }
+
                     
                 }
             }
         }
+
     }
 }
 

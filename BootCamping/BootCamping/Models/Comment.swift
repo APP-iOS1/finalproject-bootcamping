@@ -8,7 +8,7 @@
 import Foundation
 import Firebase
 
-struct Comment:Identifiable {
+struct Comment:Identifiable, Hashable {
     let id: String
     let diaryId: String                 // 글
     let uid: String                     // 유저

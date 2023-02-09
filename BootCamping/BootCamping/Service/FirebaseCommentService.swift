@@ -42,7 +42,7 @@ struct FirebaseCommentService {
             database.collection("Diarys")
                 .document(diaryId)
                 .collection("Comment")
-                .order(by: "commentCreatedDate", descending: true)
+                .order(by: "commentCreatedDate", descending: false)
                 .getDocuments { snapshot, error in
                     if let error = error {
                         promise(.failure(error))
@@ -60,9 +60,9 @@ struct FirebaseCommentService {
                         return Comment(id: d.documentID,
                                        diaryId: d["diaryId"] as? String ?? "",
                                        uid: d["uid"] as? String ?? "",
-                                       nickName: d["diaryUserNickName"] as? String ?? "",
+                                       nickName: d["nickName"] as? String ?? "",
                                        profileImage: d["profileImage"] as? String ?? "",
-                                       commentContent: d["diaryContent"] as? String ?? "",
+                                       commentContent: d["commentContent"] as? String ?? "",
                                        commentCreatedDate: d["commentCreatedDate"] as? Timestamp ?? Timestamp()
 //                                       ,commentLike: d["commentLike"] as? [String] ?? []
                                        

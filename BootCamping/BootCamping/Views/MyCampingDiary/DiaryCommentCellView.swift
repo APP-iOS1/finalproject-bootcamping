@@ -32,7 +32,11 @@ struct DiaryCommentCellView: View {
                         .font(.title3)
                     Text(item.commentContent)
                 }
+                .padding(.trailing, 3)
+                
+                Spacer()
             }
+          
     }
 }
 
@@ -51,8 +55,6 @@ private extension DiaryCommentCellView {
     
     var diaryUserProfile: some View {
         HStack {
-
-            
             //유저 닉네임
             Text(item.nickName)
                 .font(.headline).fontWeight(.semibold)

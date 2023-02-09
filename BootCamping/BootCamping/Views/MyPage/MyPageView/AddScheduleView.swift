@@ -17,6 +17,7 @@ struct AddScheduleView: View {
     
     @State var startDate = Date()
     @State var endDate = Date()
+    @State private var campingSpotItem: Item = CampingSpotStore().campingSpot
     @State private var campingSpot: String = ""
     @State private var ischeckingDate = true
     @State private var isSettingNotification = true
@@ -84,6 +85,7 @@ struct AddScheduleView: View {
         }
         .onAppear{
             ischeckingDate = checkSchedule(startDate: startDate, endDate: endDate)
+            campingSpot = campingSpotItem.facltNm
             //TODO: -패치데이터
             //            Task {
             //                campingSpotStore.campingSpotList = try await fetchData.fetchData(page: page)
@@ -124,7 +126,7 @@ extension AddScheduleView {
             if campingSpot == "" {
                 HStack{
                     NavigationLink {
-                        SearchByCampingSpotNameView(campingSpot: $campingSpot)
+                        SearchByCampingSpotNameView(campingSpot: $campingSpotItem)
                     } label: {
                         HStack{
                             Text("캠핑장 추가하기")

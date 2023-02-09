@@ -16,7 +16,7 @@ struct SearchByCampingSpotNameView: View {
     @State var keywordForParameter: String = ""
     @State var isSearching: Bool = false
     
-    @Binding var campingSpot: String
+    @Binding var campingSpot: Item
     
     var body: some View {
         VStack {
@@ -52,7 +52,7 @@ struct SearchByCampingSpotNameView: View {
                                 } else {
                                     ForEach(campingSpotStore.campingSpotList.indices, id: \.self) { index in
                                         Button {
-                                            campingSpot = campingSpotStore.campingSpotList[index].facltNm
+                                            campingSpot = campingSpotStore.campingSpotList[index]
                                             dismiss()
                                         } label: {
                                             HStack {
@@ -95,6 +95,7 @@ struct SearchByCampingSpotNameRow: View {
 }
 struct SearchByCampingSpotNameView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchByCampingSpotNameView(campingSpot: .constant(""))
+//        SearchByCampingSpotNameView(campingSpot: .constant(""))
+        Text("")
     }
 }

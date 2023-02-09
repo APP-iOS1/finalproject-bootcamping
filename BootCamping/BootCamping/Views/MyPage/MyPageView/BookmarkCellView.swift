@@ -25,8 +25,10 @@ struct BookmarkCellView: View {
             VStack(alignment: .leading, spacing: 3) {
                 Text(campingSpot.facltNm )
                     .font(.headline)
+                    .multilineTextAlignment(.leading)
                 HStack {
                     Text("\(campingSpot.doNm) \(campingSpot.sigunguNm)")
+                        .multilineTextAlignment(.leading)
                     Spacer()
                     Group {
                         Text("자세히 보기")

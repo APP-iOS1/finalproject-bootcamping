@@ -100,7 +100,6 @@ class WholeAuthStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished get UserList")
-                    print("여기야여기!!!!!!!!!!!!!!!!!!!!!! \(self.userList)")
                     return
                 }
             } receiveValue: { users in

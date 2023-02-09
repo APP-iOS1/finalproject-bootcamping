@@ -6,14 +6,20 @@
 //
 
 import SwiftUI
+import Firebase
+
 
 struct ReportUserView: View {
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var blockedUserStore: BlockedUserStore
+    
     @State var blockUser: Bool = false
     @State private var diaryContent: String = ""
     
     @State private var shouldShowDropdown = false
     @State private var selectedOption: DropdownOption? = nil
+    
+    var user: User
     var placeholder: String
     var options: [DropdownOption]
     var onOptionSelected: ((_ option: DropdownOption) -> Void)?
@@ -94,6 +100,10 @@ struct ReportUserView: View {
                 
                 // MARK: - 신고하기 버튼
                 Button {
+                    if blockUser == true {
+                        blockedUserStore.addBlockedUserCombine(blockedUserId: user.id)
+                    }
+                    wholeAuthStore.readUserListCombine()
                     // TODO: 신고 기능 추가
                 } label: {
                     Text("부트캠핑팀에 신고하기")
@@ -187,7 +197,6 @@ struct DropdownRow: View {
 
 
 
-
 // MARK: - 프리뷰, 드롭다운 신고사유 옵션
 struct ReportUserView_Previews: PreviewProvider {
     static var uniqueKey: String {
@@ -206,7 +215,7 @@ struct ReportUserView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             ReportUserView(
-                placeholder: "이 게시물을 신고하는 이유",
+                user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []), placeholder: "이 게시물을 신고하는 이유",
                 options: options,
                 onOptionSelected: { option in
                     print(option)

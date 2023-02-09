@@ -77,7 +77,7 @@ class WholeAuthStore: ObservableObject {
         currnetUserInfo = userInit
     }
     
-    let userInit: User = User(id: "", profileImageName: "", profileImageURL: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [])
+    let userInit: User = User(id: "", profileImageName: "", profileImageURL: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: [])
     let database = Firestore.firestore()
     
     private var cancellables = Set<AnyCancellable>()
@@ -333,7 +333,7 @@ class WholeAuthStore: ObservableObject {
                 }
             } receiveValue: { userUID in
                 self.loginPlatform = .email
-                self.createUserCombine(user: User(id: userUID, profileImageName: "", profileImageURL: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: [], bookMarkedSpot: []))
+                self.createUserCombine(user: User(id: userUID, profileImageName: "", profileImageURL: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []))
             }
             .store(in: &cancellables)
     }
@@ -421,7 +421,7 @@ class WholeAuthStore: ObservableObject {
                             print("파이어베이스에 저장된 유저정보가 없습니다.")
                             self.currentUser = result.user
                             self.loginPlatform = .google
-                            self.createUserCombine(user: User(id: (result.user.uid), profileImageName: "", profileImageURL: "", nickName: (result.user.email!), userEmail: (result.user.email!), bookMarkedDiaries: [], bookMarkedSpot: []))
+                            self.createUserCombine(user: User(id: (result.user.uid), profileImageName: "", profileImageURL: "", nickName: (result.user.email!), userEmail: (result.user.email!), bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []))
                         } else {
                             print("파이어베이스에 저장된 유저정보가 있습니다..")
                             self.currentUser = result.user
@@ -502,7 +502,7 @@ class WholeAuthStore: ObservableObject {
                         if snapshot?.documents.count == 0 {
                             print("파이어베이스에 유저정보가 없습니다.")
                             self.loginPlatform = .kakao
-                            self.createUserCombine(user: User(id: (user.uid), profileImageName: "", profileImageURL: "", nickName: (user.email)!, userEmail: (user.email!), bookMarkedDiaries: [], bookMarkedSpot: []))
+                            self.createUserCombine(user: User(id: (user.uid), profileImageName: "", profileImageURL: "", nickName: (user.email)!, userEmail: (user.email!), bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []))
                         } else {
                             print("파이어베이스에 유저정보가 있습니다..")
                             self.getUserInfo(userUID: user.uid) {
@@ -604,7 +604,7 @@ class WholeAuthStore: ObservableObject {
                         print("파이어베이스에 유저정보가 없습니다.")
                         self.currentUser = result?.user
                         self.loginPlatform = .apple
-                        self.createUserCombine(user: User(id: (result?.user.uid)!, profileImageName: "", profileImageURL: "", nickName: String(describing: (result?.user.email)!), userEmail: String(describing: (result?.user.email)!), bookMarkedDiaries: [], bookMarkedSpot: []))
+                        self.createUserCombine(user: User(id: (result?.user.uid)!, profileImageName: "", profileImageURL: "", nickName: String(describing: (result?.user.email)!), userEmail: String(describing: (result?.user.email)!), bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []))
                     } else {
                         print("파이어베이스에 유저정보가 있습니다..")
                         self.getUserInfo(userUID: (result?.user.uid)!) {
@@ -695,7 +695,8 @@ class WholeAuthStore: ObservableObject {
                 let userEmail: String = docData?["userEmail"] as? String ?? ""
                 let bookMarkedDiaries: [String] = docData?["bookMarkedDiaries"] as? [String] ?? []
                 let bookMarkedSpot: [String] = docData?["bookMarkedSpot"] as? [String] ?? []
-                let user: User = User(id: id, profileImageName: profileImageName, profileImageURL: profileImageURL, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries, bookMarkedSpot: bookMarkedSpot)
+                let blockedUser: [String] = docData?["blockedUser"] as? [String] ?? []
+                let user: User = User(id: id, profileImageName: profileImageName, profileImageURL: profileImageURL, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries, bookMarkedSpot: bookMarkedSpot, blockedUser: blockedUser)
                 self.currnetUserInfo = user
                 completion()
             }

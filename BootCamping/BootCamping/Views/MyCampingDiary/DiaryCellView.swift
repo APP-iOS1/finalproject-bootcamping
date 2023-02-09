@@ -110,6 +110,7 @@ private extension DiaryCellView {
                             } else{
                                 bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.id)
                             }
+                            wholeAuthStore.readUserListCombine()
                         } label: {
                             Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
                         }

@@ -24,8 +24,6 @@ struct MyPageView: View {
     //로그인 유무 함수
     @AppStorage("login") var isSignIn: Bool?
     
-    @Namespace private var animation
-    
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
         for user in wholeAuthStore.userList {
@@ -63,6 +61,11 @@ struct MyPageView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
+            .task {
+                wholeAuthStore.readUserListCombine()
+                campingSpotStore.campingSpotList.removeAll()
+                campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: wholeAuthStore.currnetUserInfo?.bookMarkedSpot ?? []))
+            }
         }
         //        .onAppear{
         //            wholeAuthStore.readUserListCombine()
@@ -143,7 +146,7 @@ extension MyPageView{
                         NavigationLink {
                             CampingSpotDetailView(places: campingSpot)
                         } label: {
-                            BookmarkCellView()
+                            BookmarkCellView(campingSpot: campingSpot)
                         }
                     }
                 }

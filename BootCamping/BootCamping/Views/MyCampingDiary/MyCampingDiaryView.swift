@@ -27,8 +27,8 @@ struct MyCampingDiaryView: View {
                     DiaryLockedView()
                 } else {
                     ScrollView(showsIndicators: false) {
-                        ForEach(diaryStore.diaryList) { diaryData in
-                            if diaryData.uid == Auth.auth().currentUser?.uid {
+                        ForEach(diaryStore.userInfoDiaryList, id: \.self) { diaryData in
+                            if diaryData.diary.uid == Auth.auth().currentUser?.uid {
                                 VStack {
                                     DiaryCellView(item: diaryData)
                                 }

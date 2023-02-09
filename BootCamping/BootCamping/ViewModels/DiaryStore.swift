@@ -24,6 +24,8 @@ class DiaryStore: ObservableObject {
     @Published var isError: Bool = false
     // 마지막 다큐먼트
     @Published var lastDoc: QueryDocumentSnapshot?
+    // 개선된 다이어리 리스트
+    @Published var userInfoDiaryList: [UserInfoDiary] = []
     //파베 기본 경로
     let database = Firestore.firestore()
     
@@ -152,9 +154,57 @@ class DiaryStore: ObservableObject {
             }
             .store(in: &cancellables)
     }  
-
-    @Published var realtimeDiaryList: [Diary] = []
-    @Published var docPage: Int = 0
+    
+    //MARK: - 실시간 다이어리 불러오기 함수
+    
+    // 첫번째 불러오기 함수
+    func firstGetDiaryCombine() {
+        FirebaseDiaryService().firstGetDiaryService()
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed get Diarys")
+                    self.firebaseDiaryServiceError = .badSnapshot
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished get Diarys")
+                    return
+                }
+            } receiveValue: { [weak self] lastDocWithDiaryList in
+                self?.lastDoc = lastDocWithDiaryList.lastDoc
+                self?.userInfoDiaryList = lastDocWithDiaryList.userInfoDiarys
+            }
+            .store(in: &cancellables)
+    }
+    
+    func nextGetDiaryCombine() {
+        FirebaseDiaryService().nextGetDiaryService(lastDoc: self.lastDoc)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed get Diarys")
+                    self.firebaseDiaryServiceError = .badSnapshot
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished get Diarys")
+                    return
+                }
+            } receiveValue: { [weak self] lastDocWithDiaryList in
+                self?.lastDoc = lastDocWithDiaryList.lastDoc
+                self?.userInfoDiaryList.append(contentsOf: lastDocWithDiaryList.userInfoDiarys)
+            }
+            .store(in: &cancellables)
+    }
+    
+    // 다음불러오기 함수
+    
+    
     
     // 다이어리 다큐먼트 20개 가져오기 20번돌리고
     // 페이지네이션은 동훈님꺼 보자

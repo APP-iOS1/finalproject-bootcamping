@@ -42,7 +42,7 @@ struct MyCampingDiaryView: View {
             DiaryEmptyView().zIndex(-1)
         }
         .onAppear {
-            diaryStore.readDiarysCombine()
+//            diaryStore.readDiarysCombine()
             if usingFaceId == true {
                 faceId.authenticate()
             }

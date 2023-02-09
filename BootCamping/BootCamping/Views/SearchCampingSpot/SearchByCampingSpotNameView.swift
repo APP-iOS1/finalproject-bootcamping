@@ -90,7 +90,7 @@ struct SearchByCampingSpotNameRow: View {
     
     var body: some View {
         HStack {
-            WebImage(url: URL(string: campingSpot.firstImageUrl)) //TODO: -캠핑장 사진 연동
+            WebImage(url: URL(string: campingSpot.firstImageUrl == "" ? CampingSpotStore().noImageURL : campingSpot.firstImageUrl)) //TODO: -캠핑장 사진 연동
                 .resizable()
                 .frame(width: 60, height: 60)
                 .padding(.trailing, 5)
@@ -98,10 +98,12 @@ struct SearchByCampingSpotNameRow: View {
             VStack(alignment: .leading, spacing: 3) {
                 Text(campingSpot.facltNm)
                     .font(.headline)
+                    .multilineTextAlignment(.leading)
                 HStack {
                     Text(campingSpot.addr1)
                     //TODO: 캠핑장 주소 -앞에 -시 -구 까지 짜르기
                         .font(.footnote)
+                        .multilineTextAlignment(.leading)
                         .padding(.vertical, 2)
                     Spacer()
                 }

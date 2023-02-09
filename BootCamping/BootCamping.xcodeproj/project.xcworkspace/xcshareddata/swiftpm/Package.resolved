@@ -46,6 +46,15 @@
       }
     },
     {
+      "identity" : "chatscrollview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cozzin/ChatScrollView.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "2b2b682ef62a8ce1423228d5d1159d0742c31a5b"
+      }
+    },
+    {
       "identity" : "firebase-ios-sdk",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/firebase-ios-sdk",

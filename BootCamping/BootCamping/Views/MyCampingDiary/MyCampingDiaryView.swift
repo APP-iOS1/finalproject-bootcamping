@@ -26,7 +26,7 @@ struct MyCampingDiaryView: View {
                 if usingFaceId ?? true && faceId.islocked {
                     DiaryLockedView()
                 } else {
-                ScrollView(showsIndicators: false) {
+                    ScrollView(showsIndicators: false) {
                         ForEach(diaryStore.diaryList) { diaryData in
                             if diaryData.uid == Auth.auth().currentUser?.uid {
                                 VStack {
@@ -35,8 +35,10 @@ struct MyCampingDiaryView: View {
                             }
                         }
                     }
+                    .padding(.top)
+                    .padding(.bottom, 1)
                 }
-
+                
             }
             .background(Color.bcWhite)
             //다이어리 비어있을때 추가 화면

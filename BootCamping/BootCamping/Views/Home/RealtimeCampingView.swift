@@ -11,6 +11,7 @@ import Firebase
 struct RealtimeCampingView: View {
     
     @EnvironmentObject var diaryStore: DiaryStore
+    @EnvironmentObject var commentStore: CommentStore
     
     var body: some View {
         VStack {
@@ -21,12 +22,10 @@ struct RealtimeCampingView: View {
                     }
                 }
             }
+            .onAppear {}
             .padding(.top)
             .padding(.bottom, 1)
         }
-//        .onAppear {
-//            diaryStore.readDiarysCombine()
-//        }
     }
 }
 

@@ -46,7 +46,6 @@ struct AddScheduleView: View {
     }
     
     //onAppear 시 캠핑장 데이터 패치
-    @EnvironmentObject var campingSpotStore: CampingSpotStore
     @State var page: Int = 2
     
     var body: some View {
@@ -125,7 +124,7 @@ extension AddScheduleView {
             if campingSpot == "" {
                 HStack{
                     NavigationLink {
-                        SearchCampingSpotListView(campingSpotName: $campingSpot)
+                        SearchByCampingSpotNameView(campingSpot: $campingSpot)
                     } label: {
                         HStack{
                             Text("캠핑장 추가하기")

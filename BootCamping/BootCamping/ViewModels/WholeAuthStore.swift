@@ -296,6 +296,7 @@ class WholeAuthStore: ObservableObject {
         
         do {
             try Auth.auth().signOut()
+            self.isError = false
             self.loginPlatform = .email
             self.currentUser = nil
             self.currnetUserInfo = userInit
@@ -307,6 +308,7 @@ class WholeAuthStore: ObservableObject {
             print(#function, error.localizedDescription)
             self.authServiceError = .signOutError
             self.showErrorAlertMessage = self.authServiceError.errorDescription!
+            self.isError = true
         }
     }
     
@@ -330,6 +332,7 @@ class WholeAuthStore: ObservableObject {
                     return
                 }
             } receiveValue: { userUID in
+                self.loginPlatform = .email
                 self.createUserCombine(user: User(id: userUID, profileImageName: "", profileImageURL: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: [], bookMarkedSpot: []))
             }
             .store(in: &cancellables)
@@ -446,7 +449,7 @@ class WholeAuthStore: ObservableObject {
         do {
             // 2
             try Auth.auth().signOut()
-            
+            self.isError = false
             self.loginPlatform = .none
             self.currentUser = nil
             self.currnetUserInfo = userInit
@@ -458,6 +461,7 @@ class WholeAuthStore: ObservableObject {
             print(#function, error.localizedDescription)
             self.authServiceError = .signOutError
             self.showErrorAlertMessage = self.authServiceError.errorDescription!
+            self.isError = true
         }
     }
     
@@ -527,6 +531,8 @@ class WholeAuthStore: ObservableObject {
                     print(error)
                     self.authServiceError = .signInError
                     self.showErrorAlertMessage = self.authServiceError.errorDescription!
+                    self.isError = true
+
                     return
                 case .finished:
                     print("Finished LogOut User")
@@ -536,6 +542,7 @@ class WholeAuthStore: ObservableObject {
                     withAnimation(.easeInOut) {
                         self.isSignIn = false
                     }
+                    self.isError = false
                     return
                 }
             } receiveValue: { _ in
@@ -553,6 +560,8 @@ class WholeAuthStore: ObservableObject {
             print("error with firebase")
             self.authServiceError = .signOutError
             self.showErrorAlertMessage = self.authServiceError.errorDescription!
+            self.isError = true
+            self.isProcessing = false
             return
         }
         // Token Stirng...
@@ -626,11 +635,13 @@ class WholeAuthStore: ObservableObject {
             withAnimation(.easeInOut) {
                 self.isSignIn = false
             }
+            self.isError = false
             
         } catch {
             print(#function, error.localizedDescription)
             self.authServiceError = .signOutError
             self.showErrorAlertMessage = self.authServiceError.errorDescription!
+            self.isError = true
         }
     }
     

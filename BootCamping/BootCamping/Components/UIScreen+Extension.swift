@@ -32,6 +32,29 @@ extension Color {
     
 }
 
+extension Color {
+    static subscript(name: String) -> Color {
+        switch name {
+        case "taskRed":
+            return Color.taskRed
+        case "taskOrange":
+            return Color.taskOrange
+        case "taskYellow":
+            return Color.taskYellow
+        case "taskGreen":
+            return Color.taskGreen
+        case "taskTeal":
+            return Color.taskTeal
+        case "taskBlue":
+            return Color.taskBlue
+        case "taskPurple":
+            return Color.taskPurple
+        default:
+            return Color.accentColor
+        }
+    }
+}
+
 //MARK: - 키보드 dismiss extension함수입니다.
 extension View {
     func dismissKeyboard() {
@@ -60,6 +83,10 @@ extension Image {
         guard let img = UIImage(named: imgName)?.resize(newWidth: UIScreen.screenWidth * 1 / 5) else { fatalError("Fail to load image") }
         return Image(uiImage: img)
     }
+    func resizeImageData(data: Data) -> Image {
+        guard let img = UIImage(data: data)?.resize(newWidth: UIScreen.screenWidth * 1 / 5) else { fatalError("Fail to load image") }
+        return Image(uiImage: img)
+        
+    }
 }
-
 

@@ -33,12 +33,11 @@ struct BookmarkCellView: View {
             }
             .padding(.horizontal, 5)
             Spacer()
-            isBookmarked ? Image(systemName: "bookmark.fill")
-                .font(.body)
-                .foregroundColor(.secondary):
-            Image(systemName: "bookmark")
-                .font(.body)
-                .foregroundColor(.secondary)
+            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                .bold()
+                .foregroundColor(.white)
+                .shadow(color: .black, radius: 10)
+                .padding()
         }
         .frame(maxWidth: UIScreen.screenWidth, maxHeight: 150)
     }

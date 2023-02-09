@@ -180,7 +180,7 @@ extension CustomDatePickerView{
                     ForEach(scheduleStore.scheduleList.filter{ schedule in
                         return isSameDay(date1: schedule.date, date2: currentDate)
                     }) { schedule in
-                        TaskCellView(month: extraData_MonthDay()[0], day: extraData_MonthDay()[1], schedule: schedule)
+                        TaskCellView(month: extraData_MonthDay()[0], day: extraData_MonthDay()[1], schedule: schedule, color: schedule.color)
                     }
                 }
             } else {
@@ -206,10 +206,10 @@ extension CustomDatePickerView{
                         // 스케줄 개수만큼 점으로 표시하기
                         ForEach(scheduleStore.scheduleList.filter{ schedule in
                             return isSameDay(date1: schedule.date, date2: value.date)
-                        }) {_ in
+                        }) { schedule in
                             Image(systemName: "flag.fill")
                                 .font(.caption)
-                                .foregroundColor(Color.bcGreen)
+                                .foregroundColor(Color[schedule.color])
                         }
                     }
                 } else {

@@ -18,6 +18,12 @@ class DiaryStore: ObservableObject {
     @Published var diaryList: [Diary] = []
     @Published var firebaseDiaryServiceError: FirebaseDiaryServiceError = .badSnapshot
     @Published var showErrorAlertMessage: String = "오류"
+    // 다이어리 CRUD 진행상태
+    @Published var isProcessing: Bool = false
+    // 다이어리 에러 상태
+    @Published var isError: Bool = false
+    // 마지막 다큐먼트
+    @Published var lastDoc: QueryDocumentSnapshot?
     //파베 기본 경로
     let database = Firestore.firestore()
     
@@ -145,6 +151,16 @@ class DiaryStore: ObservableObject {
                 
             }
             .store(in: &cancellables)
-    }
+    }  
+
+    @Published var realtimeDiaryList: [Diary] = []
+    @Published var docPage: Int = 0
     
+    // 다이어리 다큐먼트 20개 가져오기 20번돌리고
+    // 페이지네이션은 동훈님꺼 보자
+    // 다큐먼트 1개가져오고 > 이것 유아이디로 유저데이터 불러와야함. 데이터 불러오면 같이 나가야되는데
+    //
+
+    // 내 다이어리 페이지네이션, 리스너 추가만들기
+
 }

@@ -398,7 +398,6 @@ struct FirebaseCampingSpotService {
                 if readDocument.campingSpotContenId != "" {
                     database.collection("CampingSpotList")
                         .whereField("contentId", isEqualTo: String(readDocument.campingSpotContenId))
-                        .order(by: "contentId", descending: false)
                         .limit(to: 10)
                         .getDocuments { snapshot, error in
                             if let error = error {
@@ -971,7 +970,6 @@ struct FirebaseCampingSpotService {
                 if readDocument.campingSpotContenId != "" {
                     database.collection("CampingSpotList")
                         .whereField("contentId", isEqualTo: String(readDocument.campingSpotContenId))
-                        .order(by: "contentId", descending: false)
                         .start(afterDocument: readDocument.lastDoc!)
                         .limit(to: 10)
                         .getDocuments { snapshot, error in

@@ -137,7 +137,7 @@ extension AddScheduleView {
                         SearchByCampingSpotNameView(campingSpot: $campingSpotItem)
                     } label: {
                         HStack{
-                            Text("캠핑장 추가하기")
+                            Text("방문할 캠핑장 등록하러 가기")
                                 .foregroundColor(.bcBlack)
                             Spacer()
                             Image(systemName: "chevron.right")
@@ -155,11 +155,8 @@ extension AddScheduleView {
                     } label: {
                         Image(systemName: "xmark")
                             .foregroundColor(.bcBlack)
-                        
                     }
-                    
                 }
-                
             }
         }
     }

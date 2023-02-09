@@ -16,6 +16,8 @@ struct DiaryCellView: View {
     @EnvironmentObject var diaryLikeStore: DiaryLikeStore
     @EnvironmentObject var commentStore: CommentStore
     
+    @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
+    
     @State var isBookmarked: Bool = false
     
     //선택한 다이어리 정보 변수입니다.
@@ -43,7 +45,9 @@ struct DiaryCellView: View {
                         bookmarkButton
                     }
                     diaryContent
-                    diaryCampingLink
+                    if !campingSpotStore.campingSpotList.isEmpty {
+                        diaryCampingLink
+                    }
                     diaryDetailInfo
                     Divider().padding(.bottom, 3)
                     
@@ -56,6 +60,7 @@ struct DiaryCellView: View {
         .onAppear {
             isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.id)
             commentStore.readCommentsCombine(diaryId: item.id)
+            campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diaryAddress]))
         }
     }
 }
@@ -239,23 +244,20 @@ private extension DiaryCellView {
     //MARK: - 캠핑장 이동
     var diaryCampingLink: some View {
         HStack {
-            Image("1") //TODO: -캠핑장 사진 연동
+            WebImage(url: URL(string: campingSpotStore.campingSpotList.first?.firstImageUrl ?? "")) //TODO: -캠핑장 사진 연동
                 .resizable()
                 .frame(width: 60, height: 60)
                 .padding(.trailing, 5)
             
             VStack(alignment: .leading, spacing: 3) {
-                Text("캠핑장 이름")
+                Text(campingSpotStore.campingSpotList.first?.facltNm ?? "")
                     .font(.headline)
                 HStack {
-                    Text("방문일자: \(item.diaryVisitedDate.getKoreanDate())")
+                    Text(campingSpotStore.campingSpotList.first?.addr1 ?? "")
                     //TODO: 캠핑장 주소 -앞에 -시 -구 까지 짜르기
                         .font(.footnote)
                         .padding(.vertical, 2)
                     Spacer()
-                    //방문일
-//                    Text("방문: \(item.diaryVisitedDate.getKoreanDate())")
-//                        .font(.footnote)
                 }
                 .font(.subheadline)
                 .foregroundColor(.secondary)
@@ -265,11 +267,9 @@ private extension DiaryCellView {
         }
         .padding(10)
         .overlay(
-
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(Color.bcDarkGray, lineWidth: 1)
                     .opacity(0.3)
-        
             )
     }
     

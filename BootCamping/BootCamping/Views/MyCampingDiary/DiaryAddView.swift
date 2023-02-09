@@ -12,6 +12,9 @@ import Photos
 
 //TODO: 텍스트 필드 입력할 때 화면 따라가기,,,
 struct DiaryAddView: View {
+    
+    
+    
     @Binding var isNavigationGoFirstView: Bool
 
     
@@ -128,9 +131,12 @@ private extension DiaryAddView {
                 
             })
             .sheet(isPresented: $imagePickerPresented,
-                   onDismiss: {DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+                   onDismiss:
+                    {DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
                 loadData()
-            }},
+            }
+                   }
+                   ,
                    content: { PhotoPicker(images: $selectedImages, selectionLimit: 10) })
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack{
@@ -241,6 +247,7 @@ private extension DiaryAddView {
 //        } header: {
 //            Text("위치 등록하기")
 //        }
+
         VStack {
             if campingSpot == "" {
                 NavigationLink {
@@ -483,6 +490,8 @@ struct PhotoPicker: UIViewControllerRepresentable {
         
     }
 }
+
+
 
 
 struct DiaryAddView_Previews: PreviewProvider {

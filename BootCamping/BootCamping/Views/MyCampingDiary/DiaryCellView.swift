@@ -59,8 +59,6 @@ struct DiaryCellView: View {
             isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.id)
             commentStore.readCommentsCombine(diaryId: item.id)
             campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: item.diaryAddress))
-            print(item.diaryAddress)
-            print(campingSpotStore.campingSpotList)
         }
     }
 }

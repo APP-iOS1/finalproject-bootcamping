@@ -43,12 +43,6 @@ struct DiaryCellView: View {
                     diaryCampingLink
                     diaryDetailInfo
                     Divider().padding(.bottom, 3)
-                    //디바이더.. 꽉 채우게..?
-//                    Rectangle()
-//                        .foregroundColor(.gray)
-//                        .opacity(0.1)
-//                        .frame(height: 5)
-//                        .padding(.horizontal, -UIScreen.screenWidth * 0.03)
                     
                 }
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
@@ -57,37 +51,23 @@ struct DiaryCellView: View {
         }
 
         .onAppear {
-            commentStore.readCommentsCombine(diaryId: item.id)
             isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.id)
+            commentStore.readCommentsCombine(diaryId: item.id)
         }
     }
 }
 
 private extension DiaryCellView {
-    //글 작성 유저
-    var user: User {
-        wholeAuthStore.userList.filter { $0.id == Auth.auth().currentUser?.uid }.first!
-    }
+    //TODO: -유저 프로필 이미지 연결
+//    var userProfileURL: String? {
+//        for user in wholeAuthStore.userList {
+//            if user.id == item.uid {
+//                return user.profileImageURL
+//            }
+//        }
+//        return ""
+//    }
     
-    //글 작성 유저 닉네임 변수
-    var userNickName: String? {
-        for user in wholeAuthStore.userList {
-            if user.id == Auth.auth().currentUser?.uid {
-                return user.nickName
-            }
-        }
-        return nil
-    }
-    
-    //글 작성 유저 프로필 변수
-    var userImage: String? {
-        for user in wholeAuthStore.userList {
-            if user.id == Auth.auth().currentUser?.uid {
-                return user.profileImageURL
-            }
-        }
-        return nil
-    }
     
     //MARK: - 메인 이미지
     var diaryImage: some View {
@@ -101,6 +81,7 @@ private extension DiaryCellView {
                     .scaledToFill()
                     .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     .clipped()
+                
                 //MARK: - 북마크 버튼
                     .overlay(alignment: .topTrailing){
                         Button {
@@ -130,13 +111,14 @@ private extension DiaryCellView {
     //MARK: - 다이어리 작성자 프로필
     var diaryUserProfile: some View {
         HStack {
-            WebImage(url: URL(string: userImage ?? "기본이미지 넣기"))
+            //TODO: -다이어리 작성자 url 추가 (연산프로퍼티 작동 안됨)
+            WebImage(url: URL(string: "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/UserImages%2F6A6EB85C-6113-4FDA-BC23-62C1285762EF?alt=media&token=ed35fe2c-4f99-4293-99e5-5c35ca14b291"))
                 .resizable()
                 .placeholder {
                     Rectangle().foregroundColor(.gray)
                 }
                 .scaledToFill()
-                .frame(width: UIScreen.screenWidth * 0.01)
+                .frame(width: 45)
                 .clipShape(Circle())
             
             //유저 닉네임
@@ -157,7 +139,6 @@ private extension DiaryCellView {
             }
             
         }
-        .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
 
@@ -179,7 +160,7 @@ private extension DiaryCellView {
             
         } label: {
             Image(systemName: "ellipsis")
-                .font(.title)
+                .font(.title3)
         }
         //MARK: - 일기 삭제 알림
         .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
@@ -210,7 +191,7 @@ private extension DiaryCellView {
             
         } label: {
             Image(systemName: "ellipsis")
-                .font(.title)
+                .font(.title3)
         }
         //MARK: - 유저 신고 알림
         .alert("유저를 신고하시겠습니까?", isPresented: $isShowingUserReportAlert) {
@@ -299,6 +280,7 @@ private extension DiaryCellView {
                     .foregroundColor(item.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? .red : .bcBlack)
             }
             Text("\(item.diaryLike.count)")
+                .padding(.trailing, 7)
             
             //댓글 버튼
             Button {

@@ -17,6 +17,7 @@ import Combine
 class CommentStore: ObservableObject {
     
     @Published var commentList: [Comment] = []
+    
     @Published var firebaseCommentServiceError: FirebaseCommentServiceError = .badSnapshot
     @Published var showErrorAlertMessage: String = "오류"
     @Published var currnetCommentInfo: Comment?
@@ -25,59 +26,56 @@ class CommentStore: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     
-    // MARK: Add Comment
-    func addCommentCombine(comment: Comment, diaryId: String) {
-        guard let userUID = Auth.auth().currentUser?.uid else { return }
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        
-        database.collection("Diarys")
-            .document(diaryId)
-            .collection("Comment")
-            .addDocument(data: ["diaryId": comment.diaryId,
-                                "uid": comment.uid,
-                                "nickName": comment.nickName,
-                                "profileImage": comment.profileImage,
-                                "commentContent": comment.commentContent,
-                                "commentCreatedDate": comment.commentCreatedDate
-                               ])
-        readCommentsCombine(diaryId: diaryId)
-    }
-    // MARK: fetch Comment
-    func readCommentsCombine(diaryId: String)  {
-        guard let userUID = Auth.auth().currentUser?.uid else { return }
-        
-        database.collection("Diarys")
-            .document(diaryId)
-            .collection("Comment")
-            .getDocuments { (snapshot, error) in
-                self.commentList.removeAll()
-                if let snapshot {
-                    for document in snapshot.documents {
-                        
-                        let id: String = document.documentID
-                        
-                        let docData = document.data()
-                        
-                        let diaryId: String = docData["diaryId"] as? String ?? ""
-                        let uid: String = docData["uid"] as? String ?? ""
-                        let nickName: String = docData["nickName"] as? String ?? ""
-                        let profileImage: String = docData["profileImage"] as? String ?? ""
-                        let commentContent: String = docData["commentContent"] as? String ?? ""
-                        let commentCreatedDate: Timestamp = docData["commentCreatedDate"] as? Timestamp ?? Timestamp(date: Date())
-                        
-                        let comment: Comment = Comment(id: id, diaryId: diaryId, uid: uid,  nickName: nickName, profileImage: profileImage, commentContent: commentContent, commentCreatedDate: commentCreatedDate)
-                        
-                        self.commentList.append(comment)
-                    }
+    //MARK: - Create Comment Combine
+    
+    func createCommentCombine(diaryId: String, comment: Comment) {
+        FirebaseCommentService().createCommentService(diaryId: diaryId, comment: comment)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Create Comment")
+                    self.firebaseCommentServiceError = .createCommentError
+                    self.showErrorAlertMessage = self.firebaseCommentServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished Create Comment")
+                    self.readCommentsCombine(diaryId: diaryId)
+                    return
                 }
+            } receiveValue: { _ in
+                
             }
+            .store(in: &cancellables)
     }
     
-    //MARK: Delete Comment Combine
+    //MARK: - Read Comment Combine
+    func readCommentsCombine(diaryId: String) {
+        FirebaseCommentService().readCommentsService(diaryId: diaryId)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed get Comments")
+                    self.firebaseCommentServiceError = .badSnapshot
+                    self.showErrorAlertMessage = self.firebaseCommentServiceError.errorDescription!
+                        return
+                case .finished:
+                    print("Finished get Comments")
+                    return
+                }
+            } receiveValue: { [weak self] commentsValue in
+                self?.commentList = commentsValue
+            }
+            .store(in: &cancellables)
+    }
+
     
-    func deleteCommentCombine(comment: Comment, diaryId: String) {
+    //MARK: - Delete Comment Combine
+    
+    func deleteCommentCombine(diaryId:String, comment: Comment) {
         FirebaseCommentService().deleteCommentService(diaryId: diaryId, comment: comment)
             .receive(on: DispatchQueue.main)
             .sink { completion in

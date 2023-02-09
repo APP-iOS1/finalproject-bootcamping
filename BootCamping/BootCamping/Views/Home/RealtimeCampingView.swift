@@ -16,13 +16,24 @@ struct RealtimeCampingView: View {
     var body: some View {
         VStack {
             ScrollView(showsIndicators: false) {
-                ForEach(diaryStore.diaryList) { item in
-                    if item.diaryIsPrivate == false {
-                        DiaryCellView(item: item)
+                LazyVStack {
+                    ForEach(diaryStore.userInfoDiaryList.indices, id: \.self) { index in
+                        if diaryStore.userInfoDiaryList[index].diary.diaryIsPrivate == false {
+                            DiaryCellView(item: diaryStore.userInfoDiaryList[index])
+                                .task {
+                                    if index == diaryStore.userInfoDiaryList.count - 1 {
+                                        Task {
+                                            diaryStore.nextGetDiaryCombine()
+                                        }
+                                    }
+                                }
+                        }
                     }
                 }
             }
-            .onAppear {}
+            .onAppear {
+                diaryStore.firstGetDiaryCombine()
+            }
             .padding(.top)
             .padding(.bottom, 1)
         }

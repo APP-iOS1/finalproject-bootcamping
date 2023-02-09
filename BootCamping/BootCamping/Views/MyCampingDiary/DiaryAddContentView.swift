@@ -8,8 +8,24 @@
 import SwiftUI
 import Firebase
 
+enum CurrentField{
+    case field1
+    case field2
+}
+ 
+    
+
+    
+
 struct DiaryAddContentView: View {
-    @EnvironmentObject var tabSelection: TabSelector
+    
+    @State var field1 = ""
+    @State var field2 = ""
+    
+    @FocusState var activeState: CurrentField?
+    
+    
+    @Binding var isNavigationGoFirstView: Bool
 
     
     @State var isTapTextField = false
@@ -60,15 +76,15 @@ struct DiaryAddContentView: View {
         .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
         .padding(.horizontal, UIScreen.screenWidth*0.03)
         .navigationTitle(Text("캠핑 일기 쓰기"))
-        .onTapGesture {
-            dismissKeyboard()
-        }
+//        .onTapGesture {
+//            dismissKeyboard()
+//        }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
                 
                 Button {
-                    resignKeyboard()
+                    submit()
                     isTapTextField = false
                 } label: {
                     Text("Done")
@@ -104,13 +120,18 @@ extension DiaryAddContentView {
                         diaryTitle = String(newValue.prefix(20))
                     }
                 }
-                .onSubmit {
-                    isTapTextField = false
-                    //next 눌렀을 때 다음 필드로 넘어가면 없어도 됨.
-                }
+//                .onSubmit {
+//                    isTapTextField = false
+//                    //next 눌렀을 때 다음 필드로 넘어가면 없어도 됨.
+//                }
             
         }
         .focused($inputFocused)
+        .onSubmit{
+            activeState = .field2
+        }
+
+
         .onTapGesture {
             isTapTextField = true
         }
@@ -125,6 +146,8 @@ extension DiaryAddContentView {
                 .onTapGesture {
                     isTapTextField = true
                 }
+                .focused($activeState, equals: .field2)
+
             
             
         }
@@ -137,16 +160,17 @@ extension DiaryAddContentView {
             Button {
                 diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages ?? [Data()])
                 //TODO: 네비 두번 나가기. dismiss 안됨. path 어쩌구 찾아보기
+                isNavigationGoFirstView = false
 
             } label: {
-                Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "일기 쓰기")
+                Text(diaryTitle.isEmpty || diaryContent.isEmpty ? "내용을 작성해주세요" : "일기 쓰기")
+                    .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07) // 이거 밖에 있으면 글씨 부분만 버튼 적용됨
             }
             .font(.headline)
-            .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07)
             .foregroundColor(.white)
-            .background(diaryImages?.isEmpty ?? true ? .secondary : Color.bcGreen)
+            .background(diaryTitle.isEmpty || diaryContent.isEmpty ? .secondary : Color.bcGreen)
             .cornerRadius(10)
-            .disabled(diaryImages?.isEmpty ?? true)
+            .disabled(diaryTitle.isEmpty || diaryContent.isEmpty)
             Spacer()
             
         }

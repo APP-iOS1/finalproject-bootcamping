@@ -30,7 +30,6 @@ struct DiaryAddView: View {
     
     @State private var campingSpotItem: Item = CampingSpotStore().campingSpot
     @State private var campingSpot: String = ""
-    @State private var campingSpotContentId: String = ""
     
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
@@ -96,7 +95,8 @@ struct DiaryAddView: View {
             dismissKeyboard()
         }
         .task {
-            campingSpotContentId = campingSpotItem.contentId
+            campingSpot = campingSpotItem.facltNm
+            locationInfo = campingSpotItem.contentId
         }
     }
 }
@@ -350,7 +350,7 @@ private extension DiaryAddView {
         HStack {
             Spacer()
             Button {
-                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages ?? [Data()])
+                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: campingSpotItem.contentId, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages ?? [Data()])
                 dismiss()
             } label: {
                 Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "일기 쓰기")
@@ -371,7 +371,7 @@ private extension DiaryAddView {
         HStack{
             Spacer()
             NavigationLink {
-                DiaryAddContentView(isNavigationGoFirstView: $isNavigationGoFirstView, locationInfo: $locationInfo, visitDate: $visitDate, diaryIsPrivate: $diaryIsPrivate, campingSpotContentId: campingSpotItem.contentId, selectedDate: $selectedDate, diaryImages: $diaryImages)
+                DiaryAddContentView(isNavigationGoFirstView: $isNavigationGoFirstView, locationInfo: $locationInfo, visitDate: $visitDate, diaryIsPrivate: $diaryIsPrivate, selectedDate: $selectedDate, diaryImages: $diaryImages)
             } label: {
                 Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "다음")
                     .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07) // 이거 밖에 있으면 글씨 부분만 버튼 적용됨

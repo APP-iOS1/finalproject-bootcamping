@@ -18,6 +18,8 @@ enum TapMypage : String, CaseIterable {
 struct MyPageView: View {
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     
+    @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
+    
     @State private var selectedPicker2: TapMypage = .myCamping
     //로그인 유무 함수
     @AppStorage("login") var isSignIn: Bool?
@@ -137,8 +139,12 @@ extension MyPageView{
                 CalendarView()
             case .bookmarkedCampingSpot:
                 VStack(spacing: 20){
-                    ForEach(0..<5) { _ in
-                        BookmarkCellView()
+                    ForEach(campingSpotStore.campingSpotList, id: \.contentId) { campingSpot in
+                        NavigationLink {
+                            CampingSpotDetailView(places: campingSpot)
+                        } label: {
+                            BookmarkCellView()
+                        }
                     }
                 }
             }

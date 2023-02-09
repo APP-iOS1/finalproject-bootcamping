@@ -11,6 +11,7 @@
 		630ADB512977CC6C000A517B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630ADB502977CC6C000A517B /* ContentView.swift */; };
 		630ADB532977CC6D000A517B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 630ADB522977CC6D000A517B /* Assets.xcassets */; };
 		630ADB572977CC6D000A517B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 630ADB562977CC6D000A517B /* Preview Assets.xcassets */; };
+		633DF94729948EE000B29C91 /* SearchByCampingSpotNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633DF94629948EE000B29C91 /* SearchByCampingSpotNameView.swift */; };
 		63463A452990EF260000F523 /* Filtering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63463A442990EF260000F523 /* Filtering.swift */; };
 		639129E92979291D00F6EDD7 /* Places.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639129E82979291D00F6EDD7 /* Places.swift */; };
 		639129EF29792CB700F6EDD7 /* CapmingSpotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639129EE29792CB700F6EDD7 /* CapmingSpotStore.swift */; };
@@ -114,6 +115,7 @@
 		630ADB522977CC6D000A517B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		630ADB542977CC6D000A517B /* BootCamping.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BootCamping.entitlements; sourceTree = "<group>"; };
 		630ADB562977CC6D000A517B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		633DF94629948EE000B29C91 /* SearchByCampingSpotNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchByCampingSpotNameView.swift; sourceTree = "<group>"; };
 		63463A442990EF260000F523 /* Filtering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filtering.swift; sourceTree = "<group>"; };
 		639129E82979291D00F6EDD7 /* Places.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Places.swift; sourceTree = "<group>"; };
 		639129EE29792CB700F6EDD7 /* CapmingSpotStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapmingSpotStore.swift; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 				63F8426B298FB5FF006A9433 /* CampingSpotListRaw.swift */,
 				6E96013A298A32D6009C60F2 /* FullMapView.swift */,
 				63BC803A298C8EF30088AC02 /* EmptyCampingSpotListCell.swift */,
+				633DF94629948EE000B29C91 /* SearchByCampingSpotNameView.swift */,
 			);
 			path = SearchCampingSpot;
 			sourceTree = "<group>";
@@ -583,6 +586,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				633DF94729948EE000B29C91 /* SearchByCampingSpotNameView.swift in Sources */,
 				630ADB512977CC6C000A517B /* ContentView.swift in Sources */,
 				6E688E17299220B7006DCEE5 /* ContactUsView.swift in Sources */,
 				7CFCE12F2987551F00E196AF /* LoginPasswordView.swift in Sources */,

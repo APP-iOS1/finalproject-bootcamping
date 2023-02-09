@@ -7,13 +7,21 @@
 
 import SwiftUI
 
+enum filterCase {
+    case campingSpotName
+    case campingSpotAddr
+    case campingSpotContenId
+}
+
 struct CampingSpotListSearchingView: View {
     
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @State private var isLoading: Bool = false
     @State var keywordForSearching: String = ""
+    @State var keywordForParameter: String = ""
     @State var isSearching: Bool = false
     
+    var selectedFilter: filterCase
     
     var body: some View {
         VStack {
@@ -21,7 +29,11 @@ struct CampingSpotListSearchingView: View {
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal, UIScreen.screenWidth*0.03)
                 .onSubmit {
+                    keywordForParameter = keywordForSearching
+                    isLoading = false
                     isSearching = true
+                    campingSpotStore.campingSpotList.removeAll()
+                    campingSpotStore.lastDoc = nil
                 }
             if isSearching {
                 VStack {
@@ -33,27 +45,44 @@ struct CampingSpotListSearchingView: View {
                                 }
                             }
                             .task {
-                                campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotAddr: keywordForSearching))
+                                switch selectedFilter {
+                                case .campingSpotName:
+                                    campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotName: keywordForParameter))
+                                case .campingSpotAddr:
+                                    campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotAddr: keywordForParameter))
+                                default:
+                                    print(#function, "")
+                                }
                                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                                    if !campingSpotStore.campingSpotList.isEmpty {
-                                        isLoading.toggle()
-                                    }
+                                    isLoading.toggle()
                                 }
                             }
                         } else {
                             LazyVStack {
-                                ForEach(campingSpotStore.campingSpotList.indices, id: \.self) { index in
-                                    NavigationLink {
-                                        CampingSpotDetailView(places: campingSpotStore.campingSpotList[index])
-                                    } label: {
-                                        CampingSpotListRaw(item: campingSpotStore.campingSpotList[index])
-                                            .padding(.bottom,40)
-                                    }
-                                    .task {
-//                                        if index == campingSpotStore.campingSpotList.count - 1 && campingSpotStore.lastDoc != nil {
-                                        if index == campingSpotStore.campingSpotList.count - 1{
-                                            Task {
-                                                campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotAddr: keywordForSearching, lastDoc: campingSpotStore.lastDoc))
+                                if campingSpotStore.campingSpotList.isEmpty {
+                                    Spacer()
+                                    Text("검색결과가 없습니다")
+                                    Spacer()
+                                } else {
+                                    ForEach(campingSpotStore.campingSpotList.indices, id: \.self) { index in
+                                        NavigationLink {
+                                            CampingSpotDetailView(places: campingSpotStore.campingSpotList[index])
+                                        } label: {
+                                            CampingSpotListRaw(item: campingSpotStore.campingSpotList[index])
+                                                .padding(.bottom,40)
+                                        }
+                                        .task {
+                                            if index == campingSpotStore.campingSpotList.count - 1 {
+                                                Task {
+                                                    switch selectedFilter {
+                                                    case .campingSpotName:
+                                                        campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotName: keywordForParameter, lastDoc: campingSpotStore.lastDoc))
+                                                    case .campingSpotAddr:
+                                                        campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotAddr: keywordForParameter, lastDoc: campingSpotStore.lastDoc))
+                                                    default:
+                                                        print(#function, "")
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -75,6 +104,6 @@ struct CampingSpotListSearchingView: View {
 
 struct CampingSpotListSearchingView_Previews: PreviewProvider {
     static var previews: some View {
-        CampingSpotListSearchingView()
+        CampingSpotListSearchingView(selectedFilter: filterCase.campingSpotName)
     }
 }

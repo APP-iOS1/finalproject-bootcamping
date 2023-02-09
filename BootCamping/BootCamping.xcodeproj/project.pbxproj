@@ -90,6 +90,7 @@
 		7CFCE12F2987551F00E196AF /* LoginPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE12E2987551F00E196AF /* LoginPasswordView.swift */; };
 		AD1FED36298B930F001FB3E5 /* FirebaseScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1FED35298B930F001FB3E5 /* FirebaseScheduleService.swift */; };
 		AD21BAE32989F28C007ED6B7 /* FirebaseCommentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD21BAE22989F28C007ED6B7 /* FirebaseCommentService.swift */; };
+		AD2DBF5229940009008534BA /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = AD2DBF5129940009008534BA /* AlertToast */; };
 		AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD373AF92977D68A00E1236A /* DiaryCellView.swift */; };
 		AD672121298CA983008C34B3 /* WholeAuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD672120298CA983008C34B3 /* WholeAuthStore.swift */; };
 		AD672123298CBFB0008C34B3 /* FirebaseUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD672122298CBFB0008C34B3 /* FirebaseUserService.swift */; };
@@ -210,6 +211,7 @@
 				63AF45A82977CD9C0014B1E1 /* FirebaseStorage in Frameworks */,
 				790B62F4297A28E00048C110 /* KakaoSDKUser in Frameworks */,
 				790B62F0297A28E00048C110 /* KakaoSDKTalk in Frameworks */,
+				AD2DBF5229940009008534BA /* AlertToast in Frameworks */,
 				790B62E6297A28E00048C110 /* KakaoSDKCommon in Frameworks */,
 				6E688E3F29923827006DCEE5 /* SwiftUIMailView in Frameworks */,
 				790B62E4297A28E00048C110 /* KakaoSDKAuth in Frameworks */,
@@ -511,6 +513,7 @@
 				7C3FC49629877C7200E96A01 /* SDWebImageSwiftUI */,
 				6E11BE2C298C8FD60019E963 /* Lottie */,
 				6E688E3E29923827006DCEE5 /* SwiftUIMailView */,
+				AD2DBF5129940009008534BA /* AlertToast */,
 			);
 			productName = BootCamping;
 			productReference = 630ADB4B2977CC6C000A517B /* BootCamping.app */;
@@ -547,6 +550,7 @@
 				7C3FC49529877C7200E96A01 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				6E11BE2B298C8FD60019E963 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				6E688E3D29923827006DCEE5 /* XCRemoteSwiftPackageReference "swiftui-mail-view" */,
+				AD2DBF5029940009008534BA /* XCRemoteSwiftPackageReference "AlertToast" */,
 			);
 			productRefGroup = 630ADB4C2977CC6C000A517B /* Products */;
 			projectDirPath = "";
@@ -930,6 +934,14 @@
 				kind = branch;
 			};
 		};
+		AD2DBF5029940009008534BA /* XCRemoteSwiftPackageReference "AlertToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elai950/AlertToast.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1022,6 +1034,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7C3FC49529877C7200E96A01 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
+		};
+		AD2DBF5129940009008534BA /* AlertToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AD2DBF5029940009008534BA /* XCRemoteSwiftPackageReference "AlertToast" */;
+			productName = AlertToast;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

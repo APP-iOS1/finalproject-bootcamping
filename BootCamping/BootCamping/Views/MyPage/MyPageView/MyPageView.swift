@@ -76,10 +76,19 @@ extension MyPageView{
     // MARK: -View : 유저 프로필이미지, 닉네임 표시
     private var userProfileSection : some View {
         HStack{
-            WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
-                .resizable()
-                .clipShape(Circle())
-                .frame(width: 60, height: 60)    
+            if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
+                WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
+                    .resizable()
+                    .clipShape(Circle())
+                .frame(width: 60, height: 60)
+            } else {
+                Image(systemName: "person.fill")
+                    .resizable()
+                    .frame(width: 60, height: 60)
+                    .aspectRatio(contentMode: .fill)
+                    .clipShape(Circle())
+                    
+            }
             Text("\((wholeAuthStore.currnetUserInfo!.nickName)) 님")
             NavigationLink {
                 ProfileSettingView()

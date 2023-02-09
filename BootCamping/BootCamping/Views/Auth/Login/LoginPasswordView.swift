@@ -6,12 +6,12 @@
 //
 
 import SwiftUI
+import AlertToast
 
 struct LoginPasswordView: View {
     
     @State var userEmail: String = ""
     @State var password: String = ""
-    @State var isShowingAlert: Bool = false
     
     
     @AppStorage("login") var isSignIn: Bool?
@@ -43,8 +43,13 @@ struct LoginPasswordView: View {
         .foregroundColor(.bcBlack)
         .padding(.horizontal, UIScreen.screenWidth * 0.05)
         .padding(.vertical, 10)
-        .alert("이메일, 비밀번호를 확인하세요", isPresented: $isShowingAlert) {
-            Button("확인", role: .cancel) {  }
+        .alert("이메일, 비밀번호를 확인하세요", isPresented: $wholeAuthStore.isError) {
+            Button("확인", role: .cancel) {
+                wholeAuthStore.isError = false
+            }
+        }
+        .toast(isPresenting: $wholeAuthStore.isProcessing) {
+            AlertToast(displayMode: .alert, type: .loading)
         }
     }
 }
@@ -83,12 +88,8 @@ extension LoginPasswordView {
     var loginButton: some View {
         Button {
             Task {
+                wholeAuthStore.isProcessing = true
                 wholeAuthStore.authSignInCombine(userEmail: userEmail, password: password)
-                if wholeAuthStore.isLogin {
-                    isSignIn = true
-                } else {
-                    isShowingAlert.toggle()
-                }
             }
         } label: {
             Text("계속")

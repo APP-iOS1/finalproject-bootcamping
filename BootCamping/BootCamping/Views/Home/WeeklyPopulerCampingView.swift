@@ -31,6 +31,7 @@ struct WeeklyPopulerCampingView: View {
                             }
                             .modifier(PhotoCardModifier())
                         }
+
                     }
                 }
             }

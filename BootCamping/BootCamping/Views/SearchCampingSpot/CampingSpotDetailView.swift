@@ -40,7 +40,7 @@ struct CampingSpotDetailView: View {
                 WebImage(url: URL(string: campingSpot.firstImageUrl))
                     .resizable()
                     .placeholder {
-                        Rectangle().foregroundColor(.gray)
+                        Rectangle().foregroundColor(.secondary)
                     }
                     .aspectRatio(contentMode: .fill)
                     .frame(width: UIScreen.screenWidth)
@@ -59,8 +59,40 @@ struct CampingSpotDetailView: View {
                                 }
                         }
                         Spacer()
+                        Button {
+                            isBookmarked.toggle()
+                            if isBookmarked{
+                                bookmarkStore.addBookmarkSpotCombine(campingSpotId: campingSpot.contentId)
+                            } else{
+                                bookmarkStore.removeBookmarkCampingSpotCombine(campingSpotId: campingSpot.contentId)
+                            }
+                            wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+                        } label: {
+                            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                                .bold()
+                                .foregroundColor(Color.accentColor)
+                        }
+                        .padding()
                     }
                     .padding(.horizontal, UIScreen.screenWidth*0.05)
+                } else {
+                    HStack {
+                        Spacer()
+                        Button {
+                            isBookmarked.toggle()
+                            if isBookmarked{
+                                bookmarkStore.addBookmarkSpotCombine(campingSpotId: campingSpot.contentId)
+                            } else{
+                                bookmarkStore.removeBookmarkCampingSpotCombine(campingSpotId: campingSpot.contentId)
+                            }
+                            wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+                        } label: {
+                            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                                .bold()
+                                .foregroundColor(Color.accentColor)
+                        }
+                        .padding()
+                    }
                 }
                 
                 VStack(alignment: .leading, spacing: 8) {
@@ -70,27 +102,13 @@ struct CampingSpotDetailView: View {
                                 .font(.title)
                                 .bold()
                             Spacer()
-                            Button {
-                                isBookmarked.toggle()
-                                if isBookmarked{
-                                    bookmarkStore.addBookmarkSpotCombine(campingSpotId: campingSpot.contentId)
-                                } else{
-                                    bookmarkStore.removeBookmarkCampingSpotCombine(campingSpotId: campingSpot.contentId)
-                                }
-                                wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
-                            } label: {
-                                Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                                    .bold()
-                                    .foregroundColor(Color.accentColor)
-                            }
-                            .padding()
+                            
                             
                         }
                         .padding(.top, -15)
-                        
                         HStack {
                             Image(systemName: "mappin.and.ellipse")
-                                .foregroundColor(.gray)
+                                .foregroundColor(.secondary)
                             Text("\(campingSpot.addr1)") // 캠핑장 주소
                                 .font(.callout)
                                 .foregroundColor(.secondary)
@@ -104,8 +122,28 @@ struct CampingSpotDetailView: View {
                                     .underline()
                             }
                         }
-                        .padding(.bottom, 15)
+                        if campingSpot.tel != "" {
+                            HStack {
+                                Image(systemName: "phone.fill")
+                                    .font(.callout)
+                                    .foregroundColor(.secondary)
+                                Text(campingSpot.tel)
+                                    .font(.callout)
+                                    .foregroundColor(.secondary)
+                                Button{
+                                    if let url = URL(string: "tel://\(campingSpot.tel)"), UIApplication.shared.canOpenURL(url) {
+                                        UIApplication.shared.open(url)
+                                    }
+                                } label: {
+                                    Text("전화걸기")
+                                        .font(.callout)
+                                        .foregroundColor(.secondary)
+                                        .underline()
+                                }
+                            }
+                        }
                     }
+                    .padding(.bottom, 15)
                     
                     Group {
                         if campingSpot.intro != "" {
@@ -202,7 +240,6 @@ struct CampingSpotDetailView: View {
             annotatedItem.append(AnnotatedItem(name: campingSpot.facltNm, coordinate: CLLocationCoordinate2D(latitude: Double(campingSpot.mapY)!, longitude: Double(campingSpot.mapX)!)))
             isBookmarked = bookmarkStore.checkBookmarkedSpot(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, campingSpotId: campingSpot.contentId)
             diaryStore.readCampingSpotsDiarysCombine(contentId: campingSpot.contentId)
-            print(diaryStore.diaryList)
         }
         .alert("복사가 완료되었습니다", isPresented: $isPaste) {
             Button("완료") {

@@ -5,6 +5,7 @@
 //  Created by Deokhun KIM on 2023/01/17.
 //
 
+import SDWebImageSwiftUI
 import SwiftUI
 
 /*
@@ -26,6 +27,8 @@ import SwiftUI
  */
 
 struct SearchCampingSpotView: View {
+    
+    @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
 
     @State var page: Int = 2
     
@@ -51,7 +54,6 @@ struct SearchCampingSpotView: View {
         Filtering(filterViewLocation: "river", filters: ["강", "호수"], filterNames: ["강", "호수"]),
         Filtering(filterViewLocation: "island", filters: ["섬"], filterNames: ["섬"]),
     ]
-    
     var cols = [
         GridItem(.flexible(), spacing: 30),
         GridItem(.flexible(), spacing: 30),
@@ -60,7 +62,7 @@ struct SearchCampingSpotView: View {
     
     //MARK: 추천 캠핑장 사진 및 이름
     var campingSpotADImage = ["e", "a", "g", "d"]
-    var campingSpotADName = ["쿠니 캠핑장", "후니 글램핑", "미니즈 캠핑장", "소영 카라반"]
+    var campingSpotADName = ["100002", "100040", "2727", "2860"]
     var campingSpotADAddress = ["대구광역시 달서구", "서울특별시 마포구", "경기도 광명시", "경기도 하남시"]
     
     //MARK: 추천 캠핑장 그리드
@@ -216,16 +218,17 @@ extension SearchCampingSpotView {
             Text("추천 캠핑장!")
                 .font(.title.bold())
             LazyVGrid(columns: columns2) {
-                ForEach(0..<campingSpotADName.count, id:\.self){ index in
+                ForEach(campingSpotStore.campingSpotList.indices, id:\.self){ index in
                     VStack(alignment: .leading){
                         NavigationLink {
-                       //     CampingSpotDetailView()
+                            CampingSpotDetailView(places: campingSpotStore.campingSpotList[index])
                         } label: {
-                            Image(campingSpotADImage[index])
+                            WebImage(url: URL(string: campingSpotStore.campingSpotList[index].firstImageUrl == "" ? campingSpotStore.noImageURL : campingSpotStore.campingSpotList[index].firstImageUrl))
                                 .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: UIScreen.screenWidth * 0.47, height: UIScreen.screenWidth * 0.4)
                                 .cornerRadius(10)
-                                .frame(height: 150)
-                                .aspectRatio(contentMode: .fit)
+                                .clipped()
                         }
                         
                         HStack{
@@ -243,7 +246,7 @@ extension SearchCampingSpotView {
                                     }
                             }
 
-                            Text(campingSpotADName[index])
+                            Text(campingSpotStore.campingSpotList[index].facltNm)
                         }
                         .frame(height: 8)
                         .padding(.top, 6)
@@ -251,7 +254,7 @@ extension SearchCampingSpotView {
                             Image(systemName: "mappin.and.ellipse")
                                 .font(.caption)
                                 .padding(.trailing, -7)
-                            Text(campingSpotADAddress[index])
+                            Text("\(campingSpotStore.campingSpotList[index].doNm) \(campingSpotStore.campingSpotList[index].sigunguNm)")
                                 .font(.caption)
                         }
                         .padding(.bottom)
@@ -259,6 +262,9 @@ extension SearchCampingSpotView {
                 }
             }
             .padding(.bottom, 30)
+        }
+        .task {
+            campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: campingSpotADName))
         }
     }
 }

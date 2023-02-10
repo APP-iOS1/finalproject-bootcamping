@@ -19,7 +19,7 @@ struct WeeklyPopulerCampingView: View {
         VStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(diaryStore.userInfoDiaryList, id: \.self) { item in
+                    ForEach(diaryStore.popularDiaryList, id: \.self) { item in
                         NavigationLink {
                             DiaryDetailView(item: item)
                         } label: {
@@ -37,7 +37,7 @@ struct WeeklyPopulerCampingView: View {
             }
         }
         .onAppear {
-            diaryStore.firstGetDiaryCombine()
+            diaryStore.mostLikedGetDiarysCombine()
         }
         
     }

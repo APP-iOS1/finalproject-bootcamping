@@ -491,7 +491,7 @@ struct FirebaseDiaryService {
     func readCampingSpotsDiarysService(contentId: String) -> AnyPublisher<[Diary], Error> {
         Future<[Diary], Error> { promise in
             database.collection("Diarys")
-                .whereField("contentId", isEqualTo: contentId)
+                .whereField("diaryAddress", isEqualTo: contentId)
                 .order(by: "diaryCreatedDate", descending: true)
                 .getDocuments { snapshot, error in
                     if let error = error {

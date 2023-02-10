@@ -132,12 +132,15 @@ private extension DiaryAddView {
             })
             .sheet(isPresented: $imagePickerPresented,
                    onDismiss:
-                    {DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
+                    {
+//                   DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
                 loadData()
-            }
+//            }
                    }
                    ,
                    content: { PhotoPicker(images: $selectedImages, selectionLimit: 10) })
+            
+            
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack{
                     if diaryImages == nil {
@@ -156,11 +159,17 @@ private extension DiaryAddView {
                                 .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
                                 .clipped()
                                 .overlay(alignment: .topLeading) {
-                                    Text("대표이미지")
-                                        .padding(2)
-                                        .font(.caption2)
-                                        .foregroundColor(Color.white)
-                                        .background(Color.bcGreen)
+                                    ZStack{
+                                        Image(systemName: "bookmark.fill")
+                                            .foregroundColor(.bcGreen)
+                                            .font(.title3)
+                                            .offset(x: 0, y: -3)
+                                        Image(systemName: "bookmark")
+                                            .foregroundColor(.white)
+                                            .font(.title3)
+                                            .offset(x: 0, y: -3)
+
+                                    }
                                         .opacity(index == 0 ? 1 : 0)
                                 }
                         }
@@ -282,7 +291,9 @@ private extension DiaryAddView {
             DatePicker("방문일자 등록하기",
                        selection: $selectedDate,
                        displayedComponents: [.date])
-//            .padding(.bottom)
+            .environment(\.locale, Locale(identifier: "ko_KR"))
+            .environment(\.calendar, Calendar(identifier: .gregorian))
+            .environment(\.timeZone, TimeZone(abbreviation: "KST")!)
             .padding(.vertical)
         }
     }
@@ -476,15 +487,18 @@ struct PhotoPicker: UIViewControllerRepresentable {
         private func loadImage() {
             for itemProvider in parent.itemProviders {
                 if itemProvider.canLoadObject(ofClass: UIImage.self) {
-                    itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
-                        if let image = image as? UIImage {
-                            self.parent.images?.append(image)
-                            print("````````````\(self.parent.images!.count)")
-                        } else {
-                            print("Could not load image", error?.localizedDescription ?? "")
+                    DispatchQueue.global(qos: .background).sync {
+                        itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+                            if let image = image as? UIImage {
+                                self.parent.images?.append(image)
+                                print("````````````\(self.parent.images!.count)")
+                            } else {
+                                print("Could not load image", error?.localizedDescription ?? "")
+                            }
                         }
                     }
                 }
+                
             }
         }
         

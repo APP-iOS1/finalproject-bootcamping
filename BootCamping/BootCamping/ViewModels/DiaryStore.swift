@@ -202,6 +202,29 @@ class DiaryStore: ObservableObject {
             .store(in: &cancellables)
     }
     
+    //MARK: - 캠핑장 디테일뷰에 들어갈 일기 Read하는 함수
+    
+    func readCampingSpotsDiarysCombine(contentId: String) {
+        FirebaseDiaryService().readCampingSpotsDiarysService(contentId: contentId)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed get Diarys")
+                    self.firebaseDiaryServiceError = .badSnapshot
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished get Diarys")
+                    return
+                }
+            } receiveValue: { [weak self] diarys in
+                self?.diaryList = diarys
+            }
+            .store(in: &cancellables)
+    }
+    
     // 다음불러오기 함수
     
     

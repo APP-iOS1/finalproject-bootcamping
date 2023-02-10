@@ -87,7 +87,7 @@ struct DiaryAddContentView: View {
                     submit()
                     isTapTextField = false
                 } label: {
-                    Text("Done")
+                    Image(systemName: "keyboard.chevron.compact.down")
 
                 }
 

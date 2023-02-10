@@ -70,6 +70,9 @@ struct AddScheduleView: View {
                     displayedComponents: [.date]
                 )
                 .datePickerStyle(.automatic)
+                .environment(\.locale, Locale(identifier: "ko_KR"))
+                .environment(\.calendar, Calendar(identifier: .gregorian))
+                .environment(\.timeZone, TimeZone(abbreviation: "KST")!)
                 DatePicker(
                     "캠핑 종료일",
                     selection: $endDate,
@@ -77,6 +80,9 @@ struct AddScheduleView: View {
                     displayedComponents: [.date]
                 )
                 .datePickerStyle(.automatic)
+                .environment(\.locale, Locale(identifier: "ko_KR"))
+                .environment(\.calendar, Calendar(identifier: .gregorian))
+                .environment(\.timeZone, TimeZone(abbreviation: "KST")!)
                 .onChange(of: startDate) { newStartDate in
                     if endDate < newStartDate {
                         endDate = newStartDate

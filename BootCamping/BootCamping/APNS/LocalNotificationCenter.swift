@@ -24,12 +24,38 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
     }
     
     /*
+     enum UNAuthorizationStatus
+     
+     case notDetermined
+     사용자는 앱이 알림을 예약하도록 허용할지 여부를 아직 선택하지 않았습니다.
+     case denied
+     앱이 알림을 예약하거나 받을 수 있는 권한이 없습니다.
+     case authorized
+     앱이 알림을 예약하거나 받을 수 있는 권한이 있습니다.
+     case provisional
+     응용 프로그램은 비방해 사용자 알림을 게시할 수 있는 임시 권한이 있습니다.
+     case ephemeral
+     앱은 제한된 시간 동안 알림을 예약하거나 수신할 수 있는 권한이 있습니다.
+     */
+    
+    /*
      스케줄에 대한 알림 설정 시,
      현재 앱에 대한 알림 설정 권한 확인 후
      권한이 .notdetermined인 경우 권한 요청을 하고
-     권한이 .not
+     권한이 .authorized인 경우 푸시 알림 추가
+     권한이 .notdetermined 또는 .authorized이 아닌 경우
      */
     
+    func getCurrentSetting() async {
+
+        // 현재의 인증현황을 확인하고
+        let currentSetting = await notificationCenter.notificationSettings()
+
+        // isGranted 프로퍼티에 현재 인증상태 값을 할당함 (거절을 눌렀다면 false, 동의를 눌렀으면 true로 변환되는걸 볼 수 있음)
+        isSettingAppPN = (currentSetting.authorizationStatus == .authorized)
+        isSettingSchedulePN = isSettingAppPN
+    }
+
     func openAppSetting() {
         if let url = URL(string: UIApplication.openSettingsURLString) {
             if UIApplication.shared.canOpenURL(url) {

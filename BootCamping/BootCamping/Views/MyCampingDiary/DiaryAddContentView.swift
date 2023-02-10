@@ -174,6 +174,8 @@ extension DiaryAddContentView {
             Spacer()
             
         }
+        .padding(.bottom, 10)
+
     }
     
     var backButton: some View{

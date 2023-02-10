@@ -9,18 +9,19 @@ import SwiftUI
 
 struct NotificationSettingsView: View {
     
-    @EnvironmentObject localNotificationCenter: LocalNotificationCenter
+    @EnvironmentObject var localNotificationCenter: LocalNotificationCenter
     
-    $State private var isSettingSchedulePN: Bool = false
-    $State private var isSettingAppPN: Bool = false
+    @State private var isSettingSchedulePN: Bool = false
+    @State private var isSettingAppPN: Bool = false
     
     var body: some View {
         List{
             Section {
                 schedulePushNotification
-                
+                appPushNotification
             }
         }
+        .listStyle(.plain)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar{
             ToolbarItem(placement: .principal) {
@@ -28,7 +29,6 @@ struct NotificationSettingsView: View {
             }
         }
         .task{
-            localNotificationCenter.
         }
     }
 }
@@ -36,22 +36,24 @@ struct NotificationSettingsView: View {
 extension NotificationSettingsView {
     private var schedulePushNotification: some View{
         HStack{
-            VStack {
-                Text("스케줄 Push 알림")
-                Text("추가한 캠핑 일정에 대한 알림")
-                Text("*기기의 Push 설정이 필요합니다")
+            Toggle(isOn: $isSettingSchedulePN) {
+                VStack(alignment: .leading) {
+                    Text("스케줄 Push 알림")
+                    Text("추가한 캠핑 일정에 대한 알림")
+                    Text("*기기의 Push 설정이 필요합니다")
+                }
             }
-            Toggle(isOn: $isSettingSchedulePN)
         }
     }
     private var appPushNotification: some View{
         HStack{
-            VStack {
-                Text("앱 전체에 대한 Push 알림")
-                Text("앱에서 보내는 푸시 알림")
-                Text("*기기의 Push 설정이 필요합니다")
+            Toggle(isOn: $isSettingAppPN){
+                VStack(alignment: .leading) {
+                    Text("앱 전체에 대한 Push 알림")
+                    Text("앱에서 보내는 푸시 알림")
+                    Text("*기기의 Push 설정이 필요합니다")
+                }
             }
-            Toggle(isOn: $isSettingAppPN)
         }
     }
 }

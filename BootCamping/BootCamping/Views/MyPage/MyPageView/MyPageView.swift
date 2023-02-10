@@ -86,9 +86,10 @@ extension MyPageView{
                     .scaledToFill()
                     .frame(width: 60, height: 60)
                     .clipShape(Circle())
+                
 
             } else {
-                Image(systemName: "person.fill")
+                Image("defaultProfileImage")
                     .resizable()
                     .scaledToFill()
                     .frame(width: 60, height: 60)

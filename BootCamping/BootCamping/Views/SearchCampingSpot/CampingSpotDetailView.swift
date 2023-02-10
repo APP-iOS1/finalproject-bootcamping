@@ -35,7 +35,7 @@ struct CampingSpotDetailView: View {
     
     var body: some View {
         
-        ZStack {
+        VStack() {
             ScrollView(showsIndicators: false) {
                 WebImage(url: URL(string: campingSpot.firstImageUrl))
                     .resizable()
@@ -45,6 +45,23 @@ struct CampingSpotDetailView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: UIScreen.screenWidth)
                     .padding(.bottom, 5)
+                
+                if !campingSpot.lctCl.isEmpty {
+                    HStack {
+                        ForEach(campingSpot.lctCl.components(separatedBy: ","), id: \.self) { view in
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 40 ,height: 20)
+                                .foregroundColor(.bcGreen)
+                                .overlay{
+                                    Text(view)
+                                        .font(.caption2.bold())
+                                        .foregroundColor(.white)
+                                }
+                        }
+                        Spacer()
+                    }
+                    .padding(.horizontal, UIScreen.screenWidth*0.05)
+                }
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Group {

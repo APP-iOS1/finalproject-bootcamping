@@ -15,7 +15,12 @@ struct MyCampingDiaryView: View {
 
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var faceId: FaceId
-    @EnvironmentObject var commentStore: CommentStore
+//    @EnvironmentObject var commentStore: CommentStore
+    
+    @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
+    @StateObject var commentStore: CommentStore = CommentStore()
+    
+    
     
     @AppStorage("faceId") var usingFaceId: Bool? //페이스id 설정 사용하는지
     //faceId.isLocked // 페이스 아이디가 잠겨있는지.

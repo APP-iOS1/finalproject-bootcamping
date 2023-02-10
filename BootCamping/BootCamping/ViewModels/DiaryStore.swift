@@ -26,6 +26,9 @@ class DiaryStore: ObservableObject {
     @Published var lastDoc: QueryDocumentSnapshot?
     // 개선된 다이어리 리스트
     @Published var userInfoDiaryList: [UserInfoDiary] = []
+    
+    // 인기글 다이어리 유저 저장
+    @Published var popularDiaryList: [UserInfoDiary] = []
     //파베 기본 경로
     let database = Firestore.firestore()
     
@@ -198,6 +201,30 @@ class DiaryStore: ObservableObject {
             } receiveValue: { [weak self] lastDocWithDiaryList in
                 self?.lastDoc = lastDocWithDiaryList.lastDoc
                 self?.userInfoDiaryList.append(contentsOf: lastDocWithDiaryList.userInfoDiarys)
+            }
+            .store(in: &cancellables)
+    }
+    
+    //MARK: - 좋아요 많은 다이어리 불러오기 함수
+    func mostLikedGetDiarysCombine() {
+        print("하이하이")
+        FirebaseDiaryService().mostLikedGetDiarysService()
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed get Diarys")
+                    self.firebaseDiaryServiceError = .badSnapshot
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished get Diarys")
+                    return
+                }
+            } receiveValue: { diarys in
+                let sortedDiarys = diarys.sorted{ $0.diary.diaryLike.count > $1.diary.diaryLike.count }
+                self.popularDiaryList = sortedDiarys
             }
             .store(in: &cancellables)
     }

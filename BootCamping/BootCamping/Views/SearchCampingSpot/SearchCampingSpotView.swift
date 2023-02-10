@@ -44,7 +44,7 @@ struct SearchCampingSpotView: View {
     
     //MARK: 추천 캠핑장 사진 및 이름
     var campingSpotADImage = ["e", "a", "g", "d"]
-    var campingSpotADName = ["100002", "100040", "2727", "2860"]
+    var campingSpotADName = ["2879", "100040", "2727", "2860"]
     var campingSpotADAddress = ["대구광역시 달서구", "서울특별시 마포구", "경기도 광명시", "경기도 하남시"]
     
     //MARK: 추천 캠핑장 그리드

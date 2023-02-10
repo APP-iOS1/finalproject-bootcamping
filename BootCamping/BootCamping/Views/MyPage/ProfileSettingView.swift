@@ -50,6 +50,7 @@ extension ProfileSettingView {
             let image = UIImage(data: profileImage ?? Data()) == nil ? UIImage(systemName: "person.fill") : UIImage(data: profileImage ?? Data()) ?? UIImage(systemName: "person.fill")
             Image(uiImage: (image ?? UIImage(systemName: "person.fill"))!)
                 .resizable()
+                .scaledToFill()
                 .frame(width: 100, height: 100)
                 .aspectRatio(contentMode: .fill)
                 .clipShape(Circle())

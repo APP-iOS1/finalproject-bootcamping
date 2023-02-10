@@ -143,7 +143,7 @@ extension MyPageView{
             case .myCamping:
                 CalendarView()
             case .bookmarkedCampingSpot:
-                VStack(spacing: 20){
+                VStack(spacing: 10){
                     ForEach(campingSpotStore.campingSpotList, id: \.contentId) { campingSpot in
                         NavigationLink {
                             CampingSpotDetailView(places: campingSpot)

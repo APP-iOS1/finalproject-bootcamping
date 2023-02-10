@@ -25,7 +25,7 @@ struct CampingSpotListSearchingView: View {
     
     var body: some View {
         VStack {
-            TextField("여행지를 검색해주세요.", text: $keywordForSearching)
+            TextField("캠핑하실 지역을 검색해주세요", text: $keywordForSearching)
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal, UIScreen.screenWidth*0.03)
                 .onSubmit {
@@ -90,6 +90,7 @@ struct CampingSpotListSearchingView: View {
                             }
                         }
                     }
+                    .padding(.bottom, 0.1)
                 }
             } else {
                 Spacer()
@@ -97,7 +98,6 @@ struct CampingSpotListSearchingView: View {
                 Spacer()
             }
         }
-        .padding(.horizontal, UIScreen.screenHeight * 0.03)
     }
 }
 

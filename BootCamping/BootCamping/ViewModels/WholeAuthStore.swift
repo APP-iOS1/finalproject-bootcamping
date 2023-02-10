@@ -87,7 +87,7 @@ class WholeAuthStore: ObservableObject {
     // MARK: - Firebase UserList CRUD Combine
 
     // MARK: readUserListCombine 유저리스트 조회
-                func readUserListCombine() {
+    func readUserListCombine() {
         FirebaseUserService().readUserListService()
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -104,6 +104,28 @@ class WholeAuthStore: ObservableObject {
                 }
             } receiveValue: { users in
                 self.userList = users
+            }
+            .store(in: &cancellables)
+    }
+    
+    //MARK: - readMyInfoCombine 현재유저 정보 조회
+    func readMyInfoCombine(user: User) {
+        FirebaseUserService().readMyInfoService(user: user)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed get UserList")
+                    self.firebaseUserServiceError = .badSnapshot
+                    self.showErrorAlertMessage = self.firebaseUserServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished get UserList")
+                    return
+                }
+            } receiveValue: { user in
+                self.currnetUserInfo = user
             }
             .store(in: &cancellables)
     }

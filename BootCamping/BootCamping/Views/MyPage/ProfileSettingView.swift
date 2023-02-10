@@ -56,7 +56,7 @@ extension ProfileSettingView {
                     if wholeAuthStore.currnetUserInfo!.profileImageURL != "" && isProfileImageReset == false {
                         WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
                             .resizable()
-                            .foregroundColor(.bcBlack)
+//                            .foregroundColor(.bcBlack)
                             .scaledToFill()
                             .clipped()
                             .frame(width: 100, height: 100)
@@ -78,9 +78,9 @@ extension ProfileSettingView {
                                 }
                             }
                     } else if wholeAuthStore.currnetUserInfo!.profileImageURL == "" || isProfileImageReset == true{
-                        Image(systemName: "person.fill")
+                        Image("defaultProfileImage")
                             .resizable()
-                            .foregroundColor(.bcBlack)
+//                            .foregroundColor(.bcBlack)
                             .scaledToFill()
                             .clipped()
                             .frame(width: 100, height: 100)
@@ -103,10 +103,10 @@ extension ProfileSettingView {
                             }
                     }
                 } else {
-                    let image = UIImage(data: profileImage ?? Data()) == nil ? UIImage(systemName: "person.fill") : UIImage(data: profileImage ?? Data()) ?? UIImage(systemName: "person.fill")
-                    Image(uiImage: ((image ?? UIImage(systemName: "person.fill"))!))
+                    let image = UIImage(data: profileImage ?? Data()) == nil ? UIImage(contentsOfFile: "defaultProfileImage") : UIImage(data: profileImage ?? Data()) ?? UIImage(contentsOfFile: "defaultProfileImage")
+                    Image(uiImage: ((image ?? UIImage(contentsOfFile: "defaultProfileImage"))!))
                         .resizable()
-                        .foregroundColor(.bcBlack)
+//                        .foregroundColor(.bcBlack)
                         .scaledToFill()
                         .clipped()
                         .frame(width: 100, height: 100)

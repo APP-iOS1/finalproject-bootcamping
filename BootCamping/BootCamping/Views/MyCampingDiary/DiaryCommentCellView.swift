@@ -23,7 +23,6 @@ struct DiaryCommentCellView: View {
     
     var body: some View {
             HStack{
-                
                 diaryCommetUserProfile
                     .frame(width: 35)
                 
@@ -41,16 +40,22 @@ struct DiaryCommentCellView: View {
 }
 
 private extension DiaryCommentCellView {
-    
+    @ViewBuilder
     var diaryCommetUserProfile: some View {
-        WebImage(url: URL(string: item.profileImage))
-            .resizable()
-            .placeholder {
-                Rectangle().foregroundColor(.gray)
-            }
-            .scaledToFill()
-            .frame(width: UIScreen.screenWidth * 0.01)
-            .clipShape(Circle())
+        if item.profileImage != "" {
+            WebImage(url: URL(string: item.profileImage))
+                .resizable()
+                .scaledToFill()
+                .frame(width: 30, height: 30)
+                .clipShape(Circle())
+        } else {
+            Image(systemName: "person.fill")
+                .resizable()
+                .scaledToFill()
+                .frame(width: 30, height: 30)
+                .clipShape(Circle())
+                
+        }
     }
     
     var diaryUserProfile: some View {

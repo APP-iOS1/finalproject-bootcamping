@@ -97,8 +97,12 @@ struct CampingSpotDetailView: View {
                     }
                     
                     Group {
-                        Text("\(campingSpot.intro)")
-                            .lineSpacing(7)
+                        if campingSpot.intro != "" {
+                            Text("\(campingSpot.intro)")
+                                .lineSpacing(7)
+                        } else {
+                            Text("업체에서 제공하는 정보가 없습니다")
+                        }
                     }
                     
                     
@@ -142,7 +146,8 @@ struct CampingSpotDetailView: View {
                                 .padding(.bottom, 10)
                             Spacer()
                             
-                            Button {
+                            NavigationLink {
+                                
                             } label: {
                                 Text("더 보기")
                                     .font(.callout)

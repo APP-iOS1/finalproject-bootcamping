@@ -77,11 +77,13 @@ struct CampingSpotListRaw: View {
                     .multilineTextAlignment(.leading)
                     .foregroundColor(.bcBlack)
                     .padding(.horizontal, UIScreen.screenWidth*0.05)
+            } else {
+                Text("업체에서 제공하는 정보가 없습니다")
+                    .font(.callout)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(.bcBlack)
+                    .padding(.horizontal, UIScreen.screenWidth*0.05)
             }
-            //                        .lineLimit(3)//optional
-            //                        .expandButton(TextSet(text: "more", font: .body, color: .blue))//optional
-            //                        .collapseButton(TextSet(text: "less", font: .body, color: .blue))//optional
-            //                        .expandAnimation(.easeOut)//optional
             
         }
     }

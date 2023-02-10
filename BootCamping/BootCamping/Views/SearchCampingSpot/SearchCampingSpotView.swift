@@ -59,10 +59,11 @@ struct SearchCampingSpotView: View {
                 VStack(alignment: .leading){
                     
                     // 광고 부분
-                    adCamping
+//                    adCamping
                     
                     // 지역 선택
                     areaSelect
+                        .padding(.top, 10)
                     
                     // 전망 선택
                     viewSelect
@@ -88,6 +89,7 @@ struct SearchCampingSpotView: View {
             }
         }
         .task {
+            campingSpotStore.campingSpotList = []
             campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: campingSpotADName))
         }
     }
@@ -202,7 +204,7 @@ extension SearchCampingSpotView {
                             WebImage(url: URL(string: campingSpotStore.campingSpotList[index].firstImageUrl == "" ? campingSpotStore.noImageURL : campingSpotStore.campingSpotList[index].firstImageUrl))
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .frame(width: UIScreen.screenWidth * 0.47, height: UIScreen.screenWidth * 0.4)
+                                .frame(width: UIScreen.screenWidth * 0.44, height: UIScreen.screenWidth * 0.4)
                                 .cornerRadius(10)
                                 .clipped()
                         }

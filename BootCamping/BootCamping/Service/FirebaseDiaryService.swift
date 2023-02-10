@@ -529,14 +529,12 @@ struct FirebaseDiaryService {
                 }
                 
                 group.notify(queue: .main) {
-                    print("다이어리 갯수 ------------------ \(diarys.count)")
                     if diarys.count > 10 {
                         
                         var sortedDiarys = diarys.sorted{ $0.diaryLike.count > $1.diaryLike.count}
                         
                         sortedDiarys.removeSubrange(10...diarys.count - 1)
                         
-                        print("솔티드다이어리 갯수 ------------------ \(sortedDiarys.count)")
 
                         for sortedDiary in sortedDiarys {
                             

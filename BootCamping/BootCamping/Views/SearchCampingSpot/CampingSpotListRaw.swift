@@ -37,7 +37,6 @@ struct CampingSpotListRaw: View {
                 HStack {
                     ForEach(item.lctCl.components(separatedBy: ","), id: \.self) { view in
                         RoundedRectangle(cornerRadius: 10)
-//                            .frame(width: 35, height: 20)
                             .frame(width: 40 ,height: 20)
                             .foregroundColor(.bcGreen)
                             .overlay{

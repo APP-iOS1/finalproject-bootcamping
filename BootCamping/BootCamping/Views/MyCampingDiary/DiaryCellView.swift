@@ -17,9 +17,7 @@ struct DiaryCellView: View {
     @EnvironmentObject var commentStore: CommentStore
     
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
-    
-    @State var isBookmarked: Bool = false
-    
+
     //선택한 다이어리 정보 변수입니다.
     var item: UserInfoDiary
     //삭제 알림
@@ -41,7 +39,6 @@ struct DiaryCellView: View {
                         }
                         diaryTitle
                         Spacer()
-                        bookmarkButton
                     }
                     diaryContent
                     if !campingSpotStore.campingSpotList.isEmpty {
@@ -57,7 +54,6 @@ struct DiaryCellView: View {
         }
         
         .onAppear {
-            isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.diary.id)
             commentStore.readCommentsCombine(diaryId: item.diary.id)
             campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
         }
@@ -202,25 +198,6 @@ private extension DiaryCellView {
     private var isPrivateImage: some View {
         Image(systemName: (item.diary.diaryIsPrivate ? "lock" : "lock.open"))
             .foregroundColor(Color.secondary)
-    }
-    
-    // MARK: - 북마크 버튼
-    private var bookmarkButton: some View {
-        Button{
-            isBookmarked.toggle()
-            if isBookmarked{
-                bookmarkStore.addBookmarkDiaryCombine(diaryId: item.diary.id)
-            } else {
-                bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.diary.id)
-            }
-            wholeAuthStore.readUserListCombine()
-        } label: {
-            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                .bold()
-                .foregroundColor(Color.accentColor)
-                .opacity((item.diary.uid != wholeAuthStore.currnetUserInfo!.id ? 1 : 0))
-        }
-        .disabled(item.diary.uid == wholeAuthStore.currnetUserInfo!.id)
     }
     
     //MARK: - 내용

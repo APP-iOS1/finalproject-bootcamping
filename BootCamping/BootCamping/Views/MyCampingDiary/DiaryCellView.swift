@@ -13,10 +13,11 @@ struct DiaryCellView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
-    @EnvironmentObject var diaryLikeStore: DiaryLikeStore
-    @EnvironmentObject var commentStore: CommentStore
+//    @EnvironmentObject var diaryLikeStore: DiaryLikeStore
     
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
+    @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
+    @StateObject var commentStore: CommentStore = CommentStore()
     
     @State var isBookmarked: Bool = false
     
@@ -40,8 +41,6 @@ struct DiaryCellView: View {
                             isPrivateImage
                         }
                         diaryTitle
-                        Spacer()
-                        bookmarkButton
                     }
                     diaryContent
                     if !campingSpotStore.campingSpotList.isEmpty {
@@ -60,6 +59,9 @@ struct DiaryCellView: View {
             isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.diary.id)
             commentStore.readCommentsCombine(diaryId: item.diary.id)
             campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
+            diaryStore.readDiarysCombine()
+            //TODO: -함수 업데이트되면 넣기
+            diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
         }
     }
 }
@@ -100,7 +102,6 @@ private extension DiaryCellView {
     //MARK: - 다이어리 작성자 프로필
     var diaryUserProfile: some View {
         HStack {
-            //TODO: -다이어리 작성자 url 추가 (연산프로퍼티 작동 안됨)
             if item.user.profileImageURL != "" {
                 WebImage(url: URL(string: item.user.profileImageURL))
                     .resizable()
@@ -108,11 +109,11 @@ private extension DiaryCellView {
                         Rectangle().foregroundColor(.gray)
                     }
                     .scaledToFill()
-                    .frame(width: 45)
+                    .frame(width: 30, height: 30)
                     .clipShape(Circle())
             } else {
                 Circle()
-                    .frame(width: 45)
+                    .frame(width: 30, height: 30)
             }
             //유저 닉네임
             Text(item.user.nickName)
@@ -132,6 +133,7 @@ private extension DiaryCellView {
             }
             
         }
+        .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
     
     
@@ -204,25 +206,6 @@ private extension DiaryCellView {
             .foregroundColor(Color.secondary)
     }
     
-    // MARK: - 북마크 버튼
-    private var bookmarkButton: some View {
-        Button{
-            isBookmarked.toggle()
-            if isBookmarked{
-                bookmarkStore.addBookmarkDiaryCombine(diaryId: item.diary.id)
-            } else {
-                bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.diary.id)
-            }
-            wholeAuthStore.readUserListCombine()
-        } label: {
-            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                .bold()
-                .foregroundColor(Color.accentColor)
-                .opacity((item.diary.uid != wholeAuthStore.currnetUserInfo!.id ? 1 : 0))
-        }
-        .disabled(item.diary.uid == wholeAuthStore.currnetUserInfo!.id)
-    }
-    
     //MARK: - 내용
     var diaryContent: some View {
         Text(item.diary.diaryContent)
@@ -267,17 +250,19 @@ private extension DiaryCellView {
         HStack {
             Button {
                 //좋아요 버튼, 카운드
-                if item.diary.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") {
+                if diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") {
                     diaryLikeStore.removeDiaryLikeCombine(diaryId: item.diary.id)
                 } else {
                     diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
                 }
-                diaryStore.readDiarysCombine()
+                //TODO: -함수 업데이트되면 넣기
+                diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
+                
             } label: {
-                Image(systemName: item.diary.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? "flame.fill" : "flame")
-                    .foregroundColor(item.diary.diaryLike.contains(Auth.auth().currentUser?.uid ?? "") ? .red : .bcBlack)
+                Image(systemName: diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")
+                    .foregroundColor(diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? .red : .bcBlack)
             }
-            Text("\(item.diary.diaryLike.count)")
+            Text("\(diaryLikeStore.diaryLikeList.count)")
                 .padding(.trailing, 7)
             
             //댓글 버튼

@@ -8,24 +8,6 @@
 import SDWebImageSwiftUI
 import SwiftUI
 
-/*
- location
- seoul : 서울
- incheon : 경기 / 인천
- gangwon : 강원
- Chungcheong : 충청
- busan : 경상 / 부산
- jeju : 전라 / 제주
- 
- view
- mountain : 산
- ocean : 바다 / 해변
- valley : 계곡
- forest : 숲
- river : 강 / 호수
- island : 섬
- */
-
 struct SearchCampingSpotView: View {
     
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
@@ -70,16 +52,7 @@ struct SearchCampingSpotView: View {
     
     //MARK: searchable
     @State var searchText: String = ""
-    
-//    //MARK: 검색할때 필터링하여 저장
-//    var filterCamping: [Item] {
-//        if searchText == "" { return campingSpotStore.campingSpotList }
-//        //MARK: 검색 조건 정하기 - 현재: "캠핑장 이름, 주소, 전망" 검색 가능. -> 좋은 조건 생각나면 더 추가해주세용
-//        return campingSpotStore.campingSpotList.filter{$0.facltNm.lowercased().contains(searchText.lowercased()) || $0.addr1.lowercased().contains(searchText.lowercased()) || $0.lctCl.lowercased().contains(searchText.lowercased())}
-//    }
-    
-    
-    
+
     var body: some View {
         VStack {
             ScrollView {
@@ -113,6 +86,9 @@ struct SearchCampingSpotView: View {
                     }
                 }
             }
+        }
+        .task {
+            campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: campingSpotADName))
         }
     }
 }
@@ -262,9 +238,6 @@ extension SearchCampingSpotView {
                 }
             }
             .padding(.bottom, 30)
-        }
-        .task {
-            campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: campingSpotADName))
         }
     }
 }

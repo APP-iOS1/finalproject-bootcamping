@@ -28,6 +28,7 @@ struct CampingSpotDetailView: View {
         span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
     )
     @State var annotatedItem: [AnnotatedItem] = []
+    @State private var isPaste: Bool = false
     @State private var isBookmarked: Bool = false
     
     var campingSpot: Item
@@ -36,30 +37,14 @@ struct CampingSpotDetailView: View {
         
         ZStack {
             ScrollView(showsIndicators: false) {
-                TabView {
-                    ForEach(0...2, id: \.self) { item in
-                        // 캠핑장 사진
-                        if campingSpot.firstImageUrl.isEmpty {
-                            // 이미지 없는 것도 있어서 어떻게 할 지 고민 중~
-                            Image("noImage")
-                                .resizable()
-                                .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
-                                .padding(.bottom, 5)
-                        } else {
-                            WebImage(url: URL(string: campingSpot.firstImageUrl))
-                                .resizable()
-                                .placeholder {
-                                    Rectangle().foregroundColor(.gray)
-                                }
-                                .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
-                                .padding(.bottom, 5)
-                        }
+                WebImage(url: URL(string: campingSpot.firstImageUrl))
+                    .resizable()
+                    .placeholder {
+                        Rectangle().foregroundColor(.gray)
                     }
-                }
-                .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
-                .tabViewStyle(PageTabViewStyle())
-                // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
-                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: UIScreen.screenWidth)
+                    .padding(.bottom, 5)
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Group {
@@ -91,7 +76,16 @@ struct CampingSpotDetailView: View {
                                 .foregroundColor(.gray)
                             Text("\(campingSpot.addr1)") // 캠핑장 주소
                                 .font(.callout)
-                                .foregroundColor(.gray)
+                                .foregroundColor(.secondary)
+                            Button {
+                                UIPasteboard.general.string = campingSpot.addr1
+                                isPaste = true
+                            } label: {
+                                Text("복사")
+                                    .font(.callout)
+                                    .foregroundColor(.secondary)
+                                    .underline()
+                            }
                         }
                         .padding(.bottom, 15)
                     }
@@ -192,6 +186,11 @@ struct CampingSpotDetailView: View {
             isBookmarked = bookmarkStore.checkBookmarkedSpot(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, campingSpotId: campingSpot.contentId)
             diaryStore.readCampingSpotsDiarysCombine(contentId: campingSpot.contentId)
             print(diaryStore.diaryList)
+        }
+        .alert("복사가 완료되었습니다", isPresented: $isPaste) {
+            Button("완료") {
+                isPaste = false
+            }
         }
     }
 }

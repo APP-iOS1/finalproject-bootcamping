@@ -67,63 +67,64 @@ struct DiaryDetailView: View {
                     .onAppear {
                         proxy.scrollTo(topID)
                     }
-//                    .onChange(of: commentStore.commentList.count) { _ in
-//                        withAnimation { proxy.scrollTo(bottomID) }
-//                    }
+                    //                    .onChange(of: commentStore.commentList.count) { _ in
+                    //                        withAnimation { proxy.scrollTo(bottomID) }
+                    //                    }
                 }
-//                diaryCommetInputView\
+                //                diaryCommetInputView\
                 //댓글작성
-                    HStack {
-                        if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
-                            WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 30, height: 30)
-                                .clipShape(Circle())
-
-                        } else {
-                            Image(systemName: "person.fill")
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 30, height: 30)
-                                .clipShape(Circle())
-                                
-                        }
-                        TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
+                HStack {
+                    if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
+                        WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 30, height: 30)
+                            .clipShape(Circle())
                         
-                        Button {
-                            //TODO: -프로필 이미지 수정
-                            commentStore.createCommentCombine(diaryId: item.diary.id, comment: Comment(id: UUID().uuidString, diaryId: item.diary.id, uid: wholeAuthStore.currnetUserInfo?.id ?? "" , nickName: wholeAuthStore.currnetUserInfo?.nickName ?? "", profileImage: wholeAuthStore.currnetUserInfo?.profileImageURL ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp()))
-                            commentStore.readCommentsCombine(diaryId: item.diary.id)
-                            withAnimation {
-                                proxy.scrollTo(bottomID)
-                            }
-
-                            diaryComment = ""
-                        } label: {
-                            Image(systemName: "paperplane")
-                                .font(.title2)
-                        }
-                        .disabled(diaryComment == "")
+                    } else {
+                        Image(systemName: "person.fill")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 30, height: 30)
+                            .clipShape(Circle())
                         
                     }
-                    .foregroundColor(.bcBlack)
-                    .font(.title3)
-                    .padding(.vertical, 5)
-                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                    TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
+                    
+                    Button {
+                        //TODO: -프로필 이미지 수정
+                        commentStore.createCommentCombine(diaryId: item.diary.id, comment: Comment(id: UUID().uuidString, diaryId: item.diary.id, uid: wholeAuthStore.currnetUserInfo?.id ?? "" , nickName: wholeAuthStore.currnetUserInfo?.nickName ?? "", profileImage: wholeAuthStore.currnetUserInfo?.profileImageURL ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp()))
+                        commentStore.readCommentsCombine(diaryId: item.diary.id)
+                        withAnimation {
+                            proxy.scrollTo(bottomID)
+                        }
+                        
+                        diaryComment = ""
+                    } label: {
+                        Image(systemName: "paperplane")
+                            .font(.title2)
+                    }
+                    .disabled(diaryComment == "")
+                    
+                }
+                .foregroundColor(.bcBlack)
+                .font(.title3)
+                .padding(.vertical, 5)
+                .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 
             }
             .padding(.top)
             .padding(.bottom)
             .navigationTitle("BOOTCAMPING")
             .onAppear{
-                isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.diary.id)
+//                isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.diary.id)
                 commentStore.readCommentsCombine(diaryId: item.diary.id)
                 campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
                 diaryStore.readDiarysCombine()
                 //TODO: -함수 업데이트되면 넣기
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
             }
+        }
     }
 }
 

@@ -37,10 +37,12 @@ extension NotificationSettingsView {
     private var schedulePushNotification: some View{
         HStack{
             Toggle(isOn: $isSettingSchedulePN) {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 10) {
                     Text("스케줄 Push 알림")
-                    Text("추가한 캠핑 일정에 대한 알림")
-                    Text("*기기의 Push 설정이 필요합니다")
+                        .bold()
+                    Text("추가한 캠핑 일정에 대한 알림\n*앱 전체에 대한 Push 알림이 먼저 켜져 있어야 합니다.")
+                        .font(.caption)
+                        .multilineTextAlignment(.leading)
                 }
             }
         }
@@ -48,10 +50,12 @@ extension NotificationSettingsView {
     private var appPushNotification: some View{
         HStack{
             Toggle(isOn: $isSettingAppPN){
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 10) {
                     Text("앱 전체에 대한 Push 알림")
-                    Text("앱에서 보내는 푸시 알림")
-                    Text("*기기의 Push 설정이 필요합니다")
+                        .bold()
+                    Text("공지사항, 이벤트, 추천 소식 알림\n*기기의 Push 설정이 필요합니다")
+                        .font(.caption)
+                        .multilineTextAlignment(.leading)
                 }
             }
         }

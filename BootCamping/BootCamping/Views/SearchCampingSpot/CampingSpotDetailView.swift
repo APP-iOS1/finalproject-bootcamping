@@ -17,6 +17,8 @@ struct AnnotatedItem: Identifiable {
 }
 
 struct CampingSpotDetailView: View {
+    
+    @StateObject var diaryStore: DiaryStore = DiaryStore()
     //    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.5666791, longitude: 126.9782914), span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02))
     @State var region: MKCoordinateRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 37.5, longitude: 126.9),

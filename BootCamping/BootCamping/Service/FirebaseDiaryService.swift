@@ -486,6 +486,47 @@ struct FirebaseDiaryService {
         .eraseToAnyPublisher()
     }
     
+    //MARK: - Read ReadCampingSpotsDiarysService
+    
+    func readCampingSpotsDiarysService(contentId: String) -> AnyPublisher<[Diary], Error> {
+        Future<[Diary], Error> { promise in
+            database.collection("Diarys")
+                .whereField("contentId", isEqualTo: contentId)
+                .order(by: "diaryCreatedDate", descending: true)
+                .getDocuments { snapshot, error in
+                    if let error = error {
+                        promise(.failure(error))
+                        return
+                    }
+                    guard let snapshot = snapshot else {
+                        promise(.failure(FirebaseDiaryServiceError.badSnapshot))
+                        return
+                    }
+                    
+                    var diarys = [Diary]()
+                    
+                    //document 가져오기
+                    diarys = snapshot.documents.map { d in
+                        return Diary(id: d.documentID,
+                                     uid: d["uid"] as? String ?? "",
+                                     diaryUserNickName: d["diaryUserNickName"] as? String ?? "",
+                                     diaryTitle: d["diaryTitle"] as? String ?? "",
+                                     diaryAddress: d["diaryAddress"] as? String ?? "",
+                                     diaryContent: d["diaryContent"] as? String ?? "",
+                                     diaryImageNames: d["diaryImageNames"] as? [String] ?? [],
+                                     diaryImageURLs: d["diaryImageURLs"] as? [String] ?? [],
+                                     diaryCreatedDate: d["diaryCreatedDate"] as? Timestamp ?? Timestamp(),
+                                     diaryVisitedDate: d["diaryVisitedDate"] as? Date ?? Date(),
+                                     diaryLike: d["diaryLike"] as? [String] ?? [],
+                                     diaryIsPrivate: d["diaryIsPrivate"] as? Bool ?? false)
+                        
+                    }
+                    promise(.success(diarys))
+                }
+        }
+        .eraseToAnyPublisher()
+    }
+    
     
 //    database.collection("CampingSpotList")
 //        .whereField("contentId", isEqualTo: String(readDocument.campingSpotContenId))

@@ -79,45 +79,43 @@ struct AuthEmailService {
             
             var userUID: String = ""
             
-            let myQueue = DispatchQueue(label: "signUpWork",attributes: .concurrent)
-
+            
             let group = DispatchGroup()
             
-            myQueue.sync {
-                
-                group.enter()
-                if checkPasswordFormat(password: password, confirmPassword: confirmPassword) && checkAuthFormat(userEmail: userEmail) {
-                    Auth.auth().createUser(withEmail: userEmail, password: password) {  result, error in
-                        
-                        if let error = error {
-                            print(error)
-                            promise(.failure(AuthServiceError.signUpError))
-                        } else {
-                            if result != nil {
-                                Auth.auth().signIn(withEmail: userEmail, password: password) { result, error in
-                                    
-                                    if let error = error {
-                                        print(error)
-                                        promise(.failure(AuthServiceError.signUpError))
-                                    } else {
-                                        if result != nil {
-                                            userUID = Auth.auth().currentUser!.uid
-                                            group.leave()
-                                            group.notify(queue: myQueue) {
-                                                try? Auth.auth().signOut()
-                                                promise(.success(userUID))
-                                            }
-                                        } else {
-                                            promise(.failure(AuthServiceError.signUpError))
+            
+            group.enter()
+            if checkPasswordFormat(password: password, confirmPassword: confirmPassword) && checkAuthFormat(userEmail: userEmail) {
+                Auth.auth().createUser(withEmail: userEmail, password: password) {  result, error in
+                    
+                    if let error = error {
+                        print(error)
+                        promise(.failure(AuthServiceError.signUpError))
+                    } else {
+                        if result != nil {
+                            Auth.auth().signIn(withEmail: userEmail, password: password) { result, error in
+                                
+                                if let error = error {
+                                    print(error)
+                                    promise(.failure(AuthServiceError.signUpError))
+                                } else {
+                                    if result != nil {
+                                        userUID = Auth.auth().currentUser!.uid
+                                        group.leave()
+                                        group.notify(queue: .main) {
+                                            try? Auth.auth().signOut()
+                                            promise(.success(userUID))
                                         }
+                                    } else {
+                                        promise(.failure(AuthServiceError.signUpError))
                                     }
                                 }
-                            } else {
-                                promise(.failure(AuthServiceError.signUpError))
                             }
+                        } else {
+                            promise(.failure(AuthServiceError.signUpError))
                         }
-                        
                     }
+                    
+                    
                 }
             }
         }

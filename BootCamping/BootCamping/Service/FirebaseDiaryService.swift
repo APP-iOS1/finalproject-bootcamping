@@ -333,6 +333,7 @@ struct FirebaseDiaryService {
         .eraseToAnyPublisher()
     }
     
+    //MARK: - 실시간 다이어리 처음 받을때, 리프레쉬 할때 다이어리 정보 가져옴
     func firstGetDiaryService() -> AnyPublisher<LastDocWithDiaryList, Error> {
         Future<LastDocWithDiaryList, Error> { promise in
             database.collection("Diarys").order(by: "diaryCreatedDate", descending: true).limit(to: 5).getDocuments { snapshot, error in
@@ -406,7 +407,8 @@ struct FirebaseDiaryService {
         }
         .eraseToAnyPublisher()
     }
-    
+    //MARK: - 실시간 다이어리 페이지 네이션을 할 경우 작동
+
     func nextGetDiaryService(lastDoc: QueryDocumentSnapshot?) -> AnyPublisher<LastDocWithDiaryList, Error> {
         Future<LastDocWithDiaryList, Error> { promise in
             database.collection("Diarys")
@@ -486,12 +488,18 @@ struct FirebaseDiaryService {
         .eraseToAnyPublisher()
     }
     
-    
-//    database.collection("CampingSpotList")
-//        .whereField("contentId", isEqualTo: String(readDocument.campingSpotContenId))
-//        .order(by: "contentId", descending: false)
-//        .start(afterDocument: readDocument.lastDoc!)
-//        .limit(to: 10)
-//        .getDocuments { snapshot, error in
+//    func mostLikedGetDiarys() -> AnyPublisher<Void, Error> {
+//        Future<Void, Error> { promise in
+//            database.collection("Diarys").whereField(”diaryCreatedDate”, isGreaterThan: Timestamp() - 10).limit(to: 5).getDocuments { snapshot, error in
+//                if let error = error {
+//                    print(error)
+//                }
+//                guard let snapshot = snapshot else {
+//                    return
+//                }
+//            }
+//        }
+//        .eraseToAnyPublisher()
+//    }
 }
 

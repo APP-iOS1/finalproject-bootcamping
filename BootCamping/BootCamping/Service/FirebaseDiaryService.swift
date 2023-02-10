@@ -488,6 +488,8 @@ struct FirebaseDiaryService {
         .eraseToAnyPublisher()
     }
     
+    //MARK: - 위클리 인기 다이어리정보 읽기 서비스
+
     func mostLikedGetDiarysService() -> AnyPublisher<[UserInfoDiary], Error> {
         Future<[UserInfoDiary], Error> { promise in
             database.collection("Diarys").whereField("diaryCreatedDate", isGreaterThan: Timestamp(date: Date(timeIntervalSinceNow: -604800))).getDocuments { snapshot, error in

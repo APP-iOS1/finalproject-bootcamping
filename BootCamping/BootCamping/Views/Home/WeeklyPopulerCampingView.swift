@@ -20,32 +20,34 @@ struct WeeklyPopulerCampingView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(diaryStore.userInfoDiaryList, id: \.self) { item in
-                            NavigationLink {
-                                DiaryDetailView(item: item)
-                            } label: {
-                                ZStack(alignment: .topLeading) {
-                                    PhotoCardFrame(image: item.diary.diaryImageURLs[0])
-                                    LinearGradient(gradient: Gradient(colors: [Color.bcBlack.opacity(0.3), Color.clear]), startPoint: .top, endPoint: .bottom)
-                                        .cornerRadius(20)
-                                    PhotoMainStory(item: item.diary)
-                                }
-                                .modifier(PhotoCardModifier())
+                        NavigationLink {
+                            DiaryDetailView(item: item)
+                        } label: {
+                            ZStack(alignment: .topLeading) {
+                                PhotoCardFrame(image: item.diary.diaryImageURLs[0])
+                                LinearGradient(gradient: Gradient(colors: [Color.bcBlack.opacity(0.3), Color.clear]), startPoint: .top, endPoint: .bottom)
+                                    .cornerRadius(20)
+                                PhotoMainStory(item: item.diary)
                             }
+                            .modifier(PhotoCardModifier())
                         }
 
+                    }
                 }
             }
         }
         .onAppear {
             diaryStore.firstGetDiaryCombine()
         }
-
+        
     }
 }
 
 //MARK: - 포토카드 위 글씨
 struct PhotoMainStory: View {
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @StateObject var diaryStore: DiaryStore = DiaryStore()
+    @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
 
     var item: Diary
     
@@ -58,7 +60,7 @@ struct PhotoMainStory: View {
                     .padding(.top, 80)
                 
                 //TODO: -캠핑장 이름 연결
-                Text("난지캠핑장")
+                Text("\(campingSpotStore.campingSpotList.first?.facltNm ?? "")")
                     .font(.headline)
                     .fontWeight(.bold)
                     .padding(.bottom, UIScreen.screenHeight * 0.03)
@@ -77,6 +79,9 @@ struct PhotoMainStory: View {
                 }
                 .font(.subheadline)
                 
+            }
+            .onAppear {
+                campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diaryAddress]))
             }
             .foregroundColor(.white)
             .kerning(-0.7)

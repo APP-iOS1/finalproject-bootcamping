@@ -37,7 +37,6 @@ struct CampingSpotListRaw: View {
                 HStack {
                     ForEach(item.lctCl.components(separatedBy: ","), id: \.self) { view in
                         RoundedRectangle(cornerRadius: 10)
-//                            .frame(width: 35, height: 20)
                             .frame(width: 40 ,height: 20)
                             .foregroundColor(.bcGreen)
                             .overlay{
@@ -77,11 +76,13 @@ struct CampingSpotListRaw: View {
                     .multilineTextAlignment(.leading)
                     .foregroundColor(.bcBlack)
                     .padding(.horizontal, UIScreen.screenWidth*0.05)
+            } else {
+                Text("업체에서 제공하는 정보가 없습니다")
+                    .font(.callout)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(.bcBlack)
+                    .padding(.horizontal, UIScreen.screenWidth*0.05)
             }
-            //                        .lineLimit(3)//optional
-            //                        .expandButton(TextSet(text: "more", font: .body, color: .blue))//optional
-            //                        .collapseButton(TextSet(text: "less", font: .body, color: .blue))//optional
-            //                        .expandAnimation(.easeOut)//optional
             
         }
     }

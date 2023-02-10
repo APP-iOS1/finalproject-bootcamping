@@ -30,7 +30,33 @@ enum FirebaseDiaryLikeServiceError: Error {
 struct FirebaseDiaryLikeService {
     let database = Firestore.firestore()
     
-    //MARK: - Add BookmarkDiaryService
+    //MARK: - Read diaryLikeService
+    func readDiaryLikeService(diaryId: String) -> AnyPublisher<[String], Error> {
+        Future<[String], Error> { promise in
+            database.collection("Diarys")
+                .document(diaryId)
+                .getDocument { snapshot, error in
+                    if let error = error {
+                        promise(.failure(error))
+                        return
+                    }
+                    guard let snapshot = snapshot else {
+                        promise(.failure(FirebaseDiaryLikeServiceError.badSnapshot))
+                        return
+                    }
+                    
+                    let docData = snapshot.data()!
+                    //document 가져오기
+                    let diaryLike: [String] = docData["diaryLike"] as? [String] ?? []
+                    var diaryLikes = diaryLike
+
+                    promise(.success(diaryLikes))
+                }
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    //MARK: - Add diaryLikeService
     func addDiaryLikeService(diaryId: String) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
             guard let uid = Auth.auth().currentUser?.uid else { return }

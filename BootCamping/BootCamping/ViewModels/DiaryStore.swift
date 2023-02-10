@@ -205,10 +205,11 @@ class DiaryStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    //MARK: - 좋아요 많은 다이어리 불러오기 함수
-    func mostLikedGetDiarysCombine() {
-        print("하이하이")
-        FirebaseDiaryService().mostLikedGetDiarysService()
+
+    //MARK: - 캠핑장 디테일뷰에 들어갈 일기 Read하는 함수
+    
+    func readCampingSpotsDiarysCombine(contentId: String) {
+        FirebaseDiaryService().readCampingSpotsDiarysService(contentId: contentId)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -222,9 +223,9 @@ class DiaryStore: ObservableObject {
                     print("Finished get Diarys")
                     return
                 }
-            } receiveValue: { diarys in
-                let sortedDiarys = diarys.sorted{ $0.diary.diaryLike.count > $1.diary.diaryLike.count }
-                self.popularDiaryList = sortedDiarys
+
+            } receiveValue: { [weak self] diarys in
+                self?.diaryList = diarys
             }
             .store(in: &cancellables)
     }

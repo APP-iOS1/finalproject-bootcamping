@@ -86,22 +86,20 @@ struct FirebaseDiaryService {
     }
     
     //MARK: - Create FirebaseDiaryService
-    
-    func createDiaryService(diary: Diary, images: [Data]) -> AnyPublisher<Void, Error> {
-        Future<Void, Error> { promise in
-            //첫번째 비동기 통신
-            
-            var imageNames: [String] = []
-            var imageURLs: [String] = []
-            
-            let myQueue = DispatchQueue(label: "creatework",attributes: .concurrent)
-            let group = DispatchGroup()
-            
-            guard let userUID = Auth.auth().currentUser?.uid else { return }
-            
-            for image in images {
-                group.enter()
-                myQueue.sync {
+        
+        func createDiaryService(diary: Diary, images: [Data]) -> AnyPublisher<Void, Error> {
+            Future<Void, Error> { promise in
+                //첫번째 비동기 통신
+                
+                var imageNames: [String] = []
+                var imageURLs: [String] = []
+                
+                let group = DispatchGroup()
+                
+                guard let userUID = Auth.auth().currentUser?.uid else { return }
+                
+                for image in images {
+                    group.enter()
                     let storageRef = Storage.storage().reference().child("DiaryImages")
                     let imageName = UUID().uuidString
                     let metadata = StorageMetadata()
@@ -132,13 +130,13 @@ struct FirebaseDiaryService {
                             }
                         }
                     }
+                    
+                    
                 }
-            }
-            group.notify(queue: myQueue) {
-                
-                for imageName in imageNames {
-                    group.enter()
-                    myQueue.sync {
+                group.notify(queue: .global(qos: .userInteractive)) {
+                    
+                    for imageName in imageNames {
+                        group.enter()
                         let storageRef = Storage.storage().reference().child("DiaryImages")
                         storageRef.child(imageName).downloadURL { url, error in
                             if let error = error {
@@ -149,39 +147,40 @@ struct FirebaseDiaryService {
                                 group.leave()
                             }
                         }
+                        
+                        
+                    }
+                    
+                    group.notify(queue: .main) {
+                        
+                        let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: diary.diaryLike, diaryIsPrivate: diary.diaryIsPrivate)
+                        
+                        self.database.collection("Diarys").document(diary.id).setData([
+                            "id": newDiary.id,
+                            "uid": newDiary.uid,
+                            "diaryUserNickName": newDiary.diaryUserNickName,
+                            "diaryTitle": newDiary.diaryTitle,
+                            "diaryAddress": newDiary.diaryAddress,
+                            "diaryContent": newDiary.diaryContent,
+                            "diaryImageNames": newDiary.diaryImageNames,
+                            "diaryImageURLs": newDiary.diaryImageURLs,
+                            "diaryCreatedDate": newDiary.diaryCreatedDate,
+                            "diaryVisitedDate": newDiary.diaryVisitedDate,
+                            "diaryLike": newDiary.diaryLike,
+                            "diaryIsPrivate": newDiary.diaryIsPrivate,]) { error in
+                                if let error = error {
+                                    print(error)
+                                    promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                } else {
+                                    promise(.success(()))
+                                }
+                                
+                            }
                     }
                 }
-                
-                group.notify(queue: myQueue) {
-                    
-                    let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: diary.diaryLike, diaryIsPrivate: diary.diaryIsPrivate)
-                    
-                    self.database.collection("Diarys").document(diary.id).setData([
-                        "id": newDiary.id,
-                        "uid": newDiary.uid,
-                        "diaryUserNickName": newDiary.diaryUserNickName,
-                        "diaryTitle": newDiary.diaryTitle,
-                        "diaryAddress": newDiary.diaryAddress,
-                        "diaryContent": newDiary.diaryContent,
-                        "diaryImageNames": newDiary.diaryImageNames,
-                        "diaryImageURLs": newDiary.diaryImageURLs,
-                        "diaryCreatedDate": newDiary.diaryCreatedDate,
-                        "diaryVisitedDate": newDiary.diaryVisitedDate,
-                        "diaryLike": newDiary.diaryLike,
-                        "diaryIsPrivate": newDiary.diaryIsPrivate,]) { error in
-                            if let error = error {
-                                print(error)
-                                promise(.failure(FirebaseDiaryServiceError.createDiaryError))
-                            } else {
-                                promise(.success(()))
-                            }
-                            
-                        }
-                }
             }
+            .eraseToAnyPublisher()
         }
-        .eraseToAnyPublisher()
-    }
     
     //MARK: - Update FirebaseDiaryService
     
@@ -192,13 +191,11 @@ struct FirebaseDiaryService {
             
             guard let userUID = Auth.auth().currentUser?.uid else { return }
             
-            let myQueue = DispatchQueue(label: "updatework",attributes: .concurrent)
             
             let group = DispatchGroup()
             
             for image in images {
                 group.enter()
-                myQueue.sync {
                     let storageRef = Storage.storage().reference().child("DiaryImages")
                     let imageName = UUID().uuidString
                     let metadata = StorageMetadata()
@@ -228,14 +225,13 @@ struct FirebaseDiaryService {
                                 print("A separate error occurred. This is a good place to retry the upload.")
                             }
                         }
-                    }
+                    
                 }
             }
-            group.notify(queue: myQueue) {
+            group.notify(queue: .global(qos: .userInteractive)) {
                 
                 for imageName in imageNames {
                     group.enter()
-                    myQueue.sync {
                         let storageRef = Storage.storage().reference().child("DiaryImages")
                         storageRef.child(imageName).downloadURL { url, error in
                             if let error = error {
@@ -246,9 +242,9 @@ struct FirebaseDiaryService {
                                 group.leave()
                             }
                         }
-                    }
+                    
                 }
-                group.notify(queue: myQueue) {
+                group.notify(queue: .main) {
                     
                     let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: diary.diaryLike, diaryIsPrivate: diary.diaryIsPrivate)
                     
@@ -306,23 +302,22 @@ struct FirebaseDiaryService {
         Future<Void, Error> { promise in
             let storageRef = Storage.storage().reference().child("DiaryImages")
             
-            let myQueue = DispatchQueue(label: "updatework",attributes: .concurrent)
+
             let group = DispatchGroup()
             
             for diaryImage in diary.diaryImageNames {
                 group.enter()
-                myQueue.sync {
-                    storageRef.child(diaryImage).delete { error in
-                        if let error = error {
-                            print("Error removing image from storage: \(error.localizedDescription)")
-                            promise(.failure(FirebaseDiaryServiceError.deleteDiaryError))
-                        } else {
-                            group.leave()
-                        }
+                storageRef.child(diaryImage).delete { error in
+                    if let error = error {
+                        print("Error removing image from storage: \(error.localizedDescription)")
+                        promise(.failure(FirebaseDiaryServiceError.deleteDiaryError))
+                    } else {
+                        group.leave()
                     }
                 }
+                
             }
-            group.notify(queue: myQueue) {
+            group.notify(queue: .main) {
                 
                 self.database.collection("Diarys")
                     .document(diary.id).delete() { error in
@@ -487,6 +482,47 @@ struct FirebaseDiaryService {
                     }
                 }
             }
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    //MARK: - Read ReadCampingSpotsDiarysService
+    
+    func readCampingSpotsDiarysService(contentId: String) -> AnyPublisher<[Diary], Error> {
+        Future<[Diary], Error> { promise in
+            database.collection("Diarys")
+                .whereField("diaryAddress", isEqualTo: contentId)
+                .order(by: "diaryCreatedDate", descending: true)
+                .getDocuments { snapshot, error in
+                    if let error = error {
+                        promise(.failure(error))
+                        return
+                    }
+                    guard let snapshot = snapshot else {
+                        promise(.failure(FirebaseDiaryServiceError.badSnapshot))
+                        return
+                    }
+                    
+                    var diarys = [Diary]()
+                    
+                    //document 가져오기
+                    diarys = snapshot.documents.map { d in
+                        return Diary(id: d.documentID,
+                                     uid: d["uid"] as? String ?? "",
+                                     diaryUserNickName: d["diaryUserNickName"] as? String ?? "",
+                                     diaryTitle: d["diaryTitle"] as? String ?? "",
+                                     diaryAddress: d["diaryAddress"] as? String ?? "",
+                                     diaryContent: d["diaryContent"] as? String ?? "",
+                                     diaryImageNames: d["diaryImageNames"] as? [String] ?? [],
+                                     diaryImageURLs: d["diaryImageURLs"] as? [String] ?? [],
+                                     diaryCreatedDate: d["diaryCreatedDate"] as? Timestamp ?? Timestamp(),
+                                     diaryVisitedDate: d["diaryVisitedDate"] as? Date ?? Date(),
+                                     diaryLike: d["diaryLike"] as? [String] ?? [],
+                                     diaryIsPrivate: d["diaryIsPrivate"] as? Bool ?? false)
+                        
+                    }
+                    promise(.success(diarys))
+                }
         }
         .eraseToAnyPublisher()
     }

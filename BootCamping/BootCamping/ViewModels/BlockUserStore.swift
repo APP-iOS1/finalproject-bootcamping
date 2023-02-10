@@ -34,24 +34,24 @@ class BlockedUserStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    //MARK: - remove Blocked User in Blocked User Combine
-    func removeBlockedUserCombine(diaryId: String) {
-        FirebaseBookmarkService().removeBookmarkDiaryService(diaryId: diaryId)
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .failure(let error):
-                    print(error)
-                    print("Failed remove bookmark in Diary")
-                    return
-                case .finished:
-                    print("Finished remove bookmark in Diary")
-                    return
-                }
-            } receiveValue: { _ in
-                
-            }
-            .store(in: &cancellables)
-    }
+//    //MARK: - remove Blocked User in Blocked User Combine
+//    func removeBlockedUserCombine(diaryId: String) {
+//        FirebaseBookmarkService().removeBookmarkDiaryService(diaryId: diaryId)
+//            .receive(on: DispatchQueue.main)
+//            .sink { completion in
+//                switch completion {
+//                case .failure(let error):
+//                    print(error)
+//                    print("Failed remove bookmark in Diary")
+//                    return
+//                case .finished:
+//                    print("Finished remove bookmark in Diary")
+//                    return
+//                }
+//            } receiveValue: { _ in
+//                
+//            }
+//            .store(in: &cancellables)
+//    }
     
 }

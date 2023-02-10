@@ -83,13 +83,15 @@ extension MyPageView{
             if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
                 WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
                     .resizable()
+                    .scaledToFill()
+                    .frame(width: 60, height: 60)
                     .clipShape(Circle())
-                .frame(width: 60, height: 60)
+
             } else {
                 Image(systemName: "person.fill")
                     .resizable()
+                    .scaledToFill()
                     .frame(width: 60, height: 60)
-                    .aspectRatio(contentMode: .fill)
                     .clipShape(Circle())
                     
             }
@@ -143,15 +145,16 @@ extension MyPageView{
             case .myCamping:
                 CalendarView()
             case .bookmarkedCampingSpot:
-                VStack(spacing: 20){
+                VStack(spacing: 10){
                     ForEach(campingSpotStore.campingSpotList, id: \.contentId) { campingSpot in
                         NavigationLink {
-                            CampingSpotDetailView(places: campingSpot)
+                            CampingSpotDetailView(campingSpot: campingSpot)
                         } label: {
                             BookmarkCellView(campingSpot: campingSpot)
                         }
                     }
                 }
+                .padding(.horizontal, UIScreen.screenWidth * 0.03)
             }
         }
     }

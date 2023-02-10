@@ -13,7 +13,7 @@ struct AddScheduleView: View {
     
     @EnvironmentObject var scheduleStore: ScheduleStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
-    @EnvironmentObject var localNotification: LocalNotification
+    @EnvironmentObject var localNotificationCenter: LocalNotificationCenter
     
 
     @State private var startDate = Date()
@@ -70,6 +70,9 @@ struct AddScheduleView: View {
                     displayedComponents: [.date]
                 )
                 .datePickerStyle(.automatic)
+                .environment(\.locale, Locale(identifier: "ko_KR"))
+                .environment(\.calendar, Calendar(identifier: .gregorian))
+                .environment(\.timeZone, TimeZone(abbreviation: "KST")!)
                 DatePicker(
                     "캠핑 종료일",
                     selection: $endDate,
@@ -77,6 +80,9 @@ struct AddScheduleView: View {
                     displayedComponents: [.date]
                 )
                 .datePickerStyle(.automatic)
+                .environment(\.locale, Locale(identifier: "ko_KR"))
+                .environment(\.calendar, Calendar(identifier: .gregorian))
+                .environment(\.timeZone, TimeZone(abbreviation: "KST")!)
                 .onChange(of: startDate) { newStartDate in
                     if endDate < newStartDate {
                         endDate = newStartDate
@@ -181,9 +187,9 @@ extension AddScheduleView {
                 scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: startDate, color: selectedColor))
             }
             scheduleStore.readScheduleCombine()
-            if isSettingNotification{
-                localNotification.setNotification(startDate: startDate)
-            }
+//            if isSettingNotification{
+//                localNotification.setNotification(startDate: startDate)
+//            }
             dismiss()
         } label: {
             Text("등록")

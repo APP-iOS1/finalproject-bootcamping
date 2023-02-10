@@ -197,7 +197,7 @@ extension SearchCampingSpotView {
                 ForEach(campingSpotStore.campingSpotList.indices, id:\.self){ index in
                     VStack(alignment: .leading){
                         NavigationLink {
-                            CampingSpotDetailView(places: campingSpotStore.campingSpotList[index])
+                            CampingSpotDetailView(campingSpot: campingSpotStore.campingSpotList[index])
                         } label: {
                             WebImage(url: URL(string: campingSpotStore.campingSpotList[index].firstImageUrl == "" ? campingSpotStore.noImageURL : campingSpotStore.campingSpotList[index].firstImageUrl))
                                 .resizable()

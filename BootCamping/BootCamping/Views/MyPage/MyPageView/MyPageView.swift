@@ -146,7 +146,7 @@ extension MyPageView{
                 VStack(spacing: 10){
                     ForEach(campingSpotStore.campingSpotList, id: \.contentId) { campingSpot in
                         NavigationLink {
-                            CampingSpotDetailView(places: campingSpot)
+                            CampingSpotDetailView(campingSpot: campingSpot)
                         } label: {
                             BookmarkCellView(campingSpot: campingSpot)
                         }

@@ -83,13 +83,16 @@ extension MyPageView{
             if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
                 WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
                     .resizable()
+                    .scaledToFill()
+                    .clipped()
                     .clipShape(Circle())
                 .frame(width: 60, height: 60)
             } else {
                 Image(systemName: "person.fill")
                     .resizable()
+                    .scaledToFill()
+                    .clipped()
                     .frame(width: 60, height: 60)
-                    .aspectRatio(contentMode: .fill)
                     .clipShape(Circle())
                     
             }

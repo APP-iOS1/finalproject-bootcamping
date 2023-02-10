@@ -18,7 +18,6 @@ struct NotificationSettingsView: View {
         List{
             Section {
                 schedulePushNotification
-                appPushNotification
             }
         }
         .listStyle(.plain)
@@ -29,6 +28,9 @@ struct NotificationSettingsView: View {
             }
         }
         .task{
+            await localNotificationCenter.getCurrentSetting()
+            isSettingSchedulePN = (localNotificationCenter.authorizationStatus == .authorized)
+            print(isSettingSchedulePN)
         }
     }
 }
@@ -38,9 +40,9 @@ extension NotificationSettingsView {
         HStack{
             Toggle(isOn: $isSettingSchedulePN) {
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("스케줄 Push 알림")
+                    Text("내 캠핑 일정에 대한 Push 알림")
                         .bold()
-                    Text("추가한 캠핑 일정에 대한 알림\n*앱 전체에 대한 Push 알림이 먼저 켜져 있어야 합니다.")
+                    Text("추가한 캠핑 일정에 대한 알림\n*기기의 Push 설정이 필요합니다.")
                         .font(.caption)
                         .multilineTextAlignment(.leading)
                 }
@@ -53,7 +55,7 @@ extension NotificationSettingsView {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("앱 전체에 대한 Push 알림")
                         .bold()
-                    Text("공지사항, 이벤트, 추천 소식 알림\n*기기의 Push 설정이 필요합니다")
+                    Text("공지사항, 이벤트, 추천 소식 알림\n*기기의 Push 설정이 필요합니다.")
                         .font(.caption)
                         .multilineTextAlignment(.leading)
                 }

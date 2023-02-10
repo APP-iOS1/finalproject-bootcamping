@@ -22,9 +22,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
         /* It sets how much Firebase will log. Setting this to min reduces the amount of data you’ll see in your debugger. */
         FirebaseConfiguration.shared.setLoggerLevel(.min)
-        
-        UNUserNotificationCenter.current().delegate = self
-        
+    
         return true
     }
     
@@ -68,7 +66,7 @@ struct BootCampingApp: App {
                 .environmentObject(WholeAuthStore())
                 .environmentObject(CommentStore())
                 .environmentObject(DiaryLikeStore())
-                .environmentObject(LocalNotification())
+                .environmentObject(LocalNotificationCenter())
                 .onOpenURL { url in
                     GIDSignIn.sharedInstance.handle(url)
                 }
@@ -97,25 +95,4 @@ extension AppDelegate {
         print(#function, "DEBUG: +++ register error: \(error.localizedDescription)")
         // Try again later.
     }
-}
-
-extension AppDelegate: UNUserNotificationCenterDelegate {
-    // MARK: - 알람 처리 메소드 구현
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        /* 앱이 포어그라운드에서 실행될 때 도착한 알람 처리 */
-        let userInfo = notification.request.content.userInfo
-        
-        print(#function, "+++ willPresent: userInfo: ", userInfo)
-        
-//        completionHandler([.banner, .sound, .badge])
-        completionHandler([.banner, .list, .sound, .badge])
-    }
-
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let userInfo = response.notification.request.content.userInfo
-        print(#function, "+++ didReceive: userInfo: ", userInfo)
-        completionHandler()
-    }
-
-    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) { }
 }

@@ -255,7 +255,7 @@ private extension DiaryDetailView {
     var diaryCampingLink: some View {
         
         NavigationLink {
-            CampingSpotDetailView(places: campingSpotStore.campingSpotList.first ?? campingSpotStore.campingSpot)
+            CampingSpotDetailView(campingSpot: campingSpotStore.campingSpotList.first ?? campingSpotStore.campingSpot)
         } label: {
             HStack {
                 WebImage(url: URL(string: campingSpotStore.campingSpotList.first?.firstImageUrl == "" ? campingSpotStore.noImageURL : campingSpotStore.campingSpotList.first?.firstImageUrl ?? "")) //TODO: -캠핑장 사진 연동

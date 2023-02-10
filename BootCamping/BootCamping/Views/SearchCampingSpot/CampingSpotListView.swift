@@ -39,7 +39,7 @@ struct CampingSpotListView: View {
                     LazyVStack {
                         ForEach(campingSpotStore.campingSpotList.indices, id: \.self) { index in
                             NavigationLink {
-                                CampingSpotDetailView(places: campingSpotStore.campingSpotList[index])
+                                CampingSpotDetailView(campingSpot: campingSpotStore.campingSpotList[index])
                             } label: {
                                 CampingSpotListRaw(item: campingSpotStore.campingSpotList[index])
                                     .padding(.bottom,40)

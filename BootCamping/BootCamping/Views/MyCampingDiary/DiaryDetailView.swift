@@ -258,7 +258,7 @@ private extension DiaryDetailView {
             CampingSpotDetailView(places: campingSpotStore.campingSpotList.first ?? campingSpotStore.campingSpot)
         } label: {
             HStack {
-                WebImage(url: URL(string: campingSpotStore.campingSpotList.first?.firstImageUrl ?? "")) //TODO: -캠핑장 사진 연동
+                WebImage(url: URL(string: campingSpotStore.campingSpotList.first?.firstImageUrl == "" ? campingSpotStore.noImageURL : campingSpotStore.campingSpotList.first?.firstImageUrl ?? "")) //TODO: -캠핑장 사진 연동
                     .resizable()
                     .frame(width: 60, height: 60)
                     .padding(.trailing, 5)
@@ -267,7 +267,7 @@ private extension DiaryDetailView {
                     Text(campingSpotStore.campingSpotList.first?.facltNm ?? "")
                         .font(.headline)
                     HStack {
-                        Text(campingSpotStore.campingSpotList.first?.addr1 ?? "")
+                        Text("\(campingSpotStore.campingSpotList.first?.doNm ?? "") \(campingSpotStore.campingSpotList.first?.sigunguNm ?? "")")
                         Spacer()
                         Group {
                             Text("자세히 보기")

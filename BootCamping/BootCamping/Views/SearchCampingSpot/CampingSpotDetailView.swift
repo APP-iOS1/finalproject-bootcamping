@@ -74,7 +74,7 @@ struct CampingSpotDetailView: View {
                                 } else{
                                     bookmarkStore.removeBookmarkCampingSpotCombine(campingSpotId: places.contentId)
                                 }
-                                wholeAuthStore.readUserListCombine()
+                                wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
                             } label: {
                                 Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
                                     .bold()

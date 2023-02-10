@@ -490,7 +490,7 @@ struct FirebaseDiaryService {
     
     func mostLikedGetDiarysService() -> AnyPublisher<[UserInfoDiary], Error> {
         Future<[UserInfoDiary], Error> { promise in
-            database.collection("Diarys").whereField("diaryCreatedDate", isGreaterThan: Timestamp(date: Date(timeIntervalSinceNow: -60000))).getDocuments { snapshot, error in
+            database.collection("Diarys").whereField("diaryCreatedDate", isGreaterThan: Timestamp(date: Date(timeIntervalSinceNow: -604800))).getDocuments { snapshot, error in
                 if let error = error {
                     print(error)
                 }
@@ -503,7 +503,6 @@ struct FirebaseDiaryService {
                 var diarys = [Diary]()
                 
                 var userInfoDiarys = [UserInfoDiary]()
-
                 for document in snapshot.documents {
                     group.enter()
                     
@@ -529,15 +528,16 @@ struct FirebaseDiaryService {
                     group.leave()
                 }
                 
-                group.notify(queue: .global()) {
-                    
+                group.notify(queue: .main) {
+                    print("다이어리 갯수 ------------------ \(diarys.count)")
                     if diarys.count > 10 {
                         
                         var sortedDiarys = diarys.sorted{ $0.diaryLike.count > $1.diaryLike.count}
                         
-                        sortedDiarys.removeLast(11)
+                        sortedDiarys.removeSubrange(10...diarys.count - 1)
                         
-                        
+                        print("솔티드다이어리 갯수 ------------------ \(sortedDiarys.count)")
+
                         for sortedDiary in sortedDiarys {
                             
                             group.enter()
@@ -562,6 +562,7 @@ struct FirebaseDiaryService {
                                 let user: User = User(id: id, profileImageName: profileImageName, profileImageURL: profileImageURL, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries, bookMarkedSpot: bookMarkedSpot, blockedUser: blockedUser)
                                 
                                 userInfoDiarys.append(UserInfoDiary(diary: sortedDiary, user: user))
+                                group.leave()
                             }
                             group.notify(queue: .main) {
                                 promise(.success(userInfoDiarys))

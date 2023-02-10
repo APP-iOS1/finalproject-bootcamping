@@ -205,7 +205,31 @@ class DiaryStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-
+    //MARK: - 좋아요 많은 다이어리 불러오기 함수
+    
+    func mostLikedGetDiarysCombine() {
+        FirebaseDiaryService().mostLikedGetDiarysService()
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed get Diarys")
+                    self.firebaseDiaryServiceError = .badSnapshot
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished get Diarys")
+                    print("\(self.popularDiaryList.count)")
+                    return
+                }
+            } receiveValue: { popularList in
+                let sortedArray = popularList.sorted{ $0.diary.diaryLike.count > $1.diary.diaryLike.count}
+                self.popularDiaryList = sortedArray
+            }
+            .store(in: &cancellables)
+    }
+    
     //MARK: - 캠핑장 디테일뷰에 들어갈 일기 Read하는 함수
     
     func readCampingSpotsDiarysCombine(contentId: String) {

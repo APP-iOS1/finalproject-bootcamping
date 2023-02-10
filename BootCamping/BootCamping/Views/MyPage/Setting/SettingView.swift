@@ -34,7 +34,7 @@ struct SettingView: View {
             NavigationLink(destination: EmptyView()) {
                 Text("앱 정보")
             }
-            NavigationLink(destination: EmptyView()) {
+            NavigationLink(destination: NotificationSettingsView()) {
                 Text("알림설정")
             }
             NavigationLink(destination: PrivacyView()) {

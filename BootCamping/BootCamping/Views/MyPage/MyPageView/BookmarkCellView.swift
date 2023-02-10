@@ -47,41 +47,7 @@ struct BookmarkCellView: View {
             RoundedRectangle(cornerRadius: 10)
                 .stroke(Color.bcDarkGray, lineWidth: 1)
                 .opacity(0.3)
-                .overlay(alignment: .topTrailing) {
-                    Image(systemName: "bookmark.fill")
-                        .bold()
-                        .foregroundColor(Color.bcBlack)
-                        .shadow(radius: 10)
-                        .padding(.horizontal, 10)
-                }
         )
-//        HStack(alignment: .top) {
-//            WebImage(url: URL(string: campingSpot.firstImageUrl))
-//                .resizable()
-//                .aspectRatio(contentMode: .fit)
-//            VStack(alignment: .leading, spacing: 5) {
-//                Text(campingSpot.facltNm)
-//                    .font(.title3)
-//                    .kerning(-0.5)
-//                Text(campingSpot.lineIntro)
-//                    .font(.subheadline)
-//                    .multilineTextAlignment(.leading)
-//                    .lineLimit(2)
-//                Spacer()
-//                Text("\(Image(systemName: "mappin.circle.fill")) \(campingSpot.addr1)")
-//                    .font(.subheadline)
-//                    .foregroundColor(.secondary)
-//                    .lineLimit(1)
-//            }
-//            .padding(.horizontal, 5)
-//            Spacer()
-//            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-//                .bold()
-//                .foregroundColor(.white)
-//                .shadow(color: .black, radius: 10)
-//                .padding()
-//        }
-//        .frame(maxWidth: UIScreen.screenWidth, maxHeight: 150)
     }
 }
 

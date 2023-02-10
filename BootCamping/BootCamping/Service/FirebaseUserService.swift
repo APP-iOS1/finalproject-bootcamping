@@ -132,62 +132,59 @@ struct FirebaseUserService {
     }
     
     //MARK: - Update FirebaseUserService
-
+    
     func updateUserService(image: Data?, user: User) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
             if let image = image {
                 let imageName = UUID().uuidString
                 var imageURS: String = ""
                 
-                let myQueue = DispatchQueue(label: "updatework",attributes: .concurrent)
                 let group = DispatchGroup()
                 
                 group.enter()
-                myQueue.sync {
-                    let storageRef = Storage.storage().reference().child("UserImages")
-                    let metadata = StorageMetadata()
-                    metadata.contentType = "image/jpeg"
-                    let uploadTask = storageRef.child(imageName).putData(image, metadata: metadata)
-                    uploadTask.observe(.success) { snapshot in
-                        group.leave()
-                    }
-                    uploadTask.observe(.failure) { snapshot in
-                        if let error = snapshot.error as? NSError {
-                            switch (StorageErrorCode(rawValue: error.code)!) {
-                            case .objectNotFound:
-                                promise(.failure(FirebaseUserServiceError.updateUserListError))
-                                print("File doesn't exist")
-                            case .unauthorized:
-                                promise(.failure(FirebaseUserServiceError.updateUserListError))
-                                print("User doesn't have permission to access file")
-                            case .cancelled:
-                                promise(.failure(FirebaseUserServiceError.updateUserListError))
-                                print("User canceled the upload")
-                            case .unknown:
-                                promise(.failure(FirebaseUserServiceError.updateUserListError))
-                                print("Unknown error occurred, inspect the server response")
-                            default:
-                                promise(.failure(FirebaseUserServiceError.updateUserListError))
-                                print("A separate error occurred. This is a good place to retry the upload.")
-                            }
+                let storageRef = Storage.storage().reference().child("UserImages")
+                let metadata = StorageMetadata()
+                metadata.contentType = "image/jpeg"
+                let uploadTask = storageRef.child(imageName).putData(image, metadata: metadata)
+                uploadTask.observe(.success) { snapshot in
+                    group.leave()
+                }
+                uploadTask.observe(.failure) { snapshot in
+                    if let error = snapshot.error as? NSError {
+                        switch (StorageErrorCode(rawValue: error.code)!) {
+                        case .objectNotFound:
+                            promise(.failure(FirebaseUserServiceError.updateUserListError))
+                            print("File doesn't exist")
+                        case .unauthorized:
+                            promise(.failure(FirebaseUserServiceError.updateUserListError))
+                            print("User doesn't have permission to access file")
+                        case .cancelled:
+                            promise(.failure(FirebaseUserServiceError.updateUserListError))
+                            print("User canceled the upload")
+                        case .unknown:
+                            promise(.failure(FirebaseUserServiceError.updateUserListError))
+                            print("Unknown error occurred, inspect the server response")
+                        default:
+                            promise(.failure(FirebaseUserServiceError.updateUserListError))
+                            print("A separate error occurred. This is a good place to retry the upload.")
                         }
+                        
                     }
                 }
-                group.notify(queue: myQueue) {
+                group.notify(queue: .global()) {
                     group.enter()
-                    myQueue.sync {
-                        let storageRef = Storage.storage().reference().child("UserImages")
-                        storageRef.child(imageName).downloadURL { url, error in
-                            if let error = error {
-                                print(error)
-                                promise(.failure(FirebaseUserServiceError.updateUserListError))
-                            } else {
-                                imageURS = url!.absoluteString
-                                group.leave()
-                            }
+                    let storageRef = Storage.storage().reference().child("UserImages")
+                    storageRef.child(imageName).downloadURL { url, error in
+                        if let error = error {
+                            print(error)
+                            promise(.failure(FirebaseUserServiceError.updateUserListError))
+                        } else {
+                            imageURS = url!.absoluteString
+                            group.leave()
                         }
+                        
                     }
-                    group.notify(queue: myQueue) {
+                    group.notify(queue: .main) {
                         self.database.collection("UserList").document(user.id).setData([
                             "id": user.id,
                             "profileImageName": imageName,
@@ -236,11 +233,9 @@ struct FirebaseUserService {
         Future<Void, Error> { promise in
             let storageRef = Storage.storage().reference().child("UserImages")
             
-            let myQueue = DispatchQueue(label: "deletework",attributes: .concurrent)
             let group = DispatchGroup()
             
             group.enter()
-            myQueue.sync {
                 storageRef.child(user.profileImageName).delete { error in
                     if let error = error {
                         print("Error removing image from storage: \(error.localizedDescription)")
@@ -248,10 +243,10 @@ struct FirebaseUserService {
                     } else {
                         group.leave()
                     }
-                }
+                
             }
             
-            group.notify(queue: myQueue) {
+            group.notify(queue: .main) {
                 
                 self.database.collection("UserList")
                     .document(user.id).delete() { error in

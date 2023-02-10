@@ -333,6 +333,7 @@ struct FirebaseDiaryService {
         .eraseToAnyPublisher()
     }
     
+    //MARK: - 실시간 다이어리 처음 받을때, 리프레쉬 할때 다이어리 정보 가져옴
     func firstGetDiaryService() -> AnyPublisher<LastDocWithDiaryList, Error> {
         Future<LastDocWithDiaryList, Error> { promise in
             database.collection("Diarys").order(by: "diaryCreatedDate", descending: true).limit(to: 5).getDocuments { snapshot, error in
@@ -406,7 +407,8 @@ struct FirebaseDiaryService {
         }
         .eraseToAnyPublisher()
     }
-    
+    //MARK: - 실시간 다이어리 페이지 네이션을 할 경우 작동
+
     func nextGetDiaryService(lastDoc: QueryDocumentSnapshot?) -> AnyPublisher<LastDocWithDiaryList, Error> {
         Future<LastDocWithDiaryList, Error> { promise in
             database.collection("Diarys")
@@ -486,6 +488,128 @@ struct FirebaseDiaryService {
         .eraseToAnyPublisher()
     }
     
+    func mostLikedGetDiarysService() -> AnyPublisher<[UserInfoDiary], Error> {
+        Future<[UserInfoDiary], Error> { promise in
+            database.collection("Diarys").whereField("diaryCreatedDate", isGreaterThan: Timestamp(date: Date(timeIntervalSinceNow: -60000))).getDocuments { snapshot, error in
+                if let error = error {
+                    print(error)
+                }
+                guard let snapshot = snapshot else {
+                    return
+                }
+                
+                let group = DispatchGroup()
+                
+                var diarys = [Diary]()
+                
+                var userInfoDiarys = [UserInfoDiary]()
+
+                for document in snapshot.documents {
+                    group.enter()
+                    
+                    let docData = document.data()
+                    
+                    let id: String = docData["id"] as? String ?? ""
+                    let uid: String = docData["uid"] as? String ?? ""
+                    let diaryUserNickName: String = docData["diaryUserNickName"] as? String ?? ""
+                    let diaryTitle: String = docData["diaryTitle"] as? String ?? ""
+                    let diaryAddress: String = docData["diaryAddress"] as? String ?? ""
+                    let diaryContent: String = docData["diaryContent"] as? String ?? ""
+                    let diaryImageNames: [String] = docData["diaryImageNames"] as? [String] ?? []
+                    let diaryImageURLs: [String] = docData["diaryImageURLs"] as? [String] ?? []
+                    let diaryCreatedDate: Timestamp = docData["diaryCreatedDate"] as? Timestamp ?? Timestamp()
+                    let diaryVisitedDate: Date = docData["diaryVisitedDate"] as? Date ?? Date()
+                    let diaryLike: [String] = docData["diaryLike"] as? [String] ?? []
+                    let diaryIsPrivate: Bool = docData["diaryIsPrivate"] as? Bool ?? false
+                    
+                    let diary = Diary(id: id, uid: uid, diaryUserNickName: diaryUserNickName, diaryTitle: diaryTitle, diaryAddress: diaryAddress, diaryContent: diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: diaryCreatedDate, diaryVisitedDate: diaryVisitedDate, diaryLike: diaryLike, diaryIsPrivate: diaryIsPrivate)
+                    
+                    diarys.append(diary)
+                    
+                    group.leave()
+                }
+                
+                group.notify(queue: .global()) {
+                    
+                    if diarys.count > 10 {
+                        
+                        var sortedDiarys = diarys.sorted{ $0.diaryLike.count > $1.diaryLike.count}
+                        
+                        sortedDiarys.removeLast(11)
+                        
+                        
+                        for sortedDiary in sortedDiarys {
+                            
+                            group.enter()
+                            database.collection("UserList").document(sortedDiary.uid).getDocument { document, error in
+                                if let error = error {
+                                    print(error)
+                                    return
+                                }
+                                guard let document = document else { return }
+                                
+                                let docData = document.data()
+                                
+                                let id: String = docData?["id"] as? String ?? ""
+                                let profileImageName: String = docData?["profileImageName"] as? String ?? ""
+                                let profileImageURL: String = docData?["profileImageURL"] as? String ?? ""
+                                let nickName: String = docData?["nickName"] as? String ?? ""
+                                let userEmail: String = docData?["userEmail"] as? String ?? ""
+                                let bookMarkedDiaries: [String] = docData?["bookMarkedDiaries"] as? [String] ?? []
+                                let bookMarkedSpot: [String] = docData?["bookMarkedSpot"] as? [String] ?? []
+                                let blockedUser: [String] = docData?["blockedUser"] as? [String] ?? []
+                                
+                                let user: User = User(id: id, profileImageName: profileImageName, profileImageURL: profileImageURL, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries, bookMarkedSpot: bookMarkedSpot, blockedUser: blockedUser)
+                                
+                                userInfoDiarys.append(UserInfoDiary(diary: sortedDiary, user: user))
+                            }
+                            group.notify(queue: .main) {
+                                promise(.success(userInfoDiarys))
+                            }
+                        }
+                    } else {
+                        
+                        let sortedDiarys = diarys.sorted{ $0.diaryLike.count > $1.diaryLike.count}
+
+                        for sortedDiary in sortedDiarys {
+                            
+                            group.enter()
+                            database.collection("UserList").document(sortedDiary.uid).getDocument { document, error in
+                                if let error = error {
+                                    print(error)
+                                    return
+                                }
+                                guard let document = document else { return }
+                                
+                                let docData = document.data()
+                                
+                                let id: String = docData?["id"] as? String ?? ""
+                                let profileImageName: String = docData?["profileImageName"] as? String ?? ""
+                                let profileImageURL: String = docData?["profileImageURL"] as? String ?? ""
+                                let nickName: String = docData?["nickName"] as? String ?? ""
+                                let userEmail: String = docData?["userEmail"] as? String ?? ""
+                                let bookMarkedDiaries: [String] = docData?["bookMarkedDiaries"] as? [String] ?? []
+                                let bookMarkedSpot: [String] = docData?["bookMarkedSpot"] as? [String] ?? []
+                                let blockedUser: [String] = docData?["blockedUser"] as? [String] ?? []
+                                
+                                let user: User = User(id: id, profileImageName: profileImageName, profileImageURL: profileImageURL, nickName: nickName, userEmail: userEmail, bookMarkedDiaries: bookMarkedDiaries, bookMarkedSpot: bookMarkedSpot, blockedUser: blockedUser)
+                                
+                                userInfoDiarys.append(UserInfoDiary(diary: sortedDiary, user: user))
+                                group.leave()
+
+                            }
+                        }
+                        group.notify(queue: .main) {
+                            promise(.success(userInfoDiarys))
+                        }
+                    }
+                }
+                
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+
     //MARK: - Read ReadCampingSpotsDiarysService
     
     func readCampingSpotsDiarysService(contentId: String) -> AnyPublisher<[Diary], Error> {

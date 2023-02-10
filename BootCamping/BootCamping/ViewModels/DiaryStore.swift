@@ -26,6 +26,9 @@ class DiaryStore: ObservableObject {
     @Published var lastDoc: QueryDocumentSnapshot?
     // 개선된 다이어리 리스트
     @Published var userInfoDiaryList: [UserInfoDiary] = []
+    
+    // 인기글 다이어리 유저 저장
+    @Published var popularDiaryList: [UserInfoDiary] = []
     //파베 기본 경로
     let database = Firestore.firestore()
     
@@ -202,6 +205,7 @@ class DiaryStore: ObservableObject {
             .store(in: &cancellables)
     }
     
+
     //MARK: - 캠핑장 디테일뷰에 들어갈 일기 Read하는 함수
     
     func readCampingSpotsDiarysCombine(contentId: String) {
@@ -219,6 +223,7 @@ class DiaryStore: ObservableObject {
                     print("Finished get Diarys")
                     return
                 }
+
             } receiveValue: { [weak self] diarys in
                 self?.diaryList = diarys
             }

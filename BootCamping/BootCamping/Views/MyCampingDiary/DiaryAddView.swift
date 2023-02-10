@@ -109,74 +109,83 @@ private extension DiaryAddView {
     
     //MARK: 이미지 피커
     private var imagePicker: some View {
-        HStack{
-            Button(action: {
-                imagePickerPresented.toggle()
-//                checkAlbumPermission()
-            }, label: {
-                ZStack {
-                    Image(systemName: "plus")
-                    VStack{
-                        Spacer()
-                        Text("\(diaryImages?.count ?? 0) / 10")
-                            .padding(.bottom, 5)
+            HStack(alignment:.top){
+                VStack{
+                    Button(action: {
+                        imagePickerPresented.toggle()
+                        //                checkAlbumPermission()
+                    }, label: {
+                        //                ZStack {
+                        Image(systemName: "plus")
+                        //                    VStack{
+                        //                        Spacer()
+                        //                        Text("\(diaryImages?.count ?? 0) / 10")
+                        //                            .padding(.bottom, 5)
+                        //                    }
+                        //                }
+                            .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
+                            .background {
+                                RoundedRectangle(cornerRadius: 3, style: .continuous)
+                                    .stroke(.gray, lineWidth: 1)
+                            }
+                            .padding(UIScreen.screenWidth * 0.005)
+                        
+                    })
+                    .sheet(isPresented: $imagePickerPresented,
+                           onDismiss:
+                            {
+                        //                   DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
+                        loadData()
+                        //            }
                     }
+                           ,
+                           content: { PhotoPicker(images: $selectedImages, selectionLimit: 10) })
+                    Text("\(diaryImages?.count ?? 0) / 10")
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                    
                 }
-                .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
-                .background {
-                    RoundedRectangle(cornerRadius: 3, style: .continuous)
-                        .stroke(.gray, lineWidth: 1)
-                }
-                .padding(UIScreen.screenWidth * 0.005)
                 
-            })
-            .sheet(isPresented: $imagePickerPresented,
-                   onDismiss:
-                    {
-//                   DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
-                loadData()
-//            }
-                   }
-                   ,
-                   content: { PhotoPicker(images: $selectedImages, selectionLimit: 10) })
-            
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack{
-                    if diaryImages == nil {
-                        
-                        Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "")
-                            .foregroundColor(.secondary)
-                            .opacity(0.5)
-                            .padding(.leading, UIScreen.screenWidth * 0.05)
-                        
-                    } else{
-                        ForEach(Array(zip(0..<(diaryImages?.count ?? 0), diaryImages ?? [Data()])), id: \.0) { index, image in
-                            Image(uiImage: UIImage(data: image)!)
-                                .resizeImageData(data: image)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
-                                .clipped()
-                                .overlay(alignment: .topLeading) {
-                                    ZStack{
-                                        Image(systemName: "bookmark.fill")
-                                            .foregroundColor(.bcGreen)
-                                            .font(.title3)
-                                            .offset(x: 0, y: -3)
-                                        Image(systemName: "bookmark")
-                                            .foregroundColor(.white)
-                                            .font(.title3)
-                                            .offset(x: 0, y: -3)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack{
+                        if diaryImages == nil {
+                            Text(diaryImages?.isEmpty ?? true ? "사진을 추가해주세요" : "")
+                                .foregroundColor(.secondary)
+                                .opacity(0.5)
+                                .frame(height: UIScreen.screenWidth * 0.2)
+                                .padding(.leading, UIScreen.screenWidth * 0.05)
+                            
+                        } else{
+                            ForEach(Array(zip(0..<(diaryImages?.count ?? 0), diaryImages ?? [Data()])), id: \.0) { index, image in
+                                Image(uiImage: UIImage(data: image)!)
+                                    .resizeImageData(data: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
+                                    .clipped()
+                                    .overlay(alignment: .topLeading) {
+                                        VStack {
+                                            Text("대표 이미지")
+                                                .font(.caption2)
+                                                .foregroundColor(.white)
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: 5)
+                                                        .fill(Color.bcGreen)
+                                                        .padding(-0.5)
 
-                                    }
+                                                )
+                                                .padding(2.5)
+                                        }
+//                                        .padding(5)
                                         .opacity(index == 0 ? 1 : 0)
-                                }
+                                    }
+                            }
                         }
                     }
+                    .padding(.vertical ,UIScreen.screenWidth * 0.005)
                 }
             }
-        }
+
 //        .padding(.bottom)
         .padding(.vertical)
     }
@@ -402,6 +411,7 @@ private extension DiaryAddView {
             Spacer()
             
         }
+        .padding(.bottom, 10)
     }
     
     //MARK: - 키보드 dismiss 함수입니다.

@@ -26,7 +26,6 @@ struct DiaryDetailView: View {
     @State private var isShowingUserReportAlert = false
     @State private var isShowingUserBlockedAlert = false
     
-    @State private var isBookmarked: Bool = false
     //자동 스크롤
     @Namespace var topID
     @Namespace var bottomID
@@ -46,7 +45,6 @@ struct DiaryDetailView: View {
                             }
                             diaryDetailTitle
                             Spacer()
-                            bookmarkButton
                         }
                         diaryDetailContent
                         if !campingSpotStore.campingSpotList.isEmpty {
@@ -70,8 +68,7 @@ struct DiaryDetailView: View {
         .padding(.top)
         .padding(.bottom)
         .navigationTitle("BOOTCAMPING")
-        .onAppear{
-            isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.diary.id)
+        .onAppear {
             commentStore.readCommentsCombine(diaryId: item.diary.id)
             campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
         }
@@ -124,25 +121,6 @@ private extension DiaryDetailView {
     private var isPrivateImage: some View {
         Image(systemName: (item.diary.diaryIsPrivate ? "lock" : "lock.open"))
             .foregroundColor(Color.secondary)
-    }
-    
-    // MARK: - 북마크 버튼
-    private var bookmarkButton: some View {
-        Button{
-            isBookmarked.toggle()
-            if isBookmarked{
-                bookmarkStore.addBookmarkDiaryCombine(diaryId: item.diary.id)
-            } else {
-                bookmarkStore.removeBookmarkDiaryCombine(diaryId: item.diary.id)
-            }
-            wholeAuthStore.readUserListCombine()
-        } label: {
-            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                .bold()
-                .foregroundColor(Color.accentColor)
-                .opacity((item.diary.uid != wholeAuthStore.currnetUserInfo!.id ? 1 : 0))
-        }
-        .disabled(item.diary.uid == wholeAuthStore.currnetUserInfo!.id)
     }
     
     //MARK: - Alert Menu 버튼

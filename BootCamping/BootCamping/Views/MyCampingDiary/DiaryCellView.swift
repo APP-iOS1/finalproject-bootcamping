@@ -20,7 +20,7 @@ struct DiaryCellView: View {
     @StateObject var commentStore: CommentStore = CommentStore()
     
     @State var isBookmarked: Bool = false
-    
+
     //선택한 다이어리 정보 변수입니다.
     var item: UserInfoDiary
     //삭제 알림
@@ -37,7 +37,7 @@ struct DiaryCellView: View {
             } label: {
                 VStack(alignment: .leading) {
                     HStack(alignment: .center){
-                        if item.diary.uid == wholeAuthStore.currnetUserInfo!.id {
+                        if (item.diary.uid == wholeAuthStore.currnetUserInfo!.id && item.diary.diaryIsPrivate) {
                             isPrivateImage
                         }
                         diaryTitle
@@ -56,7 +56,6 @@ struct DiaryCellView: View {
         }
         
         .onAppear {
-            isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.diary.id)
             commentStore.readCommentsCombine(diaryId: item.diary.id)
             campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
             diaryStore.readDiarysCombine()
@@ -202,7 +201,7 @@ private extension DiaryCellView {
     
     // MARK: - 다이어리 공개 여부를 나타내는 이미지
     private var isPrivateImage: some View {
-        Image(systemName: (item.diary.diaryIsPrivate ? "lock" : "lock.open"))
+        Image(systemName: "lock")
             .foregroundColor(Color.secondary)
     }
     

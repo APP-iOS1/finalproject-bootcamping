@@ -29,7 +29,6 @@ struct DiaryDetailView: View {
     @State private var isShowingUserReportAlert = false
     @State private var isShowingUserBlockedAlert = false
     
-    @State private var isBookmarked: Bool = false
     //자동 스크롤
     @Namespace var topID
     @Namespace var bottomID
@@ -125,7 +124,6 @@ struct DiaryDetailView: View {
                 //TODO: -함수 업데이트되면 넣기
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
             }
-        }
     }
 }
 
@@ -177,7 +175,7 @@ private extension DiaryDetailView {
     
     // MARK: - 다이어리 공개 여부를 나타내는 이미지
     private var isPrivateImage: some View {
-        Image(systemName: (item.diary.diaryIsPrivate ? "lock" : "lock.open"))
+        Image(systemName: "lock")
             .foregroundColor(Color.secondary)
     }
     

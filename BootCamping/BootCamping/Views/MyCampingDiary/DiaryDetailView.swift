@@ -40,7 +40,7 @@ struct DiaryDetailView: View {
                     diaryDetailImage
                     Group {
                         HStack(alignment: .center){
-                            if item.diary.uid == wholeAuthStore.currnetUserInfo!.id {
+                            if (item.diary.uid == wholeAuthStore.currnetUserInfo!.id && item.diary.diaryIsPrivate) {
                                 isPrivateImage
                             }
                             diaryDetailTitle
@@ -119,7 +119,7 @@ private extension DiaryDetailView {
     
     // MARK: - 다이어리 공개 여부를 나타내는 이미지
     private var isPrivateImage: some View {
-        Image(systemName: (item.diary.diaryIsPrivate ? "lock" : "lock.open"))
+        Image(systemName: "lock")
             .foregroundColor(Color.secondary)
     }
     

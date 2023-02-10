@@ -8,6 +8,7 @@
 import SwiftUI
 import PhotosUI
 import FirebaseAuth
+import SDWebImageSwiftUI
 
 struct ProfileSettingView: View {
     
@@ -20,6 +21,8 @@ struct ProfileSettingView: View {
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     
     @State private var updateNickname: String = ""
+    
+    @State private var isProfileImageReset: Bool = false
     
     
     var body: some View {
@@ -36,6 +39,7 @@ struct ProfileSettingView: View {
             }
         }
         .padding(.horizontal, UIScreen.screenWidth * 0.03)
+
     }
     
 }
@@ -44,36 +48,112 @@ extension ProfileSettingView {
     
     // MARK: View: 이미지피커
     private var imagePicker: some View {
-        Button(action: {
-            imagePickerPresented.toggle()
-        }, label: {
-            let image = UIImage(data: profileImage ?? Data()) == nil ? UIImage(systemName: "person.fill") : UIImage(data: profileImage ?? Data()) ?? UIImage(systemName: "person.fill")
-            Image(uiImage: (image ?? UIImage(systemName: "person.fill"))!)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 100, height: 100)
-                .aspectRatio(contentMode: .fill)
-                .clipShape(Circle())
-                .overlay{
-                    ZStack{
-                        Image(systemName: "circlebadge.fill")
-                            .font(.largeTitle)
-//                            .frame(width: 25, height: 25)
-                            .foregroundColor(.primary)
-                            .colorInvert()
-                            .offset(x: 40, y: 40)
-                        
-                        Image(systemName: "pencil.circle")
-                            .font(.title)
-//                            .frame(width: 25, height: 25)
+        VStack{
+            Button(action: {
+                imagePickerPresented.toggle()
+            }, label: {
+                if profileImage == nil {
+                    if wholeAuthStore.currnetUserInfo!.profileImageURL != "" && isProfileImageReset == false {
+                        WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
+                            .resizable()
                             .foregroundColor(.bcBlack)
-                            .offset(x: 40, y: 40)
+                            .scaledToFill()
+                            .clipped()
+                            .frame(width: 100, height: 100)
+                            .clipShape(Circle())
+                            .overlay{
+                                ZStack{
+                                    Image(systemName: "circlebadge.fill")
+                                        .font(.largeTitle)
+                                    //                            .frame(width: 25, height: 25)
+                                        .foregroundColor(.primary)
+                                        .colorInvert()
+                                        .offset(x: 40, y: 40)
+                                    
+                                    Image(systemName: "pencil.circle")
+                                        .font(.title)
+                                    //                            .frame(width: 25, height: 25)
+                                        .foregroundColor(.bcBlack)
+                                        .offset(x: 40, y: 40)
+                                }
+                            }
+                    } else if wholeAuthStore.currnetUserInfo!.profileImageURL == "" || isProfileImageReset == true{
+                        Image(systemName: "person.fill")
+                            .resizable()
+                            .foregroundColor(.bcBlack)
+                            .scaledToFill()
+                            .clipped()
+                            .frame(width: 100, height: 100)
+                            .clipShape(Circle())
+                            .overlay{
+                                ZStack{
+                                    Image(systemName: "circlebadge.fill")
+                                        .font(.largeTitle)
+                                    //                            .frame(width: 25, height: 25)
+                                        .foregroundColor(.primary)
+                                        .colorInvert()
+                                        .offset(x: 40, y: 40)
+                                    
+                                    Image(systemName: "pencil.circle")
+                                        .font(.title)
+                                    //                            .frame(width: 25, height: 25)
+                                        .foregroundColor(.bcBlack)
+                                        .offset(x: 40, y: 40)
+                                }
+                            }
                     }
+                } else {
+                    let image = UIImage(data: profileImage ?? Data()) == nil ? UIImage(systemName: "person.fill") : UIImage(data: profileImage ?? Data()) ?? UIImage(systemName: "person.fill")
+                    Image(uiImage: ((image ?? UIImage(systemName: "person.fill"))!))
+                        .resizable()
+                        .foregroundColor(.bcBlack)
+                        .scaledToFill()
+                        .clipped()
+                        .frame(width: 100, height: 100)
+                    //                    .aspectRatio(contentMode: .fit)
+                        .clipShape(Circle())
+                        .overlay{
+                            ZStack{
+                                Image(systemName: "circlebadge.fill")
+                                    .font(.largeTitle)
+                                //                            .frame(width: 25, height: 25)
+                                    .foregroundColor(.primary)
+                                    .colorInvert()
+                                    .offset(x: 40, y: 40)
+                                
+                                Image(systemName: "pencil.circle")
+                                    .font(.title)
+                                //                            .frame(width: 25, height: 25)
+                                    .foregroundColor(.bcBlack)
+                                    .offset(x: 40, y: 40)
+                            }
+                        }
+                    
                 }
-        })
-        .sheet(isPresented: $imagePickerPresented,
-               onDismiss: loadData,
-               content: { ImagePicker(image: $selectedImage) })
+            })
+            .sheet(isPresented: $imagePickerPresented,
+                   onDismiss: {
+                loadData()
+            },
+                   content: { ImagePicker(image: $selectedImage) })
+            
+            // TODO: 기본 프로필로 변경하는 버튼 위치 좀 정해주세욥
+            Button {
+                profileImage = nil
+                isProfileImageReset = true
+            } label: {
+                Text("기본 이미지로 변경")
+                    .font(.caption2)
+                    .padding(3)
+                    .overlay{
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.bcDarkGray, lineWidth: 1)
+                            .opacity(0.3)
+                    }
+                
+            }
+            
+        }
     }
     // selectedImage: UIImage 타입을 Data타입으로 저장하는 함수
     func loadData() {
@@ -101,13 +181,21 @@ extension ProfileSettingView {
     private var editButton : some View {
         Button {
             // TODO: UserInfo 수정하기
-            wholeAuthStore.updateUserCombine(image: profileImage, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: wholeAuthStore.currnetUserInfo!.profileImageURL, nickName: updateNickname, userEmail: wholeAuthStore.currnetUserInfo!.userEmail, bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot, blockedUser: wholeAuthStore.currnetUserInfo!.blockedUser))
+            if updateNickname == "" {
+                if profileImage == nil {
+                    wholeAuthStore.updateUserCombine(image: profileImage, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: "", nickName: wholeAuthStore.currnetUserInfo!.nickName, userEmail: wholeAuthStore.currnetUserInfo!.userEmail, bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot, blockedUser: wholeAuthStore.currnetUserInfo!.blockedUser))
+                } else {
+                    wholeAuthStore.updateUserCombine(image: profileImage, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: wholeAuthStore.currnetUserInfo!.profileImageURL, nickName: wholeAuthStore.currnetUserInfo!.nickName, userEmail: wholeAuthStore.currnetUserInfo!.userEmail, bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot, blockedUser: wholeAuthStore.currnetUserInfo!.blockedUser))
+                }
+            } else {
+                wholeAuthStore.updateUserCombine(image: profileImage, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: wholeAuthStore.currnetUserInfo!.profileImageURL, nickName: updateNickname, userEmail: wholeAuthStore.currnetUserInfo!.userEmail, bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot, blockedUser: wholeAuthStore.currnetUserInfo!.blockedUser))
+            }
             dismiss()
         } label: {
             Text("수정")
                 .modifier(GreenButtonModifier())
         }
-        .disabled(updateNickname == "")
+        .disabled(updateNickname == "" && selectedImage == nil && isProfileImageReset == false)
     }
     
 }

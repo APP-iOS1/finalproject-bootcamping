@@ -152,6 +152,7 @@ extension MyPageView{
                         }
                     }
                 }
+                .padding(.horizontal, UIScreen.screenWidth * 0.03)
             }
         }
     }

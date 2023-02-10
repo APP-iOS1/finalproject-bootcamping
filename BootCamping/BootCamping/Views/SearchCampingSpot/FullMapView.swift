@@ -13,7 +13,7 @@ struct FullMapView: View {
     
     @State var annotatedItem: [AnnotatedItem]
     @State var region: MKCoordinateRegion
-    var places: Item
+    var campingSpot: Item
     
     var body: some View {
         VStack {
@@ -22,9 +22,9 @@ struct FullMapView: View {
             }
         }
         .onAppear {
-            region.center = CLLocationCoordinate2D(latitude: Double(places.mapY)!, longitude: Double(places.mapX)!)
+            region.center = CLLocationCoordinate2D(latitude: Double(campingSpot.mapY)!, longitude: Double(campingSpot.mapX)!)
         }
-        .navigationTitle("\(places.facltNm)")
+        .navigationTitle("\(campingSpot.facltNm)")
         .toolbar(.hidden, for: .tabBar)
     }
 }

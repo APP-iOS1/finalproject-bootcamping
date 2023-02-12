@@ -44,7 +44,7 @@ struct DiaryDetailView: View {
                 ScrollView(showsIndicators: false) {
                     LazyVStack(alignment: .leading) {
                         diaryUserProfile.id(topID)
-                        diaryDetailImage
+                        diaryDetailImage.zIndex(1) 
                         Group {
                             HStack(alignment: .center){
                                 if item.diary.uid == wholeAuthStore.currnetUserInfo!.id {
@@ -273,8 +273,8 @@ private extension DiaryDetailView {
         }
         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
         .tabViewStyle(PageTabViewStyle())
-        // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
+        .pinchZoomAndDrag()
     }
     
     // MARK: -View : 다이어리 제목

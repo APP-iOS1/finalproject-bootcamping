@@ -14,6 +14,8 @@ struct NotificationSettingsView: View {
     @State private var isSettingSchedulePN: Bool = false
     @State private var isSettingAppPN: Bool = false
     
+    @State private var isShowingAlertForPN: Bool = false
+    
     var body: some View {
         List{
             Section {
@@ -28,9 +30,7 @@ struct NotificationSettingsView: View {
             }
         }
         .task{
-            await localNotificationCenter.getCurrentSetting()
             isSettingSchedulePN = (localNotificationCenter.authorizationStatus == .authorized)
-            print(isSettingSchedulePN)
         }
     }
 }
@@ -46,6 +46,19 @@ extension NotificationSettingsView {
                         .font(.caption)
                         .multilineTextAlignment(.leading)
                 }
+            }
+            //MARK: - PUSH 알림 설정을 위한 alert
+            /// 코드로 변경 불가능
+            .alert("PUSH 알림 설정을 '설정 > 알림 > 부트캠핑 > 알림허용'에서 변경해주세요", isPresented: $isShowingAlertForPN) {
+                Button("닫기", role: .cancel) {
+                    isShowingAlertForPN = false
+                }
+                Button("설정") {
+                    localNotificationCenter.openAppSetting()
+                }
+            }
+            .onChange(of: isSettingSchedulePN) { _ in
+                isShowingAlertForPN = true
             }
         }
     }

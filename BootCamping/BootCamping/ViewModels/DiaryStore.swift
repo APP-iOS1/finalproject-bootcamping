@@ -80,11 +80,14 @@ class DiaryStore: ObservableObject {
                     print("Failed Create Diary")
                     self.firebaseDiaryServiceError = .createDiaryError
                     self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
+                    self.isProcessing = false
+                    self.isError = false
                     return
                 case .finished:
                     print("Finished Create Diary")
                     self.firstGetMyDiaryCombine()
                     self.firstGetRealTimeDiaryCombine()
+                    self.isProcessing = false
                     return
                 }
             } receiveValue: { _ in

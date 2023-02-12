@@ -9,6 +9,8 @@ import SwiftUI
 import PhotosUI
 import Firebase
 import Photos
+import AlertToast
+
 
 // 키보드 다음 버튼 눌렀을 때 다음 텍스트 필드로 넘어가기 위해 필요해요
 enum CurrentField{
@@ -60,55 +62,63 @@ struct DiaryAddView: View {
     @State private var imagePickerPresented = false // 이미지 피커를 띄울 변수
     @State private var selectedImages: [PhotosPickerItem] = []   // 이미지 피커에서 선택한 이미지저장.
     @State private var diaryImages: [Data] = []         // selectedImages를 [Data] 타입으로 저장
+    @State private var isProcessing: Bool = false
     
     var images: [UIImage] = [UIImage()]
     
     var body: some View {
-        VStack {
-            ScrollView{
-                VStack(alignment: .leading) {
-                    imagePicker
-                    Divider()
-                    addViewLocationInfo
-                        .padding(.vertical, 10)
-                    Divider()
-                    
-                    addViewVisitDate
-                    Divider()
-                    
-                    addViewIsPrivate
-                    Divider()
-                    
-                    Group{
-                        addViewTitle
-                        addViewDiaryContent
-                        Spacer()
+        ZStack {
+            VStack {
+                ScrollView{
+                    VStack(alignment: .leading) {
+                        imagePicker
+                        Divider()
+                        addViewLocationInfo
+                            .padding(.vertical, 10)
+                        Divider()
+                        
+                        addViewVisitDate
+                        Divider()
+                        
+                        addViewIsPrivate
+                        Divider()
+                        
+                        Group{
+                            addViewTitle
+                            addViewDiaryContent
+                            Spacer()
+                        }
+                        addViewAddButton
                     }
-                    addViewAddButton
                 }
             }
-        }
-        .padding(.horizontal, UIScreen.screenWidth*0.03)
-        .navigationTitle(Text("캠핑 일기 쓰기"))
-        .onTapGesture {
-            dismissKeyboard()
-        }
-        .disableAutocorrection(true) //자동 수정 비활성화
-        .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
-        .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                Button {
-                    submit()
-                    isTapTextField = false
-                } label: {
-                    Image(systemName: "keyboard.chevron.compact.down")
+            .padding(.horizontal, UIScreen.screenWidth*0.03)
+            .navigationTitle(Text("캠핑 일기 쓰기"))
+            .onTapGesture {
+                dismissKeyboard()
+            }
+            .disableAutocorrection(true) //자동 수정 비활성화
+            .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button {
+                        submit()
+                        isTapTextField = false
+                    } label: {
+                        Image(systemName: "keyboard.chevron.compact.down")
+                    }
                 }
             }
+            .task {
+                campingSpot = campingSpotItem.facltNm
+                locationInfo = campingSpotItem.contentId
+            }
+            isProcessing ? Color.black.opacity(0.3) : Color.clear
+
         }
-        .task {
-            campingSpot = campingSpotItem.facltNm
-            locationInfo = campingSpotItem.contentId
+        .toast(isPresenting: $isProcessing) {
+            AlertToast(displayMode: .alert, type: .loading)
         }
     }
 }
@@ -135,12 +145,15 @@ private extension DiaryAddView {
                     }
                     .onChange(of: selectedImages) { newValue in
                         Task {
+                            isProcessing = true
                             diaryImages = []
                             for value in newValue {
                                 if let imageData = try? await value.loadTransferable(type: Data.self) {
-                                    diaryImages.append(imageData)
+                                    let uiImage = UIImage(data: imageData)
+                                    diaryImages.append((uiImage?.jpegData(compressionQuality: 0.1))!)
                                 }
                             }
+                            isProcessing = false
                         }
                     }
                 
@@ -312,7 +325,9 @@ private extension DiaryAddView {
         HStack {
             Spacer()
             Button {
+                diaryStore.isProcessing = true
                 diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages)
+                dismiss()
             } label: {
                 Text(diaryTitle.isEmpty || diaryContent.isEmpty ? "내용을 작성해주세요" : "일기 쓰기")
                     .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07) // 이거 밖에 있으면 글씨 부분만 버튼 적용됨

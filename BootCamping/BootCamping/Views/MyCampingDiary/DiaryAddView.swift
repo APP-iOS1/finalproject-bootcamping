@@ -65,6 +65,7 @@ struct DiaryAddView: View {
 //                    addViewTitle
                     Divider()
                     addViewLocationInfo
+                        .padding(.vertical, 10)
                     Divider()
 
                     addViewVisitDate
@@ -264,11 +265,12 @@ private extension DiaryAddView {
                 } label: {
                     HStack{
                         Text("방문한 캠핑장 등록하러 가기")
+                            .foregroundColor(.bcBlack)
                         Spacer()
                         Image(systemName: "chevron.right")
-                    }.padding(.vertical)
+                            .foregroundColor(.bcBlack)
+                    }
                 }
-                .focused($inputFocused)
             } else {
                 HStack {
                     Text("\(campingSpot)")

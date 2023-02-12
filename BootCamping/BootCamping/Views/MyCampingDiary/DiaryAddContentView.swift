@@ -8,26 +8,22 @@
 import SwiftUI
 import Firebase
 
+// 키보드 다음 버튼 눌렀을 때 다음 텍스트 필드로 넘어가기 위해 필요해요
 enum CurrentField{
     case field1
     case field2
 }
- 
-    
-
-    
 
 struct DiaryAddContentView: View {
     
     @State var field1 = ""
     @State var field2 = ""
-    
     @FocusState var activeState: CurrentField?
     
-    
+    // 작성하기 버튼 눌렀을 때 맨 처음 페이지로 넘어가기 위해서
     @Binding var isNavigationGoFirstView: Bool
-
     
+    // 탭 했을 때 작성하기 버튼 숨기기 위해서
     @State var isTapTextField = false
     
     @State private var diaryTitle: String = ""
@@ -66,7 +62,7 @@ struct DiaryAddContentView: View {
             addViewTitle
             addViewDiaryContent
             Spacer()
-
+            
             if isTapTextField == false{
                 addViewAddButton
                     .animation(.none/*, value: isTapTextField*/) // 이거 추가하면 애니메이션 다시 생김;;;;
@@ -76,27 +72,19 @@ struct DiaryAddContentView: View {
         .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
         .padding(.horizontal, UIScreen.screenWidth*0.03)
         .navigationTitle(Text("캠핑 일기 쓰기"))
-//        .onTapGesture {
-//            dismissKeyboard()
-//        }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
-                
                 Button {
                     submit()
                     isTapTextField = false
                 } label: {
                     Image(systemName: "keyboard.chevron.compact.down")
-
                 }
-
             }
         }
-        .onSubmit(of: .text, submit) //done 누르면 submit 함수가 실행됨
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: backButton)
-
+        .navigationBarBackButtonHidden(true)     // 전 페이지 이름 나오는 백버튼은 지우고
+        .navigationBarItems(leading: backButton) // 새로 만든 기호만 있는 백버튼 추가
     }
 }
 
@@ -104,34 +92,20 @@ extension DiaryAddContentView {
     // MARK: 제목
     var addViewTitle: some View {
         Section {
-            
             TextField("제목을 입력해주세요(최대 20자)", text: $diaryTitle)
                 .font(.title3)
-//                .padding(6)
-//                .background {
-//                    RoundedRectangle(cornerRadius: 2, style: .continuous)
-//                        .stroke(.gray, lineWidth: 1)
-//                }
-//                .padding( UIScreen.screenWidth * 0.005)
                 .padding(.vertical)
-                .submitLabel(.next) //TODO: 눌렀을 때 다음 텍스트 필드로 이동
+                .submitLabel(.next)
                 .onChange(of: diaryTitle) { newValue in             // 제목 20글자까지 가능
                     if newValue.count > 20 {
                         diaryTitle = String(newValue.prefix(20))
                     }
                 }
-//                .onSubmit {
-//                    isTapTextField = false
-//                    //next 눌렀을 때 다음 필드로 넘어가면 없어도 됨.
-//                }
-            
         }
         .focused($inputFocused)
         .onSubmit{
             activeState = .field2
         }
-
-
         .onTapGesture {
             isTapTextField = true
         }
@@ -147,9 +121,6 @@ extension DiaryAddContentView {
                     isTapTextField = true
                 }
                 .focused($activeState, equals: .field2)
-
-            
-            
         }
     }
     //TODO: 글 안쓰면 버튼 비활성화
@@ -159,9 +130,7 @@ extension DiaryAddContentView {
             Spacer()
             Button {
                 diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages ?? [Data()])
-                //TODO: 네비 두번 나가기. dismiss 안됨. path 어쩌구 찾아보기
-                isNavigationGoFirstView = false
-
+                isNavigationGoFirstView = false // false로 변경 -> 맨 첫 페이지로 이동
             } label: {
                 Text(diaryTitle.isEmpty || diaryContent.isEmpty ? "내용을 작성해주세요" : "일기 쓰기")
                     .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07) // 이거 밖에 있으면 글씨 부분만 버튼 적용됨
@@ -175,19 +144,19 @@ extension DiaryAddContentView {
             
         }
         .padding(.bottom, 10)
-
+        
     }
     
+    //네비게이션 타고 오면 전 페이지 타이틀이 백버튼으로 나와서 글씨 지우고 싶어서 백버튼 만들었어요
     var backButton: some View{
         Button {
             dismiss()
         } label: {
             Image(systemName: "chevron.left")
                 .font(.headline)
-
         }
-
     }
+    
     //MARK: - 키보드 dismiss 함수입니다.
     func submit() {
         resignKeyboard()

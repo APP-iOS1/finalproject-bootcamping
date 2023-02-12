@@ -49,7 +49,7 @@ struct ContentView: View {
                     NavigationView {
                         if diaryStore.diaryList.count == 0 {
                             DiaryEmptyView()
-//                            DiaryAddView(isNavigationGoFirstView: $isNavigationGoFirstView)
+//                            DiaryAddView()
                         } else {
                             MyCampingDiaryView()
                         }

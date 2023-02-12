@@ -1,23 +1,14 @@
 //
-//  DiaryAddView.swift
+//  DiaryEditView.swift
 //  BootCamping
 //
-//  Created by 박성민 on 2023/01/18.
+//  Created by 차소민 on 2023/02/12.
 //
 
 import SwiftUI
-import PhotosUI
 import Firebase
-import Photos
 
-// 키보드 다음 버튼 눌렀을 때 다음 텍스트 필드로 넘어가기 위해 필요해요
-enum CurrentField{
-    case field1
-    case field2
-}
-
-struct DiaryAddView: View {
-    
+struct DiaryEditView: View {
     @State var field1 = ""
     @State var field2 = ""
     @FocusState var activeState: CurrentField?
@@ -25,10 +16,9 @@ struct DiaryAddView: View {
     // 탭 했을 때 작성하기 버튼 숨기기 위해서
     @State var isTapTextField = false
     
-    @State private var diaryTitle: String = ""
-    @State private var locationInfo: String = ""
-    @State private var diaryIsPrivate: Bool = false //false가 공개
-    @State private var diaryContent: String = ""
+    @State var diaryTitle: String
+    @State var diaryIsPrivate: Bool
+    @State var diaryContent: String
     
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
@@ -37,8 +27,8 @@ struct DiaryAddView: View {
     //키보드 dismiss 변수
     @FocusState private var inputFocused: Bool
     
-    @State private var campingSpotItem: Item = CampingSpotStore().campingSpot
-    @State private var campingSpot: String = ""
+    @State var campingSpotItem: Item
+    @State var campingSpot: String
     
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
@@ -53,21 +43,13 @@ struct DiaryAddView: View {
     }
     
     //MARK: - DatePicker 변수
-    @State private var selectedDate: Date = .now
+    @State var selectedDate: Date
     
-    //이미지 피커
-//    @State private var imagePickerPresented = false // 이미지 피커를 띄울 변수
-    @State private var selectedImages: [PhotosPickerItem] = []   // 이미지 피커에서 선택한 이미지저장.
-    @State private var diaryImages: [Data] = []         // selectedImages를 [Data] 타입으로 저장
-    
-    var images: [UIImage] = [UIImage()]
     
     var body: some View {
         VStack {
             ScrollView{
                 VStack(alignment: .leading) {
-                    imagePicker
-                    Divider()
                     addViewLocationInfo
                         .padding(.vertical, 10)
                     Divider()
@@ -107,89 +89,11 @@ struct DiaryAddView: View {
         }
         .task {
             campingSpot = campingSpotItem.facltNm
-            locationInfo = campingSpotItem.contentId
         }
+
     }
 }
-
-
-private extension DiaryAddView {
-    
-    //MARK: 이미지 피커
-    private var imagePicker: some View {
-        HStack(alignment:.top){
-            VStack{
-                PhotosPicker(
-                    selection: $selectedImages,
-                    maxSelectionCount: 10,
-                    matching: .any(of: [.images, .not(.videos)])) {
-                        Image(systemName: "plus")
-                            .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
-                            .background {
-                                RoundedRectangle(cornerRadius: 3, style: .continuous)
-                                    .stroke(.gray, lineWidth: 1)
-                            }
-                            .padding(UIScreen.screenWidth * 0.005)
-                        
-                    }
-                    .onChange(of: selectedImages) { newValue in
-                        Task {
-                            diaryImages = []
-                            for value in newValue {
-                                if let imageData = try? await value.loadTransferable(type: Data.self) {
-                                    diaryImages.append(imageData)
-                                }
-                            }
-                        }
-                    }
-                
-                Text("\(diaryImages.count) / 10")
-                    .font(.caption2)
-                    .foregroundColor(.gray)
-            }
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack{
-                    if diaryImages == [] {
-                        Text(diaryImages.isEmpty ? "사진을 추가해주세요" : "")
-                            .foregroundColor(.secondary)
-                            .opacity(0.5)
-                            .frame(height: UIScreen.screenWidth * 0.2)
-                            .padding(.leading, UIScreen.screenWidth * 0.05)
-                        
-                    } else{
-                        ForEach(Array(zip(0..<(diaryImages.count), diaryImages)), id: \.0) { index, image in
-                            Image(uiImage: UIImage(data: image)!)
-                                .resizeImageData(data: image)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
-                                .clipped()
-                                .overlay(alignment: .topLeading) {
-                                    VStack {
-                                        Text("대표 이미지")
-                                            .font(.caption2)
-                                            .foregroundColor(.white)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 5)
-                                                    .fill(Color.bcGreen)
-                                                    .padding(-0.5)
-                                                
-                                            )
-                                            .padding(2.5)
-                                    }
-                                    .opacity(index == 0 ? 1 : 0)
-                                }
-                        }
-                    }
-                }
-                .padding(.vertical ,UIScreen.screenWidth * 0.005)
-            }
-        }
-        
-        .padding(.vertical)
-    }
-    
-    
+extension DiaryEditView {
     //MARK: - 위치 등록하기
     //TODO: - 캠핑장 연동하기
     var addViewLocationInfo: some View {
@@ -311,7 +215,6 @@ private extension DiaryAddView {
         HStack {
             Spacer()
             Button {
-                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages)
             } label: {
                 Text(diaryTitle.isEmpty || diaryContent.isEmpty ? "내용을 작성해주세요" : "일기 쓰기")
                     .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07) // 이거 밖에 있으면 글씨 부분만 버튼 적용됨
@@ -342,20 +245,8 @@ private extension DiaryAddView {
     }
 }
 
-
-struct DiaryAddView_Previews: PreviewProvider {
-    static var previews: some View {
-        DiaryAddView()
-            .environmentObject(WholeAuthStore())
-            .environmentObject(DiaryStore())
-        
-        DiaryAddView()
-            .environmentObject(WholeAuthStore())
-            .environmentObject(DiaryStore())
-            .previewDevice("iPhone 11")
-        DiaryAddView()
-            .environmentObject(WholeAuthStore())
-            .environmentObject(DiaryStore())
-            .previewDevice("iPhone SE (3rd generation)")
-    }
-}
+//struct DiaryEditView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DiaryEditView()
+//    }
+//}

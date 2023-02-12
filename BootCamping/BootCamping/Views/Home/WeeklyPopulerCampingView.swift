@@ -21,7 +21,7 @@ struct WeeklyPopulerCampingView: View {
                 HStack {
                     ForEach(diaryStore.popularDiaryList, id: \.self) { item in
                         NavigationLink {
-                            DiaryDetailView(item: item)
+                            DiaryDetailView(item: item) //맞나
                         } label: {
                             ZStack(alignment: .topLeading) {
                                 PhotoCardFrame(image: item.diary.diaryImageURLs[0])

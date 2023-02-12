@@ -8,15 +8,13 @@
 import SwiftUI
 
 struct DiaryEmptyView: View {
-//    @Binding var isNavigationGoFirstView: Bool
-    @State var isNavigationGoFirstView = false
     var body: some View {
         VStack {
             Text("다이어리가 비어있습니다.")
                 .font(.title3)
                 .padding()
 
-            NavigationLink (destination: DiaryAddView(isNavigationGoFirstView: $isNavigationGoFirstView), isActive: $isNavigationGoFirstView){
+            NavigationLink (destination: DiaryAddView()){
                 Text("다이어리 작성하러 가기")
             }
             .modifier(GreenButtonModifier())

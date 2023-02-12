@@ -11,7 +11,6 @@ import FirebaseFirestore
 
 struct MyCampingDiaryView: View {
     
-    @State var isNavigationGoFirstView = false
 
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var faceId: FaceId
@@ -61,7 +60,7 @@ struct MyCampingDiaryView: View {
                     .font(.title.bold())
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink (destination:DiaryAddView(isNavigationGoFirstView: $isNavigationGoFirstView), isActive: $isNavigationGoFirstView)
+                NavigationLink (destination: DiaryAddView())
                  {
                     Image(systemName: "plus")
                 }

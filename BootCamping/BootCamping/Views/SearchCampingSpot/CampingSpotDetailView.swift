@@ -181,6 +181,9 @@ struct CampingSpotDetailView: View {
                             .frame(width: UIScreen.screenWidth * 0.95, height: 250)
                             .cornerRadius(10)
                         }
+                        .onAppear {
+                            region.center = CLLocationCoordinate2D(latitude: Double(campingSpot.mapY)!, longitude: Double(campingSpot.mapX)!)
+                        }
                         
                         
                     }
@@ -205,11 +208,11 @@ struct CampingSpotDetailView: View {
                             }
                         }
                         ScrollView(.horizontal, showsIndicators: false) {
-                            if diaryStore.diaryList.isEmpty {
+                            if diaryStore.diaryList.filter { !$0.diaryIsPrivate }.isEmpty {
                                 Text("등록된 리뷰가 없습니다.")
                             } else if diaryStore.diaryList.count <= 3 {
                                 HStack {
-                                    ForEach(diaryStore.diaryList.indices, id: \.self) { index in
+                                    ForEach(diaryStore.diaryList.filter { !$0.diaryIsPrivate }.indices, id: \.self) { index in
                                         NavigationLink {
                                             
                                         } label: {
@@ -217,7 +220,7 @@ struct CampingSpotDetailView: View {
                                         }
                                     }
                                 }
-                            } else if diaryStore.diaryList.count > 3 {
+                            } else if diaryStore.diaryList.filter { !$0.diaryIsPrivate }.count > 3 {
                                 HStack {
                                     ForEach(0...3, id: \.self) { index in
                                         NavigationLink {
@@ -236,7 +239,7 @@ struct CampingSpotDetailView: View {
             }
         }
         .task {
-            region.center = CLLocationCoordinate2D(latitude: Double(campingSpot.mapY)!, longitude: Double(campingSpot.mapX)!)
+//            region.center = CLLocationCoordinate2D(latitude: Double(campingSpot.mapY)!, longitude: Double(campingSpot.mapX)!)
             annotatedItem.append(AnnotatedItem(name: campingSpot.facltNm, coordinate: CLLocationCoordinate2D(latitude: Double(campingSpot.mapY)!, longitude: Double(campingSpot.mapX)!)))
             isBookmarked = bookmarkStore.checkBookmarkedSpot(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, campingSpotId: campingSpot.contentId)
             diaryStore.readCampingSpotsDiarysCombine(contentId: campingSpot.contentId)

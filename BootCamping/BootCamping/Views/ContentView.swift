@@ -21,6 +21,7 @@ struct ContentView: View {
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var scheduleStore: ScheduleStore
+    @EnvironmentObject var localNotificationCenter: LocalNotificationCenter
     
     @State var isLoading: Bool = true
     
@@ -77,11 +78,16 @@ struct ContentView: View {
 
             }
         }
+        .onReceive(localNotificationCenter.$pageToNavigationTo) {
+            guard let notificationSelection = $0 else  { return }
+            self.tabSelection.change(to: notificationSelection)
+        }
         .task {
             diaryStore.firstGetRealTimeDiaryCombine()
             wholeAuthStore.readUserListCombine()
             scheduleStore.readScheduleCombine()
             diaryStore.mostLikedGetDiarysCombine()
+            localNotificationCenter.getCurrentSetting()
             //현재 로그인 되어있는지
             if isSignIn {
                 wholeAuthStore.getUserInfo(userUID: wholeAuthStore.currentUser!.uid) {

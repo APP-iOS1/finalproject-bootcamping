@@ -36,10 +36,6 @@ struct WeeklyPopulerCampingView: View {
                 }
             }
         }
-        .onAppear {
-            diaryStore.mostLikedGetDiarysCombine()
-        }
-        
     }
 }
 

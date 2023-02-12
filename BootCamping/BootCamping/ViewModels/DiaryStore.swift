@@ -84,6 +84,7 @@ class DiaryStore: ObservableObject {
                 case .finished:
                     print("Finished Create Diary")
                     self.firstGetMyDiaryCombine()
+                    self.firstGetRealTimeDiaryCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -156,7 +157,8 @@ class DiaryStore: ObservableObject {
                     self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
                     return
                 case .finished:
-                    self.readDiarysCombine()
+                    self.firstGetMyDiaryCombine()
+                    self.firstGetRealTimeDiaryCombine()
                     print("Finished Delete Diary")
                     return
                 }

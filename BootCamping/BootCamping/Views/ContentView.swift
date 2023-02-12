@@ -47,7 +47,7 @@ struct ContentView: View {
                     
                     //MARK: -세번째 캠핑일기 탭입니다.
                     NavigationView {
-                        if diaryStore.diaryList.count == 0 {
+                        if diaryStore.myDiaryUserInfoDiaryList.count == 0 {
                             DiaryEmptyView()
 //                            DiaryAddView(isNavigationGoFirstView: $isNavigationGoFirstView)
                         } else {
@@ -81,6 +81,7 @@ struct ContentView: View {
             diaryStore.firstGetRealTimeDiaryCombine()
             wholeAuthStore.readUserListCombine()
             scheduleStore.readScheduleCombine()
+            diaryStore.mostLikedGetDiarysCombine()
             //현재 로그인 되어있는지
             if isSignIn {
                 wholeAuthStore.getUserInfo(userUID: wholeAuthStore.currentUser!.uid) {

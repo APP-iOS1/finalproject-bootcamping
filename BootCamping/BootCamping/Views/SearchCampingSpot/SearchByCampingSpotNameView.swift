@@ -30,6 +30,8 @@ struct SearchByCampingSpotNameView: View {
                     campingSpotStore.campingSpotList.removeAll()
                     campingSpotStore.lastDoc = nil
                 }
+                .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                
             if isSearching {
                 VStack() {
                     ScrollView(showsIndicators: false) {
@@ -44,7 +46,7 @@ struct SearchByCampingSpotNameView: View {
                                 }
                             }
                         } else {
-                            LazyVStack {
+                            LazyVStack(alignment: .center) {
                                 if campingSpotStore.campingSpotList.isEmpty {
                                     Spacer()
                                     Text("검색결과가 없습니다")
@@ -55,10 +57,8 @@ struct SearchByCampingSpotNameView: View {
                                             campingSpot = campingSpotStore.campingSpotList[index]
                                             dismiss()
                                         } label: {
-                                            HStack {
-                                                SearchByCampingSpotNameRow(campingSpot: campingSpotStore.campingSpotList[index])
-                                                Spacer()
-                                            }
+                                            SearchByCampingSpotNameRow(campingSpot: campingSpotStore.campingSpotList[index])
+                                                .padding(.horizontal, UIScreen.screenWidth * 0.03)
                                         }
                                         .task {
                                             if index == campingSpotStore.campingSpotList.count - 1 {
@@ -82,7 +82,6 @@ struct SearchByCampingSpotNameView: View {
                 Spacer()
             }
         }
-        .padding(.horizontal, UIScreen.screenHeight * 0.03)
     }
 }
 
@@ -90,36 +89,36 @@ struct SearchByCampingSpotNameRow: View {
     var campingSpot: Item
     
     var body: some View {
-        HStack {
-            WebImage(url: URL(string: campingSpot.firstImageUrl == "" ? CampingSpotStore().noImageURL : campingSpot.firstImageUrl)) //TODO: -캠핑장 사진 연동
-                .resizable()
-                .frame(width: 60, height: 60)
-                .padding(.trailing, 5)
-            
-            VStack(alignment: .leading, spacing: 3) {
-                Text(campingSpot.facltNm)
-                    .font(.headline)
-                    .multilineTextAlignment(.leading)
+        RoundedRectangle(cornerRadius: 10)
+            .stroke(Color.bcDarkGray, lineWidth: 1)
+            .opacity(0.3)
+            .overlay (
                 HStack {
-                    Text(campingSpot.addr1)
-                    //TODO: 캠핑장 주소 -앞에 -시 -구 까지 짜르기
-                        .font(.footnote)
-                        .multilineTextAlignment(.leading)
-                        .padding(.vertical, 2)
-                    Spacer()
+                    WebImage(url: URL(string: campingSpot.firstImageUrl == "" ? CampingSpotStore().noImageURL : campingSpot.firstImageUrl))
+                        .resizable()
+                        .frame(width: 60, height: 60)
+                        .padding(5)
+                        .clipped()
+                    
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(campingSpot.facltNm)
+                            .font(.headline)
+                            .multilineTextAlignment(.leading)
+                        HStack {
+                            Text(campingSpot.addr1)
+                                .font(.footnote)
+                                .multilineTextAlignment(.leading)
+                                .padding(.vertical, 2)
+                            Spacer()
+                        }
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                    }
+                    .foregroundColor(.bcBlack)
+                    .padding()
                 }
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-            }
-            .foregroundColor(.bcBlack)
-            
-        }
-        .padding(10)
-        .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.bcDarkGray, lineWidth: 1)
-                    .opacity(0.3)
             )
+            .frame(width: UIScreen.screenWidth * 0.94, height: 70)
     }
 }
 

@@ -78,8 +78,8 @@ struct ContentView: View {
             }
         }
         .task {
+            diaryStore.firstGetRealTimeDiaryCombine()
             wholeAuthStore.readUserListCombine()
-            diaryStore.readDiarysCombine()
             scheduleStore.readScheduleCombine()
             //현재 로그인 되어있는지
             if isSignIn {

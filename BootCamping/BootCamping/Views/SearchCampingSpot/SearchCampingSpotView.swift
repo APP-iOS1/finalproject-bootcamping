@@ -134,9 +134,10 @@ extension SearchCampingSpotView {
                             Image("\(campingSpot.filterViewLocation)")
                                 .resizeImage(imgName: "\(campingSpot.filterViewLocation)")
                                 .resizable()
-                                .cornerRadius(50)
+                                .aspectRatio(contentMode: .fill)
                                 .frame(width: 90, height: 90)
-                                .aspectRatio(contentMode: .fit)
+                                .cornerRadius(50)
+                                .clipped()
                             if campingSpot.filterNames.count > 1 {
                                 HStack {
                                     ForEach(campingSpot.filterNames, id: \.self) { location in
@@ -169,9 +170,10 @@ extension SearchCampingSpotView {
                             Image("\(campingSpot.filterViewLocation)")
                                 .resizeImage(imgName: "\(campingSpot.filterViewLocation)")
                                 .resizable()
-                                .cornerRadius(50)
+                                .aspectRatio(contentMode: .fill)
                                 .frame(width: 90, height: 90)
-                                .aspectRatio(contentMode: .fit)
+                                .cornerRadius(50)
+                                .clipped()
                             if campingSpot.filterNames.count > 1 {
                                 HStack {
                                     ForEach(campingSpot.filterNames, id: \.self) { location in

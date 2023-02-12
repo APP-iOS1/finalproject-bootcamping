@@ -33,6 +33,9 @@ struct DiaryDetailView: View {
     @Namespace var topID
     @Namespace var bottomID
     
+    //키보드 dismiss
+    @FocusState private var inputFocused: Bool
+    
     var item: UserInfoDiary
     
     var body: some View {
@@ -122,6 +125,9 @@ struct DiaryDetailView: View {
                 campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
                 //TODO: -함수 업데이트되면 넣기
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
+            }
+            .onTapGesture {
+                inputFocused = false
             }
         }
     }

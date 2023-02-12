@@ -189,8 +189,6 @@ struct FirebaseDiaryService {
             var imageNames: [String] = []
             var imageURLs: [String] = []
             
-            guard let userUID = Auth.auth().currentUser?.uid else { return }
-            
             
             let group = DispatchGroup()
             
@@ -246,21 +244,14 @@ struct FirebaseDiaryService {
                 }
                 group.notify(queue: .main) {
                     
-                    let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: diary.diaryLike, diaryIsPrivate: diary.diaryIsPrivate)
-                    
-                    self.database.collection("Diarys").document(diary.id).setData([
-                        "id": newDiary.id,
-                        "uid": newDiary.uid,
-                        "diaryUserNickName": newDiary.diaryUserNickName,
-                        "diaryTitle": newDiary.diaryTitle,
-                        "diaryAddress": newDiary.diaryAddress,
-                        "diaryContent": newDiary.diaryContent,
-                        "diaryImageNames": newDiary.diaryImageNames,
-                        "diaryImageURLs": newDiary.diaryImageURLs,
-                        "diaryCreatedDate": newDiary.diaryCreatedDate,
-                        "diaryVisitedDate": newDiary.diaryVisitedDate,
-                        "diaryLike": newDiary.diaryLike,
-                        "diaryIsPrivate": newDiary.diaryIsPrivate,]) { error in
+                    self.database.collection("Diarys").document(diary.id).updateData([
+                        "diaryTitle": diary.diaryTitle,
+                        "diaryAddress": diary.diaryAddress,
+                        "diaryContent": diary.diaryContent,
+                        "diaryImageNames": imageNames,
+                        "diaryImageURLs": imageURLs,
+                        "diaryVisitedDate": diary.diaryVisitedDate,
+                        "diaryIsPrivate": diary.diaryIsPrivate,]) { error in
                             if let error = error {
                                 print(error)
                                 promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
@@ -336,7 +327,8 @@ struct FirebaseDiaryService {
     //MARK: - 실시간 다이어리 처음 받을때, 리프레쉬 할때 다이어리 정보 가져옴
     func firstGetDiaryService() -> AnyPublisher<LastDocWithDiaryList, Error> {
         Future<LastDocWithDiaryList, Error> { promise in
-            database.collection("Diarys").order(by: "diaryCreatedDate", descending: true).limit(to: 5).getDocuments { snapshot, error in
+            database.collection("Diarys")
+                .whereField("diaryIsPrivate", isEqualTo: false).order(by: "diaryCreatedDate", descending: true).limit(to: 5).getDocuments { snapshot, error in
                 if let error = error {
                     print(error)
                 }
@@ -412,6 +404,7 @@ struct FirebaseDiaryService {
     func nextGetDiaryService(lastDoc: QueryDocumentSnapshot?) -> AnyPublisher<LastDocWithDiaryList, Error> {
         Future<LastDocWithDiaryList, Error> { promise in
             database.collection("Diarys")
+                .whereField("diaryIsPrivate", isEqualTo: false)
                 .order(by: "diaryCreatedDate", descending: true)
                 .start(afterDocument: lastDoc!)
                 .limit(to: 5)
@@ -492,7 +485,7 @@ struct FirebaseDiaryService {
 
     func mostLikedGetDiarysService() -> AnyPublisher<[UserInfoDiary], Error> {
         Future<[UserInfoDiary], Error> { promise in
-            database.collection("Diarys").whereField("diaryCreatedDate", isGreaterThan: Timestamp(date: Date(timeIntervalSinceNow: -604800))).getDocuments { snapshot, error in
+            database.collection("Diarys").whereField("diaryIsPrivate", isEqualTo: false).whereField("diaryCreatedDate", isGreaterThan: Timestamp(date: Date(timeIntervalSinceNow: -604800))).getDocuments { snapshot, error in
                 if let error = error {
                     print(error)
                 }

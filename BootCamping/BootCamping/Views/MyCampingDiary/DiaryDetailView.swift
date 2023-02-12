@@ -20,6 +20,13 @@ struct DiaryDetailView: View {
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
     @StateObject var commentStore: CommentStore = CommentStore()
     
+    var diaryCampingSpot: [Item] {
+        get {
+            return campingSpotStore.campingSpotList.filter{
+                $0.contentId == item.diary.diaryAddress
+            }
+        }
+    }
     
     @State private var diaryComment: String = ""
     
@@ -57,7 +64,7 @@ struct DiaryDetailView: View {
                             Divider()
                             //댓글
                             ForEach(commentStore.commentList) { comment in
-                                DiaryCommentCellView(item: comment)
+                                DiaryCommentCellView(item2: item, item: comment)
                             }
                             //댓글 작성시 뷰 가장 아래로
                             EmptyView().id(bottomID)
@@ -183,11 +190,12 @@ private extension DiaryDetailView {
     var alertMenu: some View {
         //MARK: - ... 버튼입니다.
         Menu {
-            Button {
-                //TODO: -수정기능 추가
+            NavigationLink {
+                DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", selectedDate: item.diary.diaryVisitedDate)
             } label: {
                 Text("수정하기")
             }
+
             
             Button {
                 isShowingDeleteAlert = true

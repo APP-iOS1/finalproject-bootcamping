@@ -86,12 +86,12 @@ struct DiaryAddView: View {
                     }
                     addViewAddButton
                 }
+                .padding(.horizontal, UIScreen.screenWidth*0.03)
             }
         }
-        .padding(.horizontal, UIScreen.screenWidth*0.03)
         .navigationTitle(Text("캠핑 일기 쓰기"))
         .onTapGesture {
-            dismissKeyboard()
+            submit()
         }
         .disableAutocorrection(true) //자동 수정 비활성화
         .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
@@ -313,6 +313,7 @@ private extension DiaryAddView {
             Spacer()
             Button {
                 diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages)
+                dismiss()
             } label: {
                 Text(diaryTitle.isEmpty || diaryContent.isEmpty ? "내용을 작성해주세요" : "일기 쓰기")
                     .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07) // 이거 밖에 있으면 글씨 부분만 버튼 적용됨

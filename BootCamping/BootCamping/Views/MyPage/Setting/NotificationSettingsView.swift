@@ -13,8 +13,8 @@ struct NotificationSettingsView: View {
     
     @State private var isSettingSchedulePN: Bool = false
     @State private var isSettingAppPN: Bool = false
-    
     @State private var isShowingAlertForPN: Bool = false
+    @State private var isFirstEntry: Bool = true
     
     var body: some View {
         List{
@@ -29,7 +29,17 @@ struct NotificationSettingsView: View {
                 Text("알림 설정")
             }
         }
-        .task{
+        //MARK: - PUSH 알림 설정을 위한 alert
+        /// 코드로 변경 불가능
+        .alert("PUSH 알림 설정을 '설정 > 알림 > 부트캠핑 > 알림허용'에서 변경해주세요", isPresented: $isShowingAlertForPN) {
+            Button("닫기", role: .cancel) {
+                isShowingAlertForPN = false
+            }
+            Button("설정") {
+                localNotificationCenter.openAppSetting()
+            }
+        }
+        .task {
             isSettingSchedulePN = (localNotificationCenter.authorizationStatus == .authorized)
         }
     }
@@ -47,18 +57,9 @@ extension NotificationSettingsView {
                         .multilineTextAlignment(.leading)
                 }
             }
-            //MARK: - PUSH 알림 설정을 위한 alert
-            /// 코드로 변경 불가능
-            .alert("PUSH 알림 설정을 '설정 > 알림 > 부트캠핑 > 알림허용'에서 변경해주세요", isPresented: $isShowingAlertForPN) {
-                Button("닫기", role: .cancel) {
-                    isShowingAlertForPN = false
-                }
-                Button("설정") {
-                    localNotificationCenter.openAppSetting()
-                }
-            }
             .onChange(of: isSettingSchedulePN) { _ in
-                isShowingAlertForPN = true
+                if !isFirstEntry { isShowingAlertForPN = true}
+                isFirstEntry = false
             }
         }
     }
@@ -73,6 +74,7 @@ extension NotificationSettingsView {
                         .multilineTextAlignment(.leading)
                 }
             }
+            .tint(Color.accentColor)
         }
     }
 }

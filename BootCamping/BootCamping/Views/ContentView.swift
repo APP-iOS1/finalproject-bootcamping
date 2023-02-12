@@ -64,6 +64,9 @@ struct ContentView: View {
                         Label("마이 페이지", systemImage: "person")
                     }.tag(TabViewScreen.four)
                 }
+                .onAppear {
+                    diaryStore.firstGetMyDiaryCombine()
+                }
             } else {
                 LoginView()
                     .task {

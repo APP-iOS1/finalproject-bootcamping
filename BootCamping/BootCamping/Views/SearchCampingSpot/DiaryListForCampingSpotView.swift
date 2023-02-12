@@ -20,7 +20,7 @@
 //                                .task {
 //                                    if index == diaryStore.userInfoDiaryList.count - 1 {
 //                                        Task {
-//                                            diaryStore.nextGetDiaryCombine()
+//                                            diaryStore.nextGetRealtimeDiaryCombine()
 //                                        }
 //                                    }
 //                                }

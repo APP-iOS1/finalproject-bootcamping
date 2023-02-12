@@ -22,12 +22,18 @@ class DiaryStore: ObservableObject {
     @Published var isProcessing: Bool = false
     // 다이어리 에러 상태
     @Published var isError: Bool = false
-    // 마지막 다큐먼트
-    @Published var lastDoc: QueryDocumentSnapshot?
-    // 개선된 다이어리 리스트
-    @Published var userInfoDiaryList: [UserInfoDiary] = []
     
-    // 인기글 다이어리 유저 저장
+    // 내 다이어리 마지막 다큐먼트
+    @Published var myDiarylastDoc: QueryDocumentSnapshot?
+    // 내 다이어리 뷰 유저 및 다이어리 정보
+    @Published var myDiaryUserInfoDiaryList: [UserInfoDiary] = []
+    
+    // 실시간 다이어리 마지막 다큐먼트
+    @Published var realTimeDiarylastDoc: QueryDocumentSnapshot?
+    // 실시간 다이어리 뷰 유저 및 다이어리 정보
+    @Published var realTimeDiaryUserInfoDiaryList: [UserInfoDiary] = []
+    
+    // 인기글 다이어리 뷰 유저 및 다이어리 정보
     @Published var popularDiaryList: [UserInfoDiary] = []
     //파베 기본 경로
     let database = Firestore.firestore()
@@ -77,7 +83,7 @@ class DiaryStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Create Diary")
-                    self.readDiarysCombine()
+                    self.firstGetMyDiaryCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -101,7 +107,8 @@ class DiaryStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Update Diary")
-                    self.readDiarysCombine()
+                    self.firstGetMyDiaryCombine()
+                    self.firstGetRealTimeDiaryCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -125,7 +132,8 @@ class DiaryStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Update Diary")
-                    self.readDiarysCombine()
+                    self.firstGetMyDiaryCombine()
+                    self.firstGetRealTimeDiaryCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -157,12 +165,11 @@ class DiaryStore: ObservableObject {
             }
             .store(in: &cancellables)
     }  
-    
-    //MARK: - 실시간 다이어리 불러오기 함수
+    //MARK: - 내 다이어리 불러오기 함수
     
     // 첫번째 불러오기 함수
-    func firstGetDiaryCombine() {
-        FirebaseDiaryService().firstGetDiaryService()
+    func firstGetMyDiaryCombine() {
+        FirebaseDiaryService().firstGetMyDiaryService()
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -176,15 +183,15 @@ class DiaryStore: ObservableObject {
                     print("Finished get Diarys")
                     return
                 }
-            } receiveValue: { [weak self] lastDocWithDiaryList in
-                self?.lastDoc = lastDocWithDiaryList.lastDoc
-                self?.userInfoDiaryList = lastDocWithDiaryList.userInfoDiarys
+            } receiveValue: { [weak self] mylastDocWithDiaryList in
+                self?.myDiarylastDoc = mylastDocWithDiaryList.lastDoc
+                self?.myDiaryUserInfoDiaryList = mylastDocWithDiaryList.userInfoDiarys
             }
             .store(in: &cancellables)
     }
     
-    func nextGetDiaryCombine() {
-        FirebaseDiaryService().nextGetDiaryService(lastDoc: self.lastDoc)
+    func nextGetMyDiaryCombine() {
+        FirebaseDiaryService().nextGetMyDiaryService(lastDoc: self.myDiarylastDoc)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -198,9 +205,56 @@ class DiaryStore: ObservableObject {
                     print("Finished get Diarys")
                     return
                 }
-            } receiveValue: { [weak self] lastDocWithDiaryList in
-                self?.lastDoc = lastDocWithDiaryList.lastDoc
-                self?.userInfoDiaryList.append(contentsOf: lastDocWithDiaryList.userInfoDiarys)
+            } receiveValue: { [weak self] mylastDocWithDiaryList in
+                self?.myDiarylastDoc = mylastDocWithDiaryList.lastDoc
+                self?.myDiaryUserInfoDiaryList.append(contentsOf: mylastDocWithDiaryList.userInfoDiarys)
+            }
+            .store(in: &cancellables)
+    }
+    
+    //MARK: - 실시간 다이어리 불러오기 함수
+    
+    // 첫번째 불러오기 함수
+    func firstGetRealTimeDiaryCombine() {
+        FirebaseDiaryService().firstGetRealTimeDiaryService()
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed get Diarys")
+                    self.firebaseDiaryServiceError = .badSnapshot
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished get Diarys")
+                    return
+                }
+            } receiveValue: { [weak self] realTimelastDocWithDiaryList in
+                self?.realTimeDiarylastDoc = realTimelastDocWithDiaryList.lastDoc
+                self?.realTimeDiaryUserInfoDiaryList = realTimelastDocWithDiaryList.userInfoDiarys
+            }
+            .store(in: &cancellables)
+    }
+    
+    func nextGetRealtimeDiaryCombine() {
+        FirebaseDiaryService().nextGetRealTimeDiaryService(lastDoc: self.realTimeDiarylastDoc)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed get Diarys")
+                    self.firebaseDiaryServiceError = .badSnapshot
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished get Diarys")
+                    return
+                }
+            } receiveValue: { [weak self] realTimelastDocWithDiaryList in
+                self?.realTimeDiarylastDoc = realTimelastDocWithDiaryList.lastDoc
+                self?.realTimeDiaryUserInfoDiaryList.append(contentsOf: realTimelastDocWithDiaryList.userInfoDiarys)
             }
             .store(in: &cancellables)
     }

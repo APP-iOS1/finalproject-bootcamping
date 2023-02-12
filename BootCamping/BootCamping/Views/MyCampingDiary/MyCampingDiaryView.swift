@@ -32,13 +32,22 @@ struct MyCampingDiaryView: View {
                     DiaryLockedView()
                 } else {
                     ScrollView(showsIndicators: false) {
-                        ForEach(diaryStore.userInfoDiaryList, id: \.self) { diaryData in
-                            if diaryData.diary.uid == Auth.auth().currentUser?.uid {
-                                VStack {
-                                    DiaryCellView(item: diaryData)
-                                }
+                        LazyVStack {
+                            ForEach(diaryStore.myDiaryUserInfoDiaryList.indices, id: \.self) { index in
+                                DiaryCellView(item: diaryStore.myDiaryUserInfoDiaryList[index])
+                                    .task {
+                                        if index == diaryStore.myDiaryUserInfoDiaryList.count - 1 {
+                                            Task {
+                                                diaryStore.nextGetMyDiaryCombine()
+                                            }
+                                        }
+                                    }
+                                
                             }
                         }
+                    }
+                    .refreshable {
+                        diaryStore.firstGetMyDiaryCombine()
                     }
                     .padding(.top)
                     .padding(.bottom, 1)

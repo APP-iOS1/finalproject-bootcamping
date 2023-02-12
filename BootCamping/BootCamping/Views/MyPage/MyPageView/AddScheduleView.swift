@@ -171,6 +171,7 @@ extension AddScheduleView {
         Toggle(isOn: self.$isSettingNotification) {
             Text("스케줄에 대한 알림 수신")
         }
+        .toggleStyle(SwitchToggleStyle(tint: .bcGreen))
     }
     // MARK: -View : addScheduleButton
     private var addScheduleButton : some View {

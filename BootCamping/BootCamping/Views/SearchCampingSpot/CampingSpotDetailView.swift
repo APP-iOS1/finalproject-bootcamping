@@ -37,61 +37,63 @@ struct CampingSpotDetailView: View {
         
         VStack() {
             ScrollView(showsIndicators: false) {
-                WebImage(url: URL(string: campingSpot.firstImageUrl))
-                    .resizable()
-                    .placeholder {
-                        Rectangle().foregroundColor(.secondary)
-                    }
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: UIScreen.screenWidth)
-                    .padding(.bottom, 5)
-                
-                if !campingSpot.lctCl.isEmpty {
-                    HStack {
-                        ForEach(campingSpot.lctCl.components(separatedBy: ","), id: \.self) { view in
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 40 ,height: 20)
-                                .foregroundColor(.bcGreen)
-                                .overlay{
-                                    Text(view)
-                                        .font(.caption2.bold())
-                                        .foregroundColor(.white)
+                VStack {
+                    WebImage(url: URL(string: campingSpot.firstImageUrl))
+                        .resizable()
+                        .placeholder {
+                            Rectangle().foregroundColor(.secondary)
+                        }
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: UIScreen.screenWidth)
+                        .padding(.bottom, 5)
+                    
+                    if !campingSpot.lctCl.isEmpty {
+                        HStack {
+                            ForEach(campingSpot.lctCl.components(separatedBy: ","), id: \.self) { view in
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 40 ,height: 20)
+                                    .foregroundColor(.bcGreen)
+                                    .overlay{
+                                        Text(view)
+                                            .font(.caption2.bold())
+                                            .foregroundColor(.white)
+                                    }
+                            }
+                            Spacer()
+                            Button {
+                                isBookmarked.toggle()
+                                if isBookmarked{
+                                    bookmarkStore.addBookmarkSpotCombine(campingSpotId: campingSpot.contentId)
+                                } else{
+                                    bookmarkStore.removeBookmarkCampingSpotCombine(campingSpotId: campingSpot.contentId)
                                 }
-                        }
-                        Spacer()
-                        Button {
-                            isBookmarked.toggle()
-                            if isBookmarked{
-                                bookmarkStore.addBookmarkSpotCombine(campingSpotId: campingSpot.contentId)
-                            } else{
-                                bookmarkStore.removeBookmarkCampingSpotCombine(campingSpotId: campingSpot.contentId)
+                                wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+                            } label: {
+                                Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                                    .bold()
+                                    .foregroundColor(Color.accentColor)
                             }
-                            wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
-                        } label: {
-                            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                                .bold()
-                                .foregroundColor(Color.accentColor)
+                            .padding()
                         }
-                        .padding()
-                    }
-                    .padding(.horizontal, UIScreen.screenWidth*0.05)
-                } else {
-                    HStack {
-                        Spacer()
-                        Button {
-                            isBookmarked.toggle()
-                            if isBookmarked{
-                                bookmarkStore.addBookmarkSpotCombine(campingSpotId: campingSpot.contentId)
-                            } else{
-                                bookmarkStore.removeBookmarkCampingSpotCombine(campingSpotId: campingSpot.contentId)
+                        .padding(.horizontal, UIScreen.screenWidth*0.05)
+                    } else {
+                        HStack {
+                            Spacer()
+                            Button {
+                                isBookmarked.toggle()
+                                if isBookmarked{
+                                    bookmarkStore.addBookmarkSpotCombine(campingSpotId: campingSpot.contentId)
+                                } else{
+                                    bookmarkStore.removeBookmarkCampingSpotCombine(campingSpotId: campingSpot.contentId)
+                                }
+                                wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+                            } label: {
+                                Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                                    .bold()
+                                    .foregroundColor(Color.accentColor)
                             }
-                            wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
-                        } label: {
-                            Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                                .bold()
-                                .foregroundColor(Color.accentColor)
+                            .padding()
                         }
-                        .padding()
                     }
                 }
                 
@@ -130,7 +132,7 @@ struct CampingSpotDetailView: View {
                                 Text(campingSpot.tel)
                                     .font(.callout)
                                     .foregroundColor(.secondary)
-                                Button{
+                                Button {
                                     if let url = URL(string: "tel://\(campingSpot.tel)"), UIApplication.shared.canOpenURL(url) {
                                         UIApplication.shared.open(url)
                                     }
@@ -142,31 +144,82 @@ struct CampingSpotDetailView: View {
                                 }
                             }
                         }
+                        if campingSpot.resveUrl != "" {
+                            HStack {
+                                Image(systemName: "safari.fill")
+                                    .font(.callout)
+                                    .foregroundColor(.secondary)
+                                Link(destination: URL(string: campingSpot.resveUrl)!, label: {
+                                    Text("예약하러 가기")
+                                        .font(.callout)
+                                        .foregroundColor(.secondary)
+                                        .underline()
+                                })
+                            }
+                        }
+                        Text(" ")
+                        if campingSpot.operPdCl != "" {
+                            VStack {
+                                Text("운영계절 : \(campingSpot.operPdCl)")
+                                    .font(.callout)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        if campingSpot.operDeCl != "" {
+                            VStack {
+                                Text("운영일 : \(campingSpot.operDeCl)")
+                                    .font(.callout)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        Divider()
+                            .padding(.vertical)
                     }
-                    .padding(.bottom, 15)
                     
                     Group {
                         if campingSpot.intro != "" {
+                            Text("캠핑장 소개")
+                                .font(.headline)
+                                .padding(.bottom, 10)
                             Text("\(campingSpot.intro)")
+                                .font(.subheadline)
                                 .lineSpacing(7)
+                            Divider()
+                                .padding(.vertical)
                         } else {
+                            Text("캠핑장 소개")
+                                .font(.headline)
+                                .padding(.bottom, 10)
                             Text("업체에서 제공하는 정보가 없습니다")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                            Divider()
+                                .padding(.vertical)
                         }
                     }
                     
+                    Group {
+                        if campingSpot.eqpmnLendCl != "" {
+                            Text("대여 가능한 캠핑장비")
+                                .font(.headline)
+                                .padding(.bottom, 10)
+                            Text("\(campingSpot.eqpmnLendCl)")
+                                .font(.subheadline)
+                                .lineSpacing(7)
+                            Divider()
+                                .padding(.vertical)
+                        }
+                    }
                     
-                    Divider()
-                        .padding(.vertical)
                     Group {
                         Text("편의시설 및 서비스")
                             .font(.headline)
                             .padding(.bottom, 10)
                         
                         ServiceIcon(campingSpot: campingSpot)
+                        Divider()
+                            .padding(.vertical)
                     }
-                    
-                    Divider()
-                        .padding(.vertical)
                     
                     Group {
                         Text("위치 보기")
@@ -184,12 +237,67 @@ struct CampingSpotDetailView: View {
                         .onAppear {
                             region.center = CLLocationCoordinate2D(latitude: Double(campingSpot.mapY)!, longitude: Double(campingSpot.mapX)!)
                         }
+                        Divider()
+                            .padding(.vertical)
                         
                         
                     }
                     
-                    Divider()
-                        .padding(.vertical)
+                    Group {
+                        if campingSpot.posblFcltyCl != "" {
+                            Text("주변이용가능시설")
+                                .font(.headline)
+                                .padding(.bottom, 10)
+                            Text("\(campingSpot.posblFcltyCl)")
+                                .font(.subheadline)
+                                .lineSpacing(7)
+                            Divider()
+                                .padding(.vertical)
+                        }
+                    }
+                    
+                    Group {
+                        if campingSpot.exprnProgrm != "" {
+                            Text("주변 체험")
+                                .font(.headline)
+                                .padding(.bottom, 10)
+                            ForEach(campingSpot.exprnProgrm.components(separatedBy: ","), id: \.self) { exprn in
+                                HStack {
+                                    Text("#\(exprn)")
+                                        .font(.subheadline)
+                                }
+                            }
+                            Divider()
+                                .padding(.vertical)
+                        }
+                    }
+                    
+                    Group {
+                        if campingSpot.featureNm != "" {
+                            Text("캠핑장 특징")
+                                .font(.headline)
+                                .padding(.bottom, 10)
+                            Text("\(campingSpot.featureNm)")
+                                .font(.subheadline)
+                                .lineSpacing(7)
+                            Divider()
+                                .padding(.vertical)
+                        }
+                    }
+                    
+                    Group {
+                        if campingSpot.tooltip != "" {
+                            Text("캠핑장 팁")
+                                .font(.headline)
+                                .padding(.bottom, 10)
+                            Text("\(campingSpot.tooltip)")
+                                .font(.subheadline)
+                                .lineSpacing(7)
+                            Divider()
+                                .padding(.vertical)
+                        }
+                    }
+                    
                     
                     Group {
                         HStack {
@@ -202,7 +310,9 @@ struct CampingSpotDetailView: View {
                                 
                             } label: {
                                 Text("더 보기")
-                                    .font(.callout)
+                                    .font(.subheadline)
+                                    .underline()
+                                    .foregroundColor(.secondary)
                                     .padding(.bottom, 10)
                                     .padding(.trailing, 10)
                             }
@@ -210,6 +320,8 @@ struct CampingSpotDetailView: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             if diaryStore.diaryList.filter { !$0.diaryIsPrivate }.isEmpty {
                                 Text("등록된 리뷰가 없습니다.")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
                             } else if diaryStore.diaryList.count <= 3 {
                                 HStack {
                                     ForEach(diaryStore.diaryList.filter { !$0.diaryIsPrivate }.indices, id: \.self) { index in

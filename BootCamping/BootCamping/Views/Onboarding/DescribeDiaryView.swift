@@ -40,9 +40,3 @@ struct DescribeDiaryView: View {
         }
     }
 }
-
-struct DescribeDiaryView_Previews: PreviewProvider {
-    static var previews: some View {
-        DescribeDiaryView(isFirstLaunching: .constant(true))
-    }
-}

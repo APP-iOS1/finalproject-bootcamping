@@ -21,9 +21,3 @@ struct DiaryEmptyView: View {
         }
     }
 }
-
-struct DiaryEmptyView_Previews: PreviewProvider {
-    static var previews: some View {
-        DiaryEmptyView()
-    }
-}

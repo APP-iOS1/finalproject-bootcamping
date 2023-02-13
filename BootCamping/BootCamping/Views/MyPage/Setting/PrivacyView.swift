@@ -90,33 +90,4 @@ private extension PrivacyView {
             }
         }
     }
-            
-            
-            
-//            Image(systemName: diaryIsPrivate ? "lock" : "lock.open" )
-//                .animation(.none)
-//                .padding(.trailing, diaryIsPrivate ? 1.5 : 0)
-//                .opacity(0)
-//
-//
-//            Text(diaryIsPrivate ? "비공개": "공개")
-//                .animation(.none)
-//                .font(.caption2)
-//                .padding(.trailing, diaryIsPrivate ? 0 : 5)
-            
-
-        //TODO: -토글 전에 faceid 확인
-//        .onChange(of: usingFaceId) { newValue in
-//            if usingFaceId ?? true && faceId.islocked {
-//                faceId.authenticate()
-//            }
-//        }
-
-}
-
-struct PrivacyView_Previews: PreviewProvider {
-    static var previews: some View {
-        PrivacyView()
-            .environmentObject(FaceId())
-    }
 }

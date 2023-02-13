@@ -50,9 +50,3 @@ struct BookmarkCellView: View {
         )
     }
 }
-
-struct BookmarkCellView_Previews: PreviewProvider {
-    static var previews: some View {
-        BookmarkCellView(campingSpot: CampingSpotStore().campingSpot)
-    }
-}

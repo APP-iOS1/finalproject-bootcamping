@@ -25,10 +25,3 @@ struct DiaryLockedView: View {
         }
     }
 }
-
-struct DiaryLockedView_Previews: PreviewProvider {
-    static var previews: some View {
-        DiaryLockedView()
-            .environmentObject(FaceId())
-    }
-}

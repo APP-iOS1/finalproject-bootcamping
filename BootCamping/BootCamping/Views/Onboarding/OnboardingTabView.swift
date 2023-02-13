@@ -27,9 +27,3 @@ struct OnboardingTabView: View {
         .indexViewStyle(.page(backgroundDisplayMode: .always))
     }
 }
-//
-//struct OnboardingTabView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        OnboardingTabView()
-//    }
-//}

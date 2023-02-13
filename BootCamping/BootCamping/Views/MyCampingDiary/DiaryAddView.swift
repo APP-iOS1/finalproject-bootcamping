@@ -399,21 +399,3 @@ private extension DiaryAddView {
         }
     }
 }
-
-
-struct DiaryAddView_Previews: PreviewProvider {
-    static var previews: some View {
-        DiaryAddView()
-            .environmentObject(WholeAuthStore())
-            .environmentObject(DiaryStore())
-        
-        DiaryAddView()
-            .environmentObject(WholeAuthStore())
-            .environmentObject(DiaryStore())
-            .previewDevice("iPhone 11")
-        DiaryAddView()
-            .environmentObject(WholeAuthStore())
-            .environmentObject(DiaryStore())
-            .previewDevice("iPhone SE (3rd generation)")
-    }
-}

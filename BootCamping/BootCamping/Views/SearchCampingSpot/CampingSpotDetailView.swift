@@ -308,7 +308,7 @@ struct CampingSpotDetailView: View {
                             Spacer()
                             
                             NavigationLink {
-                                
+                                DiaryListForCampingSpotView(contentId: campingSpot.contentId, diaryStore: diaryStore)
                             } label: {
                                 Text("더 보기")
                                     .font(.subheadline)
@@ -319,17 +319,17 @@ struct CampingSpotDetailView: View {
                             }
                         }
                         ScrollView(.horizontal, showsIndicators: false) {
-                            if diaryStore.diaryList.filter { !$0.diaryIsPrivate }.isEmpty {
+                            if diaryStore.realTimeDiaryUserInfoDiaryList.isEmpty {
                                 Text("등록된 리뷰가 없습니다.")
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
-                            } else if diaryStore.diaryList.count <= 3 {
+                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.count <= 3 {
                                 HStack {
-                                    ForEach(diaryStore.diaryList.filter { !$0.diaryIsPrivate }.indices, id: \.self) { index in
+                                    ForEach(diaryStore.realTimeDiaryUserInfoDiaryList.indices, id: \.self) { index in
                                         NavigationLink {
-                                            DiaryListForCampingSpotView(diaryList: diaryStore.diaryList.filter { !$0.diaryIsPrivate })
+                                            DiaryDetailView(item: diaryStore.realTimeDiaryUserInfoDiaryList[index])
                                         } label: {
-                                            CampingSpotDiaryRow(diary: diaryStore.diaryList[index])
+                                            CampingSpotDiaryRow(item: diaryStore.realTimeDiaryUserInfoDiaryList[index])
                                         }
                                     }
                                 }
@@ -337,9 +337,9 @@ struct CampingSpotDetailView: View {
                                 HStack {
                                     ForEach(0...3, id: \.self) { index in
                                         NavigationLink {
-                                            
+                                            DiaryDetailView(item: diaryStore.realTimeDiaryUserInfoDiaryList[index])
                                         } label: {
-                                            CampingSpotDiaryRow(diary: diaryStore.diaryList[index])
+                                            CampingSpotDiaryRow(item: diaryStore.realTimeDiaryUserInfoDiaryList[index])
                                         }
                                     }
                                 }
@@ -354,7 +354,7 @@ struct CampingSpotDetailView: View {
         .task {
             annotatedItem.append(AnnotatedItem(name: campingSpot.facltNm, coordinate: CLLocationCoordinate2D(latitude: Double(campingSpot.mapY) ?? 23.0, longitude: Double(campingSpot.mapX) ?? 36.0)))
             isBookmarked = bookmarkStore.checkBookmarkedSpot(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, campingSpotId: campingSpot.contentId)
-            diaryStore.readCampingSpotsDiarysCombine(contentId: campingSpot.contentId)
+            diaryStore.readCampingSpotsDiariesCombine(contentId: campingSpot.contentId)
         }
         .alert("복사가 완료되었습니다", isPresented: $isPaste) {
             Button("완료") {
@@ -366,17 +366,17 @@ struct CampingSpotDetailView: View {
 
 struct CampingSpotDiaryRow: View {
     
-    var diary: Diary
+    var item: UserInfoDiary
     
     var body: some View {
         VStack(alignment: .leading) {
-            WebImage(url: URL(string: diary.diaryImageURLs.first!))
+            WebImage(url: URL(string: item.diary.diaryImageURLs.first!))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: UIScreen.screenWidth * 0.3, height: UIScreen.screenWidth * 0.3)
                 .cornerRadius(10)
                 .clipped()
-            Text(diary.diaryTitle)
+            Text(item.diary.diaryTitle)
                 .font(.callout)
                 .frame(width: 120)
                 .lineLimit(2)

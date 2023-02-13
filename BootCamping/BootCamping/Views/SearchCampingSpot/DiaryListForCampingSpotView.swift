@@ -9,26 +9,23 @@ import SwiftUI
 
 struct DiaryListForCampingSpotView: View {
     
-    var diaryList: [Diary]
+    var contentId: String
+    @StateObject var diaryStore: DiaryStore
+    @StateObject var commentStore: CommentStore = CommentStore()
     
     var body: some View {
         VStack {
             ScrollView(showsIndicators: false) {
                 LazyVStack {
-                    ForEach(diaryList.indices, id: \.self) { index in
-                        if diaryList[index].diaryIsPrivate == false {
-                            DiaryCellView(item: UserInfoDiary(diary: diaryList[index], user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: [])))
-//                                .task {
-//                                    if index == diaryList.count - 1 {
-//                                        Task {
-//                                            diaryStore.nextGetRealtimeDiaryCombine()
-//                                        }
-//                                    }
-                                }
+                    ForEach(diaryStore.realTimeDiaryUserInfoDiaryList, id: \.self) {  item in
+                            DiaryCellView(item: item)
                         }
                     }
-                }
             }
+        }
+        .onAppear {
+            diaryStore.readCampingSpotsDiariesCombine(contentId: contentId)
+        }
     }
 }
 

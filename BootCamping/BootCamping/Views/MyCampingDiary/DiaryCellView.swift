@@ -92,17 +92,6 @@ struct DiaryCellView: View {
 }
 
 private extension DiaryCellView {
-    //TODO: -유저 프로필 이미지 연결
-    //    var userProfileURL: String? {
-    //        for user in wholeAuthStore.userList {
-    //            if user.id == item.uid {
-    //                return user.profileImageURL
-    //            }
-    //        }
-    //        return ""
-    //    }
-    
-    
     //MARK: - 메인 이미지
     var diaryImage: some View {
         TabView{
@@ -112,6 +101,7 @@ private extension DiaryCellView {
                     .placeholder {
                         Rectangle().foregroundColor(.gray)
                     }
+                    .transition(.fade(duration: 0.5))
                     .scaledToFill()
                     .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     .clipped()
@@ -150,7 +140,6 @@ private extension DiaryCellView {
                     .padding(.horizontal, UIScreen.screenWidth * 0.03)
                     .padding(.top, 5)
             }
-            //TODO: -글 쓴 유저가 아닐때는 신고기능 넣기
             else {
                 reportAlertMenu
                     .padding(.horizontal, UIScreen.screenWidth * 0.03)
@@ -241,7 +230,7 @@ private extension DiaryCellView {
     //MARK: - 캠핑장 이동
     var diaryCampingLink: some View {
         HStack {
-            WebImage(url: URL(string: campingSpotStore.campingSpotList.first?.firstImageUrl == "" ? campingSpotStore.noImageURL : campingSpotStore.campingSpotList.first?.firstImageUrl ?? "")) //TODO: -캠핑장 사진 연동
+            WebImage(url: URL(string: campingSpotStore.campingSpotList.first?.firstImageUrl == "" ? campingSpotStore.noImageURL : campingSpotStore.campingSpotList.first?.firstImageUrl ?? ""))
                 .resizable()
                 .frame(width: 60, height: 60)
                 .padding(.trailing, 5)
@@ -280,7 +269,6 @@ private extension DiaryCellView {
                 } else {
                     diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
                 }
-                //TODO: -함수 업데이트되면 넣기
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
                 //탭틱
                 let impactMed = UIImpactFeedbackGenerator(style: .soft)
@@ -314,19 +302,3 @@ private extension DiaryCellView {
         .padding(.vertical, 5)
     }
 }
-
-
-//struct DiaryCellView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DiaryCellView(item: Diary(id: "", uid: "", diaryUserNickName: "닉네임", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "내용", diaryImageNames: [""], diaryImageURLs: [
-//            "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: ["동훈"], diaryIsPrivate: true))
-//        .environmentObject(WholeAuthStore())
-//        .environmentObject(DiaryStore())
-//        .environmentObject(BookmarkStore())
-//        .environmentObject(DiaryLikeStore())
-//        .environmentObject(CommentStore())
-//
-//    }
-//}
-
-

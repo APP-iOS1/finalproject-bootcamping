@@ -43,6 +43,7 @@ struct CampingSpotDetailView: View {
                         .placeholder {
                             Rectangle().foregroundColor(.secondary)
                         }
+                        .transition(.fade(duration: 0.5))
                         .aspectRatio(contentMode: .fill)
                         .frame(width: UIScreen.screenWidth)
                         .padding(.bottom, 5)
@@ -149,7 +150,7 @@ struct CampingSpotDetailView: View {
                                 Image(systemName: "safari.fill")
                                     .font(.callout)
                                     .foregroundColor(.secondary)
-                                Link(destination: URL(string: campingSpot.resveUrl)!, label: {
+                                Link(destination: (URL(string: campingSpot.resveUrl) ?? URL(string: campingSpot.homepage))!, label: {
                                     Text("예약하러 가기")
                                         .font(.callout)
                                         .foregroundColor(.secondary)
@@ -235,7 +236,7 @@ struct CampingSpotDetailView: View {
                             .cornerRadius(10)
                         }
                         .onAppear {
-                            region.center = CLLocationCoordinate2D(latitude: Double(campingSpot.mapY)!, longitude: Double(campingSpot.mapX)!)
+                            region.center = CLLocationCoordinate2D(latitude: Double(campingSpot.mapY) ?? 23.0, longitude: Double(campingSpot.mapX) ?? 36.0)
                         }
                         Divider()
                             .padding(.vertical)
@@ -351,7 +352,7 @@ struct CampingSpotDetailView: View {
             }
         }
         .task {
-            annotatedItem.append(AnnotatedItem(name: campingSpot.facltNm, coordinate: CLLocationCoordinate2D(latitude: Double(campingSpot.mapY)!, longitude: Double(campingSpot.mapX)!)))
+            annotatedItem.append(AnnotatedItem(name: campingSpot.facltNm, coordinate: CLLocationCoordinate2D(latitude: Double(campingSpot.mapY) ?? 23.0, longitude: Double(campingSpot.mapX) ?? 36.0)))
             isBookmarked = bookmarkStore.checkBookmarkedSpot(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, campingSpotId: campingSpot.contentId)
             diaryStore.readCampingSpotsDiarysCombine(contentId: campingSpot.contentId)
         }

@@ -35,22 +35,28 @@ struct DiaryCommentCellView: View {
     @State private var isShowingUserBlockedAlert = false
     
     var body: some View {
-            HStack{
+        HStack(alignment: .top) {
                 diaryCommetUserProfile
                     .frame(width: 35)
                 
                 VStack(alignment: .leading) {
-                    HStack{
+                    HStack {
                         Text(item.nickName)
+                            .font(.subheadline)
+                        Text("·")
                             .font(.footnote)
+                            .foregroundColor(.bcDarkGray)
                         Text("\(TimestampToString.dateString(item.commentCreatedDate)) 전")
                             .font(.footnote)
                             .foregroundColor(.secondary)
-
                     }
+                    
                     Text(item.commentContent)
+                        .font(.callout)
+                        .foregroundColor(.secondary)
+                        .padding(.top, -5)
                 }
-                .padding(.trailing, 3)
+                .padding(.trailing, 5)
                 
                 Spacer()
             }

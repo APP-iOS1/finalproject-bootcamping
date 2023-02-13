@@ -53,7 +53,7 @@ struct PhotoMainStory: View {
                 Text("\(item.diaryVisitedDate.getKoreanDate())")
                     .font(.subheadline)
                     .padding(.bottom, 0.01)
-                    .padding(.top, 80)
+                    .padding(.top, 70)
                 
                 //TODO: -캠핑장 이름 연결
                 Text("\(campingSpotStore.campingSpotList.first?.facltNm ?? "")")
@@ -62,17 +62,18 @@ struct PhotoMainStory: View {
                     .padding(.bottom, UIScreen.screenHeight * 0.03)
                 
                 Text(item.diaryTitle)
-                    .font(.title2)
+                    .font(.title)
                     .multilineTextAlignment(.leading)
                     .fontWeight(.bold)
                     .padding(.bottom, 0.01)
                 HStack{
-                    Text("by")
-                        .bold()
+                    Text("by ")
                         .padding(.trailing, -5)
                     Text("\(item.diaryUserNickName)")
+                        .bold()
                         .lineLimit(1)
                 }
+                .italic()
                 .font(.subheadline)
                 
             }
@@ -81,7 +82,7 @@ struct PhotoMainStory: View {
             }
             .foregroundColor(.white)
             .kerning(-0.7)
-            .padding(.horizontal)
+            .padding(.horizontal, 20)
         }
     }
 }
@@ -100,12 +101,14 @@ struct PhotoCardFrame: View {
             .overlay(alignment: .bottomTrailing, content: {
                 HStack{
                     Text("자세히 보기")
-                        .font(.system(.subheadline, weight: .bold))
-                        .foregroundColor(.white)
-                    Image(systemName: "chevron.right")
-                        .foregroundColor(.white)
+                    Image(systemName: "chevron.right.2")
                 }
-                .padding()
+                .shadow(radius: 10)
+                .foregroundColor(.bcWhite)
+                .font(.subheadline)
+                .kerning(-0.7)
+                .padding(20)
+                .padding(.bottom, 30)
             })
     }
 }

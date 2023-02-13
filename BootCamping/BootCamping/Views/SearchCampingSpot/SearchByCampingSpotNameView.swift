@@ -21,7 +21,7 @@ struct SearchByCampingSpotNameView: View {
     
     var body: some View {
         VStack {
-            TextField("여행지를 검색해주세요.", text: $keywordForSearching)
+            TextField("캠핑하실 지역을 검색해 주세요.", text: $keywordForSearching)
                 .textFieldStyle(.roundedBorder)
                 .onSubmit {
                     keywordForParameter = keywordForSearching
@@ -49,7 +49,7 @@ struct SearchByCampingSpotNameView: View {
                             LazyVStack(alignment: .center) {
                                 if campingSpotStore.campingSpotList.isEmpty {
                                     Spacer()
-                                    Text("검색결과가 없습니다")
+                                    Text("검색결과가 없습니다.")
                                     Spacer()
                                 } else {
                                     ForEach(campingSpotStore.campingSpotList.indices, id: \.self) { index in
@@ -78,7 +78,7 @@ struct SearchByCampingSpotNameView: View {
             }
             else {
                 Spacer()
-                Text("최근검색 리스트로")
+                Text("최근 검색 리스트로")
                 Spacer()
             }
         }

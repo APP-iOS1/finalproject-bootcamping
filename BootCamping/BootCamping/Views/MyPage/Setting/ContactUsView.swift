@@ -19,6 +19,9 @@ struct ContactUsView: View {
     
     var body: some View {
         VStack {
+            Text("자주 묻는 질문 넣어야해요~")
+                .font(.title)
+            
             Button(action: {
                 showMailView.toggle()
             }) {
@@ -31,12 +34,6 @@ struct ContactUsView: View {
                     }
                 }
                 
-        }
-    }
-}
-
-struct ContactUsView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContactUsView()
+        }.navigationTitle("Q&A")
     }
 }

@@ -13,6 +13,7 @@ struct DiaryDetailView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var diaryStore: DiaryStore
+    @EnvironmentObject var blockedUserStore: BlockedUserStore
     
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
@@ -33,6 +34,7 @@ struct DiaryDetailView: View {
     //유저 신고/ 차단 알림
     @State private var isShowingUserReportAlert = false
     @State private var isShowingUserBlockedAlert = false
+    @State private var isBlocked = false
     
     //자동 스크롤
     @Namespace var topID
@@ -75,12 +77,7 @@ struct DiaryDetailView: View {
                     .onAppear {
                         proxy.scrollTo(topID)
                     }
-                    //                    .onChange(of: commentStore.commentList.count) { _ in
-                    //                        withAnimation { proxy.scrollTo(bottomID) }
-                    //                    }
                 }
-                //                diaryCommetInputView\
-                //댓글작성
                 HStack {
                     if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
                         WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
@@ -101,7 +98,6 @@ struct DiaryDetailView: View {
                         .focused($inputFocused)
 
                     Button {
-                        //TODO: -프로필 이미지 수정
                         commentStore.createCommentCombine(diaryId: item.diary.id, comment: Comment(id: UUID().uuidString, diaryId: item.diary.id, uid: wholeAuthStore.currnetUserInfo?.id ?? "" , nickName: wholeAuthStore.currnetUserInfo?.nickName ?? "", profileImage: wholeAuthStore.currnetUserInfo?.profileImageURL ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp()))
                         commentStore.readCommentsCombine(diaryId: item.diary.id)
                         withAnimation {
@@ -126,10 +122,8 @@ struct DiaryDetailView: View {
             .padding(.bottom)
             .navigationTitle("BOOTCAMPING")
             .onAppear{
-//                isBookmarked = bookmarkStore.checkBookmarkedDiary(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, diaryId: item.diary.id)
                 commentStore.readCommentsCombine(diaryId: item.diary.id)
                 campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
-                //TODO: -함수 업데이트되면 넣기
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
             }
         }
@@ -180,7 +174,6 @@ private extension DiaryDetailView {
 //                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
                     .padding(.top, 5)
             }
-            //TODO: -글 쓴 유저가 아닐때는 신고기능 넣기
             else {
                 reportAlertMenu
 //                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
@@ -201,6 +194,9 @@ private extension DiaryDetailView {
     var alertMenu: some View {
         //MARK: - ... 버튼입니다.
         Menu {
+            
+            
+            
             NavigationLink {
                 DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", item: item, selectedDate: item.diary.diaryVisitedDate)
             } label: {
@@ -232,44 +228,34 @@ private extension DiaryDetailView {
     
     //MARK: - 유저 신고 / 차단 버튼
     var reportAlertMenu: some View {
+        
         //MARK: - ... 버튼입니다.
-        Menu {
-            Button {
-                isShowingUserReportAlert = true
-            } label: {
-                Text("신고하기")
-            }
-            
-            Button {
-                isShowingDeleteAlert = true
-            } label: {
-                Text("차단하기")
-            }
-            
-        } label: {
+        
+        Button(action: {
+            isShowingUserReportAlert.toggle()
+        }) {
             Image(systemName: "ellipsis")
                 .font(.title3)
                 .frame(width: 30,height: 30)
 
         }
-        //MARK: - 유저 신고 알림
-        .alert("유저를 신고하시겠습니까?", isPresented: $isShowingUserReportAlert) {
-            Button("취소", role: .cancel) {
-                isShowingUserReportAlert = false
-            }
+        .confirmationDialog("알림", isPresented: $isShowingUserReportAlert, titleVisibility: .hidden, actions: {
             Button("신고하기", role: .destructive) {
-                //신고 컴바인..
-            }
-        }
-        .alert("유저를 차단하시겠습니까?", isPresented: $isShowingUserBlockedAlert) {
-            Button("취소", role: .cancel) {
-                isShowingUserBlockedAlert = false
+                print("신고하기ㅣㅣㅣㅣ")
+                   // ReportUserView(placeholder: "")
             }
             Button("차단하기", role: .destructive) {
-                //차단 컴바인..
+                print("차단해ㅐㅐㅐㅐ")
+                isBlocked.toggle()
+                if isBlocked {
+                    blockedUserStore.addBlockedUserCombine(blockedUserId: item.diary.uid)
+                }
+                wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
             }
-        }
+            Button("취소", role: .cancel) {}
+        })
     }
+
     
     // MARK: -View : 다이어리 사진
     var diaryDetailImage: some View {
@@ -314,7 +300,7 @@ private extension DiaryDetailView {
             CampingSpotDetailView(campingSpot: campingSpotStore.campingSpotList.first ?? campingSpotStore.campingSpot)
         } label: {
             HStack {
-                WebImage(url: URL(string: campingSpotStore.campingSpotList.first?.firstImageUrl == "" ? campingSpotStore.noImageURL : campingSpotStore.campingSpotList.first?.firstImageUrl ?? "")) //TODO: -캠핑장 사진 연동
+                WebImage(url: URL(string: campingSpotStore.campingSpotList.first?.firstImageUrl == "" ? campingSpotStore.noImageURL : campingSpotStore.campingSpotList.first?.firstImageUrl ?? ""))
                     .resizable()
                     .frame(width: 60, height: 60)
                     .padding(.trailing, 5)
@@ -359,9 +345,10 @@ private extension DiaryDetailView {
                     } else {
                         diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
                     }
-                    //TODO: -함수 업데이트되면 넣기
                     diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
-                    
+                    //탭틱
+                    let impactMed = UIImpactFeedbackGenerator(style: .soft)
+                    impactMed.impactOccurred()
                 } label: {
                     Image(systemName: diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")
                         .foregroundColor(diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? .red : .bcBlack)
@@ -402,51 +389,4 @@ private extension DiaryDetailView {
             dismissKeyboard()
         }
     }
-    
-    // MARK: -View : 댓글 작성
-//    var diaryCommetInputView : some View {
-//        HStack {
-//            if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
-//                WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
-//                    .resizable()
-//                    .clipShape(Circle())
-//                .frame(width: 30, height: 30)
-//            } else {
-//                Image(systemName: "person.fill")
-//                    .resizable()
-//                    .frame(width: 30, height: 30)
-//                    .aspectRatio(contentMode: .fill)
-//                    .clipShape(Circle())
-//
-//            }
-//            TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
-//
-//            Button {
-//                //TODO: -프로필 이미지 수정
-//                commentStore.createCommentCombine(diaryId: item.diary.id, comment: Comment(id: UUID().uuidString, diaryId: item.diary.id, uid: Auth.auth().currentUser?.uid ?? "", nickName: item.diary.diaryUserNickName, profileImage: item.user.profileImageURL, commentContent: diaryComment, commentCreatedDate: Timestamp()))
-//                commentStore.readCommentsCombine(diaryId: item.diary.id)
-//                diaryComment = ""
-//            } label: {
-//                Image(systemName: "paperplane")
-//                    .resizable()
-//                    .frame(width: 30, height: 30)
-//
-//            }
-//        }
-//        .foregroundColor(.bcBlack)
-//        .font(.title3)
-//        .padding(.vertical, 5)
-//    }
 }
-
-//struct DiaryDetailView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DiaryDetailView(item: Diary(id: "", uid: "", diaryUserNickName: "닉네임", diaryTitle: "안녕", diaryAddress: "주소", diaryContent: "용감하고 인류의 그들의 따뜻한 있음으로써 그러므로 봄바람이다. 힘차게 밥을 가슴이 용감하고 튼튼하며, 그들의 보는 새가 인간의 칼이다. 충분히 인생을 못할 곧 우리는 청춘은 인간의 황금시대다. 지혜는 찾아다녀도, 것은 못하다 어디 곳으로 꽃 봄날의 보라. 우는 예가 이상은 온갖 그것은 품었기 얼음 힘있다. 투명하되 그들의 밥을 창공에 주는 이상, 이상의 힘있다. 새 피가 가장 놀이 부패뿐이다. 그들은 원질이 든 무엇을 되려니와, 불어 우리는 노래하며 것이다. 대한 청춘의 곳이 바이며, 충분히 방황하였으며, 있는가? 그들은 거친 위하여, 살 때문이다.", diaryImageNames: [""], diaryImageURLs: [
-//            "https://firebasestorage.googleapis.com:443/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2F302EEA64-722A-4FE7-8129-3392EE578AE9?alt=media&token=1083ed77-f3cd-47db-81d3-471913f71c47"], diaryCreatedDate: Timestamp(), diaryVisitedDate: Date(), diaryLike: ["동훈"], diaryIsPrivate: true))
-//        .environmentObject(WholeAuthStore())
-//        .environmentObject(DiaryStore())
-//        .environmentObject(BookmarkStore())
-//        .environmentObject(DiaryLikeStore())
-//        .environmentObject(CommentStore())
-//    }
-//}

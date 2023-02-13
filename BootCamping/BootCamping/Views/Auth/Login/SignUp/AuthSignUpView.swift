@@ -365,10 +365,3 @@ extension AuthSignUpView {
 """).font(.subheadline)
     }
 }
-
-struct AuthSignUpView_Previews: PreviewProvider {
-    static var previews: some View {
-        AuthSignUpView(userEmail: "erun9414@gmail.com")
-            .environmentObject(WholeAuthStore())
-    }
-}

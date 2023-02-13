@@ -169,11 +169,3 @@ private extension DiaryCommentCellView {
         }
     }
 }
-
-//struct DiaryCommentCellView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DiaryCommentCellView(item: Comment(id: "", diaryId: "", uid: "", nickName: "", profileImage: "", commentContent: "", commentCreatedDate: Timestamp()), item2: <#UserInfoDiary#>)
-//            .environmentObject(WholeAuthStore())
-//            .environmentObject(CommentStore())
-//    }
-//}

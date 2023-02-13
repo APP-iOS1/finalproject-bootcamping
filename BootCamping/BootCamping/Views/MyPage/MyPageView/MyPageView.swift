@@ -160,10 +160,3 @@ extension MyPageView{
         }
     }
 }
-
-
-struct MyPageView_Previews: PreviewProvider {
-    static var previews: some View {
-        MyPageView()
-    }
-}

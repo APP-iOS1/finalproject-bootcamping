@@ -128,7 +128,6 @@ struct DiaryAddView: View {
                                     .id(content)
                             }
                                                         
-                            
                         }
                         .padding(.horizontal, UIScreen.screenWidth*0.03)
                     }
@@ -160,7 +159,6 @@ struct DiaryAddView: View {
                 }
             }
             isProcessing ? Color.black.opacity(0.3) : Color.clear
-
         }
         .toast(isPresenting: $isProcessing) {
             AlertToast(displayMode: .alert, type: .loading)
@@ -400,23 +398,5 @@ private extension DiaryAddView {
         } else {
             dismissKeyboard()
         }
-    }
-}
-
-
-struct DiaryAddView_Previews: PreviewProvider {
-    static var previews: some View {
-        DiaryAddView()
-            .environmentObject(WholeAuthStore())
-            .environmentObject(DiaryStore())
-        
-        DiaryAddView()
-            .environmentObject(WholeAuthStore())
-            .environmentObject(DiaryStore())
-            .previewDevice("iPhone 11")
-        DiaryAddView()
-            .environmentObject(WholeAuthStore())
-            .environmentObject(DiaryStore())
-            .previewDevice("iPhone SE (3rd generation)")
     }
 }

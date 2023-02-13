@@ -50,9 +50,10 @@ struct DiaryCellView: View {
                     } label: {
                         VStack {
                             Image(systemName: "lock")
-                                
+                                .padding(.vertical, 10)
                             Text("비공개 일기입니다.\n잠금을 해제해주세요.")
                         }
+                        .foregroundColor(Color.bcBlack)
                         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     }
                 
@@ -113,6 +114,20 @@ private extension DiaryCellView {
         .tabViewStyle(PageTabViewStyle())
         // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
+        //사진 두번 클릭시 좋아요
+        .onTapGesture(count: 2) {
+            //좋아요 버튼, 카운드
+            if diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") {
+                //포함되있으면 아무것도 안함
+            } else {
+                diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
+            }
+            //TODO: -함수 업데이트되면 넣기
+            diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
+            //탭틱
+            let impactMed = UIImpactFeedbackGenerator(style: .soft)
+            impactMed.impactOccurred()
+        }
         .pinchZoomAndDrag()
     }
     

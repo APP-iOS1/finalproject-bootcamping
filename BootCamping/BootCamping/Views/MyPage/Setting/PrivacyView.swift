@@ -17,12 +17,10 @@ struct PrivacyView: View {
     @AppStorage("faceId") var usingFaceId: Bool = false
     //faceId 잠금 설정 변수
     @State private var toggleUsingFaceId = false
-
+    
     var body: some View {
         VStack {
-            if faceId.islocked {
-                DiaryLockedView()
-            } else {
+            if faceId.islocked == false {
                 List{
                     isUsingFaceIdSetting
                     
@@ -58,12 +56,14 @@ struct PrivacyView: View {
                     }
                 }
                 .listStyle(.plain)
+            } else {
+                DiaryLockedView()
             }
         }
         .onAppear {
+            faceId.islocked = true
             faceId.authenticate()
         }
-        
     }
 }
 

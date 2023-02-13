@@ -38,11 +38,12 @@ struct CampingSpotDetailView: View {
         VStack() {
             ScrollView(showsIndicators: false) {
                 VStack {
-                    WebImage(url: URL(string: campingSpot.firstImageUrl))
+                    WebImage(url: URL(string: campingSpot.firstImageUrl == "" ? CampingSpotStore().noImageURL : campingSpot.firstImageUrl))
                         .resizable()
                         .placeholder {
                             Rectangle().foregroundColor(.secondary)
                         }
+                        .transition(.fade(duration: 0.5))
                         .aspectRatio(contentMode: .fill)
                         .frame(width: UIScreen.screenWidth)
                         .padding(.bottom, 5)
@@ -149,7 +150,7 @@ struct CampingSpotDetailView: View {
                                 Image(systemName: "safari.fill")
                                     .font(.callout)
                                     .foregroundColor(.secondary)
-                                Link(destination: URL(string: campingSpot.resveUrl)!, label: {
+                                Link(destination: ((URL(string: campingSpot.resveUrl) ?? URL(string: campingSpot.homepage)) ?? URL(string: "https://www.google.com"))!, label: {
                                     Text("예약하러 가기")
                                         .font(.callout)
                                         .foregroundColor(.secondary)
@@ -235,7 +236,7 @@ struct CampingSpotDetailView: View {
                             .cornerRadius(10)
                         }
                         .onAppear {
-                            region.center = CLLocationCoordinate2D(latitude: Double(campingSpot.mapY)!, longitude: Double(campingSpot.mapX)!)
+                            region.center = CLLocationCoordinate2D(latitude: Double(campingSpot.mapY) ?? 23.0, longitude: Double(campingSpot.mapX) ?? 36.0)
                         }
                         Divider()
                             .padding(.vertical)
@@ -307,7 +308,7 @@ struct CampingSpotDetailView: View {
                             Spacer()
                             
                             NavigationLink {
-                                
+                                DiaryListForCampingSpotView(contentId: campingSpot.contentId, diaryStore: diaryStore)
                             } label: {
                                 Text("더 보기")
                                     .font(.subheadline)
@@ -318,17 +319,17 @@ struct CampingSpotDetailView: View {
                             }
                         }
                         ScrollView(.horizontal, showsIndicators: false) {
-                            if diaryStore.diaryList.filter { !$0.diaryIsPrivate }.isEmpty {
+                            if diaryStore.realTimeDiaryUserInfoDiaryList.isEmpty {
                                 Text("등록된 리뷰가 없습니다.")
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
-                            } else if diaryStore.diaryList.count <= 3 {
+                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.count <= 3 {
                                 HStack {
-                                    ForEach(diaryStore.diaryList.filter { !$0.diaryIsPrivate }.indices, id: \.self) { index in
+                                    ForEach(diaryStore.realTimeDiaryUserInfoDiaryList.indices, id: \.self) { index in
                                         NavigationLink {
-                                            
+                                            DiaryDetailView(item: diaryStore.realTimeDiaryUserInfoDiaryList[index])
                                         } label: {
-                                            CampingSpotDiaryRow(diary: diaryStore.diaryList[index])
+                                            CampingSpotDiaryRow(item: diaryStore.realTimeDiaryUserInfoDiaryList[index])
                                         }
                                     }
                                 }
@@ -336,9 +337,9 @@ struct CampingSpotDetailView: View {
                                 HStack {
                                     ForEach(0...3, id: \.self) { index in
                                         NavigationLink {
-                                            
+                                            DiaryDetailView(item: diaryStore.realTimeDiaryUserInfoDiaryList[index])
                                         } label: {
-                                            CampingSpotDiaryRow(diary: diaryStore.diaryList[index])
+                                            CampingSpotDiaryRow(item: diaryStore.realTimeDiaryUserInfoDiaryList[index])
                                         }
                                     }
                                 }
@@ -351,9 +352,9 @@ struct CampingSpotDetailView: View {
             }
         }
         .task {
-            annotatedItem.append(AnnotatedItem(name: campingSpot.facltNm, coordinate: CLLocationCoordinate2D(latitude: Double(campingSpot.mapY)!, longitude: Double(campingSpot.mapX)!)))
+            annotatedItem.append(AnnotatedItem(name: campingSpot.facltNm, coordinate: CLLocationCoordinate2D(latitude: Double(campingSpot.mapY) ?? 23.0, longitude: Double(campingSpot.mapX) ?? 36.0)))
             isBookmarked = bookmarkStore.checkBookmarkedSpot(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, campingSpotId: campingSpot.contentId)
-            diaryStore.readCampingSpotsDiarysCombine(contentId: campingSpot.contentId)
+            diaryStore.readCampingSpotsDiariesCombine(contentId: campingSpot.contentId)
         }
         .alert("복사가 완료되었습니다", isPresented: $isPaste) {
             Button("완료") {
@@ -365,21 +366,22 @@ struct CampingSpotDetailView: View {
 
 struct CampingSpotDiaryRow: View {
     
-    var diary: Diary
+    var item: UserInfoDiary
     
     var body: some View {
         VStack(alignment: .leading) {
-            WebImage(url: URL(string: diary.diaryImageURLs.first!))
+            WebImage(url: URL(string: item.diary.diaryImageURLs.first!))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: UIScreen.screenWidth * 0.3, height: UIScreen.screenWidth * 0.3)
                 .cornerRadius(10)
                 .clipped()
-            Text(diary.diaryTitle)
+            Text(item.diary.diaryTitle)
                 .font(.callout)
                 .frame(width: 120)
                 .lineLimit(2)
         }
+        .foregroundColor(Color.bcBlack)
     }
 }
 
@@ -429,16 +431,7 @@ struct ServiceIcon: View {
                         .font(.caption)
                         .kerning(-1)
                 }
-                // .padding(4)
             }
         }
     }
 }
-
-//struct CampingSpotDetailView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CampingSpotDetailView(campingSpot: Item(contentId: "", facltNm: "", lineIntro: "", intro: "", allar: "", insrncAt: "", trsagntNo: "", bizrno: "", facltDivNm: "", mangeDivNm: "", mgcDiv: "", manageSttus: "", hvofBgnde: "", hvofEnddle: "", featureNm: "", induty: "", lctCl: "", doNm: "", sigunguNm: "", zipcode: "", addr1: "", addr2: "", mapX: "", mapY: "", direction: "", tel: "", homepage: "", resveUrl: "", resveCl: "", manageNmpr: "", gnrlSiteCo: "", autoSiteCo: "", glampSiteCo: "", caravSiteCo: "", indvdlCaravSiteCo: "", sitedStnc: "", siteMg1Width: "", siteMg2Width: "", siteMg3Width: "", siteMg1Vrticl: "", siteMg2Vrticl: "", siteMg3Vrticl: "", siteMg1Co: "", siteMg2Co: "", siteMg3Co: "", siteBottomCl1: "", siteBottomCl2: "", siteBottomCl3: "", siteBottomCl4: "", siteBottomCl5: "", tooltip: "", glampInnerFclty: "", caravInnerFclty: "", prmisnDe: "", operPdCl: "", operDeCl: "", trlerAcmpnyAt: "", caravAcmpnyAt: "", toiletCo: "", swrmCo: "", wtrplCo: "", brazierCl: "", sbrsCl: "", sbrsEtc: "", posblFcltyCl: "", posblFcltyEtc: "", clturEventAt: "", clturEvent: "", exprnProgrmAt: "", exprnProgrm: "", extshrCo: "", frprvtWrppCo: "", frprvtSandCo: "", fireSensorCo: "", themaEnvrnCl: "", eqpmnLendCl: "", animalCmgCl: "", tourEraCl: "", firstImageUrl: "", createdtime: "", modifiedtime: ""))
-//            .environmentObject(AuthStore())
-//            .environmentObject(BookmarkSpotStore())
-//    }
-//}

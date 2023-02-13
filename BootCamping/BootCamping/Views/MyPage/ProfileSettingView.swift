@@ -56,7 +56,6 @@ extension ProfileSettingView {
                     if wholeAuthStore.currnetUserInfo!.profileImageURL != "" && isProfileImageReset == false {
                         WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
                             .resizable()
-//                            .foregroundColor(.bcBlack)
                             .scaledToFill()
                             .clipped()
                             .frame(width: 100, height: 100)
@@ -65,14 +64,12 @@ extension ProfileSettingView {
                                 ZStack{
                                     Image(systemName: "circlebadge.fill")
                                         .font(.largeTitle)
-                                    //                            .frame(width: 25, height: 25)
                                         .foregroundColor(.primary)
                                         .colorInvert()
                                         .offset(x: 40, y: 40)
                                     
                                     Image(systemName: "pencil.circle")
                                         .font(.title)
-                                    //                            .frame(width: 25, height: 25)
                                         .foregroundColor(.bcBlack)
                                         .offset(x: 40, y: 40)
                                 }
@@ -89,14 +86,12 @@ extension ProfileSettingView {
                                 ZStack{
                                     Image(systemName: "circlebadge.fill")
                                         .font(.largeTitle)
-                                    //                            .frame(width: 25, height: 25)
                                         .foregroundColor(.primary)
                                         .colorInvert()
                                         .offset(x: 40, y: 40)
                                     
                                     Image(systemName: "pencil.circle")
                                         .font(.title)
-                                    //                            .frame(width: 25, height: 25)
                                         .foregroundColor(.bcBlack)
                                         .offset(x: 40, y: 40)
                                 }
@@ -106,24 +101,20 @@ extension ProfileSettingView {
                     let image = UIImage(data: profileImage ?? Data()) == nil ? UIImage(contentsOfFile: "defaultProfileImage") : UIImage(data: profileImage ?? Data()) ?? UIImage(contentsOfFile: "defaultProfileImage")
                     Image(uiImage: ((image ?? UIImage(contentsOfFile: "defaultProfileImage"))!))
                         .resizable()
-//                        .foregroundColor(.bcBlack)
                         .scaledToFill()
                         .clipped()
                         .frame(width: 100, height: 100)
-                    //                    .aspectRatio(contentMode: .fit)
                         .clipShape(Circle())
                         .overlay{
                             ZStack{
                                 Image(systemName: "circlebadge.fill")
                                     .font(.largeTitle)
-                                //                            .frame(width: 25, height: 25)
                                     .foregroundColor(.primary)
                                     .colorInvert()
                                     .offset(x: 40, y: 40)
                                 
                                 Image(systemName: "pencil.circle")
                                     .font(.title)
-                                //                            .frame(width: 25, height: 25)
                                     .foregroundColor(.bcBlack)
                                     .offset(x: 40, y: 40)
                             }
@@ -137,7 +128,6 @@ extension ProfileSettingView {
             },
                    content: { ImagePicker(image: $selectedImage) })
             
-            // TODO: 기본 프로필로 변경하는 버튼 위치 좀 정해주세욥
             Button {
                 profileImage = nil
                 isProfileImageReset = true
@@ -233,10 +223,3 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
     }
 }
-
-//struct ProfileSettingView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "chasomin", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
-//            .environmentObject(WholeAuthStore())
-//    }
-//}

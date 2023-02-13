@@ -12,6 +12,19 @@ import SDWebImageSwiftUI
 struct DiaryCommentCellView: View {
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var commentStore: CommentStore
+    @EnvironmentObject var diaryStore: DiaryStore
+    @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
+    
+    //선택한 다이어리 정보 변수입니다.
+    var item2: UserInfoDiary
+    
+    var diaryCampingSpot: [Item] {
+        get {
+            return campingSpotStore.campingSpotList.filter{
+                $0.contentId == item2.diary.diaryAddress
+            }
+        }
+    }
     
     var item: Comment
     
@@ -85,11 +98,12 @@ private extension DiaryCommentCellView {
     var alertMenu: some View {
         //MARK: - ... 버튼입니다.
         Menu {
-            Button {
-                //TODO: -수정기능 추가
+            NavigationLink {
+                DiaryEditView(diaryTitle: item2.diary.diaryTitle, diaryIsPrivate: item2.diary.diaryIsPrivate, diaryContent: item2.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", selectedDate: item2.diary.diaryVisitedDate)
             } label: {
                 Text("수정하기")
             }
+
             
             Button {
                 isShowingDeleteAlert = true
@@ -150,10 +164,10 @@ private extension DiaryCommentCellView {
     }
 }
 
-struct DiaryCommentCellView_Previews: PreviewProvider {
-    static var previews: some View {
-        DiaryCommentCellView(item: Comment(id: "", diaryId: "", uid: "", nickName: "", profileImage: "", commentContent: "", commentCreatedDate: Timestamp()))
-            .environmentObject(WholeAuthStore())
-            .environmentObject(CommentStore())
-    }
-}
+//struct DiaryCommentCellView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DiaryCommentCellView(item: Comment(id: "", diaryId: "", uid: "", nickName: "", profileImage: "", commentContent: "", commentCreatedDate: Timestamp()), item2: <#UserInfoDiary#>)
+//            .environmentObject(WholeAuthStore())
+//            .environmentObject(CommentStore())
+//    }
+//}

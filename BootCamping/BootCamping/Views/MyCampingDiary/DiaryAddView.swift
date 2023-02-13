@@ -29,7 +29,6 @@ struct DiaryAddView: View {
     
     @State private var diaryTitle: String = ""
     @State private var locationInfo: String = ""
-    @State private var visitDate: String = ""
     @State private var diaryIsPrivate: Bool = false //false가 공개
     @State private var diaryContent: String = ""
     
@@ -59,7 +58,7 @@ struct DiaryAddView: View {
     @State private var selectedDate: Date = .now
     
     //이미지 피커
-    @State private var imagePickerPresented = false // 이미지 피커를 띄울 변수
+//    @State private var imagePickerPresented = false // 이미지 피커를 띄울 변수
     @State private var selectedImages: [PhotosPickerItem] = []   // 이미지 피커에서 선택한 이미지저장.
     @State private var diaryImages: [Data] = []         // selectedImages를 [Data] 타입으로 저장
     @State private var isProcessing: Bool = false

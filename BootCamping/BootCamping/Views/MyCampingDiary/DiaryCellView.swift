@@ -311,11 +311,11 @@ private extension DiaryCellView {
                 .padding(.trailing, 7)
             
             //댓글 버튼
-            Button {
-                //"댓글 작성 버튼으로 이동"
-            } label: {
+//            Button {
+                //"댓글 작성 버튼으로 이동하려고 했는데 그냥 텍스트로~
+//            } label: {
                 Image(systemName: "message")
-            }
+//            }
             Text("\(commentStore.commentList.count)")
                 .font(.body)
                 .padding(.horizontal, 3)

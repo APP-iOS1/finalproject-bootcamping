@@ -353,7 +353,9 @@ private extension DiaryDetailView {
                     }
                     //TODO: -함수 업데이트되면 넣기
                     diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
-                    
+                    //탭틱
+                    let impactMed = UIImpactFeedbackGenerator(style: .soft)
+                    impactMed.impactOccurred()
                 } label: {
                     Image(systemName: diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")
                         .foregroundColor(diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? .red : .bcBlack)

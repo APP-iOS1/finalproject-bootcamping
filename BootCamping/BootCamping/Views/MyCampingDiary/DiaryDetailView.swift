@@ -13,6 +13,7 @@ struct DiaryDetailView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var diaryStore: DiaryStore
+    @EnvironmentObject var blockedUserStore: BlockedUserStore
     
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
@@ -33,6 +34,7 @@ struct DiaryDetailView: View {
     //유저 신고/ 차단 알림
     @State private var isShowingUserReportAlert = false
     @State private var isShowingUserBlockedAlert = false
+    @State private var isBlocked = false
     
     //자동 스크롤
     @Namespace var topID
@@ -185,6 +187,9 @@ private extension DiaryDetailView {
     var alertMenu: some View {
         //MARK: - ... 버튼입니다.
         Menu {
+            
+            
+            
             NavigationLink {
                 DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", selectedDate: item.diary.diaryVisitedDate)
             } label: {
@@ -215,42 +220,32 @@ private extension DiaryDetailView {
     
     //MARK: - 유저 신고 / 차단 버튼
     var reportAlertMenu: some View {
+        
         //MARK: - ... 버튼입니다.
-        Menu {
-            Button {
-                isShowingUserReportAlert = true
-            } label: {
-                Text("신고하기")
-            }
-            
-            Button {
-                isShowingDeleteAlert = true
-            } label: {
-                Text("차단하기")
-            }
-            
-        } label: {
+        
+        Button(action: {
+            isShowingUserReportAlert.toggle()
+        }) {
             Image(systemName: "ellipsis")
                 .font(.title3)
         }
-        //MARK: - 유저 신고 알림
-        .alert("유저를 신고하시겠습니까?", isPresented: $isShowingUserReportAlert) {
-            Button("취소", role: .cancel) {
-                isShowingUserReportAlert = false
-            }
+        .confirmationDialog("알림", isPresented: $isShowingUserReportAlert, titleVisibility: .hidden, actions: {
             Button("신고하기", role: .destructive) {
-                //신고 컴바인..
-            }
-        }
-        .alert("유저를 차단하시겠습니까?", isPresented: $isShowingUserBlockedAlert) {
-            Button("취소", role: .cancel) {
-                isShowingUserBlockedAlert = false
+                print("신고하기ㅣㅣㅣㅣ")
+                   // ReportUserView(placeholder: "")
             }
             Button("차단하기", role: .destructive) {
-                //차단 컴바인..
+                print("차단해ㅐㅐㅐㅐ")
+                isBlocked.toggle()
+                if isBlocked {
+                    blockedUserStore.addBlockedUserCombine(blockedUserId: item.diary.uid)
+                }
+                wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
             }
-        }
+            Button("취소", role: .cancel) {}
+        })
     }
+
     
     // MARK: -View : 다이어리 사진
     var diaryDetailImage: some View {

@@ -26,14 +26,11 @@ struct SettingView: View {
             NavigationLink(destination: EmptyView()) {
                 Text("공지사항")
             }
-            NavigationLink(destination: ReportUserView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []), placeholder: "", options:[])) {
-                Text("자주 묻는 질문")
-            }
             NavigationLink(destination: ContactUsView()) {
-                Text("고객센터")
+                Text("Q&A")
+                //TODO: 자주 묻는 질문(만들어야함!) + 고객센터 메일보내기
             }
-            //TODO: -유저차단뷰
-            NavigationLink(destination: EmptyView()) {
+            NavigationLink(destination: ReportUserView(placeholder: "")) {
                 Text("앱 정보")
             }
             NavigationLink(destination: NotificationSettingsView()) {

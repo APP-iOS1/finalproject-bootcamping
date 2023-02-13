@@ -19,6 +19,7 @@ struct ContentView: View {
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var scheduleStore: ScheduleStore
+    @EnvironmentObject var blockedUserStore: BlockedUserStore
     @EnvironmentObject var localNotificationCenter: LocalNotificationCenter
     
     @State var isLoading: Bool = true

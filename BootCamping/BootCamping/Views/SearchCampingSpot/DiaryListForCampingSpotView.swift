@@ -28,9 +28,3 @@ struct DiaryListForCampingSpotView: View {
         }
     }
 }
-
-//struct DiaryListForCampingSpotView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DiaryListForCampingSpotView()
-//    }
-//}

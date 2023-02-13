@@ -16,7 +16,6 @@ struct MyCampingDiaryView: View {
 
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var faceId: FaceId
-//    @EnvironmentObject var commentStore: CommentStore
     
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
     @StateObject var commentStore: CommentStore = CommentStore()
@@ -88,13 +87,4 @@ struct MyCampingDiaryView: View {
         }
     }
 }
-
-struct MyCampingDiaryView_Previews: PreviewProvider {
-    static var previews: some View {
-        MyCampingDiaryView()
-            .environmentObject(DiaryStore())
-            .environmentObject(FaceId())
-    }
-}
-
 

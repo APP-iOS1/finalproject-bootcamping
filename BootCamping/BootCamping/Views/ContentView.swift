@@ -9,8 +9,6 @@ import CoreData
 import FirebaseAuth
 import SwiftUI
 
-//TODO: -버튼 계속 말고 직관적으로 수정하거나 회원가입 따로 빼기
-
 struct ContentView: View {
     //로그인 유무 변수
     @AppStorage("login") var isSignIn: Bool = false
@@ -50,7 +48,6 @@ struct ContentView: View {
                     NavigationView {
                         if diaryStore.myDiaryUserInfoDiaryList.count == 0 {
                             DiaryEmptyView()
-//                            DiaryAddView()
                         } else {
                             MyCampingDiaryView()
                         }
@@ -107,15 +104,6 @@ struct ContentView: View {
         }
     }
 }
-
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//            .environmentObject(DiaryStore())
-//            .environmentObject(AuthStore())
-//            .environmentObject(TabSelector())
-//    }
-//}
 
 //MARK: - 탭뷰 화면전환 함수
 enum TabViewScreen {

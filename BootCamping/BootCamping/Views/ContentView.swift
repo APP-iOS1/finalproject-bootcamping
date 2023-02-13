@@ -46,7 +46,7 @@ struct ContentView: View {
                     }.tag(TabViewScreen.two)
                     
                     //MARK: -세번째 캠핑일기 탭입니다.
-                    NavigationView {
+                    NavigationStack {
                         if diaryStore.myDiaryUserInfoDiaryList.count == 0 {
                             DiaryEmptyView()
                         } else {

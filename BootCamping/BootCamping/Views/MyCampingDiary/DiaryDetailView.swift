@@ -12,9 +12,7 @@ import SDWebImageSwiftUI
 struct DiaryDetailView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
-    //    @EnvironmentObject var commentStore: CommentStore
     @EnvironmentObject var diaryStore: DiaryStore
-//        @EnvironmentObject var diaryLikeStore: DiaryLikeStore
     
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
@@ -170,7 +168,9 @@ private extension DiaryDetailView {
             }
             
             //유저 닉네임
-            Text(item.diary.diaryUserNickName)
+//            Text(item.diary.diaryUserNickName)
+            // 이게 맞나
+            Text(item.user.nickName)
                 .font(.callout)
             Spacer()
             

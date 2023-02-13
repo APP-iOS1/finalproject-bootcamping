@@ -126,18 +126,17 @@ private extension DiaryCellView {
             }
             //유저 닉네임
             Text(item.user.nickName)
+//            Text(item.diary.diaryUserNickName)
                 .font(.headline).fontWeight(.semibold)
             Spacer()
             //MARK: -...버튼 글 쓴 유저일때만 ...나타나도록
             if item.diary.uid == Auth.auth().currentUser?.uid {
                 alertMenu
-//                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
                     .padding(.top, 5)
             }
             //TODO: -글 쓴 유저가 아닐때는 신고기능 넣기
             else {
                 reportAlertMenu
-//                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
                     .padding(.top, 5)
             }
             

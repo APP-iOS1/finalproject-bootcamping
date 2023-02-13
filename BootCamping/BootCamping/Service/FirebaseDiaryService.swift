@@ -160,7 +160,7 @@ struct FirebaseDiaryService {
                         imageURLs.append(i.value)
                     }
                     
-                    let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: diary.diaryLike, diaryIsPrivate: diary.diaryIsPrivate)
+                    let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: diary.diaryVisitedDate, diaryLike: diary.diaryLike, diaryIsPrivate: diary.diaryIsPrivate)
                     
                     self.database.collection("Diarys").document(diary.id).setData([
                         "id": newDiary.id,
@@ -365,11 +365,13 @@ struct FirebaseDiaryService {
                     let diaryImageNames: [String] = docData["diaryImageNames"] as? [String] ?? []
                     let diaryImageURLs: [String] = docData["diaryImageURLs"] as? [String] ?? []
                     let diaryCreatedDate: Timestamp = docData["diaryCreatedDate"] as? Timestamp ?? Timestamp()
-                    let diaryVisitedDate: Date = docData["diaryVisitedDate"] as? Date ?? Date()
+                    let diaryVisitedDate: Timestamp = docData["diaryVisitedDate"] as? Timestamp ?? Timestamp()
                     let diaryLike: [String] = docData["diaryLike"] as? [String] ?? []
                     let diaryIsPrivate: Bool = docData["diaryIsPrivate"] as? Bool ?? false
                     
-                    let diary = Diary(id: id, uid: uid, diaryUserNickName: diaryUserNickName, diaryTitle: diaryTitle, diaryAddress: diaryAddress, diaryContent: diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: diaryCreatedDate, diaryVisitedDate: diaryVisitedDate, diaryLike: diaryLike, diaryIsPrivate: diaryIsPrivate)
+                    let date = diaryVisitedDate.dateValue()
+                    
+                    let diary = Diary(id: id, uid: uid, diaryUserNickName: diaryUserNickName, diaryTitle: diaryTitle, diaryAddress: diaryAddress, diaryContent: diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: diaryCreatedDate, diaryVisitedDate: date, diaryLike: diaryLike, diaryIsPrivate: diaryIsPrivate)
                     
                     
                     database.collection("UserList").document(uid).getDocument { document, error in
@@ -451,11 +453,13 @@ struct FirebaseDiaryService {
                     let diaryImageNames: [String] = docData["diaryImageNames"] as? [String] ?? []
                     let diaryImageURLs: [String] = docData["diaryImageURLs"] as? [String] ?? []
                     let diaryCreatedDate: Timestamp = docData["diaryCreatedDate"] as? Timestamp ?? Timestamp()
-                    let diaryVisitedDate: Date = docData["diaryVisitedDate"] as? Date ?? Date()
+                    let diaryVisitedDate: Timestamp = docData["diaryVisitedDate"] as? Timestamp ?? Timestamp()
                     let diaryLike: [String] = docData["diaryLike"] as? [String] ?? []
                     let diaryIsPrivate: Bool = docData["diaryIsPrivate"] as? Bool ?? false
                     
-                    let diary = Diary(id: id, uid: uid, diaryUserNickName: diaryUserNickName, diaryTitle: diaryTitle, diaryAddress: diaryAddress, diaryContent: diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: diaryCreatedDate, diaryVisitedDate: diaryVisitedDate, diaryLike: diaryLike, diaryIsPrivate: diaryIsPrivate)
+                    let date = diaryVisitedDate.dateValue()
+                    
+                    let diary = Diary(id: id, uid: uid, diaryUserNickName: diaryUserNickName, diaryTitle: diaryTitle, diaryAddress: diaryAddress, diaryContent: diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: diaryCreatedDate, diaryVisitedDate: date, diaryLike: diaryLike, diaryIsPrivate: diaryIsPrivate)
                     
                     
                     database.collection("UserList").document(uid).getDocument { document, error in
@@ -530,11 +534,14 @@ struct FirebaseDiaryService {
                     let diaryImageNames: [String] = docData["diaryImageNames"] as? [String] ?? []
                     let diaryImageURLs: [String] = docData["diaryImageURLs"] as? [String] ?? []
                     let diaryCreatedDate: Timestamp = docData["diaryCreatedDate"] as? Timestamp ?? Timestamp()
-                    let diaryVisitedDate: Date = docData["diaryVisitedDate"] as? Date ?? Date()
+                    let diaryVisitedDate: Timestamp = docData["diaryVisitedDate"] as? Timestamp ?? Timestamp()
                     let diaryLike: [String] = docData["diaryLike"] as? [String] ?? []
                     let diaryIsPrivate: Bool = docData["diaryIsPrivate"] as? Bool ?? false
                     
-                    let diary = Diary(id: id, uid: uid, diaryUserNickName: diaryUserNickName, diaryTitle: diaryTitle, diaryAddress: diaryAddress, diaryContent: diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: diaryCreatedDate, diaryVisitedDate: diaryVisitedDate, diaryLike: diaryLike, diaryIsPrivate: diaryIsPrivate)
+                    let date = diaryVisitedDate.dateValue()
+                    
+                    let diary = Diary(id: id, uid: uid, diaryUserNickName: diaryUserNickName, diaryTitle: diaryTitle, diaryAddress: diaryAddress, diaryContent: diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: diaryCreatedDate, diaryVisitedDate: date, diaryLike: diaryLike, diaryIsPrivate: diaryIsPrivate)
+                    
                     
                     
                     database.collection("UserList").document(uid).getDocument { document, error in
@@ -611,11 +618,13 @@ struct FirebaseDiaryService {
                     let diaryImageNames: [String] = docData["diaryImageNames"] as? [String] ?? []
                     let diaryImageURLs: [String] = docData["diaryImageURLs"] as? [String] ?? []
                     let diaryCreatedDate: Timestamp = docData["diaryCreatedDate"] as? Timestamp ?? Timestamp()
-                    let diaryVisitedDate: Date = docData["diaryVisitedDate"] as? Date ?? Date()
+                    let diaryVisitedDate: Timestamp = docData["diaryVisitedDate"] as? Timestamp ?? Timestamp()
                     let diaryLike: [String] = docData["diaryLike"] as? [String] ?? []
                     let diaryIsPrivate: Bool = docData["diaryIsPrivate"] as? Bool ?? false
                     
-                    let diary = Diary(id: id, uid: uid, diaryUserNickName: diaryUserNickName, diaryTitle: diaryTitle, diaryAddress: diaryAddress, diaryContent: diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: diaryCreatedDate, diaryVisitedDate: diaryVisitedDate, diaryLike: diaryLike, diaryIsPrivate: diaryIsPrivate)
+                    let date = diaryVisitedDate.dateValue()
+                    
+                    let diary = Diary(id: id, uid: uid, diaryUserNickName: diaryUserNickName, diaryTitle: diaryTitle, diaryAddress: diaryAddress, diaryContent: diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: diaryCreatedDate, diaryVisitedDate: date, diaryLike: diaryLike, diaryIsPrivate: diaryIsPrivate)
                     
                     
                     database.collection("UserList").document(uid).getDocument { document, error in
@@ -689,11 +698,13 @@ struct FirebaseDiaryService {
                     let diaryImageNames: [String] = docData["diaryImageNames"] as? [String] ?? []
                     let diaryImageURLs: [String] = docData["diaryImageURLs"] as? [String] ?? []
                     let diaryCreatedDate: Timestamp = docData["diaryCreatedDate"] as? Timestamp ?? Timestamp()
-                    let diaryVisitedDate: Date = docData["diaryVisitedDate"] as? Date ?? Date()
+                    let diaryVisitedDate: Timestamp = docData["diaryVisitedDate"] as? Timestamp ?? Timestamp()
                     let diaryLike: [String] = docData["diaryLike"] as? [String] ?? []
                     let diaryIsPrivate: Bool = docData["diaryIsPrivate"] as? Bool ?? false
                     
-                    let diary = Diary(id: id, uid: uid, diaryUserNickName: diaryUserNickName, diaryTitle: diaryTitle, diaryAddress: diaryAddress, diaryContent: diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: diaryCreatedDate, diaryVisitedDate: diaryVisitedDate, diaryLike: diaryLike, diaryIsPrivate: diaryIsPrivate)
+                    let date = diaryVisitedDate.dateValue()
+                    
+                    let diary = Diary(id: id, uid: uid, diaryUserNickName: diaryUserNickName, diaryTitle: diaryTitle, diaryAddress: diaryAddress, diaryContent: diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: diaryCreatedDate, diaryVisitedDate: date, diaryLike: diaryLike, diaryIsPrivate: diaryIsPrivate)
                     
                     diarys.append(diary)
                     

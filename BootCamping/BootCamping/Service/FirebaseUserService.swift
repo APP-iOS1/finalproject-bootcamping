@@ -135,6 +135,18 @@ struct FirebaseUserService {
     
     func updateUserService(image: Data?, user: User) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
+            let storageRef = Storage.storage().reference().child("UserImages")
+            
+            
+            storageRef.child(user.profileImageName).delete { error in
+                if let error = error {
+                    print("Error removing image from storage: \(error.localizedDescription)")
+                    promise(.failure(FirebaseUserServiceError.deleteUserListError))
+                } else {
+                    print("삭제완")
+                }
+                
+            }
             if let image = image {
                 let imageName = UUID().uuidString
                 var imageURS: String = ""
@@ -147,6 +159,7 @@ struct FirebaseUserService {
                 metadata.contentType = "image/jpeg"
                 let uploadTask = storageRef.child(imageName).putData(image, metadata: metadata)
                 uploadTask.observe(.success) { snapshot in
+                    print("1차 시간")
                     group.leave()
                 }
                 uploadTask.observe(.failure) { snapshot in
@@ -171,7 +184,7 @@ struct FirebaseUserService {
                         
                     }
                 }
-                group.notify(queue: .global()) {
+                group.notify(queue: .global(qos: .userInteractive)) {
                     group.enter()
                     let storageRef = Storage.storage().reference().child("UserImages")
                     storageRef.child(imageName).downloadURL { url, error in
@@ -179,6 +192,7 @@ struct FirebaseUserService {
                             print(error)
                             promise(.failure(FirebaseUserServiceError.updateUserListError))
                         } else {
+                            print("2차 시간")
                             imageURS = url!.absoluteString
                             group.leave()
                         }
@@ -199,6 +213,7 @@ struct FirebaseUserService {
                                 print(error)
                                 promise(.failure(FirebaseUserServiceError.updateUserListError))
                             } else {
+                                print("3차 시간")
                                 promise(.success(()))
                             }
                         }

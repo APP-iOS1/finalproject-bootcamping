@@ -381,6 +381,7 @@ struct CampingSpotDiaryRow: View {
                 .frame(width: 120)
                 .lineLimit(2)
         }
+        .foregroundColor(Color.bcBlack)
     }
 }
 

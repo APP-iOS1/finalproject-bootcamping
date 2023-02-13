@@ -40,8 +40,14 @@ struct DiaryCommentCellView: View {
                     .frame(width: 35)
                 
                 VStack(alignment: .leading) {
-                    Text(item.nickName)
-                        .font(.title3)
+                    HStack{
+                        Text(item.nickName)
+                            .font(.footnote)
+                        Text("\(TimestampToString.dateString(item.commentCreatedDate)) 전")
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+
+                    }
                     Text(item.commentContent)
                 }
                 .padding(.trailing, 3)
@@ -62,12 +68,12 @@ private extension DiaryCommentCellView {
                 .frame(width: 30, height: 30)
                 .clipShape(Circle())
         } else {
-            Image(systemName: "person.fill")
+            Image("defaultProfileImage")
                 .resizable()
                 .scaledToFill()
+                .clipped()
                 .frame(width: 30, height: 30)
                 .clipShape(Circle())
-                
         }
     }
     
@@ -99,7 +105,7 @@ private extension DiaryCommentCellView {
         //MARK: - ... 버튼입니다.
         Menu {
             NavigationLink {
-                DiaryEditView(diaryTitle: item2.diary.diaryTitle, diaryIsPrivate: item2.diary.diaryIsPrivate, diaryContent: item2.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", selectedDate: item2.diary.diaryVisitedDate)
+                DiaryEditView(diaryTitle: item2.diary.diaryTitle, diaryIsPrivate: item2.diary.diaryIsPrivate, diaryContent: item2.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", item: item2, selectedDate: item2.diary.diaryVisitedDate)
             } label: {
                 Text("수정하기")
             }

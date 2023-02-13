@@ -131,7 +131,10 @@ struct DiaryAddView: View {
                         }
                         .padding(.horizontal, UIScreen.screenWidth*0.03)
                     }
-                    addViewAddButton
+                    if isTapTextField == false {
+                        addViewAddButton
+                            .animation(nil, value: UUID())
+                    }
                 }
                 .navigationTitle(Text("캠핑 일기 쓰기"))
                 .onTapGesture {
@@ -374,9 +377,9 @@ private extension DiaryAddView {
             }
             .font(.headline)
             .foregroundColor(.white)
-            .background(diaryTitle.isEmpty || diaryContent.isEmpty ? .secondary : Color.bcGreen)
+            .background(diaryTitle.isEmpty || diaryContent.isEmpty || diaryImages.isEmpty ? .secondary : Color.bcGreen)
             .cornerRadius(10)
-            .disabled(diaryTitle.isEmpty || diaryContent.isEmpty)
+            .disabled(diaryTitle.isEmpty || diaryContent.isEmpty || diaryImages.isEmpty)
             Spacer()
             
         }

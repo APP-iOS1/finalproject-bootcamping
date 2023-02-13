@@ -28,8 +28,8 @@ struct ReportUser: View {
                     .resizable()
                     .frame(width: 12, height: 10)
 
-            }.zIndex(1)
-        }.zIndex(1)
+            }
+        }.zIndex(0)
         
         .padding(13)
         .overlay {

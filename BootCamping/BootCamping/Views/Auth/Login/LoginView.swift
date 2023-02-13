@@ -46,7 +46,9 @@ struct LoginView: View {
                 }
                 .foregroundColor(.black)
                 .padding(UIScreen.screenWidth * 0.05)
-            }.ignoresSafeArea()
+                wholeAuthStore.isProcessing ? Color.black.opacity(0.3) : Color.clear
+            }
+            .ignoresSafeArea()
         }
         .alert("로그인에 실패하였습니다. 다시 시도해 주세요.", isPresented: $wholeAuthStore.isError) {
             Button("확인", role: .cancel) {

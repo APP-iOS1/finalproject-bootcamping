@@ -27,9 +27,8 @@ struct ReportUser: View {
                 Image(systemName: self.isOptionsPresented ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
                     .resizable()
                     .frame(width: 12, height: 10)
-
             }
-        }.zIndex(0)
+        }//
         
         .padding(13)
         .overlay {
@@ -40,13 +39,14 @@ struct ReportUser: View {
             VStack {
                 if self.isOptionsPresented {
                     Spacer(minLength: 60)
-                    DropdownMenuList(options: self.options) {option in
+                    DropdownMenuList(options: self.options) { option in
                         self.isOptionsPresented = false
                         self.selectedOption = option
-                    }
-                }
+                    }//
+                    
+                }//
             }
-        }
+        }//
     }
 }
 
@@ -55,19 +55,18 @@ struct DropdownMenuList: View {
     let onSelectedAction: (_ option: DropdownMenuOption) -> Void
     
     var body: some View {
-        ScrollView {
-            LazyVStack(alignment: .leading, spacing: 2) {
-                ForEach(options) { option in
-                    DropdownMenuListRow(onSelectedAction: self.onSelectedAction, option: option)
-                }
-            }
+        
+        VStack(alignment: .leading, spacing: 2) {
+            ForEach(options) { option in
+                DropdownMenuListRow(onSelectedAction: self.onSelectedAction, option: option)
+            }//
         }
-        .frame(height: 200)
+        // .frame(height: 200)
         .padding(.vertical, 5)
         .overlay {
             RoundedRectangle(cornerRadius: 5)
-                .stroke(.gray, lineWidth: 2)
-        }
+                .stroke(.gray, lineWidth: 1)
+        }//
     }
 }
 
@@ -81,7 +80,7 @@ struct DropdownMenuListRow: View {
         }) {
             Text(option.option)
                 .frame(maxWidth: .infinity, alignment: .leading)
-        }
+        }//
         .foregroundColor(.bcBlack)
         .padding(.vertical, 5)
         .padding(.horizontal)

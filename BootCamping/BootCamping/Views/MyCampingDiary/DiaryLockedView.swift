@@ -12,23 +12,21 @@ struct DiaryLockedView: View {
     
     var body: some View {
         VStack(alignment: .center) {
-            Text("일기가 잠겨있습니다.")
+            Text("버튼을 눌러 잠금을 해제해주세요.")
                 .font(.title3)
                 .padding()
             
             Button {
                 faceId.authenticate()
             } label: {
-                Label("잠금 해제하기", systemImage: "lock")
+//                Label("잠금 해제하기", systemImage: "lock")
+                Image(systemName: "faceid")
+                    .resizable()
+                    .frame(width: UIScreen.screenWidth / 4, height: UIScreen.screenWidth / 4)
             }
-            .modifier(GreenButtonModifier())
-        }
-    }
-}
 
-struct DiaryLockedView_Previews: PreviewProvider {
-    static var previews: some View {
-        DiaryLockedView()
-            .environmentObject(FaceId())
+//            .modifier(GreenButtonModifier())
+        }
+        .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight)
     }
 }

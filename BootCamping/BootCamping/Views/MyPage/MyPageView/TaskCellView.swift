@@ -61,10 +61,3 @@ struct ExDivider: View {
         //            .edgesIgnoringSafeArea(.horizontal)
     }
 }
-
-
-//struct TaskCellView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TaskCellView()
-//    }
-//}

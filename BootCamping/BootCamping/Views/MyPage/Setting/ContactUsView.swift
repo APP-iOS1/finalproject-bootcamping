@@ -37,9 +37,3 @@ struct ContactUsView: View {
         }.navigationTitle("Q&A")
     }
 }
-
-struct ContactUsView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContactUsView()
-    }
-}

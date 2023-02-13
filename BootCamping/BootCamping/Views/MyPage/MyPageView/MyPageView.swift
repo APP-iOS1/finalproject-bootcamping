@@ -79,7 +79,7 @@ struct MyPageView: View {
 extension MyPageView{
     // MARK: -View : 유저 프로필이미지, 닉네임 표시
     private var userProfileSection : some View {
-        HStack{
+        HStack(spacing: 20){
             if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
                 WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
                     .resizable()

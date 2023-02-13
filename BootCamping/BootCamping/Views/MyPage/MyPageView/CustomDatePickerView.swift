@@ -159,7 +159,7 @@ extension CustomDatePickerView{
                 CardView(value: value)
                     .background (
                         Rectangle()
-                            .frame(width: 50, height: 50)
+                            .scaledToFill()
                             .foregroundColor(Color.bcYellow)
                             .opacity((isSameDay(date1: value.date, date2: currentDate) && value.day != -1) ? 1 : 0)
                     )

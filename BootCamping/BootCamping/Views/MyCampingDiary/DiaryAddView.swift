@@ -127,12 +127,12 @@ struct DiaryAddView: View {
                                 EmptyView()
                                     .id(content)
                             }
-                            addViewAddButton
-                            
+                                                        
                             
                         }
                         .padding(.horizontal, UIScreen.screenWidth*0.03)
                     }
+                    addViewAddButton
                 }
                 .navigationTitle(Text("캠핑 일기 쓰기"))
                 .onTapGesture {

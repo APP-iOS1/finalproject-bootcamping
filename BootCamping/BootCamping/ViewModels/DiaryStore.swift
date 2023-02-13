@@ -284,7 +284,7 @@ class DiaryStore: ObservableObject {
                 }
             } receiveValue: { [weak self] popularList in
                 let sortedArray = popularList.sorted{ $0.diary.diaryLike.count > $1.diary.diaryLike.count}
-                self.popularDiaryList = sortedArray
+                self?.popularDiaryList = sortedArray
             }
             .store(in: &cancellables)
     }

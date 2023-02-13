@@ -92,6 +92,7 @@ private extension DiaryCellView {
                     .placeholder {
                         Rectangle().foregroundColor(.gray)
                     }
+                    .transition(.fade(duration: 0.5))
                     .scaledToFill()
                     .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     .clipped()

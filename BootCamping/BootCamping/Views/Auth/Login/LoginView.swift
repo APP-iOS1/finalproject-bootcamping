@@ -67,10 +67,14 @@ extension LoginView {
     // 로그인 아이콘 및 앱 이름
     var loginIcon: some View {
         VStack {
-            Image("loginImg")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 200)
+            LottieView()
+                .frame(width: 150, height: 150)
+                .padding(.leading, 65)
+
+//            Image("loginImg")
+//                .resizable()
+//                .aspectRatio(contentMode: .fit)
+//                .frame(width: 200)
             Image("loginName")
                 .resizable()
                 .aspectRatio(contentMode: .fit)

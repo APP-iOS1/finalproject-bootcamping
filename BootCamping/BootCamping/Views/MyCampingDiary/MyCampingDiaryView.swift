@@ -12,8 +12,6 @@ import AlertToast
 
 
 struct MyCampingDiaryView: View {
-    
-    
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var faceId: FaceId
     
@@ -61,7 +59,7 @@ struct MyCampingDiaryView: View {
         .toolbar{
             ToolbarItem(placement: .navigationBarLeading) {
                 Text("My Camping Diary")
-                    .font(.title.bold())
+                    .font(.title2.bold())
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink (destination: DiaryAddView())

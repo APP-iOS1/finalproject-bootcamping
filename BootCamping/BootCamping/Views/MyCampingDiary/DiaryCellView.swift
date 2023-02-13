@@ -73,8 +73,11 @@ struct DiaryCellView: View {
                         if !campingSpotStore.campingSpotList.isEmpty {
                             diaryCampingLink
                         }
+                        
+                        Divider().padding(.top, 5)
+                        
                         diaryDetailInfo
-                        Divider().padding(.bottom, 3)
+//                        Divider().padding(.bottom, 3)
                         
                     }
                     .padding(.horizontal, UIScreen.screenWidth * 0.03)
@@ -138,21 +141,23 @@ private extension DiaryCellView {
             }
             //유저 닉네임
             Text(item.user.nickName)
+                .font(.callout)
 //            Text(item.diary.diaryUserNickName)
-                .font(.headline).fontWeight(.semibold)
+                
             Spacer()
             //MARK: -...버튼 글 쓴 유저일때만 ...나타나도록
             if item.diary.uid == Auth.auth().currentUser?.uid {
                 alertMenu
-                    .padding(.top, 5)
+                 //   .padding(.top, 5)
             }
             else {
                 reportAlertMenu
-                    .padding(.top, 5)
+                  //  .padding(.top, 5)
             }
             
         }
         .padding(.horizontal, UIScreen.screenWidth * 0.03)
+
     }
     
     
@@ -175,7 +180,7 @@ private extension DiaryCellView {
         } label: {
             Image(systemName: "ellipsis")
                 .font(.title3)
-                .frame(width: 30,height: 30)
+                .frame(width: 30, height: 30)
         }
         //MARK: - 일기 삭제 알림
         .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
@@ -219,7 +224,8 @@ private extension DiaryCellView {
     var diaryTitle: some View {
         Text(item.diary.diaryTitle)
             .font(.system(.title3, weight: .semibold))
-            .padding(.vertical, 5)
+            .padding(.top, 10)
+            .padding(.bottom, 5)
     }
     
     // MARK: - 다이어리 공개 여부를 나타내는 이미지
@@ -233,6 +239,7 @@ private extension DiaryCellView {
         Text(item.diary.diaryContent)
             .lineLimit(3)
             .multilineTextAlignment(.leading)
+            .padding(.bottom, 25)
     }
     
     //MARK: - 캠핑장 이동
@@ -248,13 +255,11 @@ private extension DiaryCellView {
                     .multilineTextAlignment(.leading)
                     .font(.headline)
                 HStack {
-                    
                     Text("방문일자: \(item.diary.diaryVisitedDate.getKoreanDate())")
-                        .font(.footnote)
                         .padding(.vertical, 2)
                     Spacer()
                 }
-                .font(.subheadline)
+                .font(.footnote)
                 .foregroundColor(.secondary)
             }
             .foregroundColor(.bcBlack)
@@ -286,20 +291,27 @@ private extension DiaryCellView {
                 
             } label: {
                 Image(systemName: diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")
-                    .foregroundColor(diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? .red : .bcBlack)
+                    .foregroundColor(diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? .red : .secondary)
             }
             Text("\(diaryLikeStore.diaryLikeList.count)")
-                .padding(.trailing, 7)
+                .font(.callout)
+                .foregroundColor(.secondary)
+                .padding(.leading, -2)
+                .frame(width: 20, alignment: .leading)
             
             //댓글 버튼
             Button {
                 //"댓글 작성 버튼으로 이동"
             } label: {
                 Image(systemName: "message")
+                    .font(.callout)
+                    .foregroundColor(.secondary)
             }
             Text("\(commentStore.commentList.count)")
-                .font(.body)
-                .padding(.horizontal, 3)
+                .font(.callout)
+                .foregroundColor(.secondary)
+                .frame(width: 20, alignment: .leading)
+                .padding(.leading, -2)
             
             Spacer()
             //작성 경과시간
@@ -307,8 +319,6 @@ private extension DiaryCellView {
                 .font(.footnote)
                 .foregroundColor(.secondary)
         }
-        .foregroundColor(.bcBlack)
-        .font(.title3)
-        .padding(.vertical, 5)
+        .padding(.bottom, 15)
     }
 }

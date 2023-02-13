@@ -45,8 +45,7 @@ struct MyCampingDiaryView: View {
                     .refreshable {
                         diaryStore.firstGetMyDiaryCombine()
                     }
-                    .padding(.top)
-                    .padding(.bottom, 1)
+                    .padding(.bottom, 0.1)
                 }
                 .background(Color.bcWhite)
 

@@ -54,6 +54,7 @@ struct DiaryCommentCellView: View {
                 
                 Spacer()
             }
+            .padding(.vertical, UIScreen.screenWidth * 0.01)
           
     }
 }

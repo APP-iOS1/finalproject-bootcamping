@@ -245,6 +245,7 @@ private extension DiaryCellView {
             
             VStack(alignment: .leading, spacing: 3) {
                 Text(campingSpotStore.campingSpotList.first?.facltNm ?? "")
+                    .multilineTextAlignment(.leading)
                     .font(.headline)
                 HStack {
                     

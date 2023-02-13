@@ -116,7 +116,8 @@ extension MyPageView{
             ForEach(TapMypage.allCases, id: \.self) { item in
                 VStack {
                     Text(item.rawValue)
-                        .font(.callout)
+                        .font(.title3)
+                        .bold()
                         .kerning(-1)
                         .foregroundColor(selectedPicker2 == item ? .bcBlack : .gray)
                     

@@ -67,6 +67,9 @@ struct ContentView: View {
                 }
                 .onAppear {
                     diaryStore.firstGetMyDiaryCombine()
+                    diaryStore.mostLikedGetDiarysCombine()
+                    diaryStore.firstGetRealTimeDiaryCombine()
+                    scheduleStore.readScheduleCombine()
                 }
             } else {
                 LoginView()
@@ -83,10 +86,6 @@ struct ContentView: View {
             self.tabSelection.change(to: notificationSelection)
         }
         .task {
-            diaryStore.firstGetRealTimeDiaryCombine()
-            wholeAuthStore.readUserListCombine()
-            scheduleStore.readScheduleCombine()
-            diaryStore.mostLikedGetDiarysCombine()
             localNotificationCenter.getCurrentSetting()
             //현재 로그인 되어있는지
             if isSignIn {

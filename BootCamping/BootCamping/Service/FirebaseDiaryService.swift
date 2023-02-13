@@ -408,7 +408,8 @@ struct FirebaseDiaryService {
                         let lastDocWithDiaryList: LastDocWithDiaryList = LastDocWithDiaryList(userInfoDiarys: sortedDiarys, lastDoc: snapshot.documents.last!)
                         promise(.success(lastDocWithDiaryList))
                     } else {
-                        promise(.failure(FirebaseDiaryServiceError.badSnapshot))
+                        promise(.success(LastDocWithDiaryList(userInfoDiarys: [], lastDoc: nil)))
+
                     }
                 }
             }
@@ -575,7 +576,7 @@ struct FirebaseDiaryService {
                         let lastDocWithDiaryList: LastDocWithDiaryList = LastDocWithDiaryList(userInfoDiarys: sortedDiarys, lastDoc: snapshot.documents.last!)
                         promise(.success(lastDocWithDiaryList))
                     } else {
-                        promise(.failure(FirebaseDiaryServiceError.badSnapshot))
+                        promise(.success(LastDocWithDiaryList(userInfoDiarys: [], lastDoc: nil)))
                     }
                 }
             }

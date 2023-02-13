@@ -35,7 +35,6 @@ struct RealtimeCampingView: View {
             .refreshable {
                 diaryStore.firstGetRealTimeDiaryCombine()
             }
-            .padding(.top)
             .padding(.bottom, 1)
         }
     }

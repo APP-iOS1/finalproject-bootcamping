@@ -21,7 +21,7 @@ struct MyCampingDiaryView: View {
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
     @StateObject var commentStore: CommentStore = CommentStore()
     
-    
+    @EnvironmentObject var tabSelection: TabSelector
     
     @AppStorage("faceId") var usingFaceId: Bool? //페이스id 설정 사용하는지
     //faceId.isLocked // 페이스 아이디가 잠겨있는지.
@@ -29,9 +29,10 @@ struct MyCampingDiaryView: View {
     var body: some View {
         ZStack {
             VStack {
-                if usingFaceId ?? true && faceId.islocked {
-                    DiaryLockedView()
-                } else {
+//                if usingFaceId == true && faceId.islocked {
+//                    DiaryLockedView()
+//                        .background(Color.bcWhite)
+//                } else {
                     ScrollView(showsIndicators: false) {
                         LazyVStack {
                             ForEach(diaryStore.myDiaryUserInfoDiaryList.indices, id: \.self) { index in
@@ -52,7 +53,7 @@ struct MyCampingDiaryView: View {
                     }
                     .padding(.top)
                     .padding(.bottom, 1)
-                }
+//                }
                 
             }
             .background(Color.bcWhite)
@@ -61,21 +62,26 @@ struct MyCampingDiaryView: View {
             diaryStore.isProcessing ? Color.black.opacity(0.3) : Color.clear
 
         }
-        .onAppear {
-            if usingFaceId == true {
-                faceId.authenticate()
-            }
-        }
+//        .onAppear {
+//            if usingFaceId == true && faceId.islocked == true {
+//                faceId.authenticate()
+//            }
+//        }
+//        .onChange(of: tabSelection.screen, perform: { _ in
+//            faceId.islocked = true
+//        })
         .toolbar{
             ToolbarItem(placement: .navigationBarLeading) {
                 Text("My Camping Diary")
                     .font(.title.bold())
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink (destination: DiaryAddView())
-                 {
-                    Image(systemName: "plus")
-                }
+//                if faceId.islocked == false { //잠금 설정하면
+                    NavigationLink (destination: DiaryAddView())
+                    {
+                        Image(systemName: "plus")
+                    }
+//                }
             }
         }
         .alert("다이어리 만들기에 실패했습니다.. 다시 시도해 주세요.", isPresented: $diaryStore.isError) {

@@ -13,19 +13,22 @@ struct DiaryCellView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
-//    @EnvironmentObject var diaryLikeStore: DiaryLikeStore
+    //    @EnvironmentObject var diaryLikeStore: DiaryLikeStore
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
     @StateObject var commentStore: CommentStore = CommentStore()
     
     @State var isBookmarked: Bool = false
-
+    
     //선택한 다이어리 정보 변수입니다.
     var item: UserInfoDiary
     //삭제 알림
     @State private var isShowingDeleteAlert = false
     //유저 신고/ 차단 알림
     @State private var isShowingUserReportAlert = false
+    
+    @EnvironmentObject var faceId: FaceId
+    @AppStorage("faceId") var usingFaceId: Bool = false
     
     var diaryCampingSpot: [Item] {
         get {
@@ -38,30 +41,47 @@ struct DiaryCellView: View {
     var body: some View {
         VStack(alignment: .leading) {
             diaryUserProfile
-            diaryImage
-            NavigationLink {
-                DiaryDetailView(item: item)
-            } label: {
-                VStack(alignment: .leading) {
-                    HStack(alignment: .center){
-                        if (item.diary.uid == wholeAuthStore.currnetUserInfo!.id && item.diary.diaryIsPrivate) {
-                            isPrivateImage
+            //MARK: - 잠금상태 && Faceid 설정 일때 잠금화면
+            if item.diary.diaryIsPrivate && faceId.islocked == true {
+                    Button {
+                        faceId.authenticate()
+                    } label: {
+                        VStack {
+                            Image(systemName: "lock")
+                                
+                            Text("비공개 일기입니다.\n잠금을 해제해주세요.")
                         }
-                        diaryTitle
+                        .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     }
-                    diaryContent
-                    if !campingSpotStore.campingSpotList.isEmpty {
-                        diaryCampingLink
+                
+            } else {
+                diaryImage
+                
+                NavigationLink {
+                    DiaryDetailView(item: item)
+                } label: {
+                    VStack(alignment: .leading) {
+                        HStack(alignment: .center){
+                            if (item.diary.uid == wholeAuthStore.currnetUserInfo!.id && item.diary.diaryIsPrivate) {
+                                isPrivateImage
+                            }
+                            diaryTitle
+                        }
+                        diaryContent
+                        if !campingSpotStore.campingSpotList.isEmpty {
+                            diaryCampingLink
+                        }
+                        diaryDetailInfo
+                        Divider().padding(.bottom, 3)
+                        
                     }
-                    diaryDetailInfo
-                    Divider().padding(.bottom, 3)
-                    
+                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 }
-                .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                .foregroundColor(.bcBlack)
             }
-            .foregroundColor(.bcBlack)
         }
         
+        .padding(.top, UIScreen.screenWidth * 0.03)
         .onAppear {
             commentStore.readCommentsCombine(diaryId: item.diary.id)
             campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
@@ -73,14 +93,14 @@ struct DiaryCellView: View {
 
 private extension DiaryCellView {
     //TODO: -유저 프로필 이미지 연결
-//    var userProfileURL: String? {
-//        for user in wholeAuthStore.userList {
-//            if user.id == item.uid {
-//                return user.profileImageURL
-//            }
-//        }
-//        return ""
-//    }
+    //    var userProfileURL: String? {
+    //        for user in wholeAuthStore.userList {
+    //            if user.id == item.uid {
+    //                return user.profileImageURL
+    //            }
+    //        }
+    //        return ""
+    //    }
     
     
     //MARK: - 메인 이미지
@@ -101,7 +121,7 @@ private extension DiaryCellView {
         .tabViewStyle(PageTabViewStyle())
         // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
-        //        .padding(.vertical, 3)
+        .pinchZoomAndDrag()
     }
     
     //MARK: - 다이어리 작성자 프로필
@@ -195,7 +215,7 @@ private extension DiaryCellView {
                 ReportUserView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []), placeholder: "", options: [])
             }
         }
-
+        
     }
     
     //MARK: - 제목
@@ -243,10 +263,10 @@ private extension DiaryCellView {
         }
         .padding(10)
         .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.bcDarkGray, lineWidth: 1)
-                    .opacity(0.3)
-            )
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.bcDarkGray, lineWidth: 1)
+                .opacity(0.3)
+        )
     }
     
     
@@ -262,6 +282,9 @@ private extension DiaryCellView {
                 }
                 //TODO: -함수 업데이트되면 넣기
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
+                //탭틱
+                let impactMed = UIImpactFeedbackGenerator(style: .soft)
+                impactMed.impactOccurred()
                 
             } label: {
                 Image(systemName: diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")

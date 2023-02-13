@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TaskCellView: View{
     @EnvironmentObject var scheduleStore: ScheduleStore
+    @EnvironmentObject var localNotificationCenter: LocalNotificationCenter
     
     @State private var isShowingDeleteAlert = false
     
@@ -36,12 +37,15 @@ struct TaskCellView: View{
                     .foregroundColor(Color[color])
             }
             /// ios15부터 .alert 형태로 사용
-            .alert("이 일정을 정말 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
+            .alert("이 일정을 정말 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert, actions: {
                 Button("취소", role: .cancel) {}
                 Button("삭제", role: .destructive) {
                     scheduleStore.deleteScheduleCombine(schedule: schedule)
-                }
+                    localNotificationCenter.removeNotifications(selectedDate: schedule.date.formatted()) }
             }
+            , message: {
+                Text("출발일에 해당되는 일정 삭제시, 관련 일정에 대한 알림 설정이 전체 초기화됩니다.")
+            })
         }
         .frame(maxWidth: UIScreen.screenWidth)
         .padding(.vertical, UIScreen.screenHeight * 0.02)
@@ -61,10 +65,3 @@ struct ExDivider: View {
         //            .edgesIgnoringSafeArea(.horizontal)
     }
 }
-
-
-//struct TaskCellView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TaskCellView()
-//    }
-//}

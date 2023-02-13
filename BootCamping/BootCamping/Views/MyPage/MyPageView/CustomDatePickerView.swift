@@ -145,10 +145,10 @@ extension CustomDatePickerView{
             AddScheduleView()
         } label: {
             Text("일정 추가")
-                .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenHeight * 0.05)
+                .frame(width: UIScreen.screenWidth * 0.25, height: UIScreen.screenHeight * 0.045)
                 .foregroundColor(.white)
                 .background(Color.bcGreen)
-                .cornerRadius(10)
+                .cornerRadius(8)
         }
     }
     
@@ -159,7 +159,7 @@ extension CustomDatePickerView{
                 CardView(value: value)
                     .background (
                         Rectangle()
-                            .frame(width: 50, height: 50)
+                            .scaledToFill()
                             .foregroundColor(Color.bcYellow)
                             .opacity((isSameDay(date1: value.date, date2: currentDate) && value.day != -1) ? 1 : 0)
                     )
@@ -238,11 +238,3 @@ extension Date {
         } ?? []
     }
 }
-
-
-//
-//struct CustomDatePickerView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CalendarView()
-//    }
-//}

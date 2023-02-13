@@ -128,11 +128,13 @@ struct DiaryAddView: View {
                                     .id(content)
                             }
                                                         
-                            
                         }
                         .padding(.horizontal, UIScreen.screenWidth*0.03)
                     }
-                    addViewAddButton
+                    if isTapTextField == false {
+                        addViewAddButton
+                            .animation(nil, value: UUID())
+                    }
                 }
                 .navigationTitle(Text("캠핑 일기 쓰기"))
                 .onTapGesture {
@@ -157,7 +159,6 @@ struct DiaryAddView: View {
                 }
             }
             isProcessing ? Color.black.opacity(0.3) : Color.clear
-
         }
         .toast(isPresenting: $isProcessing) {
             AlertToast(displayMode: .alert, type: .loading)
@@ -376,9 +377,9 @@ private extension DiaryAddView {
             }
             .font(.headline)
             .foregroundColor(.white)
-            .background(diaryTitle.isEmpty || diaryContent.isEmpty ? .secondary : Color.bcGreen)
+            .background(diaryTitle.isEmpty || diaryContent.isEmpty || diaryImages.isEmpty ? .secondary : Color.bcGreen)
             .cornerRadius(10)
-            .disabled(diaryTitle.isEmpty || diaryContent.isEmpty)
+            .disabled(diaryTitle.isEmpty || diaryContent.isEmpty || diaryImages.isEmpty)
             Spacer()
             
         }
@@ -397,23 +398,5 @@ private extension DiaryAddView {
         } else {
             dismissKeyboard()
         }
-    }
-}
-
-
-struct DiaryAddView_Previews: PreviewProvider {
-    static var previews: some View {
-        DiaryAddView()
-            .environmentObject(WholeAuthStore())
-            .environmentObject(DiaryStore())
-        
-        DiaryAddView()
-            .environmentObject(WholeAuthStore())
-            .environmentObject(DiaryStore())
-            .previewDevice("iPhone 11")
-        DiaryAddView()
-            .environmentObject(WholeAuthStore())
-            .environmentObject(DiaryStore())
-            .previewDevice("iPhone SE (3rd generation)")
     }
 }

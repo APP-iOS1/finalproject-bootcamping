@@ -9,7 +9,7 @@ import Foundation
 import LocalAuthentication
 
 class FaceId: ObservableObject {
-    @Published var islocked: Bool = true
+    @Published var islocked: Bool = false
     
     //    func auth() {
     //        let context = LAContext()

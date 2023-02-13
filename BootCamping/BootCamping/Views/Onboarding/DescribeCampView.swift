@@ -29,9 +29,3 @@ struct DescribeCampView: View {
         
     }
 }
-
-struct DescribeCampView_Previews: PreviewProvider {
-    static var previews: some View {
-        DescribeCampView()
-    }
-}

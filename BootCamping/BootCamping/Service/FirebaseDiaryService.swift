@@ -470,17 +470,40 @@ struct FirebaseDiaryService {
         Future<LastDocWithDiaryList, Error> { promise in
             database.collection("Diarys")
                 .whereField("uid", isEqualTo: Auth.auth().currentUser!.uid).order(by: "diaryCreatedDate", descending: true).limit(to: 5).getDocuments { snapshot, error in
-                    if let error = error {
-                        print(error)
-                        promise(.failure(FirebaseDiaryServiceError.badSnapshot))
-                        
-                    }
-                    guard let snapshot = snapshot else {
-                        promise(.failure(FirebaseDiaryServiceError.badSnapshot))
-                        return
-                    }
+                if let error = error {
+                    print(error)
+                    promise(.failure(FirebaseDiaryServiceError.badSnapshot))
+
+                }
+                guard let snapshot = snapshot else {
+                    promise(.failure(FirebaseDiaryServiceError.badSnapshot))
+                    return
+                }
+                
+                let group = DispatchGroup()
+                
+                var userInfoDiarys = [UserInfoDiary]()
+                
+                for document in snapshot.documents {
+                    group.enter()
                     
-                    let group = DispatchGroup()
+                    let docData = document.data()
+                    
+                    let id: String = docData["id"] as? String ?? ""
+                    let uid: String = docData["uid"] as? String ?? ""
+                    let diaryUserNickName: String = docData["diaryUserNickName"] as? String ?? ""
+                    let diaryTitle: String = docData["diaryTitle"] as? String ?? ""
+                    let diaryAddress: String = docData["diaryAddress"] as? String ?? ""
+                    let diaryContent: String = docData["diaryContent"] as? String ?? ""
+                    let diaryImageNames: [String] = docData["diaryImageNames"] as? [String] ?? []
+                    let diaryImageURLs: [String] = docData["diaryImageURLs"] as? [String] ?? []
+                    let diaryCreatedDate: Timestamp = docData["diaryCreatedDate"] as? Timestamp ?? Timestamp()
+                    let diaryVisitedDate: Timestamp = docData["diaryVisitedDate"] as? Timestamp ?? Timestamp()
+                    let diaryLike: [String] = docData["diaryLike"] as? [String] ?? []
+                    let diaryIsPrivate: Bool = docData["diaryIsPrivate"] as? Bool ?? false
+                    let date: Date = Date(timeIntervalSince1970: TimeInterval(diaryVisitedDate.seconds))
+                    let diary = Diary(id: id, uid: uid, diaryUserNickName: diaryUserNickName, diaryTitle: diaryTitle, diaryAddress: diaryAddress, diaryContent: diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: diaryCreatedDate, diaryVisitedDate: date, diaryLike: diaryLike, diaryIsPrivate: diaryIsPrivate)
+
                     
                     var userInfoDiarys = [UserInfoDiary]()
                     

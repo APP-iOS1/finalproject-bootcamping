@@ -498,11 +498,11 @@ struct FirebaseDiaryService {
                     let diaryImageNames: [String] = docData["diaryImageNames"] as? [String] ?? []
                     let diaryImageURLs: [String] = docData["diaryImageURLs"] as? [String] ?? []
                     let diaryCreatedDate: Timestamp = docData["diaryCreatedDate"] as? Timestamp ?? Timestamp()
-                    let diaryVisitedDate: Date = docData["diaryVisitedDate"] as? Date ?? Date()
+                    let diaryVisitedDate: Timestamp = docData["diaryVisitedDate"] as? Timestamp ?? Timestamp()
                     let diaryLike: [String] = docData["diaryLike"] as? [String] ?? []
                     let diaryIsPrivate: Bool = docData["diaryIsPrivate"] as? Bool ?? false
-                    
-                    let diary = Diary(id: id, uid: uid, diaryUserNickName: diaryUserNickName, diaryTitle: diaryTitle, diaryAddress: diaryAddress, diaryContent: diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: diaryCreatedDate, diaryVisitedDate: diaryVisitedDate, diaryLike: diaryLike, diaryIsPrivate: diaryIsPrivate)
+                    let date: Date = Date(timeIntervalSince1970: TimeInterval(diaryVisitedDate.seconds))
+                    let diary = Diary(id: id, uid: uid, diaryUserNickName: diaryUserNickName, diaryTitle: diaryTitle, diaryAddress: diaryAddress, diaryContent: diaryContent, diaryImageNames: diaryImageNames, diaryImageURLs: diaryImageURLs, diaryCreatedDate: diaryCreatedDate, diaryVisitedDate: date, diaryLike: diaryLike, diaryIsPrivate: diaryIsPrivate)
                     
                     
                     database.collection("UserList").document(uid).getDocument { document, error in

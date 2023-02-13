@@ -92,15 +92,16 @@ struct DiaryDetailView: View {
                             .clipShape(Circle())
                         
                     } else {
-                        Image(systemName: "person.fill")
+                        Image("defaultProfileImage")
                             .resizable()
                             .scaledToFill()
+                            .clipped()
                             .frame(width: 30, height: 30)
                             .clipShape(Circle())
-                        
                     }
                     TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
-                    
+                        .focused($inputFocused)
+
                     Button {
                         //TODO: -프로필 이미지 수정
                         commentStore.createCommentCombine(diaryId: item.diary.id, comment: Comment(id: UUID().uuidString, diaryId: item.diary.id, uid: wholeAuthStore.currnetUserInfo?.id ?? "" , nickName: wholeAuthStore.currnetUserInfo?.nickName ?? "", profileImage: wholeAuthStore.currnetUserInfo?.profileImageURL ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp()))
@@ -133,9 +134,9 @@ struct DiaryDetailView: View {
                 //TODO: -함수 업데이트되면 넣기
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
             }
-            .onTapGesture {
-                inputFocused = false
-            }
+        }
+        .onTapGesture {
+            submit()
         }
     }
 }
@@ -160,8 +161,12 @@ private extension DiaryDetailView {
                     .frame(width: 30, height: 30)
                     .clipShape(Circle())
             } else {
-                Circle()
+                Image("defaultProfileImage")
+                    .resizable()
+                    .scaledToFill()
+                    .clipped()
                     .frame(width: 30, height: 30)
+                    .clipShape(Circle())
             }
             
             //유저 닉네임
@@ -172,13 +177,13 @@ private extension DiaryDetailView {
             //MARK: -...버튼 글 쓴 유저일때만 ...나타나도록
             if item.diary.uid == Auth.auth().currentUser?.uid {
                 alertMenu
-                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
+//                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
                     .padding(.top, 5)
             }
             //TODO: -글 쓴 유저가 아닐때는 신고기능 넣기
             else {
                 reportAlertMenu
-                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
+//                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
                     .padding(.top, 5)
             }
             
@@ -197,7 +202,7 @@ private extension DiaryDetailView {
         //MARK: - ... 버튼입니다.
         Menu {
             NavigationLink {
-                DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", selectedDate: item.diary.diaryVisitedDate)
+                DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", item: item, selectedDate: item.diary.diaryVisitedDate)
             } label: {
                 Text("수정하기")
             }
@@ -212,6 +217,7 @@ private extension DiaryDetailView {
         } label: {
             Image(systemName: "ellipsis")
                 .font(.title3)
+                .frame(width: 30,height: 30)
         }
         //MARK: - 일기 삭제 알림
         .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
@@ -243,6 +249,8 @@ private extension DiaryDetailView {
         } label: {
             Image(systemName: "ellipsis")
                 .font(.title3)
+                .frame(width: 30,height: 30)
+
         }
         //MARK: - 유저 신고 알림
         .alert("유저를 신고하시겠습니까?", isPresented: $isShowingUserReportAlert) {
@@ -381,6 +389,19 @@ private extension DiaryDetailView {
             .font(.title3)
             .padding(.vertical, 5)
         }
+    
+    //MARK: - 키보드 dismiss 함수입니다.
+    func submit() {
+        resignKeyboard()
+    }
+    //iOS 15 아래버전은 유킷연동 함수 사용
+    func resignKeyboard() {
+        if #available(iOS 15, *) {
+            inputFocused = false
+        } else {
+            dismissKeyboard()
+        }
+    }
     
     // MARK: -View : 댓글 작성
 //    var diaryCommetInputView : some View {

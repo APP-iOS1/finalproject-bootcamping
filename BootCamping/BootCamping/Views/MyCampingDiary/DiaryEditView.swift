@@ -244,9 +244,3 @@ extension DiaryEditView {
         }
     }
 }
-
-//struct DiaryEditView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DiaryEditView()
-//    }
-//}

@@ -291,8 +291,8 @@ class DiaryStore: ObservableObject {
     
     //MARK: - 캠핑장 디테일뷰에 들어갈 일기 Read하는 함수
     
-    func readCampingSpotsDiarysCombine(contentId: String) {
-        FirebaseDiaryService().readCampingSpotsDiarysService(contentId: contentId)
+    func readCampingSpotsDiariesCombine(contentId: String) {
+        FirebaseDiaryService().readCampingSpotsDiariesService(contentId: contentId)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -307,8 +307,9 @@ class DiaryStore: ObservableObject {
                     return
                 }
 
-            } receiveValue: { [weak self] diarys in
-                self?.diaryList = diarys
+            } receiveValue: { [weak self] realTimelastDocWithDiaryList in
+                self?.realTimeDiaryUserInfoDiaryList = realTimelastDocWithDiaryList.userInfoDiarys
+                print(#function, self?.realTimeDiaryUserInfoDiaryList)
             }
             .store(in: &cancellables)
     }

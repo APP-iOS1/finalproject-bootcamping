@@ -85,45 +85,9 @@ private extension PrivacyView {
                     faceId.islocked = false
                 }
             }
-            
-//            Text("내 캠핑일기 잠그기")
-//            Spacer()
-//            Button {
-//                settingFaceIdAlert.toggle()
-//
-//                if usingFaceId {
-//                    faceId.authenticate()
-//                        usingFaceId = false
-//                    faceId.islocked = false
-//                } else {
-//                    usingFaceId = true
-//                    faceId.islocked = true
-//                }
-//            } label: {
-//                Text("Face Id 설정")
-//                    .font(.caption2)
-//            }
-//            .alert(isPresented: $settingFaceIdAlert) {
-//                Alert(title: Text("Face Id 설정"),
-//                      primaryButton: .default(Text("설정하기"), action: {
-//                    usingFaceId = true
-//                    faceId.islocked = true} ),
-//                      secondaryButton: .default(Text("설정 해제하기"),action: {
-//                    faceId.authenticate()
-//                        usingFaceId = false
-//                    faceId.islocked = false
-//                })
-//                )
-//            }
         }
 
     }
 
 }
 
-struct PrivacyView_Previews: PreviewProvider {
-    static var previews: some View {
-        PrivacyView()
-            .environmentObject(FaceId())
-    }
-}

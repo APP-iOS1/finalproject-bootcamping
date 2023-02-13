@@ -78,9 +78,3 @@ extension NotificationSettingsView {
         }
     }
 }
-
-struct NotificationSettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NotificationSettingsView()
-    }
-}

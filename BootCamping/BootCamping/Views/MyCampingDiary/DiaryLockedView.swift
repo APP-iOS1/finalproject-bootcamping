@@ -30,10 +30,3 @@ struct DiaryLockedView: View {
         .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight)
     }
 }
-
-struct DiaryLockedView_Previews: PreviewProvider {
-    static var previews: some View {
-        DiaryLockedView()
-            .environmentObject(FaceId())
-    }
-}

@@ -112,9 +112,3 @@ extension LoginPasswordView {
         }
     }
 }
-
-struct LoginPasswordView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginPasswordView(userEmail: "")
-    }
-}

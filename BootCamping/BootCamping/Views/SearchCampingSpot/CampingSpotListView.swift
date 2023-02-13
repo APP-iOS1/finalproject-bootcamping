@@ -7,10 +7,8 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
-//import ExpandableText     // 패키지 또 추가하면 충돌날거같아서 일단 코드만 추가해둠~
 
 struct CampingSpotListView: View {
-    //TODO: 북마크 만들기
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     
     @State private var isLoading: Bool = false
@@ -61,16 +59,6 @@ struct CampingSpotListView: View {
             ToolbarItem(placement: .principal) {
                 Text("캠핑장 리스트")
             }
-        }
-    }
-}
-
-
-struct CampingSpotListView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack{
-            CampingSpotListView(readDocuments: ReadDocuments())
-                .environmentObject(CampingSpotStore())
         }
     }
 }

@@ -61,9 +61,3 @@ extension PasswordChangeView {
         .disabled(currentPassword == "" || newPassword == "" || newPasswordCheck == "")
     }
 }
-
-struct PasswordChangeView_Previews: PreviewProvider {
-    static var previews: some View {
-        PasswordChangeView()
-    }
-}

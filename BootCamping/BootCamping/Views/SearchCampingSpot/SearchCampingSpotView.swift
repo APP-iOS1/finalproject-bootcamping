@@ -245,11 +245,3 @@ extension SearchCampingSpotView {
         }
     }
 }
-
-//struct SearchCampingSpotView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        NavigationStack{
-//            SearchCampingSpotView()
-//        }
-//    }
-//}

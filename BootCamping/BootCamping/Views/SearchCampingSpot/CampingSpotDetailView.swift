@@ -327,7 +327,7 @@ struct CampingSpotDetailView: View {
                                 HStack {
                                     ForEach(diaryStore.diaryList.filter { !$0.diaryIsPrivate }.indices, id: \.self) { index in
                                         NavigationLink {
-                                            
+                                            DiaryListForCampingSpotView(diaryList: diaryStore.diaryList.filter { !$0.diaryIsPrivate })
                                         } label: {
                                             CampingSpotDiaryRow(diary: diaryStore.diaryList[index])
                                         }

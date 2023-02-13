@@ -150,7 +150,7 @@ struct CampingSpotDetailView: View {
                                 Image(systemName: "safari.fill")
                                     .font(.callout)
                                     .foregroundColor(.secondary)
-                                Link(destination: (URL(string: campingSpot.resveUrl) ?? URL(string: campingSpot.homepage))!, label: {
+                                Link(destination: ((URL(string: campingSpot.resveUrl) ?? URL(string: campingSpot.homepage)) ?? URL(string: "https://www.google.com"))!, label: {
                                     Text("예약하러 가기")
                                         .font(.callout)
                                         .foregroundColor(.secondary)

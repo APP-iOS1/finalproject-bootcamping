@@ -25,7 +25,9 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
     
     // 알림 설정 권한 확인을 위한 변수
     @Published var authorizationStatus: UNAuthorizationStatus = .notDetermined
+    // 설정된 푸시 알림을 갖고 있는 배열
     @Published var notificationRequests: [UNNotificationRequest] = []
+    // 푸시 알림을 통해 앱 진입 시 화면 이동(마이페이지 탭으로 이동)을 위한 변수
     @Published var pageToNavigationTo : TabViewScreen?
     
     override init() {
@@ -64,6 +66,7 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
         }
     }
     
+    // MARK: - 앱 설정 페이지를 열어 보여준다
     @MainActor
     func openAppSetting() {
         if let url = URL(string: UIApplication.openSettingsURLString) {
@@ -78,7 +81,7 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
     // MARK: - 알람 처리 메소드 구현
     /** Handle notification when the app is in foreground */
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        /* 앱이 포어그라운드에서 실행될 때 도착한 알람 처리 */
+        /* 앱이 포그라운드에서 실행될 때 도착한 알람 처리 */
         let userInfo = notification.request.content.userInfo
         
         print(#function, "+++ willPresent: userInfo: ", userInfo)
@@ -88,20 +91,25 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
     
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let identifier = response.notification.request.identifier
         
+        // 알림을 통해 앱을 진입하면 뱃지 숫자를 0으로 바꿔준다
         UIApplication.shared.applicationIconBadgeNumber = 0
+        // 알림을 통해 앱을 진입하면 네 번째 탭(마이페이지 탭)으로 바로 화면 전환하기 위해 할당
         self.pageToNavigationTo = TabViewScreen.four
-        notificationCenter.removeAllDeliveredNotifications()
-        notificationCenter.removeAllPendingNotificationRequests()
+        // 알림에 해당하는 identifier를 가진 알림이 남아 있으면 삭제해준다.
+        notificationCenter.removeDeliveredNotifications(withIdentifiers: [identifier])
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
 
         
         print("Check Notification")
         completionHandler()
     }
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) { }
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) { }
     
     // MARK: - requestAuthorization
+    /// 앱의 알림 설정에 필요한 권한을 요청한다
     func requestAuthorization() async throws  {
         try await notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
            if success {
@@ -118,6 +126,8 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
     /// 생성된 노티피케이션은 보류중인 상태이며 pending 관련 메서드를 통해 보류중인 노티피케이션을 해제해줘야 될 것 같습니다.
     func getPendingNotificationRequests(completionHandler: ([UNNotificationRequest]) -> Void) {}
     
+    // MARK: - addNotification(startDate: Date)
+    /// 캠핑 출발일을 기준으로 일주일 전부터 출발 당일까지 하루에 한 개씩 알림을 설정한다
     func addNotification(startDate: Date) async throws{
     
         if authorizationStatus == UNAuthorizationStatus.notDetermined {
@@ -156,7 +166,7 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
 }
 
 
-// FIXME: - 테스트를 위해 남겨놓은 5초 뒤 푸시 알림 설정 기능 나중에 없애야 함
+// FIXME: - 테스트를 위해 남겨놓은 5초 뒤 푸시 알림 설정 함수 **나중에 없애야 함
 extension LocalNotificationCenter{
     func setNotification(startDate: Date) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
@@ -169,9 +179,9 @@ extension LocalNotificationCenter{
             if settings.authorizationStatus == UNAuthorizationStatus.authorized{
                 let content = UNMutableNotificationContent()
                 content.badge = 1
-                content.title = "에휴"
-                content.body = "왜 안 되는데.."
-                content.userInfo = ["name" : "민콩"]
+                content.title = "부트캠핑"
+                content.body = "출시 언제 하지.."
+                content.userInfo = ["name" : "부트캠퍼 민콩"]
                 
                 let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: startDate)
                 

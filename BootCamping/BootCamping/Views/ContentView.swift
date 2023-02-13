@@ -78,6 +78,7 @@ struct ContentView: View {
 
             }
         }
+        // 푸시 알림으로 앱 진입 시 네 번째 탭(마이페이지 탭)으로 이동
         .onReceive(localNotificationCenter.$pageToNavigationTo) {
             guard let notificationSelection = $0 else  { return }
             self.tabSelection.change(to: notificationSelection)

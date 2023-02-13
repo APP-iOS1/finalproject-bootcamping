@@ -102,7 +102,7 @@ class WholeAuthStore: ObservableObject {
                     print("Finished get UserList")
                     return
                 }
-            } receiveValue: { users in
+            } receiveValue: { [weak self] users in
                 self.userList = users
             }
             .store(in: &cancellables)
@@ -124,7 +124,7 @@ class WholeAuthStore: ObservableObject {
                     print("Finished get UserList")
                     return
                 }
-            } receiveValue: { user in
+            } receiveValue: { [weak self] user in
                 self.currnetUserInfo = user
             }
             .store(in: &cancellables)
@@ -254,7 +254,7 @@ class WholeAuthStore: ObservableObject {
                     print("Finished check User Email Duplicated")
                     return
                 }
-            } receiveValue: { value in
+            } receiveValue: { [weak self] value in
                 self.duplicatedEmailState = value
             }
             .store(in: &cancellables)
@@ -297,7 +297,7 @@ class WholeAuthStore: ObservableObject {
                     print("Finished SingIn User")
                     return
                 }
-            } receiveValue: { user in
+            } receiveValue: { [weak self] user in
                 self.currentUser = user
                 self.getUserInfo(userUID: user.uid) {
                     self.loginPlatform = .email
@@ -352,7 +352,7 @@ class WholeAuthStore: ObservableObject {
                     print("Finished SignUp User")
                     return
                 }
-            } receiveValue: { userUID in
+            } receiveValue: { [weak self] userUID in
                 self.loginPlatform = .email
                 self.createUserCombine(user: User(id: userUID, profileImageName: "", profileImageURL: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []))
             }
@@ -505,7 +505,7 @@ class WholeAuthStore: ObservableObject {
                     print("Finished SignIn User")
                     return
                 }
-            } receiveValue: { user in
+            } receiveValue: { [weak self] user in
                 self.isProcessing = true
                 self.currentUser = user
                 let query = self.database.collection("UserList").whereField("id", isEqualTo: (user.uid))

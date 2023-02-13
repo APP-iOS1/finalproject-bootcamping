@@ -282,7 +282,7 @@ class DiaryStore: ObservableObject {
                     print("\(self.popularDiaryList.count)")
                     return
                 }
-            } receiveValue: { popularList in
+            } receiveValue: { [weak self] popularList in
                 let sortedArray = popularList.sorted{ $0.diary.diaryLike.count > $1.diary.diaryLike.count}
                 self.popularDiaryList = sortedArray
             }

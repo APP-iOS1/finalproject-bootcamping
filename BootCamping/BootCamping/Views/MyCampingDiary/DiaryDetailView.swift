@@ -33,6 +33,9 @@ struct DiaryDetailView: View {
     @Namespace var topID
     @Namespace var bottomID
     
+    //키보드 dismiss
+    @FocusState private var inputFocused: Bool
+    
     var item: UserInfoDiary
     
     var body: some View {
@@ -41,7 +44,7 @@ struct DiaryDetailView: View {
                 ScrollView(showsIndicators: false) {
                     LazyVStack(alignment: .leading) {
                         diaryUserProfile.id(topID)
-                        diaryDetailImage
+                        diaryDetailImage.zIndex(1) 
                         Group {
                             HStack(alignment: .center){
                                 if item.diary.uid == wholeAuthStore.currnetUserInfo!.id {
@@ -122,6 +125,9 @@ struct DiaryDetailView: View {
                 campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
                 //TODO: -함수 업데이트되면 넣기
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
+            }
+            .onTapGesture {
+                inputFocused = false
             }
         }
     }
@@ -267,8 +273,8 @@ private extension DiaryDetailView {
         }
         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
         .tabViewStyle(PageTabViewStyle())
-        // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
+        .pinchZoomAndDrag()
     }
     
     // MARK: -View : 다이어리 제목

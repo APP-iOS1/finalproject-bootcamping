@@ -10,14 +10,14 @@ import SwiftUI
 class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
     
     let localNotifications = [
-            LocalNotification(title: "부트캠핑과 함께 떠나는 캠핑 D-DAY", body: "오늘 캠핑을 통해 얻은 좋은 추억들을 부트캠핑에 캠핑 일기로 남겨 기록해보세요"),
-            LocalNotification(title: "부트캠핑과 함께 떠나는 캠핑 D-1", body: "캠핑 떠나기 1일 전, 빠뜨린 짐은 없는지 다시 한 번 확인해보세요"),
-            LocalNotification(title: "부트캠핑과 함께 떠나는 캠핑 D-2", body: "캠핑 떠나기 2일 전, 이번 주 날씨를 확인해서 짐을 챙겨보세요"),
-            LocalNotification(title: "부트캠핑과 함께 떠나는 캠핑 D-3", body: "캠핑 떠나기 3일 전, 가시는 길을 다시 한 번 부트캠핑에서 확인해보세요"),
-            LocalNotification(title: "부트캠핑과 함께 떠나는 캠핑 D-4", body: "캠핑 떠나기 4일 전, 부트캠핑에서 편의시설 및 서비스를 다시 한 번 확인해보세요"),
-            LocalNotification(title: "부트캠핑과 함께 떠나는 캠핑 D-5", body: "캠핑 떠나기 5일 전, 부트캠핑에서 주변 이용 가능 시설까지 체크해보세요"),
-            LocalNotification(title: "부트캠핑과 함께 떠나는 캠핑 D-6", body: "캠핑 떠나기 6일 전, 부트캠핑에서 다른 사람의 캠핑 일기를 보고 캠핑을 준비해보세요"),
-            LocalNotification(title: "부트캠핑과 함께 떠나는 캠핑 D-7", body: "캠핑 떠나기 일주일 전, 부트캠핑에서 캠핑 일정을 다시 한 번 확인해보세요")
+            LocalNotification(title: "❤️‍🔥부트캠핑과 함께 떠나는 캠핑 D-DAY❤️‍🔥", body: "오늘 캠핑을 통해 얻은 좋은 추억들을 부트캠핑에 캠핑 일기로 남겨 기록해보세요🥰💭"),
+            LocalNotification(title: "⛺️부트캠핑과 함께 떠나는 캠핑 D-1⛺️", body: "캠핑 떠나기 1일 전, 빠뜨린 짐은 없는지 다시 한 번 확인해보세요✅"),
+            LocalNotification(title: "🍀부트캠핑과 함께 떠나는 캠핑 D-2🍀", body: "캠핑 떠나기 2일 전, 이번 주 날씨🌤️를 확인해서 짐을 챙겨보세요"),
+            LocalNotification(title: "🚘부트캠핑과 함께 떠나는 캠핑 D-3🚘", body: "캠핑 떠나기 3일 전, 가시는 길을 다시 한 번 부트캠핑에서 확인해보세요🫶🏻"),
+            LocalNotification(title: "✨부트캠핑과 함께 떠나는 캠핑 D-4✨", body: "캠핑 떠나기 4일 전, 부트캠핑에서 편의시설 및 서비스를 다시 한 번 확인해보세요💡"),
+            LocalNotification(title: "🎉부트캠핑과 함께 떠나는 캠핑 D-5🎉", body: "캠핑 떠나기 5일 전, 부트캠핑에서 주변 이용 가능 시설까지 체크해보세요🔍"),
+            LocalNotification(title: "🏕️부트캠핑과 함께 떠나는 캠핑 D-6🏕️", body: "캠핑 떠나기 6일 전, 부트캠핑에서 다른 사람의 캠핑 일기를 보고 캠핑을 준비해보세요🗓️"),
+            LocalNotification(title: "🌷부트캠핑과 함께 떠나는 캠핑 D-7🌷", body: "캠핑 떠나기 일주일 전, 부트캠핑에서 캠핑 일정을 다시 한 번 확인해보세요🌈")
         ]
     
     // 알림 설정을 위한 인스턴스 선언
@@ -106,6 +106,13 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
         completionHandler()
     }
     
+    func removeNotifications(selectedDate : String) {
+        // 해당 일정에 해당하는 게 있으면 remove~
+        for index in 0..<localNotifications.count {
+            notificationCenter.removeDeliveredNotifications(withIdentifiers: [selectedDate])
+            notificationCenter.removePendingNotificationRequests(withIdentifiers: [selectedDate])
+        }
+    }
 //    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) { }
     
     // MARK: - requestAuthorization
@@ -134,7 +141,7 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
             try await self.requestAuthorization()
         }
         if authorizationStatus == UNAuthorizationStatus.authorized{
-            for index in localNotifications.indices {
+            for index in 0..<localNotifications.count {
                 let calendar = Calendar.current
                 
                 if (calendar.date(byAdding: .day, value: index, to: startDate) ?? Date()) > startDate { continue }
@@ -148,13 +155,17 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
                 var dateComponents = calendar.dateComponents([.year, .month, .day], from: calendar.date(byAdding: .day, value: index, to: startDate) ?? Date())
                 // 시간은 오후 12시에~
                 dateComponents.hour = 12
-                dateComponents.minute = 0
+                dateComponents.minute = 00
                 
-                print(dateComponents)
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                
+                let identifierStartDate = dateFormatter.string(from: startDate)
 
                 let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
                 
-                let request = UNNotificationRequest(identifier: "\(startDate)", content: content, trigger: trigger)
+                let request = UNNotificationRequest(identifier: identifierStartDate, content: content, trigger: trigger)
+                
                 UNUserNotificationCenter.current().add(request) { error in
                     if let error = error {
                         print("set Notification Error \(error)")

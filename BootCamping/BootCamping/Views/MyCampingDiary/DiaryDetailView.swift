@@ -54,7 +54,7 @@ struct DiaryDetailView: View {
                         diaryDetailImage.zIndex(1) 
                         Group {
                             HStack(alignment: .center){
-                                if item.diary.uid == wholeAuthStore.currnetUserInfo!.id {
+                                if (item.diary.uid == wholeAuthStore.currnetUserInfo!.id && item.diary.diaryIsPrivate) {
                                     isPrivateImage
                                 }
                                 diaryDetailTitle
@@ -307,6 +307,7 @@ private extension DiaryDetailView {
                 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(campingSpotStore.campingSpotList.first?.facltNm ?? "")
+                        .multilineTextAlignment(.leading)
                         .font(.headline)
                     HStack {
                         Text("\(campingSpotStore.campingSpotList.first?.doNm ?? "") \(campingSpotStore.campingSpotList.first?.sigunguNm ?? "")")

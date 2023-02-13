@@ -45,18 +45,22 @@ struct DiaryCellView: View {
             diaryUserProfile
             //MARK: - 잠금상태 && Faceid 설정 일때 잠금화면
             if item.diary.diaryIsPrivate && faceId.islocked == true {
+                VStack(alignment: .center) {
                     Button {
-                        faceId.authenticate()
+                            faceId.authenticate()
                     } label: {
-                        VStack {
                             Image(systemName: "lock")
-                                .padding(.vertical, 10)
-                            Text("비공개 일기입니다.\n잠금을 해제해주세요.")
-                        }
-                        .foregroundColor(Color.bcBlack)
-                        .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
+                                .resizable()
+                                .padding()
+                                .foregroundColor(Color.bcGreen)
                     }
-                
+                    .frame(height: UIScreen.screenWidth / 5)
+                    .aspectRatio(contentMode: .fit)
+                    .padding(.vertical, 10)
+                    Text("비공개 일기입니다")
+                    Text("버튼을 눌러 잠금을 해제해주세요")
+                }
+                .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
             } else {
                 diaryImage
                 

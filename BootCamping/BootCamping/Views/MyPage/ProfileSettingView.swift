@@ -148,7 +148,7 @@ extension ProfileSettingView {
     // selectedImage: UIImage 타입을 Data타입으로 저장하는 함수
     func loadData() {
         guard let selectedImage = selectedImage else { return }
-        profileImage = selectedImage.jpegData(compressionQuality: 0.8)
+        profileImage = selectedImage.jpegData(compressionQuality: 0.1)
         
     }
     

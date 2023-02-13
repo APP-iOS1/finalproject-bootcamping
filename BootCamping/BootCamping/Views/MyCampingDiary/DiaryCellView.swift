@@ -13,10 +13,12 @@ struct DiaryCellView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var blockedUserStore: BlockedUserStore
 //    @EnvironmentObject var diaryLikeStore: DiaryLikeStore
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
     @StateObject var commentStore: CommentStore = CommentStore()
+    
     
     @State var isBookmarked: Bool = false
 
@@ -26,6 +28,7 @@ struct DiaryCellView: View {
     @State private var isShowingDeleteAlert = false
     //유저 신고/ 차단 알림
     @State private var isShowingUserReportAlert = false
+    @State private var isBlocked = false
     
     var diaryCampingSpot: [Item] {
         get {
@@ -176,25 +179,27 @@ private extension DiaryCellView {
     //MARK: - 유저 신고 / 차단 버튼
     var reportAlertMenu: some View {
         //MARK: - ... 버튼입니다.
-        Menu {
-            Button {
-                isShowingUserReportAlert = true
-            } label: {
-                Text("신고하기")
-            }
-        } label: {
+        Button(action: {
+            isShowingUserReportAlert.toggle()
+        }) {
             Image(systemName: "ellipsis")
                 .font(.title3)
         }
-        //MARK: - 유저 신고 알림
-        .alert("유저를 신고하시겠습니까?", isPresented: $isShowingUserReportAlert) {
-            Button("취소", role: .cancel) {
-                isShowingUserReportAlert = false
-            }
+        .confirmationDialog("알림", isPresented: $isShowingUserReportAlert, titleVisibility: .hidden, actions: {
             Button("신고하기", role: .destructive) {
-                ReportUserView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []), placeholder: "", options: [])
+                print("신고하기ㅣㅣㅣㅣ")
+                   // ReportUserView(placeholder: "")
             }
-        }
+            Button("차단하기", role: .destructive) {
+                print("차단해ㅐㅐㅐㅐ")
+                isBlocked.toggle()
+                if isBlocked {
+                    blockedUserStore.addBlockedUserCombine(blockedUserId: item.diary.uid)
+                }
+                wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+            }
+            Button("취소", role: .cancel) {}
+        })
 
     }
     

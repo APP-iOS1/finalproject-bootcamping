@@ -38,7 +38,7 @@ struct CampingSpotDetailView: View {
         VStack() {
             ScrollView(showsIndicators: false) {
                 VStack {
-                    WebImage(url: URL(string: campingSpot.firstImageUrl))
+                    WebImage(url: URL(string: campingSpot.firstImageUrl == "" ? CampingSpotStore().noImageURL : campingSpot.firstImageUrl))
                         .resizable()
                         .placeholder {
                             Rectangle().foregroundColor(.secondary)

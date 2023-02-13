@@ -14,7 +14,6 @@ struct DiaryCellView: View {
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
 //    @EnvironmentObject var diaryLikeStore: DiaryLikeStore
-    
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
     @StateObject var commentStore: CommentStore = CommentStore()
@@ -27,6 +26,14 @@ struct DiaryCellView: View {
     @State private var isShowingDeleteAlert = false
     //유저 신고/ 차단 알림
     @State private var isShowingUserReportAlert = false
+    
+    var diaryCampingSpot: [Item] {
+        get {
+            return campingSpotStore.campingSpotList.filter{
+                $0.contentId == item.diary.diaryAddress
+            }
+        }
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -139,8 +146,8 @@ private extension DiaryCellView {
     var alertMenu: some View {
         //MARK: - ... 버튼입니다.
         Menu {
-            Button {
-                //TODO: -수정기능 추가
+            NavigationLink {
+                DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", selectedDate: item.diary.diaryVisitedDate)
             } label: {
                 Text("수정하기")
             }

@@ -94,19 +94,25 @@ struct FirebaseDiaryService {
                 var imageNames: [String] = []
                 var imageURLs: [String] = []
                 
+                var restImageNames: [String] = []
+                var restImageURLs: [String] = []
+                
+                var getImages = images
+                let firstImage = getImages.removeFirst()
                 let group = DispatchGroup()
                 
                 guard let userUID = Auth.auth().currentUser?.uid else { return }
                 
-                for image in images {
+                // 이미지 1개 받았을때
+                if getImages.isEmpty {
                     group.enter()
                     let storageRef = Storage.storage().reference().child("DiaryImages")
-                    let imageName = UUID().uuidString
+                    let firstImageName = UUID().uuidString
                     let metadata = StorageMetadata()
                     metadata.contentType = "image/jpeg"
-                    let uploadTask = storageRef.child(imageName).putData(image, metadata: metadata)
+                    let uploadTask = storageRef.child(firstImageName).putData(firstImage, metadata: metadata)
                     uploadTask.observe(.success) { snapshot in
-                        imageNames.append(imageName)
+                        imageNames.append(firstImageName)
                         group.leave()
                     }
                     uploadTask.observe(.failure) { snapshot in
@@ -132,13 +138,12 @@ struct FirebaseDiaryService {
                     }
                     
                     
-                }
-                group.notify(queue: .global(qos: .userInteractive)) {
                     
-                    for imageName in imageNames {
+                    group.notify(queue: .global(qos: .userInteractive)) {
+                        
                         group.enter()
                         let storageRef = Storage.storage().reference().child("DiaryImages")
-                        storageRef.child(imageName).downloadURL { url, error in
+                        storageRef.child(firstImageName).downloadURL { url, error in
                             if let error = error {
                                 print(error)
                                 promise(.failure(FirebaseDiaryServiceError.createDiaryError))
@@ -147,36 +152,171 @@ struct FirebaseDiaryService {
                                 group.leave()
                             }
                         }
-                        
-                        
+                        group.notify(queue: .main) {
+                            
+                            let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: diary.diaryLike, diaryIsPrivate: diary.diaryIsPrivate)
+                            
+                            self.database.collection("Diarys").document(diary.id).setData([
+                                "id": newDiary.id,
+                                "uid": newDiary.uid,
+                                "diaryUserNickName": newDiary.diaryUserNickName,
+                                "diaryTitle": newDiary.diaryTitle,
+                                "diaryAddress": newDiary.diaryAddress,
+                                "diaryContent": newDiary.diaryContent,
+                                "diaryImageNames": newDiary.diaryImageNames,
+                                "diaryImageURLs": newDiary.diaryImageURLs,
+                                "diaryCreatedDate": newDiary.diaryCreatedDate,
+                                "diaryVisitedDate": newDiary.diaryVisitedDate,
+                                "diaryLike": newDiary.diaryLike,
+                                "diaryIsPrivate": newDiary.diaryIsPrivate,]) { error in
+                                    if let error = error {
+                                        print(error)
+                                        promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                    } else {
+                                        promise(.success(()))
+                                    }
+                                    
+                                }
+                        }
+                    }
+                } else {
+                    
+                    // 이미지 2개 이상
+                    
+                    group.enter()
+                    let storageRef = Storage.storage().reference().child("DiaryImages")
+                    let firstImageName = UUID().uuidString
+                    let metadata = StorageMetadata()
+                    metadata.contentType = "image/jpeg"
+                    let uploadTask = storageRef.child(firstImageName).putData(firstImage, metadata: metadata)
+                    uploadTask.observe(.success) { snapshot in
+                        imageNames.append(firstImageName)
+                        group.leave()
+                    }
+                    uploadTask.observe(.failure) { snapshot in
+                        if let error = snapshot.error as? NSError {
+                            switch (StorageErrorCode(rawValue: error.code)!) {
+                            case .objectNotFound:
+                                promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                print("File doesn't exist")
+                            case .unauthorized:
+                                promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                print("User doesn't have permission to access file")
+                            case .cancelled:
+                                promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                print("User canceled the upload")
+                            case .unknown:
+                                promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                print("Unknown error occurred, inspect the server response")
+                            default:
+                                promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                print("A separate error occurred. This is a good place to retry the upload.")
+                            }
+                        }
                     }
                     
-                    group.notify(queue: .main) {
+                    
+                    
+                    group.notify(queue: .global(qos: .userInteractive)) {
                         
-                        let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: diary.diaryLike, diaryIsPrivate: diary.diaryIsPrivate)
-                        
-                        self.database.collection("Diarys").document(diary.id).setData([
-                            "id": newDiary.id,
-                            "uid": newDiary.uid,
-                            "diaryUserNickName": newDiary.diaryUserNickName,
-                            "diaryTitle": newDiary.diaryTitle,
-                            "diaryAddress": newDiary.diaryAddress,
-                            "diaryContent": newDiary.diaryContent,
-                            "diaryImageNames": newDiary.diaryImageNames,
-                            "diaryImageURLs": newDiary.diaryImageURLs,
-                            "diaryCreatedDate": newDiary.diaryCreatedDate,
-                            "diaryVisitedDate": newDiary.diaryVisitedDate,
-                            "diaryLike": newDiary.diaryLike,
-                            "diaryIsPrivate": newDiary.diaryIsPrivate,]) { error in
-                                if let error = error {
-                                    print(error)
-                                    promise(.failure(FirebaseDiaryServiceError.createDiaryError))
-                                } else {
-                                    promise(.success(()))
+                        group.enter()
+                        let storageRef = Storage.storage().reference().child("DiaryImages")
+                        storageRef.child(firstImageName).downloadURL { url, error in
+                            if let error = error {
+                                print(error)
+                                promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                            } else {
+                                imageURLs.append(url!.absoluteString)
+                                group.leave()
+                            }
+                        }
+                        group.notify(queue: .global(qos: .userInteractive)) {
+                            
+                            for image in getImages {
+                                group.enter()
+                                let storageRef = Storage.storage().reference().child("DiaryImages")
+                                let imageName = UUID().uuidString
+                                let metadata = StorageMetadata()
+                                metadata.contentType = "image/jpeg"
+                                let uploadTask = storageRef.child(imageName).putData(image, metadata: metadata)
+                                uploadTask.observe(.success) { snapshot in
+                                    restImageNames.append(imageName)
+                                    group.leave()
+                                }
+                                uploadTask.observe(.failure) { snapshot in
+                                    if let error = snapshot.error as? NSError {
+                                        switch (StorageErrorCode(rawValue: error.code)!) {
+                                        case .objectNotFound:
+                                            promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                            print("File doesn't exist")
+                                        case .unauthorized:
+                                            promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                            print("User doesn't have permission to access file")
+                                        case .cancelled:
+                                            promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                            print("User canceled the upload")
+                                        case .unknown:
+                                            promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                            print("Unknown error occurred, inspect the server response")
+                                        default:
+                                            promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                            print("A separate error occurred. This is a good place to retry the upload.")
+                                        }
+                                    }
                                 }
                                 
+                                
                             }
+                            group.notify(queue: .global(qos: .userInteractive)) {
+                                
+                                for imageName in restImageNames {
+                                    group.enter()
+                                    let storageRef = Storage.storage().reference().child("DiaryImages")
+                                    storageRef.child(imageName).downloadURL { url, error in
+                                        if let error = error {
+                                            print(error)
+                                            promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                        } else {
+                                            restImageURLs.append(url!.absoluteString)
+                                            group.leave()
+                                        }
+                                    }
+                                    
+                                    
+                                }
+                                
+                                group.notify(queue: .main) {
+                                    imageNames.append(contentsOf: restImageNames)
+                                    imageURLs.append(contentsOf: restImageURLs)
+                                    let newDiary = Diary(id: diary.id, uid: userUID, diaryUserNickName: diary.diaryUserNickName, diaryTitle: diary.diaryTitle, diaryAddress: diary.diaryAddress, diaryContent: diary.diaryContent, diaryImageNames: imageNames, diaryImageURLs: imageURLs, diaryCreatedDate: Timestamp(), diaryVisitedDate: Date.now, diaryLike: diary.diaryLike, diaryIsPrivate: diary.diaryIsPrivate)
+                                    
+                                    self.database.collection("Diarys").document(diary.id).setData([
+                                        "id": newDiary.id,
+                                        "uid": newDiary.uid,
+                                        "diaryUserNickName": newDiary.diaryUserNickName,
+                                        "diaryTitle": newDiary.diaryTitle,
+                                        "diaryAddress": newDiary.diaryAddress,
+                                        "diaryContent": newDiary.diaryContent,
+                                        "diaryImageNames": newDiary.diaryImageNames,
+                                        "diaryImageURLs": newDiary.diaryImageURLs,
+                                        "diaryCreatedDate": newDiary.diaryCreatedDate,
+                                        "diaryVisitedDate": newDiary.diaryVisitedDate,
+                                        "diaryLike": newDiary.diaryLike,
+                                        "diaryIsPrivate": newDiary.diaryIsPrivate,]) { error in
+                                            if let error = error {
+                                                print(error)
+                                                promise(.failure(FirebaseDiaryServiceError.createDiaryError))
+                                            } else {
+                                                promise(.success(()))
+                                            }
+                                            
+                                        }
+                                }
+                            }
+                            
+                        }
                     }
+                    
                 }
             }
             .eraseToAnyPublisher()

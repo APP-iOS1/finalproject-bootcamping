@@ -8,6 +8,8 @@
 import SwiftUI
 import Firebase
 import FirebaseFirestore
+import AlertToast
+
 
 struct MyCampingDiaryView: View {
     
@@ -56,6 +58,8 @@ struct MyCampingDiaryView: View {
             .background(Color.bcWhite)
             //다이어리 비어있을때 추가 화면
             DiaryEmptyView().zIndex(-1)
+            diaryStore.isProcessing ? Color.black.opacity(0.3) : Color.clear
+
         }
         .onAppear {
             if usingFaceId == true {
@@ -73,6 +77,14 @@ struct MyCampingDiaryView: View {
                     Image(systemName: "plus")
                 }
             }
+        }
+        .alert("다이어리 만들기에 실패했습니다.. 다시 시도해 주세요.", isPresented: $diaryStore.isError) {
+            Button("확인", role: .cancel) {
+                diaryStore.isError = false
+            }
+        }
+        .toast(isPresenting: $diaryStore.isProcessing) {
+            AlertToast(displayMode: .alert, type: .loading)
         }
     }
 }

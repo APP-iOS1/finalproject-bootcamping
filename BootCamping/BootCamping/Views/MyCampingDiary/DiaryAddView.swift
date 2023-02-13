@@ -128,7 +128,6 @@ struct DiaryAddView: View {
                                     .id(content)
                             }
                                                         
-                            
                         }
                         .padding(.horizontal, UIScreen.screenWidth*0.03)
                     }
@@ -157,7 +156,6 @@ struct DiaryAddView: View {
                 }
             }
             isProcessing ? Color.black.opacity(0.3) : Color.clear
-
         }
         .toast(isPresenting: $isProcessing) {
             AlertToast(displayMode: .alert, type: .loading)

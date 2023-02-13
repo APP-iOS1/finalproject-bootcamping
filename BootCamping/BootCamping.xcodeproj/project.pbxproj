@@ -404,9 +404,8 @@
 				7CA272FD2991CE6600443111 /* DiaryLockedView.swift */,
 				7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */,
 				7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */,
-				6E8CACAF29937E3F000C2274 /* ReportUserView.swift */,
-				6E9E99D52999F1A7009FF5C4 /* ReportUserView */,
 				794ACB1D299929950037DDDD /* DiaryEditView.swift */,
+				6E9E99D52999F1A7009FF5C4 /* ReportUserView */,
 			);
 			path = MyCampingDiary;
 			sourceTree = "<group>";
@@ -447,6 +446,7 @@
 		6E9E99D52999F1A7009FF5C4 /* ReportUserView */ = {
 			isa = PBXGroup;
 			children = (
+				6E8CACAF29937E3F000C2274 /* ReportUserView.swift */,
 				6E9E99D12999CE22009FF5C4 /* DropdownMenuOption.swift */,
 				6E9E99D32999CEF8009FF5C4 /* ReportUser.swift */,
 			);

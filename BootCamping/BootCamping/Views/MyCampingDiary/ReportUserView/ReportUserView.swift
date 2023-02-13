@@ -24,38 +24,34 @@ struct ReportUserView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-                Text("신고 사유를 선택해 주세요.")
+            Text("신고 사유를 선택해 주세요.")
                 .font(.title3)
                 .padding(.top, 10)
                 .padding(.bottom, 1)
-                Text("* 회원님의 신고는 익명으로 처리됩니다. (지식재산권 침해의 경우 제외)")
-                    .foregroundColor(.gray)
-                    .font(.footnote)
-                    .kerning(-1)
-                    .padding(.bottom, 10)
+            Text("* 회원님의 신고는 익명으로 처리됩니다. (지식재산권 침해의 경우 제외)")
+                .foregroundColor(.gray)
+                .font(.footnote)
+                .kerning(-1)
+                .padding(.bottom, 10)
             
             // MARK: - 신고 드롭다운 버튼
-            ReportUser(
-                selectedOption: self.$reason, placeholder: "이 게시물을 신고하는 이유", options: DropdownMenuOption.ReportReason)
-            .zIndex(1)
-            .frame(width: UIScreen.screenWidth * 0.94, height: 35)
+//            ReportUser(
+//                selectedOption: self.$reason, placeholder: "이 게시물을 신고하는 이유", options: DropdownMenuOption.ReportReason)
+//            .frame(width: UIScreen.screenWidth * 0.94, height: 35)
             
             // MARK: - 신고 사유 작성 텍스트필드
-                reportUserField
+            reportUserField
                 .padding(.vertical)
             
-           Spacer()
+            Spacer()
             
             // MARK: - 신고하기 버튼
             VStack {
                 Button {
-                    if blockUser == true {
-                      //  blockedUserStore.addBlockedUserCombine(blockedUserId: Diary.id)
-                    }
-                    wholeAuthStore.readUserListCombine()
-
+                    // TODO: 이메일 전송 기능 추가
+                    
                 } label: {
-                    // TODO: 신고 기능 추가
+                    
                     Text("부트캠핑팀에 신고하기")
                         .modifier(GreenButtonModifier())
                 }
@@ -81,13 +77,10 @@ private extension ReportUserView {
                         .stroke(.gray, lineWidth: 1)
                 }
                 .submitLabel(.done)
-
+            
         }
     }
 }
-
-// MARK: - 드롭다운, 옵션 구조체
-
 
 
 // MARK: - 프리뷰, 드롭다운 신고사유 옵션

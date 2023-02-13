@@ -49,6 +49,7 @@ struct SettingView: View {
                 Alert(title: Text("로그아웃하시겠습니까?"),
                       primaryButton: .default(Text("취소"), action: {} ),
                       secondaryButton: .destructive(Text("로그아웃"),action: {
+                    tabSelection.screen = .one
                     wholeAuthStore.combineLogOut()
                 })
                 )

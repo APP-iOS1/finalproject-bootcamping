@@ -16,7 +16,7 @@ struct PrivacyView: View {
     //faceId 사용 여부 토글 변수
     @AppStorage("faceId") var usingFaceId: Bool = false
     //faceId 잠금 설정 변수
-    @State private var toggleUsingFaceId = false
+    @AppStorage("toggleUsingFaceId") var toggleUsingFaceId: Bool = false
     
     var body: some View {
         VStack {
@@ -68,26 +68,25 @@ struct PrivacyView: View {
 }
 
 private extension PrivacyView {
+    
     //MARK: - faceId On/Off 설정 버튼입니다
     var isUsingFaceIdSetting: some View {
-        
         HStack {
-            
             Toggle(isOn: $toggleUsingFaceId) {
                 Text("내 캠핑일기 잠그기")
             }
             .onChange(of: toggleUsingFaceId) { _ in
                 if toggleUsingFaceId {
-                        usingFaceId = true
+                    usingFaceId = true
                     faceId.islocked = true
                 } else {
                     usingFaceId = false
                     faceId.islocked = false
                 }
+                dismiss()
             }
+            
         }
-
     }
-
 }
 

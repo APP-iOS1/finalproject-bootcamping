@@ -16,6 +16,7 @@ struct DiaryEditView: View {
     // 탭 했을 때 작성하기 버튼 숨기기 위해서
     @State var isTapTextField = false
     
+    @State private var locationInfo: String = ""
     @State var diaryTitle: String
     @State var diaryIsPrivate: Bool
     @State var diaryContent: String
@@ -30,6 +31,8 @@ struct DiaryEditView: View {
     @State var campingSpotItem: Item
     @State var campingSpot: String
     
+    var item: UserInfoDiary
+
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
         get {
@@ -89,6 +92,7 @@ struct DiaryEditView: View {
         }
         .task {
             campingSpot = campingSpotItem.facltNm
+            locationInfo = campingSpotItem.contentId
         }
 
     }
@@ -215,8 +219,9 @@ extension DiaryEditView {
         HStack {
             Spacer()
             Button {
+                
             } label: {
-                Text(diaryTitle.isEmpty || diaryContent.isEmpty ? "내용을 작성해주세요" : "일기 쓰기")
+                Text(diaryTitle.isEmpty || diaryContent.isEmpty ? "내용을 작성해주세요" : "수정하기")
                     .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07) // 이거 밖에 있으면 글씨 부분만 버튼 적용됨
             }
             .font(.headline)
@@ -244,9 +249,3 @@ extension DiaryEditView {
         }
     }
 }
-
-//struct DiaryEditView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DiaryEditView()
-//    }
-//}

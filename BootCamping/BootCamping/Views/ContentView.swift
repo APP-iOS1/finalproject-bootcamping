@@ -9,8 +9,6 @@ import CoreData
 import FirebaseAuth
 import SwiftUI
 
-//TODO: -버튼 계속 말고 직관적으로 수정하거나 회원가입 따로 빼기
-
 struct ContentView: View {
     //로그인 유무 변수
     @AppStorage("login") var isSignIn: Bool = false
@@ -21,6 +19,7 @@ struct ContentView: View {
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var scheduleStore: ScheduleStore
+    @EnvironmentObject var blockedUserStore: BlockedUserStore
     @EnvironmentObject var localNotificationCenter: LocalNotificationCenter
     
     @State var isLoading: Bool = true
@@ -50,7 +49,6 @@ struct ContentView: View {
                     NavigationView {
                         if diaryStore.myDiaryUserInfoDiaryList.count == 0 {
                             DiaryEmptyView()
-//                            DiaryAddView()
                         } else {
                             MyCampingDiaryView()
                         }
@@ -81,6 +79,7 @@ struct ContentView: View {
 
             }
         }
+        // 푸시 알림으로 앱 진입 시 네 번째 탭(마이페이지 탭)으로 이동
         .onReceive(localNotificationCenter.$pageToNavigationTo) {
             guard let notificationSelection = $0 else  { return }
             self.tabSelection.change(to: notificationSelection)
@@ -106,15 +105,6 @@ struct ContentView: View {
         }
     }
 }
-
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//            .environmentObject(DiaryStore())
-//            .environmentObject(AuthStore())
-//            .environmentObject(TabSelector())
-//    }
-//}
 
 //MARK: - 탭뷰 화면전환 함수
 enum TabViewScreen {

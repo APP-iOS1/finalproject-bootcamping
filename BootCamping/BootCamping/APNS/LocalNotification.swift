@@ -7,6 +7,7 @@
 
 import Foundation
 
+// 알림 설정을 위한 구조체
 struct LocalNotification {
     var title: String
     var body: String

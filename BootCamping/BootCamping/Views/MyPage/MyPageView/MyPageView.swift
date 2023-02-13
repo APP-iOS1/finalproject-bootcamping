@@ -79,7 +79,7 @@ struct MyPageView: View {
 extension MyPageView{
     // MARK: -View : 유저 프로필이미지, 닉네임 표시
     private var userProfileSection : some View {
-        HStack{
+        HStack(spacing: 20){
             if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
                 WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
                     .resizable()
@@ -116,7 +116,8 @@ extension MyPageView{
             ForEach(TapMypage.allCases, id: \.self) { item in
                 VStack {
                     Text(item.rawValue)
-                        .font(.callout)
+                        .font(.title3)
+                        .bold()
                         .kerning(-1)
                         .foregroundColor(selectedPicker2 == item ? .bcBlack : .gray)
                     
@@ -158,12 +159,5 @@ extension MyPageView{
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
             }
         }
-    }
-}
-
-
-struct MyPageView_Previews: PreviewProvider {
-    static var previews: some View {
-        MyPageView()
     }
 }

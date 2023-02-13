@@ -29,9 +29,3 @@ struct EmptyCampingSpotListCell: View {
         }
     }
 }
-
-struct EmptyCampingSpotListCell_Previews: PreviewProvider {
-    static var previews: some View {
-        EmptyCampingSpotListCell()
-    }
-}

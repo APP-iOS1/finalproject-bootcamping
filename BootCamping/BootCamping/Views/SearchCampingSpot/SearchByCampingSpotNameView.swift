@@ -121,10 +121,3 @@ struct SearchByCampingSpotNameRow: View {
             .frame(width: UIScreen.screenWidth * 0.94, height: 70)
     }
 }
-
-struct SearchByCampingSpotNameView_Previews: PreviewProvider {
-    static var previews: some View {
-//        SearchByCampingSpotNameView(campingSpot: .constant(""))
-        Text("")
-    }
-}

@@ -101,8 +101,8 @@ class DiaryStore: ObservableObject {
     
     //MARK: - Update Diary Combine
     
-    func updateDiaryCombine(diary: Diary, images: [Data]) {
-        FirebaseDiaryService().createDiaryService(diary: diary, images: images)
+    func updateDiaryCombine(diary: Diary) {
+        FirebaseDiaryService().updateDiarysService(diary: diary)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -111,11 +111,13 @@ class DiaryStore: ObservableObject {
                     print("Failed Update Diary")
                     self.firebaseDiaryServiceError = .updateDiaryError
                     self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
+                    self.isProcessing = false
+                    self.isError = false
                     return
                 case .finished:
                     print("Finished Update Diary")
-                    self.firstGetMyDiaryCombine()
-                    self.firstGetRealTimeDiaryCombine()
+                    self.createFinshed.toggle()
+                    self.isProcessing = false
                     return
                 }
             } receiveValue: { _ in

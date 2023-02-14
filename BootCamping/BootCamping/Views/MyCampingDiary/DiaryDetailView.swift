@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import FirebaseAnalytics
 import SDWebImageSwiftUI
 import AlertToast
 
@@ -448,6 +449,12 @@ private extension DiaryDetailView {
                 .foregroundColor(.secondary)
         }
         .padding(.vertical, 5)
+        .task {
+            Analytics.logEvent("DiaryTest", parameters: [
+                "DiaryID" : "\(item.diary.id)",
+                "Visitor" : "\(String(describing: Auth.auth().currentUser?.email))"
+            ])
+        }
     }
     
     //MARK: - 키보드 dismiss 함수입니다.

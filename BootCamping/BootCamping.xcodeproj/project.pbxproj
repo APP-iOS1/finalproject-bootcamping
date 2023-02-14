@@ -14,6 +14,8 @@
 		633DF94729948EE000B29C91 /* SearchByCampingSpotNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633DF94629948EE000B29C91 /* SearchByCampingSpotNameView.swift */; };
 		63463A452990EF260000F523 /* Filtering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63463A442990EF260000F523 /* Filtering.swift */; };
 		6367B5572996307100CA2F1B /* DiaryListForCampingSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6367B5562996307100CA2F1B /* DiaryListForCampingSpotView.swift */; };
+		63757FE7299B655C001435C4 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 63757FE6299B655C001435C4 /* FirebaseAnalytics */; };
+		63757FE9299B655C001435C4 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 63757FE8299B655C001435C4 /* FirebaseAnalyticsSwift */; };
 		639129E92979291D00F6EDD7 /* Places.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639129E82979291D00F6EDD7 /* Places.swift */; };
 		639129EF29792CB700F6EDD7 /* CapmingSpotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639129EE29792CB700F6EDD7 /* CapmingSpotStore.swift */; };
 		63AF45A42977CD9C0014B1E1 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 63AF45A32977CD9C0014B1E1 /* FirebaseAuth */; };
@@ -227,6 +229,8 @@
 				790B62E6297A28E00048C110 /* KakaoSDKCommon in Frameworks */,
 				6E688E3F29923827006DCEE5 /* SwiftUIMailView in Frameworks */,
 				790B62E4297A28E00048C110 /* KakaoSDKAuth in Frameworks */,
+				63757FE9299B655C001435C4 /* FirebaseAnalyticsSwift in Frameworks */,
+				63757FE7299B655C001435C4 /* FirebaseAnalytics in Frameworks */,
 				790B62EC297A28E00048C110 /* KakaoSDKShare in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -540,6 +544,8 @@
 				6E11BE2C298C8FD60019E963 /* Lottie */,
 				6E688E3E29923827006DCEE5 /* SwiftUIMailView */,
 				AD2DBF5129940009008534BA /* AlertToast */,
+				63757FE6299B655C001435C4 /* FirebaseAnalytics */,
+				63757FE8299B655C001435C4 /* FirebaseAnalyticsSwift */,
 			);
 			productName = BootCamping;
 			productReference = 630ADB4B2977CC6C000A517B /* BootCamping.app */;
@@ -987,6 +993,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		63757FE6299B655C001435C4 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		63757FE8299B655C001435C4 /* FirebaseAnalyticsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsSwift;
+		};
 		63AF45A32977CD9C0014B1E1 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 63AF45A22977CD9C0014B1E1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

@@ -21,6 +21,7 @@ struct ContentView: View {
     @EnvironmentObject var scheduleStore: ScheduleStore
     @EnvironmentObject var blockedUserStore: BlockedUserStore
     @EnvironmentObject var localNotificationCenter: LocalNotificationCenter
+    @EnvironmentObject var reportStore: ReportStore
     
     @State var isLoading: Bool = true
     
@@ -68,6 +69,7 @@ struct ContentView: View {
                     diaryStore.mostLikedGetDiarysCombine()
                     diaryStore.firstGetRealTimeDiaryCombine()
                     scheduleStore.readScheduleCombine()
+                    reportStore.readReportCombine()
                 }
             } else {
                 LoginView()

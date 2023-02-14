@@ -309,7 +309,6 @@ class DiaryStore: ObservableObject {
 
             } receiveValue: { [weak self] realTimelastDocWithDiaryList in
                 self?.realTimeDiaryUserInfoDiaryList = realTimelastDocWithDiaryList.userInfoDiarys
-                print(#function, self?.realTimeDiaryUserInfoDiaryList)
             }
             .store(in: &cancellables)
     }

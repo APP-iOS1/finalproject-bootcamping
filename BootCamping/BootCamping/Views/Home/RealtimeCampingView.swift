@@ -23,7 +23,7 @@ struct RealtimeCampingView: View {
                         
                         DiaryCellView(item: userInfoDiary)
                             .task {
-                                guard let index = diaryStore.myDiaryUserInfoDiaryList.firstIndex(where: { $0.diary.id == userInfoDiary.diary.id}) else { return }
+                                guard let index = diaryStore.realTimeDiaryUserInfoDiaryList.firstIndex(where: { $0.diary.id == userInfoDiary.diary.id}) else { return }
                                 if index % 5 == 4 {
                                     Task {
                                         diaryStore.nextGetRealtimeDiaryCombine()

@@ -366,9 +366,9 @@ struct CampingSpotDetailView: View {
                                         }
                                     }
                                 }
-                            } else if diaryStore.diaryList.filter { !$0.diaryIsPrivate }.count > 3 {
+                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.count > 3 {
                                 HStack {
-                                    ForEach(0...3, id: \.self) { index in
+                                    ForEach(0...2, id: \.self) { index in
                                         NavigationLink {
                                             DiaryDetailView(item: diaryStore.realTimeDiaryUserInfoDiaryList[index])
                                         } label: {

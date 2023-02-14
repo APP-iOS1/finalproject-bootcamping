@@ -5,13 +5,8 @@
 //  Created by 이민경 on 2023/01/31.
 //
 
-import Firebase
-import FirebaseAuth
-import FirebaseFirestore
-import Foundation
-import SwiftUI
-import FirebaseStorage
 import Combine
+import Firebase
 
 class ScheduleStore: ObservableObject {
     

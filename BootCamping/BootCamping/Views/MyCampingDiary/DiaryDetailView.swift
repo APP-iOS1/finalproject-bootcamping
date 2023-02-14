@@ -8,6 +8,13 @@
 import SwiftUI
 import Firebase
 import SDWebImageSwiftUI
+import AlertToast
+
+enum ReportState {
+    case alreadyReported
+    case notReported
+    case nowReported
+}
 
 struct DiaryDetailView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
@@ -37,7 +44,8 @@ struct DiaryDetailView: View {
     @State private var isShowingUserReportAlert = false
     @State private var isShowingUserBlockedAlert = false
     
-    @State private var isReported = false
+    @State private var reportState = ReportState.notReported
+    @State private var isShowingAcceptedToast = false
     @State private var isBlocked = false
     
     //자동 스크롤
@@ -139,12 +147,15 @@ struct DiaryDetailView: View {
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 
             }
+            .toast(isPresenting: $isShowingAcceptedToast) {
+                AlertToast(type: .regular, title: "이 게시물에 대한 신고가 접수되었습니다.")
+            }
             .sheet(isPresented: $isShowingUserReportAlert) {
-                if isReported {
+                if reportState == .alreadyReported {
                     WaitingView()
-                        .presentationDetents([.fraction(0.5), .medium])
+                        .presentationDetents([.fraction(0.3), .medium])
                 } else {
-                    ReportView(reportedDiaryId: item.diary.id)
+                    ReportView(reportState: $reportState, reportedDiaryId: item.diary.id)
                     // 예를 들어 다음은 화면의 아래쪽 50%를 차지하는 시트를 만듭니다.
                         .presentationDetents([.fraction(0.5), .medium, .large])
                         .presentationDragIndicator(.hidden)
@@ -157,7 +168,10 @@ struct DiaryDetailView: View {
                 commentStore.readCommentsCombine(diaryId: item.diary.id)
                 campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
-                isReported = (reportStore.reportedDiaries.filter{ reportedDiary in reportedDiary.reportedDiaryId == item.diary.id }.count != 0)
+                reportState = (reportStore.reportedDiaries.filter{ reportedDiary in reportedDiary.reportedDiaryId == item.diary.id }.count != 0) ? ReportState.alreadyReported : ReportState.notReported
+            }
+            .onChange(of: reportState) { newReportState in
+                isShowingAcceptedToast = (reportState == ReportState.nowReported)
             }
         }
         .onTapGesture {

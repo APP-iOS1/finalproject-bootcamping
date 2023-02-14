@@ -19,15 +19,17 @@ struct RealtimeCampingView: View {
         VStack {
             ScrollView(showsIndicators: false) {
                 LazyVStack {
-                    ForEach(diaryStore.realTimeDiaryUserInfoDiaryList.indices, id: \.self) { index in
+                    ForEach(diaryStore.realTimeDiaryUserInfoDiaryList, id: \.self) { userInfoDiary in
                         
-                        DiaryCellView(item: diaryStore.realTimeDiaryUserInfoDiaryList[index])
+                        DiaryCellView(item: userInfoDiary)
                             .task {
-                                if index == diaryStore.realTimeDiaryUserInfoDiaryList.count - 1 {
+                                guard let index = diaryStore.myDiaryUserInfoDiaryList.firstIndex(where: { $0.diary.id == userInfoDiary.diary.id}) else { return }
+                                if index % 5 == 4 {
                                     Task {
                                         diaryStore.nextGetRealtimeDiaryCombine()
                                     }
                                 }
+                                
                             }
                         
                     }

@@ -134,7 +134,7 @@ struct DiaryCommentCellView: View {
         if value.translation.width < 0 && -value.translation.width < 65  {
             
             if isSwiped {
-                scrollViewHelper.commentOffset[item.id] = value.translation.width - 90
+                scrollViewHelper.commentOffset[item.id] = -50
             } else {
                 scrollViewHelper.commentOffset[item.id] = value.translation.width
             }

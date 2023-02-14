@@ -84,7 +84,7 @@ extension Image {
         return Image(uiImage: img)
     }
     func resizeImageData(data: Data) -> Image {
-        guard let img = UIImage(data: data)?.resize(newWidth: UIScreen.screenWidth * 1 / 15) else { fatalError("Fail to load image") }
+        guard let img = UIImage(data: data)?.resize(newWidth: UIScreen.screenWidth * 1 / 11) else { fatalError("Fail to load image") }
         return Image(uiImage: img)
         
     }

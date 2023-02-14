@@ -103,7 +103,6 @@ struct DiaryEditView: View {
                         
                         
                         //                            addViewDiaryContent
-                        VStack {
                             
                             TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
                                 .frame(minHeight: UIScreen.screenHeight / 4)
@@ -112,12 +111,12 @@ struct DiaryEditView: View {
                                 .onTapGesture {
                                     isTapTextField = true
                                 }
+
 //                                .onChange(of: diaryContent) { newValue in
 //                                    withAnimation {
 //                                        proxy.scrollTo(title, anchor: .top)
 //                                    }
 //                                }
-                        }
                         
                         EmptyView()
                             .id(content)
@@ -129,10 +128,11 @@ struct DiaryEditView: View {
                                     .id(bottom)
                             }
                         }
-                        
+
                         //                        addViewAddButton
                     }
                 }
+
             }
         }
         .padding(.horizontal, UIScreen.screenWidth*0.03)
@@ -160,6 +160,7 @@ struct DiaryEditView: View {
         
     }
 }
+
 extension DiaryEditView {
     //MARK: - 위치 등록하기
     //TODO: - 캠핑장 연동하기

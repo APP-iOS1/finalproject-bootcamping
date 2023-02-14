@@ -62,6 +62,7 @@ struct DiaryCellView: View {
                     Text("버튼을 눌러 잠금을 해제해주세요")
                 }
                 .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
+                .background(Color.secondary)
             } else {
                 diaryImage
                 
@@ -324,13 +325,13 @@ private extension DiaryCellView {
                 .frame(width: 20, alignment: .leading)
             
             //댓글 버튼
-//            Button {
-                //"댓글 작성 버튼으로 이동하려고 했는데 그냥 텍스트로~
-//            } label: {
-                Image(systemName: "message")
-                    .font(.callout)
-                    .foregroundColor(.secondary)
-            }
+            //            Button {
+            //"댓글 작성 버튼으로 이동하려고 했는데 그냥 텍스트로~
+            //            } label: {
+            Image(systemName: "message")
+                .font(.callout)
+                .foregroundColor(.secondary)
+            
             Text("\(commentStore.commentList.count)")
                 .font(.callout)
                 .foregroundColor(.secondary)

@@ -5,6 +5,9 @@
 //  Created by Donghoon Bae on 2023/02/08.
 //
 
+import Firebase
+import FirebaseAnalytics
+import FirebaseAnalyticsSwift
 import SwiftUI
 
 enum filterCase {
@@ -34,6 +37,10 @@ struct CampingSpotListSearchingView: View {
                     isSearching = true
                     campingSpotStore.campingSpotList.removeAll()
                     campingSpotStore.lastDoc = nil
+                    //For Googole Analystic
+                    Analytics.logEvent("SearchCampingSpot", parameters: [
+                        "searchingKeyword" : "\(keywordForParameter)",
+                    ])
                 }
             if isSearching {
                 VStack {

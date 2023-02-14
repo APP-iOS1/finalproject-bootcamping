@@ -8,6 +8,7 @@
 import Firebase
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseAnalytics
 import Foundation
 import SwiftUI
 import GoogleSignIn
@@ -148,6 +149,11 @@ class WholeAuthStore: ObservableObject {
                 case .finished:
                     print("Finished create User")
                     self.getUserInfo(userUID: (Auth.auth().currentUser?.uid ?? "")) {
+                        //For Googole Analystic
+                        Analytics.logEvent("SignUp", parameters: [
+                            "userName" : "\(user.userEmail)",
+                            "userNickName" : "\(user.nickName)"
+                        ])
                         self.readUserListCombine()
                         if self.loginPlatform != .email {
                             withAnimation(.easeInOut) {
@@ -295,6 +301,10 @@ class WholeAuthStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished SingIn User")
+                    //For Googole Analystic
+                    Analytics.logEvent("SignIn", parameters: [
+                        "userName" : "\(userEmail)",
+                    ])
                     return
                 }
             } receiveValue: { [weak self] user in

@@ -71,7 +71,7 @@ struct DiaryDetailView: View {
                             Divider()
                             //댓글
                             ForEach(commentStore.commentList) { comment in
-                                    DiaryCommentCellView(item2: item, item: comment)
+                                DiaryCommentCellView(commentStore: commentStore, item2: item, item: comment)
                             }
                         }
                         .padding(.horizontal, UIScreen.screenWidth * 0.03)

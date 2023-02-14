@@ -11,7 +11,7 @@ import SDWebImageSwiftUI
 
 struct DiaryCommentCellView: View {
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
-    @EnvironmentObject var commentStore: CommentStore
+    @StateObject var commentStore: CommentStore
     @EnvironmentObject var diaryStore: DiaryStore
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     
@@ -28,40 +28,134 @@ struct DiaryCommentCellView: View {
     
     var item: Comment
     
+    
     //삭제 알림
     @State private var isShowingDeleteAlert = false
     //유저 신고/ 차단 알림
     @State private var isShowingUserReportAlert = false
     @State private var isShowingUserBlockedAlert = false
+    @State private var offset: CGFloat = 0
+    @State private var isSwiped: Bool = false
     
     var body: some View {
-        HStack(alignment: .top) {
-                diaryCommetUserProfile
-                    .frame(width: 35)
-                
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text(item.nickName)
-                            .font(.subheadline)
-                        Text("·")
-                            .font(.footnote)
-                            .foregroundColor(.bcDarkGray)
-                        Text("\(TimestampToString.dateString(item.commentCreatedDate)) 전")
-                            .font(.footnote)
-                            .foregroundColor(.secondary)
-                    }
-                    
-                    Text(item.commentContent)
-                        .font(.callout)
-                        .foregroundColor(.secondary)
-                        .padding(.top, -5)
-                }
-                .padding(.trailing, 5)
-                
+        ZStack {
+            
+            Color(.red)
+            
+            HStack {
                 Spacer()
+                
+                Button {
+                    commentStore.deleteCommentCombine(diaryId: item2.diary.id, comment: item)
+                } label: {
+                    Image(systemName: "trash")
+                        .font(.title3)
+                        .foregroundColor(.white)
+                        .frame(width: 50, height: 50)
+                }
+
             }
-            .padding(.vertical, UIScreen.screenWidth * 0.01)
-          
+            if (wholeAuthStore.currentUser?.uid == item2.diary.uid) || (wholeAuthStore.currentUser?.uid == item.uid) {
+                HStack(alignment: .top) {
+                    diaryCommetUserProfile
+                        .frame(width: 35)
+                    
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text(item.nickName)
+                                .font(.subheadline)
+                            Text("·")
+                                .font(.footnote)
+                                .foregroundColor(.bcDarkGray)
+                            Text("\(TimestampToString.dateString(item.commentCreatedDate)) 전")
+                                .font(.footnote)
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        Text(item.commentContent)
+                            .font(.callout)
+                            .foregroundColor(.secondary)
+                            .padding(.top, -5)
+                    }
+                    .padding(.trailing, 5)
+                    
+                    Spacer()
+                }
+                .padding(.vertical, UIScreen.screenWidth * 0.01)
+                .background(Color("BCWhite"))
+                .contentShape(Rectangle())
+                .offset(x: offset)
+                .gesture(DragGesture().onChanged(onChanged(value:)).onEnded(onEnd(value:)))
+            } else {
+                HStack(alignment: .top) {
+                    diaryCommetUserProfile
+                        .frame(width: 35)
+                    
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text(item.nickName)
+                                .font(.subheadline)
+                            Text("·")
+                                .font(.footnote)
+                                .foregroundColor(.bcDarkGray)
+                            Text("\(TimestampToString.dateString(item.commentCreatedDate)) 전")
+                                .font(.footnote)
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        Text(item.commentContent)
+                            .font(.callout)
+                            .foregroundColor(.secondary)
+                            .padding(.top, -5)
+                    }
+                    .padding(.trailing, 5)
+                    
+                    Spacer()
+                }
+                .padding(.vertical, UIScreen.screenWidth * 0.01)
+                .background(Color("BCWhite"))
+                .contentShape(Rectangle())
+                .offset(x: offset)
+            }
+        }
+        
+        
+    }
+    
+    func onChanged(value: DragGesture.Value) {
+        
+        if value.translation.width < 0 && value.translation.width > -65  {
+            
+            if isSwiped {
+                offset = value.translation.width - 90
+            } else {
+                offset = value.translation.width
+            }
+        }
+    }
+    
+    func onEnd(value: DragGesture.Value) {
+        
+        withAnimation(.easeOut) {
+            if value.translation.width < 0 {
+                
+                if -value.translation.width > UIScreen.main.bounds.width / 2 {
+                    offset = -50
+                } else if -offset > 50 {
+                    isSwiped = true
+                    offset = -50
+                } else if -offset <= 50 {
+                    isSwiped = false
+                    offset = 0
+                } else {
+                    isSwiped = false
+                    offset = 0
+                }
+            } else {
+                isSwiped = false
+                offset = 0
+            }
+        }
     }
 }
 

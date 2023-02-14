@@ -68,18 +68,25 @@ struct DiaryDetailView: View {
                             Divider()
                             //댓글
                             ForEach(commentStore.commentList) { comment in
-                                DiaryCommentCellView(item2: item, item: comment)
+                                    DiaryCommentCellView(item2: item, item: comment)
                             }
-                            //댓글 작성시 뷰 가장 아래로
-                            EmptyView().id(bottomID)
                         }
                         .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                        //댓글 작성시 뷰 가장 아래로
+                        EmptyView()
+                            .frame(height: 0.1)
+                            .id(bottomID)
+                        Spacer()
                     }
                    
                     .onAppear {
-                        proxy.scrollTo(topID)
+                        withAnimation {
+                            proxy.scrollTo(topID)
+                        }
                     }
                 }
+                .padding(.bottom, 0.1)
+                
                 HStack {
                     if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
                         WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
@@ -98,12 +105,17 @@ struct DiaryDetailView: View {
                     }
                     TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
                         .focused($inputFocused)
+                        .onTapGesture {
+                            withAnimation {
+                                proxy.scrollTo(bottomID, anchor: .bottom)
+                            }
+                        }
 
                     Button {
                         commentStore.createCommentCombine(diaryId: item.diary.id, comment: Comment(id: UUID().uuidString, diaryId: item.diary.id, uid: wholeAuthStore.currnetUserInfo?.id ?? "" , nickName: wholeAuthStore.currnetUserInfo?.nickName ?? "", profileImage: wholeAuthStore.currnetUserInfo?.profileImageURL ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp()))
                         commentStore.readCommentsCombine(diaryId: item.diary.id)
                         withAnimation {
-                            proxy.scrollTo(bottomID)
+                            proxy.scrollTo(bottomID, anchor: .bottom)
                         }
                         
                         diaryComment = ""
@@ -283,7 +295,22 @@ private extension DiaryDetailView {
         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
         .tabViewStyle(PageTabViewStyle())
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
+        //사진 두번 클릭시 좋아요
+        .onTapGesture(count: 2) {
+            //좋아요 버튼, 카운드
+            if diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") {
+                //포함되있으면 아무것도 안함
+            } else {
+                diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
+            }
+            //TODO: -함수 업데이트되면 넣기
+            diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
+            //탭틱
+            let impactMed = UIImpactFeedbackGenerator(style: .soft)
+            impactMed.impactOccurred()
+        }
         .pinchZoomAndDrag()
+
     }
     
     // MARK: -View : 다이어리 제목
@@ -365,11 +392,11 @@ private extension DiaryDetailView {
                     .padding(.trailing, 7)
 
                 //댓글 버튼
-                Button {
-                    //"댓글 작성 버튼으로 이동"
-                } label: {
+    //            Button {
+                    //"댓글 작성 버튼으로 이동하려고 했는데 그냥 텍스트로~
+    //            } label: {
                     Image(systemName: "message")
-                }
+    //            }
                 Text("\(commentStore.commentList.count)")
                     .font(.body)
                     .padding(.horizontal, 3)

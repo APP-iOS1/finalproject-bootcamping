@@ -35,6 +35,10 @@ class DiaryStore: ObservableObject {
     
     // 인기글 다이어리 뷰 유저 및 다이어리 정보
     @Published var popularDiaryList: [UserInfoDiary] = []
+    
+    // 다이어리 생성함수 상태 변화에따라 뷰의 온체인지 함수 기능 작동
+    @Published var createFinshed: Bool = false
+    
     //파베 기본 경로
     let database = Firestore.firestore()
     
@@ -85,8 +89,7 @@ class DiaryStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished Create Diary")
-                    self.firstGetMyDiaryCombine()
-                    self.firstGetRealTimeDiaryCombine()
+                    self.createFinshed.toggle()
                     self.isProcessing = false
                     return
                 }

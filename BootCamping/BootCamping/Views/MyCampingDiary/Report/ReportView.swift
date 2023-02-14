@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AlertToast
 
 struct ReportView: View {
     @EnvironmentObject var reportStore: ReportStore
@@ -13,6 +14,7 @@ struct ReportView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var selectedOption: String? = nil
+    @Binding var reportState: ReportState
     
     let reportedDiaryId: String
     
@@ -50,6 +52,7 @@ struct ReportView: View {
                     Button {
                         selectedOption = reportOptions[index]
                         reportStore.createReportCombine(reportedDiary: ReportedDiary(id: UUID().uuidString, reportedDiaryId: reportedDiaryId, reportOption: selectedOption ?? "기타"))
+                        reportState = .nowReported
                         dismiss()
                     } label: {
                         HStack{

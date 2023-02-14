@@ -90,7 +90,7 @@ struct DiaryDetailView: View {
                 }
                 .padding(.bottom, 0.1)
 
-                 HStack(alignment: .top) {
+                 HStack {
                     if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
                         WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
                             .resizable()
@@ -379,53 +379,53 @@ private extension DiaryDetailView {
     
     
     //MARK: - 좋아요, 댓글, 타임스탬프
-        var diaryDetailInfo: some View {
-            HStack {
-                Button {
-                    //좋아요 버튼, 카운드
-                    if diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") {
-                        diaryLikeStore.removeDiaryLikeCombine(diaryId: item.diary.id)
-                    } else {
-                        diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
-                    }
-                    diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
-                    //탭틱
-                    let impactMed = UIImpactFeedbackGenerator(style: .soft)
-                    impactMed.impactOccurred()
-                } label: {
-                    Image(systemName: diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")
-                        
-                        .foregroundColor(diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? .red : .secondary)
+    var diaryDetailInfo: some View {
+        HStack {
+            Button {
+                //좋아요 버튼, 카운드
+                if diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") {
+                    diaryLikeStore.removeDiaryLikeCombine(diaryId: item.diary.id)
+                } else {
+                    diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
                 }
-                Text("\(diaryLikeStore.diaryLikeList.count)")
-                    .font(.callout)
-                    .foregroundColor(.secondary)
-                    .padding(.leading, -2)
-                    .frame(width: 20, alignment: .leading)
-
-                //댓글 버튼
-    //            Button {
-                    //"댓글 작성 버튼으로 이동하려고 했는데 그냥 텍스트로~
-    //            } label: {
-                    Image(systemName: "message")
-                        .font(.callout)
-                        .foregroundColor(.secondary)
-                }
+                diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
+                //탭틱
+                let impactMed = UIImpactFeedbackGenerator(style: .soft)
+                impactMed.impactOccurred()
+            } label: {
+                Image(systemName: diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")
                 
-                Text("\(commentStore.commentList.count)")
-                    .font(.callout)
-                    .foregroundColor(.secondary)
-                    .frame(width: 20, alignment: .leading)
-                    .padding(.leading, -2)
-
-                Spacer()
-                //작성 경과시간
-                Text("\(TimestampToString.dateString(item.diary.diaryCreatedDate)) 전")
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? .red : .secondary)
             }
-            .padding(.vertical, 5)
+            Text("\(diaryLikeStore.diaryLikeList.count)")
+                .font(.callout)
+                .foregroundColor(.secondary)
+                .padding(.leading, -2)
+                .frame(width: 20, alignment: .leading)
+            
+            //댓글 버튼
+            //            Button {
+            //"댓글 작성 버튼으로 이동하려고 했는데 그냥 텍스트로~
+            //            } label: {
+            Image(systemName: "message")
+                .font(.callout)
+                .foregroundColor(.secondary)
+            
+            
+            Text("\(commentStore.commentList.count)")
+                .font(.callout)
+                .foregroundColor(.secondary)
+                .frame(width: 20, alignment: .leading)
+                .padding(.leading, -2)
+            
+            Spacer()
+            //작성 경과시간
+            Text("\(TimestampToString.dateString(item.diary.diaryCreatedDate)) 전")
+                .font(.footnote)
+                .foregroundColor(.secondary)
         }
+        .padding(.vertical, 5)
+    }
     
     //MARK: - 키보드 dismiss 함수입니다.
     func submit() {

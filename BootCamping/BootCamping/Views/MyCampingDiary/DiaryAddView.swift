@@ -75,18 +75,23 @@ struct DiaryAddView: View {
                 VStack {
                     ScrollView{
                         VStack(alignment: .leading) {
-                            imagePicker
-                            Divider()
-                            addViewLocationInfo
-                                .padding(.vertical, 10)
-                            Divider()
-                            
-                            addViewVisitDate
-                            Divider()
-                            
-                            addViewIsPrivate
-                            Divider()
-                            
+                            Group{
+                                imagePicker
+                                Divider()
+                                addViewLocationInfo
+                                    .padding(.vertical, 10)
+                                Divider()
+                                
+                                addViewVisitDate
+                                Divider()
+                                
+                                addViewIsPrivate
+                                Divider()
+                            }
+                            .onTapGesture {
+                                isTapTextField = false
+                                dismissKeyboard()
+                            }
                             Group{
                                 //diaryTitle
                                 TextField("제목을 입력해주세요(최대 20자)", text: $diaryTitle)
@@ -137,9 +142,7 @@ struct DiaryAddView: View {
                     }
                 }
                 .navigationTitle(Text("캠핑 일기 쓰기"))
-                .onTapGesture {
-                    dismissKeyboard()
-                }
+                
                 .disableAutocorrection(true) //자동 수정 비활성화
                 .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
                 .toolbar {

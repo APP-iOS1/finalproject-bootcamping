@@ -26,6 +26,7 @@ struct DiaryCellView: View {
     //삭제 알림
     @State private var isShowingDeleteAlert = false
     //유저 신고/ 차단 알림
+    @State private var isShowingConfirmationDialog = false
     @State private var isShowingUserReportAlert = false
     @State private var isBlocked = false
     
@@ -45,17 +46,22 @@ struct DiaryCellView: View {
             diaryUserProfile
             //MARK: - 잠금상태 && Faceid 설정 일때 잠금화면
             if item.diary.diaryIsPrivate && faceId.islocked == true {
+                VStack(alignment: .center) {
                     Button {
-                        faceId.authenticate()
+                            faceId.authenticate()
                     } label: {
-                        VStack {
                             Image(systemName: "lock")
-                                
-                            Text("비공개 일기입니다.\n잠금을 해제해주세요.")
-                        }
-                        .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
+                                .resizable()
+                                .padding()
+                                .foregroundColor(Color.bcGreen)
                     }
-                
+                    .frame(height: UIScreen.screenWidth / 5)
+                    .aspectRatio(contentMode: .fit)
+                    .padding(.vertical, 10)
+                    Text("비공개 일기입니다")
+                    Text("버튼을 눌러 잠금을 해제해주세요")
+                }
+                .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
             } else {
                 diaryImage
                 
@@ -85,7 +91,12 @@ struct DiaryCellView: View {
                 .foregroundColor(.bcBlack)
             }
         }
-        
+        .sheet(isPresented: $isShowingUserReportAlert) {
+            ReportUserView()
+            // 예를 들어 다음은 화면의 아래쪽 50%를 차지하는 시트를 만듭니다.
+                .presentationDetents([.fraction(0.5), .medium, .large])
+                .presentationDragIndicator(.automatic)
+        }
         .padding(.top, UIScreen.screenWidth * 0.03)
         .onAppear {
             commentStore.readCommentsCombine(diaryId: item.diary.id)
@@ -116,6 +127,20 @@ private extension DiaryCellView {
         .tabViewStyle(PageTabViewStyle())
         // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
+        //사진 두번 클릭시 좋아요
+        .onTapGesture(count: 2) {
+            //좋아요 버튼, 카운드
+            if diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") {
+                //포함되있으면 아무것도 안함
+            } else {
+                diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
+            }
+            //TODO: -함수 업데이트되면 넣기
+            diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
+            //탭틱
+            let impactMed = UIImpactFeedbackGenerator(style: .soft)
+            impactMed.impactOccurred()
+        }
         .pinchZoomAndDrag()
     }
     
@@ -197,16 +222,15 @@ private extension DiaryCellView {
     var reportAlertMenu: some View {
         //MARK: - ... 버튼입니다.
         Button(action: {
-            isShowingUserReportAlert.toggle()
+            isShowingConfirmationDialog.toggle()
         }) {
             Image(systemName: "ellipsis")
                 .font(.title3)
                 .frame(width: 30,height: 30)
         }
-        .confirmationDialog("알림", isPresented: $isShowingUserReportAlert, titleVisibility: .hidden, actions: {
+        .confirmationDialog("알림", isPresented: $isShowingConfirmationDialog, titleVisibility: .hidden, actions: {
             Button("신고하기", role: .destructive) {
-                print("신고하기ㅣㅣㅣㅣ")
-                   // ReportUserView(placeholder: "")
+                isShowingUserReportAlert.toggle()
             }
             Button("차단하기", role: .destructive) {
                 print("차단해ㅐㅐㅐㅐ")
@@ -300,9 +324,9 @@ private extension DiaryCellView {
                 .frame(width: 20, alignment: .leading)
             
             //댓글 버튼
-            Button {
-                //"댓글 작성 버튼으로 이동"
-            } label: {
+//            Button {
+                //"댓글 작성 버튼으로 이동하려고 했는데 그냥 텍스트로~
+//            } label: {
                 Image(systemName: "message")
                     .font(.callout)
                     .foregroundColor(.secondary)

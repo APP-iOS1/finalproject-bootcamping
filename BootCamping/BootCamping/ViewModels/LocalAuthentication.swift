@@ -9,6 +9,7 @@ import Foundation
 import LocalAuthentication
 
 class FaceId: ObservableObject {
+    //기본 faceID 설정 해제
     @Published var islocked: Bool = false
     
     //    func auth() {

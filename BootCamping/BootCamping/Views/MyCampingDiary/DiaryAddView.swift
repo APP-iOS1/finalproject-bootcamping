@@ -58,7 +58,7 @@ struct DiaryAddView: View {
     @State private var selectedDate: Date = .now
     
     //이미지 피커
-//    @State private var imagePickerPresented = false // 이미지 피커를 띄울 변수
+    //    @State private var imagePickerPresented = false // 이미지 피커를 띄울 변수
     @State private var selectedImages: [PhotosPickerItem] = []   // 이미지 피커에서 선택한 이미지저장.
     @State private var diaryImages: [Data] = []         // selectedImages를 [Data] 타입으로 저장
     @State private var isProcessing: Bool = false
@@ -68,6 +68,7 @@ struct DiaryAddView: View {
     //텍스트필드 포커싱
     @Namespace var title
     @Namespace var content
+    @Namespace var bottom
     
     var body: some View {
         ZStack {
@@ -75,70 +76,87 @@ struct DiaryAddView: View {
                 VStack {
                     ScrollView{
                         VStack(alignment: .leading) {
-                            imagePicker
-                            Divider()
-                            addViewLocationInfo
-                                .padding(.vertical, 10)
-                            Divider()
-                            
-                            addViewVisitDate
-                            Divider()
-                            
-                            addViewIsPrivate
-                            Divider()
-                            
-                            Group{
-                                //diaryTitle
-                                TextField("제목을 입력해주세요(최대 20자)", text: $diaryTitle)
-                                    .font(.title3)
-                                    .padding(.vertical)
-                                    .submitLabel(.next)
-                                    .onChange(of: diaryTitle) { newValue in             // 제목 20글자까지 가능
-                                        if newValue.count > 20 {
-                                            diaryTitle = String(newValue.prefix(20))
-                                        }
-                                    }
-                                    .focused($inputFocused)
-                                    .onSubmit{
-                                        activeState = .field2
-                                    }
-                                    .onTapGesture {
-                                        isTapTextField = true
-                                        withAnimation {
-                                            proxy.scrollTo(title, anchor: .center)
-                                        }
-                                    }
-                                EmptyView()
-                                    .id(title)
+
+                            Group {
+                                imagePicker
+                                Divider()
+                                addViewLocationInfo
+                                    .padding(.vertical, 10)
+                                Divider()
                                 
-                                //diaryContent
-                                TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
-                                    .focused($inputFocused)
-                                    .focused($activeState, equals: .field2)
-                                    .onTapGesture {
-                                        isTapTextField = true
-                                    }
-                                    .onChange(of: diaryContent) { newValue in
-                                        withAnimation {
-                                            proxy.scrollTo(content, anchor: .center)
-                                        }
-                                    }
+                                addViewVisitDate
+                                Divider()
                                 
-                                EmptyView()
-                                    .id(content)
+                                addViewIsPrivate
+                                Divider()
+                                    .padding(.bottom)
                             }
-                                                        
+                            .font(.subheadline)
+                            .onTapGesture {
+                                isTapTextField = false
+                                dismissKeyboard()
+                            }
+
+                            //diaryTitle
+                            TextField("제목을 입력해주세요(최대 20자)", text: $diaryTitle)
+                                .font(.headline)
+                                .padding(.vertical, 5)
+                                .submitLabel(.next)
+                                .onChange(of: diaryTitle) { newValue in             // 제목 20글자까지 가능
+                                    if newValue.count > 20 {
+                                        diaryTitle = String(newValue.prefix(20))
+                                    }
+                                }
+                                .focused($inputFocused)
+                                .onSubmit{
+                                    activeState = .field2
+                                }
+                                .onTapGesture {
+                                    isTapTextField = true
+                                    withAnimation {
+                                        proxy.scrollTo(title, anchor: .center)
+                                    }
+                                }
+                            EmptyView()
+                                .id(title)
+                            Divider()
+                            
+                            //diaryContent
+                            TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
+                                .frame(minHeight: UIScreen.screenHeight / 4)
+                                .focused($inputFocused)
+                                .focused($activeState, equals: .field2)
+                                .onTapGesture {
+                                    isTapTextField = true
+                                }
+                                .onChange(of: diaryContent) { newValue in
+                                    withAnimation {
+                                        proxy.scrollTo(content, anchor: .center)
+                                    }
+                                }
+                            
+                            EmptyView()
+                                .id(content)
+                            Spacer()
+                            if inputFocused == false {
+                                withAnimation {
+                                    addViewAddButton
+                                        .id(bottom)
+                                }
+                            }
+                            
                         }
                         .padding(.horizontal, UIScreen.screenWidth*0.03)
                     }
-                    if isTapTextField == false {
-                        addViewAddButton
-                            .animation(nil, value: UUID())
-                    }
+                    .padding(.bottom, 0.1)
+
                 }
                 .navigationTitle(Text("캠핑 일기 쓰기"))
                 .onTapGesture {
-                    dismissKeyboard()
+                    inputFocused = false
+                    withAnimation {
+                        proxy.scrollTo(bottom, anchor: .bottom)
+                    }
                 }
                 .disableAutocorrection(true) //자동 수정 비활성화
                 .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
@@ -147,7 +165,8 @@ struct DiaryAddView: View {
                         Spacer()
                         Button {
                             submit()
-                            isTapTextField = false
+                            inputFocused = false
+                            proxy.scrollTo(bottom, anchor: .bottom)
                         } label: {
                             Image(systemName: "keyboard.chevron.compact.down")
                         }
@@ -288,7 +307,7 @@ private extension DiaryAddView {
             .environment(\.locale, Locale(identifier: "ko_KR"))
             .environment(\.calendar, Calendar(identifier: .gregorian))
             .environment(\.timeZone, TimeZone(abbreviation: "KST")!)
-            .padding(.vertical)
+//            .padding(.vertical)
         }
     }
     
@@ -323,7 +342,7 @@ private extension DiaryAddView {
                     .padding(.bottom, 15)
             }
         }
-        .padding(.vertical)
+//        .padding(.vertical)
         
     }
     

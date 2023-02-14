@@ -127,17 +127,18 @@ extension ProfileSettingView {
                 loadData()
             },
                    content: { ImagePicker(image: $selectedImage) })
-            
+            .padding(.bottom, 7)
             Button {
                 profileImage = nil
                 isProfileImageReset = true
             } label: {
                 Text("기본 이미지로 변경")
                     .font(.caption2)
-                    .padding(3)
+                    .padding(4)
                     .overlay{
                         RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.bcDarkGray, lineWidth: 1)
+//                            .stroke(Color.bcDarkGray, lineWidth: 1)
+                            .fill(Color.bcDarkGray)
                             .opacity(0.3)
                     }
                 
@@ -148,7 +149,7 @@ extension ProfileSettingView {
     // selectedImage: UIImage 타입을 Data타입으로 저장하는 함수
     func loadData() {
         guard let selectedImage = selectedImage else { return }
-        profileImage = selectedImage.jpegData(compressionQuality: 0.8)
+        profileImage = selectedImage.jpegData(compressionQuality: 0.1)
         
     }
     

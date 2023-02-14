@@ -269,6 +269,7 @@ private extension DiaryCellView {
             .font(.system(.title3, weight: .semibold))
             .padding(.top, 10)
             .padding(.bottom, 5)
+            .multilineTextAlignment(.leading)
     }
     
     // MARK: - 다이어리 공개 여부를 나타내는 이미지

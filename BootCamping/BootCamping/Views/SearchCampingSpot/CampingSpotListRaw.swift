@@ -13,11 +13,10 @@ struct CampingSpotListRaw: View {
     var item: Item
     
     var body: some View{
-        VStack(alignment: .leading){
+        VStack(alignment: .leading) {
             
             // 캠핑장 사진
             if item.firstImageUrl.isEmpty {
-                // 이미지 없는 것도 있어서 어떻게 할 지 고민 중~
                 Image("noImage")
                     .resizable()
                     .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
@@ -49,7 +48,7 @@ struct CampingSpotListRaw: View {
                             }
                     }
                 }
-                .padding(.horizontal, UIScreen.screenWidth*0.05)
+                .padding(.horizontal, UIScreen.screenWidth * 0.04)
             }
             
             
@@ -57,20 +56,20 @@ struct CampingSpotListRaw: View {
             Text(item.facltNm)
                 .font(.title3.bold())
                 .foregroundColor(.bcBlack)
-                .padding(.horizontal, UIScreen.screenWidth*0.05)
+                .padding(.horizontal, UIScreen.screenWidth * 0.04)
 
             // 캠핑장 간단 주소
             HStack {
                 Image(systemName: "mappin.and.ellipse")
                     .font(.callout)
                     .foregroundColor(.gray)
-                    .padding(.trailing, -7)
+                    .padding(.trailing, -3)
                 Text("\(item.doNm) \(item.sigunguNm)")
                     .font(.callout)
                     .foregroundColor(.gray)
             }
-            .padding(.bottom, 5)
-            .padding(.horizontal, UIScreen.screenWidth*0.05)
+            .padding(.vertical, -10)
+            .padding(.horizontal, UIScreen.screenWidth * 0.04)
 
             // 캠핑장 설명 3줄
             if item.lineIntro != "" {
@@ -78,13 +77,15 @@ struct CampingSpotListRaw: View {
                     .font(.callout)
                     .multilineTextAlignment(.leading)
                     .foregroundColor(.bcBlack)
-                    .padding(.horizontal, UIScreen.screenWidth*0.05)
+                    .padding(.top, 13)
+                    .padding(.horizontal, UIScreen.screenWidth * 0.04)
             } else {
-                Text("업체에서 제공하는 정보가 없습니다")
-                    .font(.callout)
+                Text("업체에서 제공하는 소개글이 없습니다.")
+                  //  .font(.callout)
                     .multilineTextAlignment(.leading)
-                    .foregroundColor(.bcBlack)
-                    .padding(.horizontal, UIScreen.screenWidth*0.05)
+                    .foregroundColor(.gray)
+                    .padding(.top, 13)
+                    .padding(.horizontal, UIScreen.screenWidth * 0.04)
             }
             
         }

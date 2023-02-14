@@ -364,9 +364,9 @@
 		63AF45BE2977CDF00014B1E1 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				7CFCE1292987549700E196AF /* RealtimeCampingView.swift */,
-				7CFCE12C2987549F00E196AF /* WeeklyPopulerCampingView.swift */,
 				63AF45BF2977CDF90014B1E1 /* HomeView.swift */,
+				7CFCE12C2987549F00E196AF /* WeeklyPopulerCampingView.swift */,
+				7CFCE1292987549700E196AF /* RealtimeCampingView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -377,8 +377,8 @@
 				63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */,
 				63D1822C2993D53B00293727 /* CampingSpotListSearchingView.swift */,
 				63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */,
-				63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */,
 				63F8426B298FB5FF006A9433 /* CampingSpotListRaw.swift */,
+				63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */,
 				6E96013A298A32D6009C60F2 /* FullMapView.swift */,
 				63BC803A298C8EF30088AC02 /* EmptyCampingSpotListCell.swift */,
 				633DF94629948EE000B29C91 /* SearchByCampingSpotNameView.swift */,

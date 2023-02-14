@@ -64,7 +64,10 @@ struct DiaryDetailView: View {
                             if !campingSpotStore.campingSpotList.isEmpty {
                                 diaryCampingLink
                             }
+                            Divider().padding(.top, 5)
+                            
                             diaryDetailInfo
+                            
                             Divider()
                             //댓글
                             ForEach(commentStore.commentList) { comment in
@@ -86,8 +89,8 @@ struct DiaryDetailView: View {
                     }
                 }
                 .padding(.bottom, 0.1)
-                
-                HStack {
+
+                 HStack(alignment: .top) {
                     if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
                         WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
                             .resizable()
@@ -103,8 +106,9 @@ struct DiaryDetailView: View {
                             .frame(width: 30, height: 30)
                             .clipShape(Circle())
                     }
-                    TextField("댓글을 적어주세요", text: $diaryComment, axis: .vertical)
+                    TextField("댓글을 입력해 주세요.", text: $diaryComment, axis: .vertical)
                         .focused($inputFocused)
+                        .font(.callout)
                         .onTapGesture {
                             withAnimation {
                                 proxy.scrollTo(bottomID, anchor: .bottom)
@@ -121,14 +125,14 @@ struct DiaryDetailView: View {
                         diaryComment = ""
                     } label: {
                         Image(systemName: "paperplane")
-                            .font(.title2)
+                            .font(.title3)
+                            .foregroundColor(Color.bcDarkGray)
                     }
                     .disabled(diaryComment == "")
                     
                 }
-                .foregroundColor(.bcBlack)
-                .font(.title3)
-                .padding(.vertical, 5)
+                .foregroundColor(.bcDarkGray)
+                .padding(.vertical, 1)
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 
             }
@@ -192,12 +196,12 @@ private extension DiaryDetailView {
             if item.diary.uid == Auth.auth().currentUser?.uid {
                 alertMenu
 //                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
-                    .padding(.top, 5)
+              //      .padding(.top, 5)
             }
             else {
                 reportAlertMenu
 //                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
-                    .padding(.top, 5)
+              //      .padding(.top, 5)
             }
             
         }
@@ -317,13 +321,15 @@ private extension DiaryDetailView {
     var diaryDetailTitle: some View {
         Text(item.diary.diaryTitle)
             .font(.system(.title3, weight: .semibold))
-            .padding(.vertical, 5)
+            .padding(.top, 10)
+            .padding(.bottom, 5)
     }
     
     // MARK: -View : 다이어리 내용
     var diaryDetailContent: some View {
         Text(item.diary.diaryContent)
             .multilineTextAlignment(.leading)
+            .padding(.bottom, 25)
     }
     
     //MARK: - 방문한 캠핑장 링크
@@ -345,20 +351,22 @@ private extension DiaryDetailView {
                         .font(.headline)
                     HStack {
                         Text("\(campingSpotStore.campingSpotList.first?.doNm ?? "") \(campingSpotStore.campingSpotList.first?.sigunguNm ?? "")")
+                            .padding(.vertical, 2)
                         Spacer()
-                        Group {
-                            Text("자세히 보기")
-                            Image(systemName: "chevron.right")
-                        }
-                        .font(.footnote)
-                        
                     }
-                    .font(.subheadline)
+                    .font(.footnote)
                     .foregroundColor(.secondary)
                 }
                 .foregroundColor(.bcBlack)
+                
+                HStack {
+                        Text("자세히 보기")
+                        Image(systemName: "chevron.right.2")
+                }
+                .font(.footnote)
+                .foregroundColor(.secondary)
             }
-            .padding()
+            .padding(10)
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(Color.bcDarkGray, lineWidth: 1)
@@ -386,20 +394,29 @@ private extension DiaryDetailView {
                     impactMed.impactOccurred()
                 } label: {
                     Image(systemName: diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")
-                        .foregroundColor(diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? .red : .bcBlack)
+                        
+                        .foregroundColor(diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? .red : .secondary)
                 }
                 Text("\(diaryLikeStore.diaryLikeList.count)")
-                    .padding(.trailing, 7)
+                    .font(.callout)
+                    .foregroundColor(.secondary)
+                    .padding(.leading, -2)
+                    .frame(width: 20, alignment: .leading)
 
                 //댓글 버튼
     //            Button {
                     //"댓글 작성 버튼으로 이동하려고 했는데 그냥 텍스트로~
     //            } label: {
                     Image(systemName: "message")
-    //            }
+                        .font(.callout)
+                        .foregroundColor(.secondary)
+                }
+                
                 Text("\(commentStore.commentList.count)")
-                    .font(.body)
-                    .padding(.horizontal, 3)
+                    .font(.callout)
+                    .foregroundColor(.secondary)
+                    .frame(width: 20, alignment: .leading)
+                    .padding(.leading, -2)
 
                 Spacer()
                 //작성 경과시간
@@ -407,8 +424,6 @@ private extension DiaryDetailView {
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }
-            .foregroundColor(.bcBlack)
-            .font(.title3)
             .padding(.vertical, 5)
         }
     

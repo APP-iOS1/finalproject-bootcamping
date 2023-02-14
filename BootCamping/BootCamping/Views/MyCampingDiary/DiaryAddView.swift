@@ -19,6 +19,7 @@ enum CurrentField{
 }
 
 struct DiaryAddView: View {
+    @State var isImageView = false
     
     @State var field1 = ""
     @State var field2 = ""
@@ -77,7 +78,7 @@ struct DiaryAddView: View {
                     ScrollView{
                         VStack(alignment: .leading) {
 
-                            Group {
+                            VStack {
                                 imagePicker
                                 Divider()
                                 addViewLocationInfo
@@ -89,7 +90,7 @@ struct DiaryAddView: View {
                                 
                                 addViewIsPrivate
                                 Divider()
-                                    .padding(.bottom)
+                                    .padding(.bottom, 10)
                             }
                             .font(.subheadline)
                             .onTapGesture {
@@ -120,10 +121,12 @@ struct DiaryAddView: View {
                             EmptyView()
                                 .id(title)
                             Divider()
+                                .padding(.vertical,10)
                             
                             //diaryContent
                             TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
-                                .frame(minHeight: UIScreen.screenHeight / 4)
+                                .frame(minHeight: UIScreen.screenHeight / 4, alignment: .top)
+
                                 .focused($inputFocused)
                                 .focused($activeState, equals: .field2)
                                 .onTapGesture {
@@ -182,6 +185,9 @@ struct DiaryAddView: View {
         .toast(isPresenting: $isProcessing) {
             AlertToast(displayMode: .alert, type: .loading)
         }
+        .sheet(isPresented: $isImageView) {
+            DiaryAddDetailImageView(diaryImages: $diaryImages, isImageView: $isImageView)
+        }
     }
 }
 
@@ -219,43 +225,67 @@ private extension DiaryAddView {
                         }
                     }
                 
-                Text("\(diaryImages.count) / 10")
-                    .font(.caption2)
-                    .foregroundColor(.gray)
+//                Text("\(diaryImages.count) / 10")
+//                    .font(.caption2)
+//                    .foregroundColor(.gray)
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack{
                     if diaryImages == [] {
-                        Text(diaryImages.isEmpty ? "사진을 추가해주세요" : "")
+                        Text(diaryImages.isEmpty ? "사진을 추가해주세요 (최대 10장)" : "")
                             .foregroundColor(.secondary)
                             .opacity(0.5)
                             .frame(height: UIScreen.screenWidth * 0.2)
                             .padding(.leading, UIScreen.screenWidth * 0.05)
                         
-                    } else{
-                        ForEach(Array(zip(0..<(diaryImages.count), diaryImages)), id: \.0) { index, image in
-                            Image(uiImage: UIImage(data: image)!)
-                                .resizeImageData(data: image)
+                    } else {
+                        Button {
+                            isImageView = true
+                        } label: {
+                            Image(uiImage: UIImage(data: diaryImages.first!)!)
+    //                            .resizeImageData(data: diaryImages.first)
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
                                 .clipped()
-                                .overlay(alignment: .topLeading) {
-                                    VStack {
-                                        Text("대표 이미지")
-                                            .font(.caption2)
-                                            .foregroundColor(.white)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 5)
-                                                    .fill(Color.bcGreen)
-                                                    .padding(-0.5)
-                                                
-                                            )
-                                            .padding(2.5)
-                                    }
-                                    .opacity(index == 0 ? 1 : 0)
+                                .overlay(alignment: .topTrailing) {
+//                                    Text("대표 이미지")
+                                    Image(systemName: "hand.tap")
+                                        .font(.footnote)
+                                        .foregroundColor(.white)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 5)
+                                                .fill(Color.bcGreen)
+                                                .padding(-0.5)
+                                        )
+                                        .padding(2.5)
                                 }
                         }
+
+                        
+//                        ForEach(Array(zip(0..<(diaryImages.count), diaryImages)), id: \.0) { index, image in
+//                            Image(uiImage: UIImage(data: image)!)
+//                                .resizeImageData(data: image)
+//                                .resizable()
+//                                .scaledToFill()
+//                                .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
+//                                .clipped()
+//                                .overlay(alignment: .topLeading) {
+//                                    VStack {
+//                                        Text("대표 이미지")
+//                                            .font(.caption2)
+//                                            .foregroundColor(.white)
+//                                            .background(
+//                                                RoundedRectangle(cornerRadius: 5)
+//                                                    .fill(Color.bcGreen)
+//                                                    .padding(-0.5)
+//                                                
+//                                            )
+//                                            .padding(2.5)
+//                                    }
+//                                    .opacity(index == 0 ? 1 : 0)
+//                                }
+//                        }
                     }
                 }
                 .padding(.vertical ,UIScreen.screenWidth * 0.005)

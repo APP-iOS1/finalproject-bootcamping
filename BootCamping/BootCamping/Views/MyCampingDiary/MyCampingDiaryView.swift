@@ -46,6 +46,9 @@ struct MyCampingDiaryView: View {
                     .padding(.bottom, 0.1)
                 }
                 .background(Color.bcWhite)
+                .refreshable {
+                    diaryStore.firstGetMyDiaryCombine()
+                }
 
                 
             }
@@ -54,6 +57,10 @@ struct MyCampingDiaryView: View {
             diaryStore.isProcessing ? Color.black.opacity(0.3) : Color.clear
 
             
+        }
+        .onChange(of: diaryStore.createFinshed) { _ in
+            diaryStore.firstGetMyDiaryCombine()
+            diaryStore.firstGetRealTimeDiaryCombine()
         }
         .toolbar{
             ToolbarItem(placement: .navigationBarLeading) {

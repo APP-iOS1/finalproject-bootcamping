@@ -31,8 +31,13 @@ struct DiaryEditView: View {
     @State var campingSpotItem: Item
     @State var campingSpot: String
     
+    //텍스트필드 포커싱
+    @Namespace var title
+    @Namespace var content
+    @Namespace var bottom
+    
     var item: UserInfoDiary
-
+    
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
         get {
@@ -50,25 +55,83 @@ struct DiaryEditView: View {
     
     
     var body: some View {
-        VStack {
-            ScrollView{
-                VStack(alignment: .leading) {
-                    addViewLocationInfo
-                        .padding(.vertical, 10)
-                    Divider()
-                    
-                    addViewVisitDate
-                    Divider()
-                    
-                    addViewIsPrivate
-                    Divider()
-                    
-                    Group{
-                        addViewTitle
-                        addViewDiaryContent
+        ScrollViewReader { proxy in
+            VStack {
+                ScrollView{
+                    VStack(alignment: .leading) {
+                        Group {
+                            addViewLocationInfo
+                                .padding(.vertical, 10)
+                            Divider()
+                            
+                            addViewVisitDate
+                            Divider()
+                            
+                            addViewIsPrivate
+                            Divider()
+                        }
+                        .font(.subheadline)
+                        .onTapGesture {
+                            isTapTextField = false
+                            dismissKeyboard()
+                        }
+                        
+                        //                            addViewTitle
+                        TextField("제목을 입력해주세요(최대 20자)", text: $diaryTitle)
+                            .font(.title3)
+                            .padding(.vertical, 5)
+                            .submitLabel(.next)
+                            .onChange(of: diaryTitle) { newValue in             // 제목 20글자까지 가능
+                                if newValue.count > 20 {
+                                    diaryTitle = String(newValue.prefix(20))
+                                }
+                            }
+                            .focused($inputFocused)
+                            .onSubmit{
+                                activeState = .field2
+                            }
+                            .onTapGesture {
+                                isTapTextField = true
+                                withAnimation {
+                                    proxy.scrollTo(title, anchor: .center)
+                                }
+                            }
+                        
+                        EmptyView()
+                            .id(title)
+                        Divider()
+                        
+                        
+                        //                            addViewDiaryContent
+                        VStack {
+                            
+                            TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
+                                .frame(minHeight: UIScreen.screenHeight / 4)
+                                .focused($inputFocused)
+                                .focused($activeState, equals: .field2)
+                                .onTapGesture {
+                                    isTapTextField = true
+                                }
+//                                .onChange(of: diaryContent) { newValue in
+//                                    withAnimation {
+//                                        proxy.scrollTo(title, anchor: .top)
+//                                    }
+//                                }
+                        }
+                        
+                        EmptyView()
+                            .id(content)
                         Spacer()
+                        
+                        if inputFocused == false {
+                            withAnimation {
+                                addViewAddButton
+                                    .id(bottom)
+                            }
+                        }
+                        
+                        //                        addViewAddButton
                     }
-                    addViewAddButton
                 }
             }
         }
@@ -94,7 +157,7 @@ struct DiaryEditView: View {
             campingSpot = campingSpotItem.facltNm
             locationInfo = campingSpotItem.contentId
         }
-
+        
     }
 }
 extension DiaryEditView {
@@ -178,40 +241,40 @@ extension DiaryEditView {
         
     }
     
-    // MARK: 제목
-    var addViewTitle: some View {
-        Section {
-            TextField("제목을 입력해주세요(최대 20자)", text: $diaryTitle)
-                .font(.title3)
-                .padding(.vertical)
-                .submitLabel(.next)
-                .onChange(of: diaryTitle) { newValue in             // 제목 20글자까지 가능
-                    if newValue.count > 20 {
-                        diaryTitle = String(newValue.prefix(20))
-                    }
-                }
-        }
-        .focused($inputFocused)
-        .onSubmit{
-            activeState = .field2
-        }
-        .onTapGesture {
-            isTapTextField = true
-        }
-    }
+//    // MARK: 제목
+//    var addViewTitle: some View {
+//        Section {
+//            TextField("제목을 입력해주세요(최대 20자)", text: $diaryTitle)
+//                .font(.title3)
+//                .padding(.vertical)
+//                .submitLabel(.next)
+//                .onChange(of: diaryTitle) { newValue in             // 제목 20글자까지 가능
+//                    if newValue.count > 20 {
+//                        diaryTitle = String(newValue.prefix(20))
+//                    }
+//                }
+//        }
+//        .focused($inputFocused)
+//        .onSubmit{
+//            activeState = .field2
+//        }
+//        .onTapGesture {
+//            isTapTextField = true
+//        }
+//    }
     
-    //MARK: - 일기 작성 뷰
-    var addViewDiaryContent: some View {
-        VStack {
-            
-            TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
-                .focused($inputFocused)
-                .onTapGesture {
-                    isTapTextField = true
-                }
-                .focused($activeState, equals: .field2)
-        }
-    }
+//    //MARK: - 일기 작성 뷰
+//    var addViewDiaryContent: some View {
+//        VStack {
+//
+//            TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
+//                .focused($inputFocused)
+//                .onTapGesture {
+//                    isTapTextField = true
+//                }
+//                .focused($activeState, equals: .field2)
+//        }
+//    }
 
     
     //MARK: - 추가버튼

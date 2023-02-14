@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 import FirebaseAnalytics
 import SDWebImageSwiftUI
+import Introspect
 import AlertToast
 
 enum ReportState {
@@ -27,6 +28,8 @@ struct DiaryDetailView: View {
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
     @StateObject var commentStore: CommentStore = CommentStore()
+    
+    @StateObject var scrollViewHelper: ScrollViewHelper = ScrollViewHelper()
     
     var diaryCampingSpot: [Item] {
         get {
@@ -83,7 +86,7 @@ struct DiaryDetailView: View {
                             Divider()
                             //댓글
                             ForEach(commentStore.commentList) { comment in
-                                    DiaryCommentCellView(item2: item, item: comment)
+                                DiaryCommentCellView(commentStore: commentStore, scrollViewHelper: scrollViewHelper, item2: item, item: comment)
                             }
                         }
                         .padding(.horizontal, UIScreen.screenWidth * 0.03)
@@ -99,7 +102,9 @@ struct DiaryDetailView: View {
                             proxy.scrollTo(topID)
                         }
                     }
-                }
+                }.introspectScrollView(customize: { uiScrollView in
+                    uiScrollView.delegate = scrollViewHelper
+                })
                 .padding(.bottom, 0.1)
 
                  HStack {

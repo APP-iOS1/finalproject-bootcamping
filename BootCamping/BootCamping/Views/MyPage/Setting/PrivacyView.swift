@@ -31,13 +31,13 @@ struct PrivacyView: View {
                     } label: {
                         Text("차단한 멤버 관리")
                     }
-                    
-                    NavigationLink {
-                        PasswordChangeView()
-                    } label: {
-                        Text("비밀번호 재설정")
+                    if wholeAuthStore.loginPlatform == .email {
+                        NavigationLink {
+                            PasswordChangeView()
+                        } label: {
+                            Text("비밀번호 재설정")
+                        }
                     }
-                    
                     Button {
                         //TODO: 연결하기, 알럿도 띄우기
                         showingAlert.toggle()

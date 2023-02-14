@@ -352,6 +352,7 @@ private extension DiaryDetailView {
             .font(.system(.title3, weight: .semibold))
             .padding(.top, 10)
             .padding(.bottom, 5)
+            .multilineTextAlignment(.leading)
     }
     
     // MARK: -View : 다이어리 내용

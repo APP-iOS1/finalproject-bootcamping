@@ -59,12 +59,15 @@ struct DiaryCommentCellView: View {
             if (wholeAuthStore.currentUser?.uid == item2.diary.uid) || (wholeAuthStore.currentUser?.uid == item.uid) {
                 HStack(alignment: .top) {
                     diaryCommetUserProfile
-                        .frame(width: 35)
+//                        .frame(width: 35)
                     
                     VStack(alignment: .leading) {
                         HStack {
                             Text(item.nickName)
-                                .font(.subheadline)
+//                                .font(.subheadline)
+                                .font(.footnote)
+                                .foregroundColor(.bcDarkGray)
+
                             Text("·")
                                 .font(.footnote)
                                 .foregroundColor(.bcDarkGray)
@@ -75,14 +78,14 @@ struct DiaryCommentCellView: View {
                         
                         Text(item.commentContent)
                             .font(.callout)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.bcBlack)
                             .padding(.top, -5)
                     }
                     .padding(.trailing, 5)
                     
                     Spacer()
                 }
-                .padding(.vertical, UIScreen.screenWidth * 0.01)
+                .padding(.vertical, UIScreen.screenWidth * 0.02)
                 .background(Color("BCWhite"))
                 .contentShape(Rectangle())
                 .offset(x: scrollViewHelper.commentOffset[item.id] ?? 0)
@@ -90,12 +93,13 @@ struct DiaryCommentCellView: View {
             } else {
                 HStack(alignment: .top) {
                     diaryCommetUserProfile
-                        .frame(width: 35)
+//                        .frame(width: 35)
                     
                     VStack(alignment: .leading) {
                         HStack {
                             Text(item.nickName)
-                                .font(.subheadline)
+                                .font(.footnote)
+                                .foregroundColor(.bcDarkGray)
                             Text("·")
                                 .font(.footnote)
                                 .foregroundColor(.bcDarkGray)
@@ -106,14 +110,14 @@ struct DiaryCommentCellView: View {
                         
                         Text(item.commentContent)
                             .font(.callout)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.bcBlack)
                             .padding(.top, -5)
                     }
                     .padding(.trailing, 5)
                     
                     Spacer()
                 }
-                .padding(.vertical, UIScreen.screenWidth * 0.01)
+                .padding(.vertical, UIScreen.screenWidth * 0.02)
                 .background(Color("BCWhite"))
                 .contentShape(Rectangle())
                 .offset(x: offset)
@@ -171,14 +175,14 @@ private extension DiaryCommentCellView {
             WebImage(url: URL(string: item.profileImage))
                 .resizable()
                 .scaledToFill()
-                .frame(width: 30, height: 30)
+                .frame(width: 40, height: 40)
                 .clipShape(Circle())
         } else {
             Image("defaultProfileImage")
                 .resizable()
                 .scaledToFill()
                 .clipped()
-                .frame(width: 30, height: 30)
+                .frame(width: 40, height: 40)
                 .clipShape(Circle())
         }
     }

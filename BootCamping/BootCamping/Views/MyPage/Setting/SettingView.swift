@@ -30,7 +30,7 @@ struct SettingView: View {
                 Text("Q&A")
                 //TODO: 자주 묻는 질문(만들어야함!) + 고객센터 메일보내기
             }
-            NavigationLink(destination: ReportUserView(placeholder: "")) {
+            NavigationLink(destination: EmptyView()) {
                 Text("앱 정보")
             }
             NavigationLink(destination: NotificationSettingsView()) {

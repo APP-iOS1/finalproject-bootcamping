@@ -32,6 +32,7 @@ struct DiaryDetailView: View {
     //삭제 알림
     @State private var isShowingDeleteAlert = false
     //유저 신고/ 차단 알림
+    @State private var isShowingConfirmationDialog = false
     @State private var isShowingUserReportAlert = false
     @State private var isShowingUserBlockedAlert = false
     @State private var isBlocked = false
@@ -70,18 +71,26 @@ struct DiaryDetailView: View {
                             Divider()
                             //댓글
                             ForEach(commentStore.commentList) { comment in
-                                DiaryCommentCellView(item2: item, item: comment)
+                                    DiaryCommentCellView(item2: item, item: comment)
                             }
-                            //댓글 작성시 뷰 가장 아래로
-                            EmptyView().id(bottomID)
                         }
                         .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                        //댓글 작성시 뷰 가장 아래로
+                        EmptyView()
+                            .frame(height: 0.1)
+                            .id(bottomID)
+                        Spacer()
                     }
+                   
                     .onAppear {
-                        proxy.scrollTo(topID)
+                        withAnimation {
+                            proxy.scrollTo(topID)
+                        }
                     }
                 }
-                HStack(alignment: .top) {
+                .padding(.bottom, 0.1)
+
+                 HStack(alignment: .top) {
                     if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
                         WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
                             .resizable()
@@ -100,12 +109,17 @@ struct DiaryDetailView: View {
                     TextField("댓글을 입력해 주세요.", text: $diaryComment, axis: .vertical)
                         .focused($inputFocused)
                         .font(.callout)
+                        .onTapGesture {
+                            withAnimation {
+                                proxy.scrollTo(bottomID, anchor: .bottom)
+                            }
+                        }
 
                     Button {
                         commentStore.createCommentCombine(diaryId: item.diary.id, comment: Comment(id: UUID().uuidString, diaryId: item.diary.id, uid: wholeAuthStore.currnetUserInfo?.id ?? "" , nickName: wholeAuthStore.currnetUserInfo?.nickName ?? "", profileImage: wholeAuthStore.currnetUserInfo?.profileImageURL ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp()))
                         commentStore.readCommentsCombine(diaryId: item.diary.id)
                         withAnimation {
-                            proxy.scrollTo(bottomID)
+                            proxy.scrollTo(bottomID, anchor: .bottom)
                         }
                         
                         diaryComment = ""
@@ -121,6 +135,12 @@ struct DiaryDetailView: View {
                 .padding(.vertical, 1)
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 
+            }
+            .sheet(isPresented: $isShowingUserReportAlert) {
+                ReportUserView()
+                // 예를 들어 다음은 화면의 아래쪽 50%를 차지하는 시트를 만듭니다.
+                    .presentationDetents([.fraction(0.5), .medium, .large])
+                    .presentationDragIndicator(.automatic)
             }
             .padding(.top)
             .padding(.bottom)
@@ -236,17 +256,16 @@ private extension DiaryDetailView {
         //MARK: - ... 버튼입니다.
         
         Button(action: {
-            isShowingUserReportAlert.toggle()
+            isShowingConfirmationDialog.toggle()
         }) {
             Image(systemName: "ellipsis")
                 .font(.title3)
                 .frame(width: 30,height: 30)
 
         }
-        .confirmationDialog("알림", isPresented: $isShowingUserReportAlert, titleVisibility: .hidden, actions: {
+        .confirmationDialog("알림", isPresented: $isShowingConfirmationDialog, titleVisibility: .hidden, actions: {
             Button("신고하기", role: .destructive) {
-                print("신고하기ㅣㅣㅣㅣ")
-                   // ReportUserView(placeholder: "")
+                isShowingUserReportAlert.toggle()
             }
             Button("차단하기", role: .destructive) {
                 print("차단해ㅐㅐㅐㅐ")
@@ -280,7 +299,22 @@ private extension DiaryDetailView {
         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
         .tabViewStyle(PageTabViewStyle())
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
+        //사진 두번 클릭시 좋아요
+        .onTapGesture(count: 2) {
+            //좋아요 버튼, 카운드
+            if diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") {
+                //포함되있으면 아무것도 안함
+            } else {
+                diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
+            }
+            //TODO: -함수 업데이트되면 넣기
+            diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
+            //탭틱
+            let impactMed = UIImpactFeedbackGenerator(style: .soft)
+            impactMed.impactOccurred()
+        }
         .pinchZoomAndDrag()
+
     }
     
     // MARK: -View : 다이어리 제목
@@ -370,13 +404,14 @@ private extension DiaryDetailView {
                     .frame(width: 20, alignment: .leading)
 
                 //댓글 버튼
-                Button {
-                    //"댓글 작성 버튼으로 이동"
-                } label: {
+    //            Button {
+                    //"댓글 작성 버튼으로 이동하려고 했는데 그냥 텍스트로~
+    //            } label: {
                     Image(systemName: "message")
                         .font(.callout)
                         .foregroundColor(.secondary)
                 }
+                
                 Text("\(commentStore.commentList.count)")
                     .font(.callout)
                     .foregroundColor(.secondary)

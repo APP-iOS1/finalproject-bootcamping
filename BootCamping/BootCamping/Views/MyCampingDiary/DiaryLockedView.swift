@@ -12,7 +12,7 @@ struct DiaryLockedView: View {
     
     var body: some View {
         VStack(alignment: .center) {
-            Text("버튼을 눌러 잠금을 해제해주세요.")
+            Text("버튼을 눌러 잠금을 해제해주세요")
                 .font(.title3)
                 .padding()
             

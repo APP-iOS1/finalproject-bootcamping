@@ -16,13 +16,11 @@ struct PrivacyView: View {
     //faceId 사용 여부 토글 변수
     @AppStorage("faceId") var usingFaceId: Bool = false
     //faceId 잠금 설정 변수
-    @State private var toggleUsingFaceId = false
-
+    @AppStorage("toggleUsingFaceId") var toggleUsingFaceId: Bool = false
+    
     var body: some View {
         VStack {
-            if faceId.islocked {
-                DiaryLockedView()
-            } else {
+            if faceId.islocked == false {
                 List{
                     isUsingFaceIdSetting
                     
@@ -31,13 +29,13 @@ struct PrivacyView: View {
                     } label: {
                         Text("차단한 멤버 관리")
                     }
-                    
-                    NavigationLink {
-                        PasswordChangeView()
-                    } label: {
-                        Text("비밀번호 재설정")
+                    if wholeAuthStore.loginPlatform == .email {
+                        NavigationLink {
+                            PasswordChangeView()
+                        } label: {
+                            Text("비밀번호 재설정")
+                        }
                     }
-                    
                     Button {
                         //TODO: 연결하기, 알럿도 띄우기
                         showingAlert.toggle()
@@ -58,36 +56,37 @@ struct PrivacyView: View {
                     }
                 }
                 .listStyle(.plain)
+            } else {
+                DiaryLockedView()
             }
         }
         .onAppear {
+            faceId.islocked = true
             faceId.authenticate()
         }
-        
     }
 }
 
 private extension PrivacyView {
+    
     //MARK: - faceId On/Off 설정 버튼입니다
     var isUsingFaceIdSetting: some View {
-        
         HStack {
-            
             Toggle(isOn: $toggleUsingFaceId) {
                 Text("내 캠핑일기 잠그기")
             }
             .onChange(of: toggleUsingFaceId) { _ in
                 if toggleUsingFaceId {
-                        usingFaceId = true
+                    usingFaceId = true
                     faceId.islocked = true
                 } else {
                     usingFaceId = false
                     faceId.islocked = false
                 }
+                dismiss()
             }
+            
         }
-
     }
-
 }
 

@@ -32,8 +32,8 @@ struct MyCampingDiaryView: View {
                             DiaryCellView(item: userInfoDiary)
                                 .task {
                                     guard let index = diaryStore.myDiaryUserInfoDiaryList.firstIndex(where: { $0.diary.id == userInfoDiary.diary.id}) else { return }
-                                    if index % 5 == 4 {
-                                        print("하이")
+
+                                    if (index + 1) % 5 == 0 {
                                         Task {
                                             diaryStore.nextGetMyDiaryCombine()
                                         }

@@ -76,6 +76,7 @@ struct DiaryAddView: View {
                 VStack {
                     ScrollView{
                         VStack(alignment: .leading) {
+
                             Group {
                                 imagePicker
                                 Divider()
@@ -91,6 +92,10 @@ struct DiaryAddView: View {
                                     .padding(.bottom)
                             }
                             .font(.subheadline)
+                            .onTapGesture {
+                                isTapTextField = false
+                                dismissKeyboard()
+                            }
 
                             //diaryTitle
                             TextField("제목을 입력해주세요(최대 20자)", text: $diaryTitle)

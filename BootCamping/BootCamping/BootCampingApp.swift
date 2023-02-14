@@ -68,6 +68,7 @@ struct BootCampingApp: App {
                 .environmentObject(DiaryLikeStore())
                 .environmentObject(BlockedUserStore())
                 .environmentObject(LocalNotificationCenter())
+                .environmentObject(ReportStore())
                 .onOpenURL { url in
                     GIDSignIn.sharedInstance.handle(url)
                 }

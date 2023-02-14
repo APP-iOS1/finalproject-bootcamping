@@ -14,6 +14,7 @@ struct DiaryDetailView: View {
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var blockedUserStore: BlockedUserStore
+    @EnvironmentObject var reportStore: ReportStore
     
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
@@ -35,6 +36,8 @@ struct DiaryDetailView: View {
     @State private var isShowingConfirmationDialog = false
     @State private var isShowingUserReportAlert = false
     @State private var isShowingUserBlockedAlert = false
+    
+    @State private var isReported = false
     @State private var isBlocked = false
     
     //자동 스크롤
@@ -137,10 +140,15 @@ struct DiaryDetailView: View {
                 
             }
             .sheet(isPresented: $isShowingUserReportAlert) {
-                ReportUserView()
-                // 예를 들어 다음은 화면의 아래쪽 50%를 차지하는 시트를 만듭니다.
-                    .presentationDetents([.fraction(0.5), .medium, .large])
-                    .presentationDragIndicator(.automatic)
+                if isReported {
+                    WaitingView()
+                        .presentationDetents([.fraction(0.5), .medium])
+                } else {
+                    ReportView(reportedDiaryId: item.diary.id)
+                    // 예를 들어 다음은 화면의 아래쪽 50%를 차지하는 시트를 만듭니다.
+                        .presentationDetents([.fraction(0.5), .medium, .large])
+                        .presentationDragIndicator(.hidden)
+                }
             }
             .padding(.top)
             .padding(.bottom)
@@ -149,6 +157,7 @@ struct DiaryDetailView: View {
                 commentStore.readCommentsCombine(diaryId: item.diary.id)
                 campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
+                isReported = (reportStore.reportedDiaries.filter{ reportedDiary in reportedDiary.reportedDiaryId == item.diary.id }.count != 0)
             }
         }
         .onTapGesture {

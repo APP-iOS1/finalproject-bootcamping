@@ -14,6 +14,7 @@ struct DiaryCommentCellView: View {
     @StateObject var commentStore: CommentStore
     @EnvironmentObject var diaryStore: DiaryStore
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
+    @StateObject var scrollViewHelper: ScrollViewHelper
     
     //선택한 다이어리 정보 변수입니다.
     var item2: UserInfoDiary
@@ -84,7 +85,7 @@ struct DiaryCommentCellView: View {
                 .padding(.vertical, UIScreen.screenWidth * 0.01)
                 .background(Color("BCWhite"))
                 .contentShape(Rectangle())
-                .offset(x: offset)
+                .offset(x: scrollViewHelper.commentOffset[item.id] ?? 0)
                 .gesture(DragGesture().onChanged(onChanged(value:)).onEnded(onEnd(value:)))
             } else {
                 HStack(alignment: .top) {
@@ -123,13 +124,19 @@ struct DiaryCommentCellView: View {
     }
     
     func onChanged(value: DragGesture.Value) {
-        
-        if value.translation.width < 0 && value.translation.width > -65  {
+        withAnimation(.easeOut) {
+            for i in scrollViewHelper.commentOffset {
+                if item.id != i.key {
+                    scrollViewHelper.commentOffset[i.key] = nil
+                }
+            }
+        }
+        if value.translation.width < 0 && -value.translation.width < 65  {
             
             if isSwiped {
-                offset = value.translation.width - 90
+                scrollViewHelper.commentOffset[item.id] = value.translation.width - 90
             } else {
-                offset = value.translation.width
+                scrollViewHelper.commentOffset[item.id] = value.translation.width
             }
         }
     }
@@ -139,21 +146,19 @@ struct DiaryCommentCellView: View {
         withAnimation(.easeOut) {
             if value.translation.width < 0 {
                 
-                if -value.translation.width > UIScreen.main.bounds.width / 2 {
-                    offset = -50
-                } else if -offset > 50 {
+                if -value.translation.width > 50 {
                     isSwiped = true
-                    offset = -50
-                } else if -offset <= 50 {
+                    scrollViewHelper.commentOffset[item.id] = -50
+                } else if -value.translation.width <= 50 {
                     isSwiped = false
-                    offset = 0
+                    scrollViewHelper.commentOffset[item.id] = 0
                 } else {
                     isSwiped = false
-                    offset = 0
+                    scrollViewHelper.commentOffset[item.id] = 0
                 }
             } else {
                 isSwiped = false
-                offset = 0
+                scrollViewHelper.commentOffset[item.id] = 0
             }
         }
     }

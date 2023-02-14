@@ -199,6 +199,15 @@
       }
     },
     {
+      "identity" : "swiftui-introspect",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/siteline/SwiftUI-Introspect.git",
+      "state" : {
+        "revision" : "fc40fb11d4922d6e936a3d2abaa54bcab4fc877e",
+        "version" : "0.2.0"
+      }
+    },
+    {
       "identity" : "swiftui-mail-view",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/globulus/swiftui-mail-view",

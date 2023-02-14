@@ -17,20 +17,19 @@ struct SettingView: View {
     //로그아웃 알럿
     @State var showingAlertLogOut: Bool = false
     @AppStorage("login") var isSignIn: Bool?
-
+    //보안설정 들어갈때 페이스id 사용
+    @EnvironmentObject var faceId: FaceId
+    @AppStorage("faceId") var usingFaceId: Bool?
     
     var body: some View {
         List{
             NavigationLink(destination: EmptyView()) {
                 Text("공지사항")
             }
-            NavigationLink(destination: ReportUserView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []), placeholder: "", options:[])) {
-                Text("자주 묻는 질문")
-            }
             NavigationLink(destination: ContactUsView()) {
-                Text("고객센터")
+                Text("Q&A")
+                //TODO: 자주 묻는 질문(만들어야함!) + 고객센터 메일보내기
             }
-            //TODO: -유저차단뷰
             NavigationLink(destination: EmptyView()) {
                 Text("앱 정보")
             }
@@ -49,6 +48,7 @@ struct SettingView: View {
                 Alert(title: Text("로그아웃하시겠습니까?"),
                       primaryButton: .default(Text("취소"), action: {} ),
                       secondaryButton: .destructive(Text("로그아웃"),action: {
+                    tabSelection.screen = .one
                     wholeAuthStore.combineLogOut()
                 })
                 )
@@ -68,12 +68,5 @@ struct SettingView: View {
             }
         }
         
-    }
-}
-
-
-struct SettingView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingView()
     }
 }

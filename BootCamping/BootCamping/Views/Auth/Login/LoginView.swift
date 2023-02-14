@@ -46,7 +46,9 @@ struct LoginView: View {
                 }
                 .foregroundColor(.black)
                 .padding(UIScreen.screenWidth * 0.05)
-            }.ignoresSafeArea()
+                wholeAuthStore.isProcessing ? Color.black.opacity(0.3) : Color.clear
+            }
+            .ignoresSafeArea()
         }
         .alert("로그인에 실패하였습니다. 다시 시도해 주세요.", isPresented: $wholeAuthStore.isError) {
             Button("확인", role: .cancel) {
@@ -65,10 +67,14 @@ extension LoginView {
     // 로그인 아이콘 및 앱 이름
     var loginIcon: some View {
         VStack {
-            Image("loginImg")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 200)
+            LottieView()
+                .frame(width: 150, height: 150)
+                .padding(.leading, 65)
+
+//            Image("loginImg")
+//                .resizable()
+//                .aspectRatio(contentMode: .fit)
+//                .frame(width: 200)
             Image("loginName")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -152,12 +158,5 @@ extension LoginView {
                 .font(.subheadline)
                 .foregroundColor(.white)
         }
-    }
-}
-
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView()
-            .environmentObject(WholeAuthStore())
     }
 }

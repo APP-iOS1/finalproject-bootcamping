@@ -56,7 +56,6 @@ extension ProfileSettingView {
                     if wholeAuthStore.currnetUserInfo!.profileImageURL != "" && isProfileImageReset == false {
                         WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
                             .resizable()
-                            .foregroundColor(.bcBlack)
                             .scaledToFill()
                             .clipped()
                             .frame(width: 100, height: 100)
@@ -65,22 +64,20 @@ extension ProfileSettingView {
                                 ZStack{
                                     Image(systemName: "circlebadge.fill")
                                         .font(.largeTitle)
-                                    //                            .frame(width: 25, height: 25)
                                         .foregroundColor(.primary)
                                         .colorInvert()
                                         .offset(x: 40, y: 40)
                                     
                                     Image(systemName: "pencil.circle")
                                         .font(.title)
-                                    //                            .frame(width: 25, height: 25)
                                         .foregroundColor(.bcBlack)
                                         .offset(x: 40, y: 40)
                                 }
                             }
                     } else if wholeAuthStore.currnetUserInfo!.profileImageURL == "" || isProfileImageReset == true{
-                        Image(systemName: "person.fill")
+                        Image("defaultProfileImage")
                             .resizable()
-                            .foregroundColor(.bcBlack)
+//                            .foregroundColor(.bcBlack)
                             .scaledToFill()
                             .clipped()
                             .frame(width: 100, height: 100)
@@ -89,41 +86,35 @@ extension ProfileSettingView {
                                 ZStack{
                                     Image(systemName: "circlebadge.fill")
                                         .font(.largeTitle)
-                                    //                            .frame(width: 25, height: 25)
                                         .foregroundColor(.primary)
                                         .colorInvert()
                                         .offset(x: 40, y: 40)
                                     
                                     Image(systemName: "pencil.circle")
                                         .font(.title)
-                                    //                            .frame(width: 25, height: 25)
                                         .foregroundColor(.bcBlack)
                                         .offset(x: 40, y: 40)
                                 }
                             }
                     }
                 } else {
-                    let image = UIImage(data: profileImage ?? Data()) == nil ? UIImage(systemName: "person.fill") : UIImage(data: profileImage ?? Data()) ?? UIImage(systemName: "person.fill")
-                    Image(uiImage: ((image ?? UIImage(systemName: "person.fill"))!))
+                    let image = UIImage(data: profileImage ?? Data()) == nil ? UIImage(contentsOfFile: "defaultProfileImage") : UIImage(data: profileImage ?? Data()) ?? UIImage(contentsOfFile: "defaultProfileImage")
+                    Image(uiImage: ((image ?? UIImage(contentsOfFile: "defaultProfileImage"))!))
                         .resizable()
-                        .foregroundColor(.bcBlack)
                         .scaledToFill()
                         .clipped()
                         .frame(width: 100, height: 100)
-                    //                    .aspectRatio(contentMode: .fit)
                         .clipShape(Circle())
                         .overlay{
                             ZStack{
                                 Image(systemName: "circlebadge.fill")
                                     .font(.largeTitle)
-                                //                            .frame(width: 25, height: 25)
                                     .foregroundColor(.primary)
                                     .colorInvert()
                                     .offset(x: 40, y: 40)
                                 
                                 Image(systemName: "pencil.circle")
                                     .font(.title)
-                                //                            .frame(width: 25, height: 25)
                                     .foregroundColor(.bcBlack)
                                     .offset(x: 40, y: 40)
                             }
@@ -136,18 +127,18 @@ extension ProfileSettingView {
                 loadData()
             },
                    content: { ImagePicker(image: $selectedImage) })
-            
-            // TODO: 기본 프로필로 변경하는 버튼 위치 좀 정해주세욥
+            .padding(.bottom, 7)
             Button {
                 profileImage = nil
                 isProfileImageReset = true
             } label: {
                 Text("기본 이미지로 변경")
                     .font(.caption2)
-                    .padding(3)
+                    .padding(4)
                     .overlay{
                         RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.bcDarkGray, lineWidth: 1)
+//                            .stroke(Color.bcDarkGray, lineWidth: 1)
+                            .fill(Color.bcDarkGray)
                             .opacity(0.3)
                     }
                 
@@ -158,7 +149,7 @@ extension ProfileSettingView {
     // selectedImage: UIImage 타입을 Data타입으로 저장하는 함수
     func loadData() {
         guard let selectedImage = selectedImage else { return }
-        profileImage = selectedImage.jpegData(compressionQuality: 0.8)
+        profileImage = selectedImage.jpegData(compressionQuality: 0.1)
         
     }
     
@@ -233,10 +224,3 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
     }
 }
-
-//struct ProfileSettingView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ProfileSettingView(user: User(id: "", profileImageName: "", profileImageURL: "", nickName: "chasomin", userEmail: "", bookMarkedDiaries: [], bookMarkedSpot: []))
-//            .environmentObject(WholeAuthStore())
-//    }
-//}

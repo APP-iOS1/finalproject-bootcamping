@@ -36,9 +36,3 @@ struct BlockUserEditView: View {
         blockedUser.remove(atOffsets: offsets)
     }
 }
-
-struct BlockUserEditView_Previews: PreviewProvider {
-    static var previews: some View {
-        BlockUserEditView()
-    }
-}

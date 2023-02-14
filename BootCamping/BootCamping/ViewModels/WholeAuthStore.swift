@@ -102,8 +102,8 @@ class WholeAuthStore: ObservableObject {
                     print("Finished get UserList")
                     return
                 }
-            } receiveValue: { users in
-                self.userList = users
+            } receiveValue: { [weak self] users in
+                self?.userList = users
             }
             .store(in: &cancellables)
     }
@@ -124,8 +124,8 @@ class WholeAuthStore: ObservableObject {
                     print("Finished get UserList")
                     return
                 }
-            } receiveValue: { user in
-                self.currnetUserInfo = user
+            } receiveValue: { [weak self] user in
+                self?.currnetUserInfo = user
             }
             .store(in: &cancellables)
     }
@@ -254,8 +254,8 @@ class WholeAuthStore: ObservableObject {
                     print("Finished check User Email Duplicated")
                     return
                 }
-            } receiveValue: { value in
-                self.duplicatedEmailState = value
+            } receiveValue: { [weak self] value in
+                self?.duplicatedEmailState = value
             }
             .store(in: &cancellables)
     }
@@ -297,14 +297,14 @@ class WholeAuthStore: ObservableObject {
                     print("Finished SingIn User")
                     return
                 }
-            } receiveValue: { user in
-                self.currentUser = user
-                self.getUserInfo(userUID: user.uid) {
-                    self.loginPlatform = .email
-                    self.isProcessing = false
-                    self.isError = false
+            } receiveValue: { [weak self] user in
+                self?.currentUser = user
+                self?.getUserInfo(userUID: user.uid) {
+                    self?.loginPlatform = .email
+                    self?.isProcessing = false
+                    self?.isError = false
                     withAnimation(.easeInOut) {
-                        self.isSignIn = true
+                        self?.isSignIn = true
                     }
                 }
             }
@@ -352,9 +352,9 @@ class WholeAuthStore: ObservableObject {
                     print("Finished SignUp User")
                     return
                 }
-            } receiveValue: { userUID in
-                self.loginPlatform = .email
-                self.createUserCombine(user: User(id: userUID, profileImageName: "", profileImageURL: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []))
+            } receiveValue: { [weak self] userUID in
+                self?.loginPlatform = .email
+                self?.createUserCombine(user: User(id: userUID, profileImageName: "", profileImageURL: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []))
             }
             .store(in: &cancellables)
     }
@@ -505,33 +505,33 @@ class WholeAuthStore: ObservableObject {
                     print("Finished SignIn User")
                     return
                 }
-            } receiveValue: { user in
-                self.isProcessing = true
-                self.currentUser = user
-                let query = self.database.collection("UserList").whereField("id", isEqualTo: (user.uid))
-                query.getDocuments { (snapshot, error) in
+            } receiveValue: { [weak self] user in
+                self?.isProcessing = true
+                self?.currentUser = user
+                let query = self?.database.collection("UserList").whereField("id", isEqualTo: (user.uid))
+                query?.getDocuments { (snapshot, error) in
                     if let error = error {
                         print(error)
-                        self.isProcessing = false
-                        self.isError = true
+                        self?.isProcessing = false
+                        self?.isError = true
                     }
                     if let error = error {
                         print(error)
-                        self.isProcessing = false
-                        self.isError = true
+                        self?.isProcessing = false
+                        self?.isError = true
                     } else {
                         if snapshot?.documents.count == 0 {
                             print("파이어베이스에 유저정보가 없습니다.")
-                            self.loginPlatform = .kakao
-                            self.createUserCombine(user: User(id: (user.uid), profileImageName: "", profileImageURL: "", nickName: (user.email)!, userEmail: (user.email!), bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []))
+                            self?.loginPlatform = .kakao
+                            self?.createUserCombine(user: User(id: (user.uid), profileImageName: "", profileImageURL: "", nickName: (user.email)!, userEmail: (user.email!), bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []))
                         } else {
                             print("파이어베이스에 유저정보가 있습니다..")
-                            self.getUserInfo(userUID: user.uid) {
-                                self.loginPlatform = .kakao
+                            self?.getUserInfo(userUID: user.uid) {
+                                self?.loginPlatform = .kakao
                                 withAnimation(.easeInOut) {
-                                    self.isSignIn = true
-                                    self.isError = false
-                                    self.isProcessing = false
+                                    self?.isSignIn = true
+                                    self?.isError = false
+                                    self?.isProcessing = false
                                 }
                             }
                         }

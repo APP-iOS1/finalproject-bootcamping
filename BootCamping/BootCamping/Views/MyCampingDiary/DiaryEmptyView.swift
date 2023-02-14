@@ -8,24 +8,21 @@
 import SwiftUI
 
 struct DiaryEmptyView: View {
-//    @Binding var isNavigationGoFirstView: Bool
-    @State var isNavigationGoFirstView = false
     var body: some View {
         VStack {
-            Text("다이어리가 비어있습니다.")
+            Spacer()
+            Image(systemName: "tray")
+                .font(.largeTitle)
+            Text("내 캠핑일기가 아직 없어요.")
                 .font(.title3)
                 .padding()
+                .padding(.bottom, 50)
 
-            NavigationLink (destination: DiaryAddView(isNavigationGoFirstView: $isNavigationGoFirstView), isActive: $isNavigationGoFirstView){
-                Text("다이어리 작성하러 가기")
+            NavigationLink (destination: DiaryAddView()){
+                Text("캠핑일기 작성하러 가기")
+                    .modifier(GreenButtonModifier())
             }
-            .modifier(GreenButtonModifier())
+            Spacer()
         }
-    }
-}
-
-struct DiaryEmptyView_Previews: PreviewProvider {
-    static var previews: some View {
-        DiaryEmptyView()
     }
 }

@@ -28,9 +28,3 @@ struct DescribePictureView: View {
         }
     }
 }
-
-struct DescribePictureView_Previews: PreviewProvider {
-    static var previews: some View {
-        DescribePictureView()
-    }
-}

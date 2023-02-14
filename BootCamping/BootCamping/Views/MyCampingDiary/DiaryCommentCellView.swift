@@ -12,6 +12,19 @@ import SDWebImageSwiftUI
 struct DiaryCommentCellView: View {
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var commentStore: CommentStore
+    @EnvironmentObject var diaryStore: DiaryStore
+    @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
+    
+    //선택한 다이어리 정보 변수입니다.
+    var item2: UserInfoDiary
+    
+    var diaryCampingSpot: [Item] {
+        get {
+            return campingSpotStore.campingSpotList.filter{
+                $0.contentId == item2.diary.diaryAddress
+            }
+        }
+    }
     
     var item: Comment
     
@@ -22,19 +35,32 @@ struct DiaryCommentCellView: View {
     @State private var isShowingUserBlockedAlert = false
     
     var body: some View {
-            HStack{
+        HStack(alignment: .top) {
                 diaryCommetUserProfile
                     .frame(width: 35)
                 
                 VStack(alignment: .leading) {
-                    Text(item.nickName)
-                        .font(.title3)
+                    HStack {
+                        Text(item.nickName)
+                            .font(.subheadline)
+                        Text("·")
+                            .font(.footnote)
+                            .foregroundColor(.bcDarkGray)
+                        Text("\(TimestampToString.dateString(item.commentCreatedDate)) 전")
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                    }
+                    
                     Text(item.commentContent)
+                        .font(.callout)
+                        .foregroundColor(.secondary)
+                        .padding(.top, -5)
                 }
-                .padding(.trailing, 3)
+                .padding(.trailing, 5)
                 
                 Spacer()
             }
+            .padding(.vertical, UIScreen.screenWidth * 0.01)
           
     }
 }
@@ -49,12 +75,12 @@ private extension DiaryCommentCellView {
                 .frame(width: 30, height: 30)
                 .clipShape(Circle())
         } else {
-            Image(systemName: "person.fill")
+            Image("defaultProfileImage")
                 .resizable()
                 .scaledToFill()
+                .clipped()
                 .frame(width: 30, height: 30)
                 .clipShape(Circle())
-                
         }
     }
     
@@ -85,11 +111,12 @@ private extension DiaryCommentCellView {
     var alertMenu: some View {
         //MARK: - ... 버튼입니다.
         Menu {
-            Button {
-                //TODO: -수정기능 추가
+            NavigationLink {
+                DiaryEditView(diaryTitle: item2.diary.diaryTitle, diaryIsPrivate: item2.diary.diaryIsPrivate, diaryContent: item2.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", item: item2, selectedDate: item2.diary.diaryVisitedDate)
             } label: {
                 Text("수정하기")
             }
+
             
             Button {
                 isShowingDeleteAlert = true
@@ -147,13 +174,5 @@ private extension DiaryCommentCellView {
                 //차단 컴바인..
             }
         }
-    }
-}
-
-struct DiaryCommentCellView_Previews: PreviewProvider {
-    static var previews: some View {
-        DiaryCommentCellView(item: Comment(id: "", diaryId: "", uid: "", nickName: "", profileImage: "", commentContent: "", commentCreatedDate: Timestamp()))
-            .environmentObject(WholeAuthStore())
-            .environmentObject(CommentStore())
     }
 }

@@ -13,11 +13,10 @@ struct CampingSpotListRaw: View {
     var item: Item
     
     var body: some View{
-        VStack(alignment: .leading){
+        VStack(alignment: .leading) {
             
             // 캠핑장 사진
             if item.firstImageUrl.isEmpty {
-                // 이미지 없는 것도 있어서 어떻게 할 지 고민 중~
                 Image("noImage")
                     .resizable()
                     .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
@@ -26,9 +25,12 @@ struct CampingSpotListRaw: View {
                 WebImage(url: URL(string: item.firstImageUrl))
                     .resizable()
                     .placeholder {
-                        Rectangle().foregroundColor(.gray)
+                        ProgressView()
+                            .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: UIScreen.screenWidth*0.9)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
+                    .clipped()
                     .padding(.bottom, 5)
             }
             
@@ -46,7 +48,7 @@ struct CampingSpotListRaw: View {
                             }
                     }
                 }
-                .padding(.horizontal, UIScreen.screenWidth*0.05)
+                .padding(.horizontal, UIScreen.screenWidth * 0.04)
             }
             
             
@@ -54,20 +56,20 @@ struct CampingSpotListRaw: View {
             Text(item.facltNm)
                 .font(.title3.bold())
                 .foregroundColor(.bcBlack)
-                .padding(.horizontal, UIScreen.screenWidth*0.05)
+                .padding(.horizontal, UIScreen.screenWidth * 0.04)
 
             // 캠핑장 간단 주소
             HStack {
                 Image(systemName: "mappin.and.ellipse")
                     .font(.callout)
                     .foregroundColor(.gray)
-                    .padding(.trailing, -7)
+                    .padding(.trailing, -3)
                 Text("\(item.doNm) \(item.sigunguNm)")
                     .font(.callout)
                     .foregroundColor(.gray)
             }
-            .padding(.bottom, 5)
-            .padding(.horizontal, UIScreen.screenWidth*0.05)
+            .padding(.vertical, -10)
+            .padding(.horizontal, UIScreen.screenWidth * 0.04)
 
             // 캠핑장 설명 3줄
             if item.lineIntro != "" {
@@ -75,21 +77,17 @@ struct CampingSpotListRaw: View {
                     .font(.callout)
                     .multilineTextAlignment(.leading)
                     .foregroundColor(.bcBlack)
-                    .padding(.horizontal, UIScreen.screenWidth*0.05)
+                    .padding(.top, 13)
+                    .padding(.horizontal, UIScreen.screenWidth * 0.04)
             } else {
-                Text("업체에서 제공하는 정보가 없습니다")
-                    .font(.callout)
+                Text("업체에서 제공하는 소개글이 없습니다.")
+                  //  .font(.callout)
                     .multilineTextAlignment(.leading)
-                    .foregroundColor(.bcBlack)
-                    .padding(.horizontal, UIScreen.screenWidth*0.05)
+                    .foregroundColor(.gray)
+                    .padding(.top, 13)
+                    .padding(.horizontal, UIScreen.screenWidth * 0.04)
             }
             
         }
-    }
-}
-
-struct CampingSpotListRaw_Previews: PreviewProvider {
-    static var previews: some View {
-        CampingSpotListRaw(item: Item(contentId: "", facltNm: "", lineIntro: "", intro: "", allar: "", insrncAt: "", trsagntNo: "", bizrno: "", facltDivNm: "", mangeDivNm: "", mgcDiv: "", manageSttus: "", hvofBgnde: "", hvofEnddle: "", featureNm: "", induty: "", lctCl: "", doNm: "", sigunguNm: "", zipcode: "", addr1: "", addr2: "", mapX: "", mapY: "", direction: "", tel: "", homepage: "", resveUrl: "", resveCl: "", manageNmpr: "", gnrlSiteCo: "", autoSiteCo: "", glampSiteCo: "", caravSiteCo: "", indvdlCaravSiteCo: "", sitedStnc: "", siteMg1Width: "", siteMg2Width: "", siteMg3Width: "", siteMg1Vrticl: "", siteMg2Vrticl: "", siteMg3Vrticl: "", siteMg1Co: "", siteMg2Co: "", siteMg3Co: "", siteBottomCl1: "", siteBottomCl2: "", siteBottomCl3: "", siteBottomCl4: "", siteBottomCl5: "", tooltip: "", glampInnerFclty: "", caravInnerFclty: "", prmisnDe: "", operPdCl: "", operDeCl: "", trlerAcmpnyAt: "", caravAcmpnyAt: "", toiletCo: "", swrmCo: "", wtrplCo: "", brazierCl: "", sbrsCl: "", sbrsEtc: "", posblFcltyCl: "", posblFcltyEtc: "", clturEventAt: "", clturEvent: "", exprnProgrmAt: "", exprnProgrm: "", extshrCo: "", frprvtWrppCo: "", frprvtSandCo: "", fireSensorCo: "", themaEnvrnCl: "", eqpmnLendCl: "", animalCmgCl: "", tourEraCl: "", firstImageUrl: "", createdtime: "", modifiedtime: ""))
     }
 }

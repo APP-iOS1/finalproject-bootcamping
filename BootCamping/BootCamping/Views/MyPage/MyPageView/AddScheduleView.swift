@@ -38,9 +38,7 @@ struct AddScheduleView: View {
     }
     
     var isAddingDisable: Bool {
-        return ischeckingDate
-        // TODO: - 패치 함수 수정 후 campingSpot == "" || isAddingDisable로 수정해야 함
-        //        return campingSpot == "" || ischeckingDate
+        return campingSpot == "" || ischeckingDate
     }
     
     var alert: String {
@@ -50,9 +48,6 @@ struct AddScheduleView: View {
         }
         return "캠핑장 이름을 입력해주세요"
     }
-    
-    //onAppear 시 캠핑장 데이터 패치
-    @State var page: Int = 2
     
     var body: some View {
         // FIXME: 여행 일정의 첫 날과 마지막 날을 선택하면 범위 선택이 가능해야 함
@@ -100,11 +95,6 @@ struct AddScheduleView: View {
         .onAppear{
             ischeckingDate = checkSchedule(startDate: startDate, endDate: endDate)
             campingSpot = campingSpotItem.facltNm
-            //TODO: -패치데이터
-            //            Task {
-            //                campingSpotStore.campingSpotList = try await fetchData.fetchData(page: page)
-            //            }
-            
         }
         .onChange(of: [self.startDate, self.endDate]) { newvalues in
             ischeckingDate = checkSchedule(startDate: newvalues[0], endDate: newvalues[1])
@@ -168,28 +158,32 @@ extension AddScheduleView {
     }
     // MARK: -View : setNotificationToggleButton
     private var setNotificationToggle: some View{
-        Toggle(isOn: self.$isSettingNotification) {
-            Text("스케줄에 대한 알림 수신")
+        VStack (alignment: .leading){
+            Toggle(isOn: self.$isSettingNotification) {
+                Text("캠핑 일정에 대한 알림 수신")
+            }
+            .toggleStyle(SwitchToggleStyle(tint: .bcGreen))
+            Text("*알림 수신을 위해 기기의 PUSH 알림 설정이 필요합니다.\n*알림 설정은 '설정 > 알림 > 부트캠핑 > 알림 허용'에서 변경 가능합니다.")
+                .frame(height: 40)
+                .foregroundColor(Color.secondary)
+                .font(.caption)
         }
     }
     // MARK: -View : addScheduleButton
     private var addScheduleButton : some View {
         Button {
             let calendar = Calendar.current
-            if endDate.timeIntervalSince(startDate) > 0 {
-                let interval = Int(endDate.timeIntervalSince(startDate))
-                let days = (interval % 86400 == 0 ? (interval / 86400) : (interval / 86400) + 1)
-                for day in 0...days {
-                    print(calendar.date(byAdding: .day, value: day, to: startDate) ?? Date())
-                    scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: calendar.date(byAdding: .day, value: day, to: startDate) ?? Date(), color: selectedColor))
+            let interval = Int(endDate.timeIntervalSince(startDate))
+            let days = (interval % 86400 == 0 ? (interval / 86400) : (interval / 86400) + 1)
+            for day in 0...days {
+                scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: calendar.date(byAdding: .day, value: day, to: startDate) ?? Date(), color: selectedColor))
+                if day == 0 {
+                    Task{
+                        try await localNotificationCenter.addNotification(startDate: startDate)
+                    }
                 }
-            } else {
-                scheduleStore.createScheduleCombine(schedule: Schedule(id: UUID().uuidString, title: campingSpot, date: startDate, color: selectedColor))
             }
             scheduleStore.readScheduleCombine()
-//            if isSettingNotification{
-//                localNotification.setNotification(startDate: startDate)
-//            }
             dismiss()
         } label: {
             Text("등록")

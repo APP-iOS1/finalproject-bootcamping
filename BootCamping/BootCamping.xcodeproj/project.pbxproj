@@ -75,7 +75,7 @@
 		790B62F4297A28E00048C110 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62F3297A28E00048C110 /* KakaoSDKUser */; };
 		792C42422990CAD200B7772C /* PrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42412990CAD200B7772C /* PrivacyView.swift */; };
 		792C42442990D0A800B7772C /* PasswordChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42432990D0A800B7772C /* PasswordChangeView.swift */; };
-		792C42492993D6E500B7772C /* DiaryAddContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42482993D6E500B7772C /* DiaryAddContentView.swift */; };
+		794ACB1E299929950037DDDD /* DiaryEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794ACB1D299929950037DDDD /* DiaryEditView.swift */; };
 		7C20C300299380DF0030CB21 /* FirebaseDiaryLikeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C20C2FF299380DF0030CB21 /* FirebaseDiaryLikeService.swift */; };
 		7C20C30229938CC90030CB21 /* DiaryLIkeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C20C30129938CC90030CB21 /* DiaryLIkeStore.swift */; };
 		7C294CAC299513570024CEA9 /* BlockUserEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C294CAB299513570024CEA9 /* BlockUserEditView.swift */; };
@@ -85,6 +85,7 @@
 		7C715C982977E056009BC678 /* Diary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C715C972977E056009BC678 /* Diary.swift */; };
 		7C95F191298A55120095A6BC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C95F190298A55120095A6BC /* GoogleService-Info.plist */; };
 		7CA272FE2991CE6600443111 /* DiaryLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA272FD2991CE6600443111 /* DiaryLockedView.swift */; };
+		7CACABBF299947E30044520F /* PinchZoomAndDrag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CACABBE299947E30044520F /* PinchZoomAndDrag.swift */; };
 		7CC3AD4E29890970002EF992 /* DiaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3AD4D29890970002EF992 /* DiaryStore.swift */; };
 		7CC3AD5029890974002EF992 /* FirebaseDiaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3AD4F29890974002EF992 /* FirebaseDiaryService.swift */; };
 		7CD6570B298C91B000889FF3 /* LocalAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD6570A298C91B000889FF3 /* LocalAuthentication.swift */; };
@@ -167,7 +168,7 @@
 		790B62F5297A2D710048C110 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		792C42412990CAD200B7772C /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
 		792C42432990D0A800B7772C /* PasswordChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeView.swift; sourceTree = "<group>"; };
-		792C42482993D6E500B7772C /* DiaryAddContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryAddContentView.swift; sourceTree = "<group>"; };
+		794ACB1D299929950037DDDD /* DiaryEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryEditView.swift; sourceTree = "<group>"; };
 		7C20C2FF299380DF0030CB21 /* FirebaseDiaryLikeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDiaryLikeService.swift; sourceTree = "<group>"; };
 		7C20C30129938CC90030CB21 /* DiaryLIkeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryLIkeStore.swift; sourceTree = "<group>"; };
 		7C294CAB299513570024CEA9 /* BlockUserEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserEditView.swift; sourceTree = "<group>"; };
@@ -176,6 +177,7 @@
 		7C715C972977E056009BC678 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
 		7C95F190298A55120095A6BC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7CA272FD2991CE6600443111 /* DiaryLockedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryLockedView.swift; sourceTree = "<group>"; };
+		7CACABBE299947E30044520F /* PinchZoomAndDrag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinchZoomAndDrag.swift; sourceTree = "<group>"; };
 		7CC3AD4D29890970002EF992 /* DiaryStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryStore.swift; sourceTree = "<group>"; };
 		7CC3AD4F29890974002EF992 /* FirebaseDiaryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseDiaryService.swift; sourceTree = "<group>"; };
 		7CD6570A298C91B000889FF3 /* LocalAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthentication.swift; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 				63AF45AC2977CDB40014B1E1 /* Date.swift */,
 				63AF45AA2977CDB40014B1E1 /* UIScreen+Extension.swift */,
 				63AF45AB2977CDB40014B1E1 /* ViewModifiers.swift */,
+				7CACABBE299947E30044520F /* PinchZoomAndDrag.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -361,9 +364,9 @@
 		63AF45BE2977CDF00014B1E1 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				7CFCE1292987549700E196AF /* RealtimeCampingView.swift */,
-				7CFCE12C2987549F00E196AF /* WeeklyPopulerCampingView.swift */,
 				63AF45BF2977CDF90014B1E1 /* HomeView.swift */,
+				7CFCE12C2987549F00E196AF /* WeeklyPopulerCampingView.swift */,
+				7CFCE1292987549700E196AF /* RealtimeCampingView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -374,8 +377,8 @@
 				63AF45E42977CE650014B1E1 /* SearchCampingSpotView.swift */,
 				63D1822C2993D53B00293727 /* CampingSpotListSearchingView.swift */,
 				63AF45E22977CE650014B1E1 /* CampingSpotListView.swift */,
-				63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */,
 				63F8426B298FB5FF006A9433 /* CampingSpotListRaw.swift */,
+				63AF45E32977CE650014B1E1 /* CampingSpotDetailView.swift */,
 				6E96013A298A32D6009C60F2 /* FullMapView.swift */,
 				63BC803A298C8EF30088AC02 /* EmptyCampingSpotListCell.swift */,
 				633DF94629948EE000B29C91 /* SearchByCampingSpotNameView.swift */,
@@ -391,11 +394,11 @@
 				AD373AF92977D68A00E1236A /* DiaryCellView.swift */,
 				63AF45DE2977CE5E0014B1E1 /* DiaryDetailView.swift */,
 				63AF45DD2977CE5E0014B1E1 /* DiaryAddView.swift */,
-				792C42482993D6E500B7772C /* DiaryAddContentView.swift */,
 				7CA272FD2991CE6600443111 /* DiaryLockedView.swift */,
 				7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */,
 				7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */,
-				6E8CACAF29937E3F000C2274 /* ReportUserView.swift */,
+				794ACB1D299929950037DDDD /* DiaryEditView.swift */,
+				6E9E99D52999F1A7009FF5C4 /* ReportUserView */,
 			);
 			path = MyCampingDiary;
 			sourceTree = "<group>";
@@ -431,6 +434,14 @@
 				6E688E1329920F7B006DCEE5 /* picture_lottie.json */,
 			);
 			path = Lottie;
+			sourceTree = "<group>";
+		};
+		6E9E99D52999F1A7009FF5C4 /* ReportUserView */ = {
+			isa = PBXGroup;
+			children = (
+				6E8CACAF29937E3F000C2274 /* ReportUserView.swift */,
+			);
+			path = ReportUserView;
 			sourceTree = "<group>";
 		};
 		792C42452990D18700B7772C /* Setting */ = {
@@ -604,7 +615,6 @@
 				630ADB512977CC6C000A517B /* ContentView.swift in Sources */,
 				6E688E17299220B7006DCEE5 /* ContactUsView.swift in Sources */,
 				7CFCE12F2987551F00E196AF /* LoginPasswordView.swift in Sources */,
-				792C42492993D6E500B7772C /* DiaryAddContentView.swift in Sources */,
 				63AF45DF2977CE5E0014B1E1 /* MyCampingDiaryView.swift in Sources */,
 				7CC3AD4E29890970002EF992 /* DiaryStore.swift in Sources */,
 				7CD6570F298D07EB00889FF3 /* BookmarkStore.swift in Sources */,
@@ -635,6 +645,7 @@
 				63AF45D72977CE4C0014B1E1 /* MyPageView.swift in Sources */,
 				792C42422990CAD200B7772C /* PrivacyView.swift in Sources */,
 				CA27A62D298CE95500A6AEE5 /* FirebaseBookmarkService.swift in Sources */,
+				7CACABBF299947E30044520F /* PinchZoomAndDrag.swift in Sources */,
 				6E688DFE2991E153006DCEE5 /* OnboardingTabView.swift in Sources */,
 				63D1822D2993D53B00293727 /* CampingSpotListSearchingView.swift in Sources */,
 				CA729F3329792DE000CCC3BB /* CalendarView.swift in Sources */,
@@ -650,6 +661,7 @@
 				AD21BAE32989F28C007ED6B7 /* FirebaseCommentService.swift in Sources */,
 				63AF45E02977CE5E0014B1E1 /* DiaryAddView.swift in Sources */,
 				6E688DFA2991E136006DCEE5 /* DescribePictureView.swift in Sources */,
+				794ACB1E299929950037DDDD /* DiaryEditView.swift in Sources */,
 				6E688E3A29923506006DCEE5 /* ContactMail.swift in Sources */,
 				63AF45E12977CE5E0014B1E1 /* DiaryDetailView.swift in Sources */,
 				CA27A63A29937DB400A6AEE5 /* LocalNotificationCenter.swift in Sources */,
@@ -820,9 +832,9 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
@@ -865,9 +877,9 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.1;

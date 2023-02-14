@@ -47,7 +47,7 @@ struct MyPageView: View {
     var body: some View {
         VStack {
             ScrollView(showsIndicators: false) {
-                userProfileSection
+                    userProfileSection
                 animate()
                     .padding(.top, UIScreen.screenHeight*0.02)
                 myPageTap
@@ -79,16 +79,17 @@ struct MyPageView: View {
 extension MyPageView{
     // MARK: -View : 유저 프로필이미지, 닉네임 표시
     private var userProfileSection : some View {
-        HStack{
+        HStack(spacing: 20){
             if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
                 WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
                     .resizable()
                     .scaledToFill()
                     .frame(width: 60, height: 60)
                     .clipShape(Circle())
+                
 
             } else {
-                Image(systemName: "person.fill")
+                Image("defaultProfileImage")
                     .resizable()
                     .scaledToFill()
                     .frame(width: 60, height: 60)
@@ -96,6 +97,39 @@ extension MyPageView{
                     
             }
             Text("\((wholeAuthStore.currnetUserInfo!.nickName)) 님")
+            Group{
+                switch wholeAuthStore.loginPlatform {
+                case .email:
+                    Image(systemName: "")
+                    
+                case .apple:
+                    ZStack{
+                        Circle()
+                            .fill(Color.black)
+                            .frame(width: 30)
+                        Image(systemName: "apple.logo")
+                            .resizable()
+                            .foregroundColor(.white)
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 15)
+                    }
+                case .google:
+                    Image("g-logo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 30)
+                        .clipShape(Circle())
+                case .kakao:
+                    Image("k-logo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 30)
+                        .clipShape(Circle())
+                case .none:
+                    Image(systemName: "")
+                    
+                }
+            }
             NavigationLink {
                 ProfileSettingView()
                 
@@ -103,8 +137,48 @@ extension MyPageView{
                 Image(systemName: "chevron.right")
                     .bold()
             }
+            
             Spacer()
         }
+        
+    }
+    
+    // MARK: 로그인 플랫폼?에 따른 로고
+    private var loginLogo: some View {
+        Group{
+            switch wholeAuthStore.loginPlatform {
+            case .email:
+                Image(systemName: "")
+                
+            case .apple:
+                ZStack{
+                    Circle()
+                        .fill(Color.black)
+                        .frame(width: 30)
+                    Image(systemName: "apple.logo")
+                        .resizable()
+                        .foregroundColor(.white)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 15)
+                }
+            case .google:
+                Image("g-logo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 30)
+                    .clipShape(Circle())
+            case .kakao:
+                Image("k-logo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 30)
+                    .clipShape(Circle())
+            case .none:
+                Image(systemName: "")
+                
+            }
+        }
+        
         
     }
     
@@ -115,7 +189,8 @@ extension MyPageView{
             ForEach(TapMypage.allCases, id: \.self) { item in
                 VStack {
                     Text(item.rawValue)
-                        .font(.callout)
+                        .font(.title3)
+                        .bold()
                         .kerning(-1)
                         .foregroundColor(selectedPicker2 == item ? .bcBlack : .gray)
                     
@@ -157,12 +232,5 @@ extension MyPageView{
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
             }
         }
-    }
-}
-
-
-struct MyPageView_Previews: PreviewProvider {
-    static var previews: some View {
-        MyPageView()
     }
 }

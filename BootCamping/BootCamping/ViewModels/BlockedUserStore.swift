@@ -12,9 +12,30 @@ import FirebaseAuth
 
 class BlockedUserStore: ObservableObject {
     
+    @Published var blockedUsers: [String] = []
+    
     let database = Firestore.firestore()
 
     private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: readUserListCombine 유저리스트 조회
+    func readblockedUsersCombine() {
+        FirebaseBlockedUserService().readBlockedUserService()
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    return
+                case .finished:
+                    print("Finished get Blocked Users")
+                    return
+                }
+            } receiveValue: { [weak self] blockedUser in
+                self?.blockedUsers = blockedUser
+            }
+            .store(in: &cancellables)
+    }
     
     //MARK: - Add Blocked User to Blocked User Combine
     func addBlockedUserCombine(blockedUserId: String) {
@@ -24,10 +45,11 @@ class BlockedUserStore: ObservableObject {
                 switch completion {
                 case .failure(let error):
                     print(error)
-                    print("Failed Add Block User")
+                    print("Failed Add Blocked User")
                     return
                 case .finished:
-                    print("Finished Add Block User")
+                    print("Finished Add Blocked User")
+                    self.readblockedUsersCombine()
                     return
                 }
             } receiveValue: { _ in
@@ -48,6 +70,7 @@ class BlockedUserStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished remove Blocked User")
+                    self.readblockedUsersCombine()
                     return
                 }
             } receiveValue: { _ in

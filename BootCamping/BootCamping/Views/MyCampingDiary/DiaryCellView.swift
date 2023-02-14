@@ -8,12 +8,15 @@
 import SwiftUI
 import SDWebImageSwiftUI
 import Firebase
+import AlertToast
 
 struct DiaryCellView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var blockedUserStore: BlockedUserStore
+    @EnvironmentObject var reportStore: ReportStore
+    
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
     @StateObject var commentStore: CommentStore = CommentStore()
@@ -28,6 +31,9 @@ struct DiaryCellView: View {
     //유저 신고/ 차단 알림
     @State private var isShowingConfirmationDialog = false
     @State private var isShowingUserReportAlert = false
+    
+    @State private var reportState = ReportState.notReported
+    @State private var isShowingAcceptedToast = false
     @State private var isBlocked = false
     
     @EnvironmentObject var faceId: FaceId
@@ -92,11 +98,19 @@ struct DiaryCellView: View {
                 .foregroundColor(.bcBlack)
             }
         }
+        .toast(isPresenting: $isShowingAcceptedToast) {
+            AlertToast(type: .regular, title: "이 게시물에 대한 신고가 접수되었습니다.")
+        }
         .sheet(isPresented: $isShowingUserReportAlert) {
-            ReportUserView()
-            // 예를 들어 다음은 화면의 아래쪽 50%를 차지하는 시트를 만듭니다.
-                .presentationDetents([.fraction(0.5), .medium, .large])
-                .presentationDragIndicator(.automatic)
+            if reportState == .alreadyReported {
+                WaitingView()
+                    .presentationDetents([.fraction(0.3), .medium])
+            } else {
+                ReportView(reportState: $reportState, reportedDiaryId: item.diary.id)
+                // 예를 들어 다음은 화면의 아래쪽 50%를 차지하는 시트를 만듭니다.
+                    .presentationDetents([.fraction(0.5), .medium, .large])
+                    .presentationDragIndicator(.hidden)
+            }
         }
         .padding(.top, UIScreen.screenWidth * 0.03)
         .onAppear {
@@ -104,6 +118,10 @@ struct DiaryCellView: View {
             campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
             //TODO: -함수 업데이트되면 넣기
             diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
+            reportState = (reportStore.reportedDiaries.filter{ reportedDiary in reportedDiary.reportedDiaryId == item.diary.id }.count != 0) ? ReportState.alreadyReported : ReportState.notReported
+        }
+        .onChange(of: reportState) { newReportState in
+            isShowingAcceptedToast = (reportState == ReportState.nowReported)
         }
     }
 }

@@ -28,10 +28,12 @@ struct MyCampingDiaryView: View {
             VStack {
                 ScrollView(showsIndicators: false) {
                     LazyVStack {
-                        ForEach(diaryStore.myDiaryUserInfoDiaryList.indices, id: \.self) { index in
-                            DiaryCellView(item: diaryStore.myDiaryUserInfoDiaryList[index])
+                        ForEach(diaryStore.myDiaryUserInfoDiaryList, id: \.self) { userInfoDiary in
+                            DiaryCellView(item: userInfoDiary)
                                 .task {
-                                    if index == diaryStore.myDiaryUserInfoDiaryList.count - 1 {
+                                    guard let index = diaryStore.myDiaryUserInfoDiaryList.firstIndex(where: { $0.diary.id == userInfoDiary.diary.id}) else { return }
+                                    if index % 5 == 4 {
+                                        print("하이")
                                         Task {
                                             diaryStore.nextGetMyDiaryCombine()
                                         }

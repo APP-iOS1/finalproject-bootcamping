@@ -32,6 +32,7 @@ struct DiaryDetailView: View {
     //삭제 알림
     @State private var isShowingDeleteAlert = false
     //유저 신고/ 차단 알림
+    @State private var isShowingConfirmationDialog = false
     @State private var isShowingUserReportAlert = false
     @State private var isShowingUserBlockedAlert = false
     @State private var isBlocked = false
@@ -77,6 +78,7 @@ struct DiaryDetailView: View {
                             .id(bottomID)
                         Spacer()
                     }
+                   
                     .onAppear {
                         withAnimation {
                             proxy.scrollTo(topID)
@@ -129,6 +131,12 @@ struct DiaryDetailView: View {
                 .padding(.vertical, 5)
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 
+            }
+            .sheet(isPresented: $isShowingUserReportAlert) {
+                ReportUserView()
+                // 예를 들어 다음은 화면의 아래쪽 50%를 차지하는 시트를 만듭니다.
+                    .presentationDetents([.fraction(0.5), .medium, .large])
+                    .presentationDragIndicator(.automatic)
             }
             .padding(.top)
             .padding(.bottom)
@@ -244,17 +252,16 @@ private extension DiaryDetailView {
         //MARK: - ... 버튼입니다.
         
         Button(action: {
-            isShowingUserReportAlert.toggle()
+            isShowingConfirmationDialog.toggle()
         }) {
             Image(systemName: "ellipsis")
                 .font(.title3)
                 .frame(width: 30,height: 30)
 
         }
-        .confirmationDialog("알림", isPresented: $isShowingUserReportAlert, titleVisibility: .hidden, actions: {
+        .confirmationDialog("알림", isPresented: $isShowingConfirmationDialog, titleVisibility: .hidden, actions: {
             Button("신고하기", role: .destructive) {
-                print("신고하기ㅣㅣㅣㅣ")
-                   // ReportUserView(placeholder: "")
+                isShowingUserReportAlert.toggle()
             }
             Button("차단하기", role: .destructive) {
                 print("차단해ㅐㅐㅐㅐ")

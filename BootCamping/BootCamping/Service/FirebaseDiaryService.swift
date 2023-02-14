@@ -402,7 +402,7 @@ struct FirebaseDiaryService {
                     }
                 }
                 
-                group.notify(queue: .global()) {
+                group.notify(queue: .main) {
                     if snapshot.documents.count > 0 {
                         let sortedDiarys = userInfoDiarys.sorted(by: { $0.diary.diaryCreatedDate.compare($1.diary.diaryCreatedDate) == .orderedDescending })
                         let lastDocWithDiaryList: LastDocWithDiaryList = LastDocWithDiaryList(userInfoDiarys: sortedDiarys, lastDoc: snapshot.documents.last!)
@@ -490,7 +490,7 @@ struct FirebaseDiaryService {
                     }
                 }
                 
-                group.notify(queue: .global()) {
+                group.notify(queue: .main) {
                     if snapshot.documents.count > 0 {
                         let sortedDiarys = userInfoDiarys.sorted(by: { $0.diary.diaryCreatedDate.compare($1.diary.diaryCreatedDate) == .orderedDescending })
                         let lastDocWithDiaryList: LastDocWithDiaryList = LastDocWithDiaryList(userInfoDiarys: sortedDiarys, lastDoc: snapshot.documents.last!)
@@ -570,7 +570,7 @@ struct FirebaseDiaryService {
                     }
                 }
                 
-                group.notify(queue: .global()) {
+                group.notify(queue: .main) {
                     if snapshot.documents.count > 0 {
                         let sortedDiarys = userInfoDiarys.sorted(by: { $0.diary.diaryCreatedDate.compare($1.diary.diaryCreatedDate) == .orderedDescending })
                         let lastDocWithDiaryList: LastDocWithDiaryList = LastDocWithDiaryList(userInfoDiarys: sortedDiarys, lastDoc: snapshot.documents.last!)
@@ -654,7 +654,7 @@ struct FirebaseDiaryService {
                     }
                 }
                 
-                group.notify(queue: .global()) {
+                group.notify(queue: .main) {
                     if snapshot.documents.count > 0 {
                         let sortedDiarys = userInfoDiarys.sorted(by: { $0.diary.diaryCreatedDate.compare($1.diary.diaryCreatedDate) == .orderedDescending })
                         let lastDocWithDiaryList: LastDocWithDiaryList = LastDocWithDiaryList(userInfoDiarys: sortedDiarys, lastDoc: snapshot.documents.last!)
@@ -712,7 +712,7 @@ struct FirebaseDiaryService {
                     group.leave()
                 }
                 
-                group.notify(queue: .main) {
+                group.notify(queue: .global(qos: .userInteractive)) {
                     if diarys.count > 10 {
                         
                         var sortedDiarys = diarys.sorted{ $0.diaryLike.count > $1.diaryLike.count}
@@ -859,13 +859,13 @@ struct FirebaseDiaryService {
                         }
                     }
                     
-                    group.notify(queue: .global()) {
+                    group.notify(queue: .main) {
                         if snapshot.documents.count > 0 {
                             let sortedDiarys = userInfoDiarys.sorted(by: { $0.diary.diaryCreatedDate.compare($1.diary.diaryCreatedDate) == .orderedDescending })
                             let lastDocWithDiaryList: LastDocWithDiaryList = LastDocWithDiaryList(userInfoDiarys: sortedDiarys, lastDoc: snapshot.documents.last!)
                             promise(.success(lastDocWithDiaryList))
                         } else {
-                            promise(.failure(FirebaseDiaryServiceError.badSnapshot))
+                            promise(.success(LastDocWithDiaryList(userInfoDiarys: [], lastDoc: nil)))
                         }
                     }
                 }

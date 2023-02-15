@@ -32,32 +32,6 @@ enum FirebaseBlockedUserServiceError: Error {
 struct FirebaseBlockedUserService {
     let database = Firestore.firestore()
     
-    //MARK: - Read FirebaseBlockedUserService
-    func readBlockedUserService() -> AnyPublisher<[String], Error> {
-        Future<[String], Error> { promise in
-            guard let userUID = Auth.auth().currentUser?.uid else { return }
-            
-            database.collection("UserList")
-                .getDocuments { (snapshot, error) in
-                    if let error = error {
-                        print(error)
-                        return
-                    }
-                    guard let snapshot = snapshot else { return }
-                    var blockedUsers: [String] = []
-                    
-                    for document in snapshot.documents {
-                        
-                        let docData = document.data()
-                        
-                        blockedUsers = docData["blockedUser"] as? [String] ?? []
-                    }
-                    promise(.success(blockedUsers))
-                }
-        }
-        .eraseToAnyPublisher()
-    }
-    
     //MARK: - Add BlockedUserService
     func addBlockedUserService(blockedUserId: String) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
@@ -103,6 +77,7 @@ struct FirebaseBlockedUserService {
     }
     
     //MARK: - Remove BlockedUserService
+    /// 현재 사용되지 않는 함수
     func removeBlockedUserService(blockedUserId: String) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
             guard let userUID = Auth.auth().currentUser?.uid else { return }

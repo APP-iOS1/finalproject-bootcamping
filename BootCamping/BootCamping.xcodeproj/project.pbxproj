@@ -166,7 +166,7 @@
 		6E688E0F2991F0FE006DCEE5 /* tent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tent.json; sourceTree = "<group>"; };
 		6E688E1129920F5D006DCEE5 /* diary_lottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = diary_lottie.json; sourceTree = "<group>"; };
 		6E688E1329920F7B006DCEE5 /* picture_lottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = picture_lottie.json; sourceTree = "<group>"; };
-		6E688E16299220B7006DCEE5 /* ContactUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsView.swift; sourceTree = "<group>"; };
+		6E688E16299220B7006DCEE5 /* ContactUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		6E688E3929923506006DCEE5 /* ContactMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactMail.swift; sourceTree = "<group>"; };
 		6E688E3B29923542006DCEE5 /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		6E8CACBD2994E4BD000C2274 /* BlockedUserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUserStore.swift; sourceTree = "<group>"; };

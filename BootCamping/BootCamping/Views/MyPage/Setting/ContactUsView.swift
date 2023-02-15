@@ -9,15 +9,16 @@ import SwiftUI
 
 struct ContactUsView: View {
     @State private var mailData = ComposeMailData(subject: "문의 제목을 입력해주세요.",
-                                                  recipients: ["thekoon0456+bootcamping@gmail.com"],
+                                                  recipients: ["bootcampingteam@gmail.com"],
                                                   message: "문의사항 내용을 작성해주세요.")
    @State private var showMailView = false
     
     var body: some View {
         VStack {
-            Text("자주 묻는 질문 넣어야해요~")
-                .font(.title)
-            
+            //TODO: -멘트 넣기, 버튼 수정
+//            Text("자주 묻는 질문 넣어야해요~")
+//                .font(.title)
+//
             Button(action: {
                 showMailView.toggle()
             }) {

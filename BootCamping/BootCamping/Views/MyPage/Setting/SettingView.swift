@@ -23,6 +23,7 @@ struct SettingView: View {
     
     var body: some View {
         List{
+            //TODO: -EmptyView 마저 채우기, 개인정보 취급 노션에서 추가하기
             NavigationLink(destination: EmptyView()) {
                 Text("공지사항")
             }

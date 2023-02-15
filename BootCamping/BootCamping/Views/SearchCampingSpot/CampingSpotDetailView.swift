@@ -5,9 +5,12 @@
 //  Created by 이소영 on 2023/01/18.
 //
 
-import SwiftUI
 import CoreLocation
+import Firebase
+import FirebaseAnalytics
+import FirebaseAnalyticsSwift
 import MapKit
+import SwiftUI
 import SDWebImageSwiftUI
 
 struct AnnotatedItem: Identifiable {
@@ -394,6 +397,15 @@ struct CampingSpotDetailView: View {
             annotatedItem.append(AnnotatedItem(name: campingSpot.facltNm, coordinate: CLLocationCoordinate2D(latitude: Double(campingSpot.mapY) ?? 23.0, longitude: Double(campingSpot.mapX) ?? 36.0)))
             isBookmarked = bookmarkStore.checkBookmarkedSpot(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, campingSpotId: campingSpot.contentId)
             diaryStore.readCampingSpotsDiariesCombine(contentId: campingSpot.contentId)
+            //For Googole Analystic
+            Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+                "contentID" : "\(campingSpot.contentId)",
+                "campingSpotName" : "\(campingSpot.facltNm)",
+                "campingSpotLocationDo" : "\(campingSpot.doNm)",
+                "campingSpotLocationSigungu" : "\(campingSpot.sigunguNm)",
+                "campingSpotLocationAddr" : "\(campingSpot.addr1)",
+                "campingSpotLocationTag" : "\(campingSpot.lctCl)",
+              ])
         }
         .alert("복사가 완료되었습니다", isPresented: $isPaste) {
             Button("완료") {

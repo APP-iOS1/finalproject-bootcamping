@@ -43,18 +43,6 @@ struct DiaryAddView: View {
     @State private var campingSpotItem: Item = CampingSpotStore().campingSpot
     @State private var campingSpot: String = ""
     
-    //글 작성 유저 닉네임 변수
-    var userNickName: String? {
-        get {
-            for user in wholeAuthStore.userList {
-                if user.id == Auth.auth().currentUser?.uid {
-                    return user.nickName
-                }
-            }
-            return nil
-        }
-    }
-    
     //MARK: - DatePicker 변수
     @State private var selectedDate: Date = .now
     
@@ -428,7 +416,7 @@ private extension DiaryAddView {
             Spacer()
             Button {
                 diaryStore.isProcessing = true
-                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages)
+                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: wholeAuthStore.currnetUserInfo?.nickName ?? "BootCamper", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages)
                 //탭틱
                 UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                 dismiss()

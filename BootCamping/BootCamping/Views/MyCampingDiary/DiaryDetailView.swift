@@ -184,6 +184,9 @@ struct DiaryDetailView: View {
                 isShowingAcceptedToast = (reportState == ReportState.nowReported)
             }
         }
+        .onChange(of: diaryStore.createFinshed) { _ in
+            dismiss()
+        }
         .onTapGesture {
             submit()
         }

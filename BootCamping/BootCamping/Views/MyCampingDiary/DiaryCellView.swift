@@ -191,9 +191,8 @@ private extension DiaryCellView {
                     .clipShape(Circle())
             }
             //유저 닉네임
-            Text(item.user.nickName)
+            Text(item.diary.diaryUserNickName)
                 .font(.callout)
-//            Text(item.diary.diaryUserNickName)
                 
             Spacer()
             //MARK: -...버튼 글 쓴 유저일때만 ...나타나도록

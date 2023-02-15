@@ -163,12 +163,11 @@ private extension DiaryCellView {
                 //포함되있으면 아무것도 안함
             } else {
                 diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
+                //탭틱
+                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
             }
             //TODO: -함수 업데이트되면 넣기
             diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
-            //탭틱
-            let impactMed = UIImpactFeedbackGenerator(style: .soft)
-            impactMed.impactOccurred()
         }
         .pinchZoomAndDrag()
     }
@@ -337,11 +336,10 @@ private extension DiaryCellView {
                     diaryLikeStore.removeDiaryLikeCombine(diaryId: item.diary.id)
                 } else {
                     diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
+                    //탭틱
+                    UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                 }
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
-                //탭틱
-                let impactMed = UIImpactFeedbackGenerator(style: .soft)
-                impactMed.impactOccurred()
                 
             } label: {
                 Image(systemName: diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")

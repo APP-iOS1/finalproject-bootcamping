@@ -361,11 +361,11 @@ struct CampingSpotDetailView: View {
                             }
                         }
                         ScrollView(.horizontal, showsIndicators: false) {
-                            if diaryStore.realTimeDiaryUserInfoDiaryList.isEmpty {
+                            if diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }.isEmpty {
                                 Text("등록된 캠핑일기가 없습니다.")
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
-                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.count <= 3 {
+                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }.count <= 3 {
                                 HStack {
                                     ForEach(diaryStore.realTimeDiaryUserInfoDiaryList.indices, id: \.self) { index in
                                         NavigationLink {
@@ -375,7 +375,7 @@ struct CampingSpotDetailView: View {
                                         }
                                     }
                                 }
-                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.count > 3 {
+                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }.count > 3 {
                                 HStack {
                                     ForEach(0...2, id: \.self) { index in
                                         NavigationLink {

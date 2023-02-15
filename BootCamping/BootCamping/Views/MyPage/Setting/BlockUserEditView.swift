@@ -28,9 +28,9 @@ struct BlockUserEditView: View {
                                 Text("\(blockedUser.nickName)")
                                 Spacer()
                                 Button {
+                                    blockedUIDs.remove(at: index)
                                     blockedUserStore.updateBlockedUserCombine(blockedUsers: blockedUIDs)
                                     wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
-                                    blockedUIDs.remove(at: index)
                                     isShowingUnblockToast.toggle()
                                 } label: {
                                     Text("차단 해제")

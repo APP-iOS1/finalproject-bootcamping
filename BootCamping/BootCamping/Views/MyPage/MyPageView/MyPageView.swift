@@ -80,40 +80,6 @@ extension MyPageView{
     // MARK: -View : 유저 프로필이미지, 닉네임 표시
     private var userProfileSection : some View {
         HStack{
-
-            Group{
-                switch wholeAuthStore.loginPlatform {
-                case .email:
-                    Image(systemName: "")
-                    
-                case .apple:
-                    ZStack{
-                        Circle()
-                            .fill(Color.black)
-                            .frame(width: 30)
-                        Image(systemName: "apple.logo")
-                            .resizable()
-                            .foregroundColor(.white)
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 15)
-                    }
-                case .google:
-                    Image("g-logo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 30)
-                        .clipShape(Circle())
-                case .kakao:
-                    Image("k-logo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 30)
-                        .clipShape(Circle())
-                case .none:
-                    Image(systemName: "")
-                    
-                }
-            }
             NavigationLink {
                 ProfileSettingView()
                 
@@ -135,7 +101,43 @@ extension MyPageView{
                             .clipShape(Circle())
                             
                     }
+        
                     Text("\((wholeAuthStore.currnetUserInfo!.nickName)) 님")
+                    
+                    Group{
+                        switch wholeAuthStore.loginPlatform {
+                        case .email:
+                            Image(systemName: "")
+                            
+                        case .apple:
+                            ZStack{
+                                Circle()
+                                    .fill(Color.black)
+                                    .frame(width: 30)
+                                Image(systemName: "apple.logo")
+                                    .resizable()
+                                    .foregroundColor(.white)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 15)
+                            }
+                        case .google:
+                            Image("g-logo")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 30)
+                                .clipShape(Circle())
+                        case .kakao:
+                            Image("k-logo")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 30)
+                                .clipShape(Circle())
+                        case .none:
+                            Image(systemName: "")
+                            
+                        }
+                    }
+                    
                     Image(systemName: "chevron.right")
                         .bold()
                         .foregroundColor(.bcGreen)

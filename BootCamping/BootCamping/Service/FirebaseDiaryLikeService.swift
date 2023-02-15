@@ -45,7 +45,7 @@ struct FirebaseDiaryLikeService {
                         return
                     }
                     
-                    let docData = snapshot.data()!
+                    guard let docData = snapshot.data() else { return }
                     //document 가져오기
                     let diaryLike: [String] = docData["diaryLike"] as? [String] ?? []
                     var diaryLikes = diaryLike

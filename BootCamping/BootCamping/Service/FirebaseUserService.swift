@@ -87,7 +87,8 @@ struct FirebaseUserService {
                         promise(.failure(FirebaseUserServiceError.badSnapshot))
                         return
                     }
-                    let docData = snapshot.data()!
+                    
+                    guard let docData = snapshot.data() else { return }
                     
                     let id: String = docData["id"] as? String ?? ""
                     let profileImageName: String = docData["profileImageName"] as? String ?? ""

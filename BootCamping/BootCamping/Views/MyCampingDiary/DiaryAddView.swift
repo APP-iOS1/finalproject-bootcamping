@@ -69,6 +69,7 @@ struct DiaryAddView: View {
     //텍스트필드 포커싱
     @Namespace var title
     @Namespace var content
+    @Namespace var under
     @Namespace var bottom
     @State var value: CGFloat = 0
     
@@ -111,6 +112,7 @@ struct DiaryAddView: View {
                                 .focused($inputFocused)
                                 .onSubmit{
                                     activeState = .field2
+                                    proxy.scrollTo(under, anchor: .bottom)
                                 }
                                 .onTapGesture {
                                     isTapTextField = true
@@ -123,19 +125,23 @@ struct DiaryAddView: View {
                             EmptyView()
                                 .id(title)
                             
+                            TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
+                                .lineLimit(8)
+                                .focused($inputFocused)
+                                .focused($activeState, equals: .field2)
+                                .onChange(of: diaryContent.count, perform: { _ in
+                                    proxy.scrollTo(under, anchor: .bottom)
+                                })
+                                .onTapGesture {
+                                    isTapTextField = true
+                                }
+                            
+
+                            Text("\n\n\n\n\n\n").id(under)
+                            
                         }
 
                     }
-                    
-                    TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
-                        .frame(height: UIScreen.screenHeight / 3.7, alignment: .top)
-                        .focused($inputFocused)
-                        .focused($activeState, equals: .field2)
-                        .onTapGesture {
-                            isTapTextField = true
-                        }
-                    
-                    Spacer()
                     
                     if inputFocused == false {
                         withAnimation {
@@ -144,7 +150,7 @@ struct DiaryAddView: View {
                         }
                     }
                 }
-                .offset(y: -self.value)
+//                .offset(y: -self.value)
                 .onAppear {
                     NotificationCenter.default.addObserver(forName:UIResponder.keyboardWillShowNotification,object:
                                                             nil, queue: .main) { (noti) in

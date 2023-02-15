@@ -148,7 +148,6 @@ struct FirebaseUserService {
             storageRef.child(user.profileImageName).delete { error in
                 if let error = error {
                     print("Error removing image from storage: \(error.localizedDescription)")
-                    promise(.failure(FirebaseUserServiceError.deleteUserListError))
                 } else {
                     
                 }
@@ -219,16 +218,32 @@ struct FirebaseUserService {
                     }
                 }
             } else {
-                self.database.collection("UserList").document(user.id).updateData([
-                    "profileImageName": user.profileImageName,
-                    "profileImageURL": user.profileImageURL,
-                    "nickName": user.nickName,
-                ]) { error in
-                    if let error = error {
-                        print(error)
-                        promise(.failure(FirebaseUserServiceError.updateUserListError))
-                    } else {
-                        promise(.success(()))
+                
+                if user.userEmail == "" {
+                    self.database.collection("UserList").document(user.id).updateData([
+                        "profileImageName": "",
+                        "profileImageURL": "",
+                        "nickName": user.nickName,
+                    ]) { error in
+                        if let error = error {
+                            print(error)
+                            promise(.failure(FirebaseUserServiceError.updateUserListError))
+                        } else {
+                            promise(.success(()))
+                        }
+                    }
+                } else {
+                    self.database.collection("UserList").document(user.id).updateData([
+                        "profileImageName": user.profileImageName,
+                        "profileImageURL": user.profileImageURL,
+                        "nickName": user.nickName,
+                    ]) { error in
+                        if let error = error {
+                            print(error)
+                            promise(.failure(FirebaseUserServiceError.updateUserListError))
+                        } else {
+                            promise(.success(()))
+                        }
                     }
                 }
             }

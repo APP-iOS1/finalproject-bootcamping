@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct DiaryEmptyView: View {
+    @EnvironmentObject var diaryStore: DiaryStore
     var body: some View {
         VStack {
             Spacer()
@@ -24,5 +25,9 @@ struct DiaryEmptyView: View {
             }
             Spacer()
         }
+        .onChange(of: diaryStore.createFinshed) { _ in
+                    diaryStore.firstGetMyDiaryCombine()
+                    diaryStore.firstGetRealTimeDiaryCombine()
+                }
     }
 }

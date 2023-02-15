@@ -342,7 +342,7 @@ private extension DiaryDetailView {
             let impactMed = UIImpactFeedbackGenerator(style: .soft)
             impactMed.impactOccurred()
         }
-        .pinchZoomAndDrag()
+//        .pinchZoomAndDrag()
 
     }
     

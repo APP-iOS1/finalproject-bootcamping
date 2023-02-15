@@ -115,32 +115,26 @@ struct DiaryAddView: View {
                                 .onTapGesture {
                                     isTapTextField = true
                                     withAnimation {
-                                        proxy.scrollTo(title, anchor: .center)
+                                        proxy.scrollTo(title, anchor: .bottom)
                                     }
                                 }
                             
+                            Divider()
                             EmptyView()
                                 .id(title)
-                            Divider()
-                                .padding(.vertical,10)
                             
                         }
 
                     }
-                    .padding(.bottom, 0.1)
                     
                     TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
-                        .frame(minHeight: UIScreen.screenHeight / 4)
+                        .frame(height: UIScreen.screenHeight / 3.7)
                         .focused($inputFocused)
                         .focused($activeState, equals: .field2)
                         .onTapGesture {
                             isTapTextField = true
                         }
-                        .onChange(of: diaryContent) { newValue in
-                            withAnimation {
-                                proxy.scrollTo(title, anchor: .top)
-                            }
-                        }
+                    
                     Spacer()
                     
                     if inputFocused == false {
@@ -151,7 +145,6 @@ struct DiaryAddView: View {
                     }
                 }
                 .offset(y: -self.value)
-//                .animation (.spring())
                 .onAppear {
                     NotificationCenter.default.addObserver(forName:UIResponder.keyboardWillShowNotification,object:
                                                             nil, queue: .main) { (noti) in
@@ -177,7 +170,9 @@ struct DiaryAddView: View {
                         Button {
                             submit()
                             inputFocused = false
-                            proxy.scrollTo(bottom, anchor: .bottom)
+                            withAnimation {
+                                proxy.scrollTo(title, anchor: .bottom)
+                            }
                         } label: {
                             Image(systemName: "keyboard.chevron.compact.down")
                         }

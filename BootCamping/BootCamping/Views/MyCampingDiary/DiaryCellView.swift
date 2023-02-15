@@ -170,7 +170,7 @@ private extension DiaryCellView {
             let impactMed = UIImpactFeedbackGenerator(style: .soft)
             impactMed.impactOccurred()
         }
-        .pinchZoomAndDrag()
+//        .pinchZoomAndDrag()
     }
     
     //MARK: - 다이어리 작성자 프로필

@@ -70,6 +70,7 @@ struct DiaryAddView: View {
     @Namespace var title
     @Namespace var content
     @Namespace var bottom
+    @State var value: CGFloat = 0
     
     var body: some View {
         ZStack {
@@ -77,8 +78,7 @@ struct DiaryAddView: View {
                 VStack {
                     ScrollView{
                         VStack(alignment: .leading) {
-
-                            VStack {
+                            Group {
                                 imagePicker
                                 Divider()
                                 addViewLocationInfo
@@ -118,48 +118,56 @@ struct DiaryAddView: View {
                                         proxy.scrollTo(title, anchor: .center)
                                     }
                                 }
+                            
                             EmptyView()
                                 .id(title)
                             Divider()
                                 .padding(.vertical,10)
                             
-                            //diaryContent
-                            TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
-                                .frame(minHeight: UIScreen.screenHeight / 4, alignment: .top)
-
-                                .focused($inputFocused)
-                                .focused($activeState, equals: .field2)
-                                .onTapGesture {
-                                    isTapTextField = true
-                                }
-                                .onChange(of: diaryContent) { newValue in
-                                    withAnimation {
-                                        proxy.scrollTo(content, anchor: .center)
-                                    }
-                                }
-                            
-                            EmptyView()
-                                .id(content)
-                            Spacer()
-                            if inputFocused == false {
-                                withAnimation {
-                                    addViewAddButton
-                                        .id(bottom)
-                                }
-                            }
-                            
                         }
-                        .padding(.horizontal, UIScreen.screenWidth*0.03)
+
                     }
                     .padding(.bottom, 0.1)
-
+                    
+                    TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
+                        .frame(minHeight: UIScreen.screenHeight / 4)
+                        .focused($inputFocused)
+                        .focused($activeState, equals: .field2)
+                        .onTapGesture {
+                            isTapTextField = true
+                        }
+                        .onChange(of: diaryContent) { newValue in
+                            withAnimation {
+                                proxy.scrollTo(title, anchor: .top)
+                            }
+                        }
+                    Spacer()
+                    
+                    if inputFocused == false {
+                        withAnimation {
+                            addViewAddButton
+                                .id(bottom)
+                        }
+                    }
                 }
+                .offset(y: -self.value)
+                .animation (.spring())
+                .onAppear {
+                    NotificationCenter.default.addObserver(forName:UIResponder.keyboardWillShowNotification,object:
+                                                            nil, queue: .main) { (noti) in
+                        let value = noti.userInfo! [UIResponder .keyboardFrameEndUserInfoKey] as! CGRect
+                        let height = value.height / 22
+                        self.value = height
+                    }
+                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object:
+                                                            nil, queue: .main) { (noti) in
+                        self.value = 0
+                    }
+                }
+                .padding(.horizontal, UIScreen.screenWidth*0.03)
                 .navigationTitle(Text("캠핑 일기 쓰기"))
                 .onTapGesture {
                     inputFocused = false
-                    withAnimation {
-                        proxy.scrollTo(bottom, anchor: .bottom)
-                    }
                 }
                 .disableAutocorrection(true) //자동 수정 비활성화
                 .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화

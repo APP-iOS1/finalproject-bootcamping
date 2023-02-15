@@ -39,9 +39,10 @@ struct LoginView: View {
                     kakaoLoginButton
                     
                     googleLoginButton
-                    
-                    emailSignUpButton
-                        .padding(.vertical, UIScreen.screenHeight * 0.05)
+                        .padding(.bottom, UIScreen.screenHeight * 0.1)
+
+//                    emailSignUpButton
+//                        .padding(.vertical, UIScreen.screenHeight * 0.05)
                     
                 }
                 .foregroundColor(.black)

@@ -14,13 +14,13 @@ struct WeeklyPopulerCampingView: View {
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var commentStore: CommentStore
     @EnvironmentObject var diaryLikeStore: DiaryLikeStore
-    @EnvironmentObject var blockedUserStore: BlockedUserStore
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
     
     var body: some View {
         VStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(diaryStore.popularDiaryList.filter{ !blockedUserStore.blockedUsers.contains($0.diary.uid) }, id: \.self) { item in
+                    ForEach(diaryStore.popularDiaryList.filter{ !wholeAuthStore.currnetUserInfo?.blockedUser.contains($0.diary.uid) }, id: \.self) { item in
                         NavigationLink {
                             DiaryDetailView(item: item) //맞나
                         } label: {

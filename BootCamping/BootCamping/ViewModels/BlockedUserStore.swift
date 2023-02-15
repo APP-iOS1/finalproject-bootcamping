@@ -58,6 +58,27 @@ class BlockedUserStore: ObservableObject {
             .store(in: &cancellables)
     }
     
+    //MARK: - Add Blocked User to Blocked User Combine
+    func addBlockedUserCombine(blockedUsers: [String]) {
+        FirebaseBlockedUserService().updateBlockedUserService(blockedUsers: blockedUsers)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed Update Blocked User")
+                    return
+                case .finished:
+                    print("Finished Update Blocked User")
+                    self.readblockedUsersCombine()
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
+    
 //    //MARK: - remove Blocked User in Blocked User Combine
     func removeBlockedUserCombine(blockedUserId: String) {
         FirebaseBlockedUserService().removeBlockedUserService(blockedUserId: blockedUserId)

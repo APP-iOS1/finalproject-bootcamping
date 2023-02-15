@@ -96,6 +96,7 @@
 		7CFCE12B2987549700E196AF /* RealtimeCampingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE1292987549700E196AF /* RealtimeCampingView.swift */; };
 		7CFCE12D2987549F00E196AF /* WeeklyPopulerCampingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE12C2987549F00E196AF /* WeeklyPopulerCampingView.swift */; };
 		7CFCE12F2987551F00E196AF /* LoginPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE12E2987551F00E196AF /* LoginPasswordView.swift */; };
+		7CFE5566299D1FA9009ECAEA /* BusinessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFE5565299D1FA9009ECAEA /* BusinessView.swift */; };
 		AD1FED36298B930F001FB3E5 /* FirebaseScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1FED35298B930F001FB3E5 /* FirebaseScheduleService.swift */; };
 		AD21BAE32989F28C007ED6B7 /* FirebaseCommentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD21BAE22989F28C007ED6B7 /* FirebaseCommentService.swift */; };
 		AD2DBF5229940009008534BA /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = AD2DBF5129940009008534BA /* AlertToast */; };
@@ -166,7 +167,7 @@
 		6E688E0F2991F0FE006DCEE5 /* tent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tent.json; sourceTree = "<group>"; };
 		6E688E1129920F5D006DCEE5 /* diary_lottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = diary_lottie.json; sourceTree = "<group>"; };
 		6E688E1329920F7B006DCEE5 /* picture_lottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = picture_lottie.json; sourceTree = "<group>"; };
-		6E688E16299220B7006DCEE5 /* ContactUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsView.swift; sourceTree = "<group>"; };
+		6E688E16299220B7006DCEE5 /* ContactUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		6E688E3929923506006DCEE5 /* ContactMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactMail.swift; sourceTree = "<group>"; };
 		6E688E3B29923542006DCEE5 /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		6E8CACBD2994E4BD000C2274 /* BlockedUserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUserStore.swift; sourceTree = "<group>"; };
@@ -196,6 +197,7 @@
 		7CFCE1292987549700E196AF /* RealtimeCampingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealtimeCampingView.swift; sourceTree = "<group>"; };
 		7CFCE12C2987549F00E196AF /* WeeklyPopulerCampingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeeklyPopulerCampingView.swift; sourceTree = "<group>"; };
 		7CFCE12E2987551F00E196AF /* LoginPasswordView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginPasswordView.swift; sourceTree = "<group>"; };
+		7CFE5565299D1FA9009ECAEA /* BusinessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessView.swift; sourceTree = "<group>"; };
 		AD1FED35298B930F001FB3E5 /* FirebaseScheduleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseScheduleService.swift; sourceTree = "<group>"; };
 		AD21BAE22989F28C007ED6B7 /* FirebaseCommentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseCommentService.swift; sourceTree = "<group>"; };
 		AD373AF92977D68A00E1236A /* DiaryCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCellView.swift; sourceTree = "<group>"; };
@@ -471,6 +473,7 @@
 				792C42432990D0A800B7772C /* PasswordChangeView.swift */,
 				7C294CAB299513570024CEA9 /* BlockUserEditView.swift */,
 				CA27A63F2996320B00A6AEE5 /* NotificationSettingsView.swift */,
+				7CFE5565299D1FA9009ECAEA /* BusinessView.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -690,6 +693,7 @@
 				6E8CACBE2994E4BD000C2274 /* BlockedUserStore.swift in Sources */,
 				CA729F3C297A6C4B00CCC3BB /* AddScheduleView.swift in Sources */,
 				790B62DB29792B4C0048C110 /* CommentStore.swift in Sources */,
+				7CFE5566299D1FA9009ECAEA /* BusinessView.swift in Sources */,
 				63AF45C02977CDF90014B1E1 /* HomeView.swift in Sources */,
 				AD851264299B735B00FA8E2E /* ScrollViewHelper.swift in Sources */,
 				AD21BAE32989F28C007ED6B7 /* FirebaseCommentService.swift in Sources */,

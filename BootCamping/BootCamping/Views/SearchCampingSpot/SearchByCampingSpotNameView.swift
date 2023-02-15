@@ -5,13 +5,20 @@
 //  Created by Donghoon Bae on 2023/02/09.
 //
 
+import Firebase
+import FirebaseAnalytics
+import FirebaseAnalyticsSwift
 import SwiftUI
 import SDWebImageSwiftUI
 
 struct SearchByCampingSpotNameView: View {
     
     @Environment(\.dismiss) private var dismiss
+    @FocusState private var isTextFieldFocused: Bool
+    
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
+    
+    
     @State private var isLoading: Bool = false
     @State var keywordForSearching: String = ""
     @State var keywordForParameter: String = ""
@@ -21,16 +28,30 @@ struct SearchByCampingSpotNameView: View {
     
     var body: some View {
         VStack {
-            TextField("캠핑하실 지역을 검색해 주세요.", text: $keywordForSearching)
+            TextField("\(Image(systemName: "magnifyingglass"))캠핑하실 지역을 검색해 주세요.", text: $keywordForSearching)
                 .textFieldStyle(.roundedBorder)
+                .focused($isTextFieldFocused)
+                .showClearButton($keywordForSearching)
+                .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                .submitLabel(.search)
                 .onSubmit {
                     keywordForParameter = keywordForSearching
                     isLoading = false
                     isSearching = true
                     campingSpotStore.campingSpotList.removeAll()
                     campingSpotStore.lastDoc = nil
+                    //탭틱
+                    UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+                    //For Googole Analystic
+                    Analytics.logEvent(AnalyticsEventSearch, parameters: [
+                        "UID" : "\(String(describing: Auth.auth().currentUser?.uid))",
+                        "Email" : "\(String(describing: Auth.auth().currentUser?.email))",
+                        "searchingKeyword" : "\(keywordForParameter)",
+                      ])
                 }
-                .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                .task {
+                    self.isTextFieldFocused = true
+                }
                 
             if isSearching {
                 VStack() {
@@ -77,8 +98,6 @@ struct SearchByCampingSpotNameView: View {
                 }
             }
             else {
-                Spacer()
-                Text("최근 검색 리스트로")
                 Spacer()
             }
         }

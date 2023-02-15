@@ -6,33 +6,59 @@
 //
 
 import SwiftUI
+import AlertToast
 
 struct BlockUserEditView: View {
     
-    @State private var selection = Set<String>()
+    @Environment(\.editMode) var editMode
     
-    @State private var blockedUser = [
-        "John", "Alice", "Bob", "Foo", "Bar"
-    ]
+    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var blockedUserStore: BlockedUserStore
+
+    @State private var blockedUIDs: [String] = []
+    @State private var isShowingUnblockToast: Bool = false
     
     var body: some View {
-
-            List {
-                ForEach(blockedUser, id: \.self) { blockedUser in
-                    Text(blockedUser)
+        List {
+            Section {
+                if let blockedUserList = (wholeAuthStore.userList.filter{ blockedUIDs.contains($0.id) }) {
+                    if !blockedUserList.isEmpty{
+                        ForEach(Array(zip(blockedUserList.indices, blockedUserList)), id: \.0) { index, blockedUser in
+                            HStack {
+                                Text("\(blockedUser.nickName)")
+                                Spacer()
+                                Button {
+                                    blockedUIDs.remove(at: index)
+                                    blockedUserStore.updateBlockedUserCombine(blockedUsers: blockedUIDs)
+                                    wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+                                    isShowingUnblockToast.toggle()
+                                } label: {
+                                    Text("차단 해제")
+                                        .foregroundColor(Color.bcGreen)
+                                        .padding(8)
+                                        .overlay(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .stroke(Color.bcGreen, lineWidth: 1)
+                                        )
+                                        .padding(.vertical, 2)
+                                }
+                            }
+                        }
+                    }
                 }
-                .onDelete(perform: deleteUser)
-                
+            } header: {
+                Text("차단한 사용자 닉네임")
+            } footer: {
+                Text("차단 당한 사용자는 차단 여부를 알 수 없습니다.")
             }
-            .toolbar {
-                EditButton()
-            }
-        .navigationTitle("차단한 멤버 관리")
-        
-        
-    }
-    
-    func deleteUser(at offsets: IndexSet) {
-        blockedUser.remove(atOffsets: offsets)
+        }
+        .listStyle(.grouped)
+        .toast(isPresenting: $isShowingUnblockToast) {
+            AlertToast(type: .regular, title: "해당 사용자를 차단해제했습니다.", subTitle: "이 사용자의 글을 이제 확인할 수 있습니다.")
+        }
+        .onAppear{
+            blockedUIDs = wholeAuthStore.currnetUserInfo!.blockedUser
+        }
+        .navigationTitle("차단한 사용자 관리")
     }
 }

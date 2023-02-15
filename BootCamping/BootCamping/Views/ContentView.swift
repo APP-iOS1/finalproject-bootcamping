@@ -72,9 +72,12 @@ struct ContentView: View {
                         diaryStore.firstGetRealTimeDiaryCombine()
                         scheduleStore.readScheduleCombine()
                         reportStore.readReportCombine()
-                        //                    Analytics.logEvent(AnalyticsEventLogin, parameters: [
-                        //                      AnalyticsParameterMethod: method!
-                        //                      ])
+                        //For Googole Analystic
+                        Analytics.logEvent(AnalyticsEventLogin, parameters: [
+                            "LoginEmail": "\(String(describing: Auth.auth().currentUser?.email))",
+                            "LoginUID": "\(String(describing: Auth.auth().currentUser?.uid))"
+                        ])
+                        wholeAuthStore.getUserInfo(userUID: wholeAuthStore.currentUser!.uid) {}
                     }
                 }
             } else {
@@ -92,6 +95,14 @@ struct ContentView: View {
                 diaryStore.firstGetMyDiaryCombine()
                 diaryStore.mostLikedGetDiarysCombine()
                 diaryStore.firstGetRealTimeDiaryCombine()
+                scheduleStore.readScheduleCombine()
+                reportStore.readReportCombine()
+                //For Googole Analystic
+                Analytics.logEvent(AnalyticsEventLogin, parameters: [
+                    "LoginEmail": "\(String(describing: Auth.auth().currentUser?.email))",
+                    "LoginUID": "\(String(describing: Auth.auth().currentUser?.uid))"
+                ])
+                wholeAuthStore.getUserInfo(userUID: wholeAuthStore.currentUser!.uid) {}
             }
         }
         // 푸시 알림으로 앱 진입 시 네 번째 탭(마이페이지 탭)으로 이동

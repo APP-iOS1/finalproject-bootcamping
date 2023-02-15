@@ -43,18 +43,6 @@ struct DiaryAddView: View {
     @State private var campingSpotItem: Item = CampingSpotStore().campingSpot
     @State private var campingSpot: String = ""
     
-    //글 작성 유저 닉네임 변수
-    var userNickName: String? {
-        get {
-            for user in wholeAuthStore.userList {
-                if user.id == Auth.auth().currentUser?.uid {
-                    return user.nickName
-                }
-            }
-            return nil
-        }
-    }
-    
     //MARK: - DatePicker 변수
     @State private var selectedDate: Date = .now
     
@@ -69,7 +57,9 @@ struct DiaryAddView: View {
     //텍스트필드 포커싱
     @Namespace var title
     @Namespace var content
+    @Namespace var under
     @Namespace var bottom
+    @Namespace var top
     @State var value: CGFloat = 0
     
     var body: some View {
@@ -79,7 +69,7 @@ struct DiaryAddView: View {
                     ScrollView{
                         VStack(alignment: .leading) {
                             Group {
-                                imagePicker
+                                imagePicker.id(top)
                                 Divider()
                                 addViewLocationInfo
                                     .padding(.vertical, 10)
@@ -111,37 +101,39 @@ struct DiaryAddView: View {
                                 .focused($inputFocused)
                                 .onSubmit{
                                     activeState = .field2
+                                    proxy.scrollTo(under, anchor: .bottom)
                                 }
                                 .onTapGesture {
                                     isTapTextField = true
                                     withAnimation {
-                                        proxy.scrollTo(title, anchor: .center)
+                                        proxy.scrollTo(title, anchor: .bottom)
                                     }
                                 }
                             
+                            Divider()
                             EmptyView()
                                 .id(title)
-                            Divider()
-                                .padding(.vertical,10)
+                            
+                            TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
+                                .frame(minHeight: UIScreen.screenHeight / 4, alignment: .top)
+                                .lineLimit(10)
+                                .focused($inputFocused)
+                                .focused($activeState, equals: .field2)
+                                .onChange(of: diaryContent.count, perform: { _ in
+                                    proxy.scrollTo(under, anchor: .bottom)
+                                })
+                                .onTapGesture {
+                                    isTapTextField = true
+                                }
+                            
+
+                            Text("").id(under)
                             
                         }
+                        .padding(.horizontal, UIScreen.screenWidth*0.03)
 
                     }
-                    .padding(.bottom, 0.1)
                     
-                    TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
-                        .frame(minHeight: UIScreen.screenHeight / 4)
-                        .focused($inputFocused)
-                        .focused($activeState, equals: .field2)
-                        .onTapGesture {
-                            isTapTextField = true
-                        }
-                        .onChange(of: diaryContent) { newValue in
-                            withAnimation {
-                                proxy.scrollTo(title, anchor: .top)
-                            }
-                        }
-                    Spacer()
                     
                     if inputFocused == false {
                         withAnimation {
@@ -150,13 +142,11 @@ struct DiaryAddView: View {
                         }
                     }
                 }
-                .offset(y: -self.value)
-//                .animation (.spring())
                 .onAppear {
                     NotificationCenter.default.addObserver(forName:UIResponder.keyboardWillShowNotification,object:
                                                             nil, queue: .main) { (noti) in
                         let value = noti.userInfo! [UIResponder .keyboardFrameEndUserInfoKey] as! CGRect
-                        let height = value.height / 22
+                        let height = value.height
                         self.value = height
                     }
                     NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object:
@@ -164,7 +154,7 @@ struct DiaryAddView: View {
                         self.value = 0
                     }
                 }
-                .padding(.horizontal, UIScreen.screenWidth*0.03)
+
                 .navigationTitle(Text("캠핑 일기 쓰기"))
                 .onTapGesture {
                     inputFocused = false
@@ -177,7 +167,7 @@ struct DiaryAddView: View {
                         Button {
                             submit()
                             inputFocused = false
-                            proxy.scrollTo(bottom, anchor: .bottom)
+                            proxy.scrollTo(top, anchor: .top)
                         } label: {
                             Image(systemName: "keyboard.chevron.compact.down")
                         }
@@ -426,7 +416,9 @@ private extension DiaryAddView {
             Spacer()
             Button {
                 diaryStore.isProcessing = true
-                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: userNickName ?? "닉네임", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages)
+                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: wholeAuthStore.currnetUserInfo?.nickName ?? "BootCamper", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages)
+                //탭틱
+                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                 dismiss()
             } label: {
                 Text(diaryTitle.isEmpty || diaryContent.isEmpty ? "내용을 작성해주세요" : "일기 쓰기")

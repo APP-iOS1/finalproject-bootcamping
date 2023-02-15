@@ -24,7 +24,8 @@ struct DiaryDetailView: View {
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var blockedUserStore: BlockedUserStore
     @EnvironmentObject var reportStore: ReportStore
-    
+    @Environment(\.dismiss) private var dismiss
+
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
     @StateObject var commentStore: CommentStore = CommentStore()
@@ -183,6 +184,9 @@ struct DiaryDetailView: View {
                 isShowingAcceptedToast = (reportState == ReportState.nowReported)
             }
         }
+        .onChange(of: diaryStore.createFinshed) { _ in
+            dismiss()
+        }
         .onTapGesture {
             submit()
         }
@@ -278,6 +282,7 @@ private extension DiaryDetailView {
             }
             Button("삭제", role: .destructive) {
                 diaryStore.deleteDiaryCombine(diary: item.diary)
+                dismiss()
             }
         }
     }

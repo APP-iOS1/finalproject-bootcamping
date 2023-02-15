@@ -150,10 +150,10 @@ class WholeAuthStore: ObservableObject {
                     print("Finished create User")
                     self.getUserInfo(userUID: (Auth.auth().currentUser?.uid ?? "")) {
                         //For Googole Analystic
-                        Analytics.logEvent("SignUp", parameters: [
-                            "userName" : "\(user.userEmail)",
-                            "userNickName" : "\(user.nickName)"
-                        ])
+                        Analytics.logEvent(AnalyticsEventSignUp, parameters: [
+                            "Email": "\(String(describing: Auth.auth().currentUser?.email))",
+                            "UID": "\(String(describing: Auth.auth().currentUser?.uid))"
+                          ])
                         self.readUserListCombine()
                         if self.loginPlatform == "email" {
                             withAnimation(.easeInOut) {

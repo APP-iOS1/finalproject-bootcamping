@@ -5,9 +5,12 @@
 //  Created by 이소영 on 2023/01/18.
 //
 
-import SwiftUI
 import CoreLocation
+import Firebase
+import FirebaseAnalytics
+import FirebaseAnalyticsSwift
 import MapKit
+import SwiftUI
 import SDWebImageSwiftUI
 
 struct AnnotatedItem: Identifiable {
@@ -358,11 +361,11 @@ struct CampingSpotDetailView: View {
                             }
                         }
                         ScrollView(.horizontal, showsIndicators: false) {
-                            if diaryStore.realTimeDiaryUserInfoDiaryList.isEmpty {
+                            if diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }.isEmpty {
                                 Text("등록된 캠핑일기가 없습니다.")
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
-                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.count <= 3 {
+                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }.count <= 3 {
                                 HStack {
                                     ForEach(diaryStore.realTimeDiaryUserInfoDiaryList.indices, id: \.self) { index in
                                         NavigationLink {
@@ -372,7 +375,7 @@ struct CampingSpotDetailView: View {
                                         }
                                     }
                                 }
-                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.count > 3 {
+                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }.count > 3 {
                                 HStack {
                                     ForEach(0...2, id: \.self) { index in
                                         NavigationLink {
@@ -394,6 +397,15 @@ struct CampingSpotDetailView: View {
             annotatedItem.append(AnnotatedItem(name: campingSpot.facltNm, coordinate: CLLocationCoordinate2D(latitude: Double(campingSpot.mapY) ?? 23.0, longitude: Double(campingSpot.mapX) ?? 36.0)))
             isBookmarked = bookmarkStore.checkBookmarkedSpot(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, campingSpotId: campingSpot.contentId)
             diaryStore.readCampingSpotsDiariesCombine(contentId: campingSpot.contentId)
+            //For Googole Analystic
+            Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+                "contentID" : "\(campingSpot.contentId)",
+                "campingSpotName" : "\(campingSpot.facltNm)",
+                "campingSpotLocationDo" : "\(campingSpot.doNm)",
+                "campingSpotLocationSigungu" : "\(campingSpot.sigunguNm)",
+                "campingSpotLocationAddr" : "\(campingSpot.addr1)",
+                "campingSpotLocationTag" : "\(campingSpot.lctCl)",
+              ])
         }
         .alert("복사가 완료되었습니다", isPresented: $isPaste) {
             Button("완료") {
@@ -418,7 +430,7 @@ struct CampingSpotDiaryRow: View {
             Text(item.diary.diaryTitle)
                 .font(.callout)
                 .frame(width: 120)
-                .lineLimit(2)
+                .lineLimit(1)
         }
         .foregroundColor(Color.bcBlack)
     }

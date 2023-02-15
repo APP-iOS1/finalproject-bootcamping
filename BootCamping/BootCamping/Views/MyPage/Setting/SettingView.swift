@@ -23,12 +23,12 @@ struct SettingView: View {
     
     var body: some View {
         List{
+            //TODO: -EmptyView 마저 채우기, 개인정보 취급 노션에서 추가하기
             NavigationLink(destination: EmptyView()) {
                 Text("공지사항")
             }
             NavigationLink(destination: ContactUsView()) {
-                Text("Q&A")
-                //TODO: 자주 묻는 질문(만들어야함!) + 고객센터 메일보내기
+                Text("자주 묻는 질문 FAQ")
             }
             NavigationLink(destination: EmptyView()) {
                 Text("앱 정보")
@@ -39,6 +39,10 @@ struct SettingView: View {
             NavigationLink(destination: PrivacyView()) {
                 Text("개인/보안설정") //페이스아이디, 비밀번호 수정, 회원탈퇴
             }
+            NavigationLink(destination: BusinessView()) {
+                Text("비즈니스 문의") //페이스아이디, 비밀번호 수정, 회원탈퇴
+            }
+            
             Button {
                 showingAlertLogOut.toggle()
             } label: {

@@ -20,7 +20,7 @@ struct WeeklyPopulerCampingView: View {
         VStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(diaryStore.popularDiaryList.filter{ !wholeAuthStore.currnetUserInfo?.blockedUser.contains($0.diary.uid) }, id: \.self) { item in
+                    ForEach(diaryStore.popularDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }, id: \.self) { item in
                         NavigationLink {
                             DiaryDetailView(item: item) //맞나
                         } label: {

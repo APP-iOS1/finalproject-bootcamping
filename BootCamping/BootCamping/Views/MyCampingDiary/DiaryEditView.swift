@@ -36,6 +36,7 @@ struct DiaryEditView: View {
     @Namespace var content
     @Namespace var under
     @Namespace var bottom
+    @Namespace var top
     @State var value: CGFloat = 0
     
     var item: UserInfoDiary
@@ -64,6 +65,7 @@ struct DiaryEditView: View {
                         Group {
                             addViewLocationInfo
                                 .padding(.vertical, 10)
+                                .id(top)
                             Divider()
                             
                             addViewVisitDate
@@ -103,7 +105,8 @@ struct DiaryEditView: View {
                             .id(title)
                         
                         TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
-                            .lineLimit(8)
+                            .frame(minHeight: UIScreen.screenHeight / 4, alignment: .top)
+                            .lineLimit(10)
                             .focused($inputFocused)
                             .focused($activeState, equals: .field2)
                             .onChange(of: diaryContent.count, perform: { _ in
@@ -114,7 +117,7 @@ struct DiaryEditView: View {
                             }
                         
 
-                        Text("\n\n\n\n\n\n").id(under)
+                        Text("").id(under)
 
                     }
                 }
@@ -130,7 +133,7 @@ struct DiaryEditView: View {
                 NotificationCenter.default.addObserver(forName:UIResponder.keyboardWillShowNotification,object:
                                                         nil, queue: .main) { (noti) in
                     let value = noti.userInfo! [UIResponder .keyboardFrameEndUserInfoKey] as! CGRect
-                    let height = value.height / 22
+                    let height = value.height
                     self.value = height
                 }
                 NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object:
@@ -138,30 +141,32 @@ struct DiaryEditView: View {
                     self.value = 0
                 }
             }
-        }
-        .padding(.horizontal, UIScreen.screenWidth*0.03)
-        .navigationTitle(Text("캠핑 일기 쓰기"))
-        .onTapGesture {
-            dismissKeyboard()
-        }
-        .disableAutocorrection(true) //자동 수정 비활성화
-        .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
-        .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                Button {
-                    submit()
-                    isTapTextField = false
-                } label: {
-                    Image(systemName: "keyboard.chevron.compact.down")
+            .padding(.horizontal, UIScreen.screenWidth*0.03)
+            .navigationTitle(Text("캠핑 일기 쓰기"))
+            .onTapGesture {
+                dismissKeyboard()
+            }
+            .disableAutocorrection(true) //자동 수정 비활성화
+            .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button {
+                        submit()
+                        isTapTextField = false
+                        proxy.scrollTo(top, anchor: .top)
+                    } label: {
+                        Image(systemName: "keyboard.chevron.compact.down")
+                    }
                 }
             }
+            .task {
+                selectedDate = item.diary.diaryVisitedDate
+                campingSpot = campingSpotItem.facltNm
+                locationInfo = campingSpotItem.contentId
+            }
         }
-        .task {
-            selectedDate = item.diary.diaryVisitedDate
-            campingSpot = campingSpotItem.facltNm
-            locationInfo = campingSpotItem.contentId
-        }
+
         
     }
 }

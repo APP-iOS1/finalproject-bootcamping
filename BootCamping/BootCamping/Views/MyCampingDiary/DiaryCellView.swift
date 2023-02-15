@@ -34,7 +34,7 @@ struct DiaryCellView: View {
     
     @State private var reportState = ReportState.notReported
     @State private var isShowingAcceptedToast = false
-    @State private var isBlocked = false
+    @State private var isShowingBlockedToast = false
     
     @EnvironmentObject var faceId: FaceId
     @AppStorage("faceId") var usingFaceId: Bool = false
@@ -110,6 +110,9 @@ struct DiaryCellView: View {
         }
         .toast(isPresenting: $isShowingAcceptedToast) {
             AlertToast(type: .regular, title: "이 게시물에 대한 신고가 접수되었습니다.")
+        }
+        .toast(isPresenting: $isShowingBlockedToast) {
+            AlertToast(type: .regular, title: "이 사용자를 차단했습니다.", subTitle: "차단 해제는 마이페이지 > 설정에서 가능합니다.")
         }
         .sheet(isPresented: $isShowingUserReportAlert) {
             if reportState == .alreadyReported {
@@ -257,16 +260,13 @@ private extension DiaryCellView {
                 .frame(width: 30,height: 30)
         }
         .confirmationDialog("알림", isPresented: $isShowingConfirmationDialog, titleVisibility: .hidden, actions: {
-            Button("신고하기", role: .destructive) {
+            Button("게시물 신고하기", role: .destructive) {
                 isShowingUserReportAlert.toggle()
             }
-            Button("차단하기", role: .destructive) {
-                print("차단해ㅐㅐㅐㅐ")
-                isBlocked.toggle()
-                if isBlocked {
-                    blockedUserStore.addBlockedUserCombine(blockedUserId: item.diary.uid)
-                }
+            Button("\(item.user.nickName)님 차단하기", role: .destructive) {
+                blockedUserStore.addBlockedUserCombine(blockedUserId: item.diary.uid)
                 wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+                isShowingBlockedToast.toggle()
             }
             Button("취소", role: .cancel) {}
         })

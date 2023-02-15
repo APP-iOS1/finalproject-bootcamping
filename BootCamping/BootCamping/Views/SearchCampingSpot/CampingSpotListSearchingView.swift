@@ -106,8 +106,6 @@ struct CampingSpotListSearchingView: View {
                 }
             } else {
                 Spacer()
-                Text("최근 검색 리스트로")
-                Spacer()
             }
         }
     }

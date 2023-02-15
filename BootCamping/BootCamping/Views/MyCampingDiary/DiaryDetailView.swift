@@ -170,7 +170,7 @@ struct DiaryDetailView: View {
                         .presentationDragIndicator(.hidden)
                 }
             }
-            .padding(.top)
+//            .padding(.top)
             .padding(.bottom)
             .navigationTitle("BOOTCAMPING")
             .onAppear{

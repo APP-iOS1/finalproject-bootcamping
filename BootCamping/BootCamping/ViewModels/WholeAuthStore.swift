@@ -49,6 +49,8 @@ class WholeAuthStore: ObservableObject {
     
     //로그인상태 저장
     @AppStorage("login") var isSignIn: Bool = false
+    //로그인 플랫폼 저장
+    @AppStorage("loginPlatform") var loginPlatform: String = "none"
     //로그인 진행상태
     @Published var isProcessing: Bool = false
     //유저리스트
@@ -57,8 +59,6 @@ class WholeAuthStore: ObservableObject {
     @Published var currentUser: Firebase.User?
     //현재 로그인한 유저의 파이어스토어 정보
     @Published var currnetUserInfo: User?
-    //로그인 플랫폼
-    @Published var loginPlatform: LoginPlatform = .none
     //서비스 오류 존재여부  있으면 True 없으면 False
     @Published var isError: Bool = false
     //서비스 오류 상태 메세지
@@ -155,7 +155,7 @@ class WholeAuthStore: ObservableObject {
                             "userNickName" : "\(user.nickName)"
                         ])
                         self.readUserListCombine()
-                        if self.loginPlatform != .email {
+                        if self.loginPlatform == "email" {
                             withAnimation(.easeInOut) {
                                 self.isError = false
                                 self.isProcessing = false
@@ -227,15 +227,17 @@ class WholeAuthStore: ObservableObject {
     // MARK: - 통합 로그아웃
     func combineLogOut() {
         switch loginPlatform {
-        case .email:
+        case "email":
             self.authSignOut()
-        case .apple:
+        case "apple":
             self.appleLogOut()
-        case .google:
+        case "google":
             self.googleSignOut()
-        case .kakao:
+        case "kakao":
             self.kakaoLogOutCombine()
-        case .none:
+        case "none":
+            self.googleSignOut()
+        default:
             self.googleSignOut()
         }
     }
@@ -295,7 +297,7 @@ class WholeAuthStore: ObservableObject {
                     print("Failed SingUp User")
                     self.authServiceError = .signInError
                     self.showErrorAlertMessage = self.authServiceError.errorDescription!
-                    self.loginPlatform = .none
+                    self.loginPlatform = "none"
                     self.isError = true
                     self.isProcessing = false
                     return
@@ -310,7 +312,7 @@ class WholeAuthStore: ObservableObject {
             } receiveValue: { [weak self] user in
                 self?.currentUser = user
                 self?.getUserInfo(userUID: user.uid) {
-                    self?.loginPlatform = .email
+                    self?.loginPlatform = "email"
                     self?.isProcessing = false
                     self?.isError = false
                     withAnimation(.easeInOut) {
@@ -328,7 +330,7 @@ class WholeAuthStore: ObservableObject {
         do {
             try Auth.auth().signOut()
             self.isError = false
-            self.loginPlatform = .email
+            self.loginPlatform = "email"
             self.currentUser = nil
             self.currnetUserInfo = userInit
             withAnimation(.easeInOut) {
@@ -363,7 +365,7 @@ class WholeAuthStore: ObservableObject {
                     return
                 }
             } receiveValue: { [weak self] userUID in
-                self?.loginPlatform = .email
+                self?.loginPlatform = "email"
                 self?.createUserCombine(user: User(id: userUID, profileImageName: "", profileImageURL: "", nickName: nickName, userEmail: userEmail, bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []))
             }
             .store(in: &cancellables)
@@ -407,7 +409,7 @@ class WholeAuthStore: ObservableObject {
             print(#function, error.localizedDescription)
             self.authServiceError = .signInError
             self.showErrorAlertMessage = self.authServiceError.errorDescription!
-            self.loginPlatform = .none
+            self.loginPlatform = "none"
             self.isError = true
             self.isProcessing = false
             return
@@ -436,7 +438,7 @@ class WholeAuthStore: ObservableObject {
                 print(#function, error.localizedDescription)
                 self.authServiceError = .signInError
                 self.showErrorAlertMessage = self.authServiceError.errorDescription!
-                self.loginPlatform = .none
+                self.loginPlatform = "none"
                 self.isError = true
                 self.isProcessing = false
             } else {
@@ -451,16 +453,15 @@ class WholeAuthStore: ObservableObject {
                         if snapshot?.documents.count == 0 {
                             print("파이어베이스에 저장된 유저정보가 없습니다.")
                             self.currentUser = result.user
-                            self.loginPlatform = .google
+                            self.loginPlatform = "google"
                             self.createUserCombine(user: User(id: (result.user.uid), profileImageName: "", profileImageURL: "", nickName: (result.user.email!), userEmail: (result.user.email!), bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []))
                         } else {
                             print("파이어베이스에 저장된 유저정보가 있습니다..")
                             self.currentUser = result.user
-                            self.loginPlatform = .google
                             self.getUserInfo(userUID: result.user.uid) {
                                 self.isError = false
                                 self.isProcessing = false
-                                self.loginPlatform = .google
+                                self.loginPlatform = "google"
                                 withAnimation(.easeInOut) {
                                     self.isSignIn = true
                                 }
@@ -481,7 +482,7 @@ class WholeAuthStore: ObservableObject {
             // 2
             try Auth.auth().signOut()
             self.isError = false
-            self.loginPlatform = .none
+            self.loginPlatform = "none"
             self.currentUser = nil
             self.currnetUserInfo = userInit
             withAnimation(.easeInOut) {
@@ -532,12 +533,12 @@ class WholeAuthStore: ObservableObject {
                     } else {
                         if snapshot?.documents.count == 0 {
                             print("파이어베이스에 유저정보가 없습니다.")
-                            self?.loginPlatform = .kakao
+                            self?.loginPlatform = "kakao"
                             self?.createUserCombine(user: User(id: (user.uid), profileImageName: "", profileImageURL: "", nickName: (user.email)!, userEmail: (user.email!), bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []))
                         } else {
                             print("파이어베이스에 유저정보가 있습니다..")
                             self?.getUserInfo(userUID: user.uid) {
-                                self?.loginPlatform = .kakao
+                                self?.loginPlatform = "kakao"
                                 withAnimation(.easeInOut) {
                                     self?.isSignIn = true
                                     self?.isError = false
@@ -567,7 +568,7 @@ class WholeAuthStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished LogOut User")
-                    self.loginPlatform = .none
+                    self.loginPlatform = "none"
                     self.currentUser = nil
                     self.currnetUserInfo = self.userInit
                     withAnimation(.easeInOut) {
@@ -634,13 +635,13 @@ class WholeAuthStore: ObservableObject {
                     if snapshot?.documents.count == 0 {
                         print("파이어베이스에 유저정보가 없습니다.")
                         self.currentUser = result?.user
-                        self.loginPlatform = .apple
+                        self.loginPlatform = "apple"
                         self.createUserCombine(user: User(id: (result?.user.uid)!, profileImageName: "", profileImageURL: "", nickName: String(describing: (result?.user.email)!), userEmail: String(describing: (result?.user.email)!), bookMarkedDiaries: [], bookMarkedSpot: [], blockedUser: []))
                     } else {
                         print("파이어베이스에 유저정보가 있습니다..")
                         self.getUserInfo(userUID: (result?.user.uid)!) {
                             self.currentUser = result?.user
-                            self.loginPlatform = .apple
+                            self.loginPlatform = "apple"
                             self.isError = false
                             self.isProcessing = false
                             withAnimation(.easeInOut) {
@@ -660,7 +661,7 @@ class WholeAuthStore: ObservableObject {
         do {
             try Auth.auth().signOut()
             
-            self.loginPlatform = .none
+            self.loginPlatform = "none"
             self.currentUser = nil
             self.currnetUserInfo = userInit
             withAnimation(.easeInOut) {
@@ -692,7 +693,7 @@ class WholeAuthStore: ObservableObject {
                             print(error)
                         }
                         print("파이어베이스 유저 삭제 성공")
-                        self.loginPlatform = .none
+                        self.loginPlatform = "none"
                         self.currentUser = nil
                         self.currnetUserInfo = self.userInit
                         withAnimation(.easeInOut) {

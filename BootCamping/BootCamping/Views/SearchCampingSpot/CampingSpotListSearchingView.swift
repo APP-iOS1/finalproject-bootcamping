@@ -52,6 +52,9 @@ struct CampingSpotListSearchingView: View {
                     //탭틱
                     UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                 }
+                .task {
+                    self.isTextFieldFocused = true
+                }
             if isSearching {
                 VStack {
                     ScrollView(showsIndicators: false) {

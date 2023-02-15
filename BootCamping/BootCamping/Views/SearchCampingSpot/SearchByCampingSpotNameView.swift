@@ -5,6 +5,9 @@
 //  Created by Donghoon Bae on 2023/02/09.
 //
 
+import Firebase
+import FirebaseAnalytics
+import FirebaseAnalyticsSwift
 import SwiftUI
 import SDWebImageSwiftUI
 
@@ -23,12 +26,21 @@ struct SearchByCampingSpotNameView: View {
         VStack {
             TextField("캠핑하실 지역을 검색해 주세요.", text: $keywordForSearching)
                 .textFieldStyle(.roundedBorder)
+                .submitLabel(.search)
                 .onSubmit {
                     keywordForParameter = keywordForSearching
                     isLoading = false
                     isSearching = true
                     campingSpotStore.campingSpotList.removeAll()
                     campingSpotStore.lastDoc = nil
+                    //탭틱
+                    UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+                    //For Googole Analystic
+                    Analytics.logEvent(AnalyticsEventSearch, parameters: [
+                        "UID" : "\(String(describing: Auth.auth().currentUser?.uid))",
+                        "Email" : "\(String(describing: Auth.auth().currentUser?.email))",
+                        "searchingKeyword" : "\(keywordForParameter)",
+                      ])
                 }
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 
@@ -77,8 +89,6 @@ struct SearchByCampingSpotNameView: View {
                 }
             }
             else {
-                Spacer()
-                Text("최근 검색 리스트로")
                 Spacer()
             }
         }

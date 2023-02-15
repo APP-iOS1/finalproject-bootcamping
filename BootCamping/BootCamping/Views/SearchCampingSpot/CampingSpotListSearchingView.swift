@@ -39,9 +39,11 @@ struct CampingSpotListSearchingView: View {
                     campingSpotStore.campingSpotList.removeAll()
                     campingSpotStore.lastDoc = nil
                     //For Googole Analystic
-                    Analytics.logEvent("SearchCampingSpot", parameters: [
+                    Analytics.logEvent(AnalyticsEventSearch, parameters: [
+                        "UID" : "\(String(describing: Auth.auth().currentUser?.uid))",
+                        "Email" : "\(String(describing: Auth.auth().currentUser?.email))",
                         "searchingKeyword" : "\(keywordForParameter)",
-                    ])
+                      ])
                     //탭틱
                     UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                 }
@@ -103,8 +105,6 @@ struct CampingSpotListSearchingView: View {
                     .padding(.bottom, 0.1)
                 }
             } else {
-                Spacer()
-                Text("최근 검색 리스트로")
                 Spacer()
             }
         }

@@ -83,9 +83,7 @@ private extension PrivacyView {
                     usingFaceId = false
                     faceId.islocked = false
                 }
-                dismiss()
             }
-            
         }
     }
 }

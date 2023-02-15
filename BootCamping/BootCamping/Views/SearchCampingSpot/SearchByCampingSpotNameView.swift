@@ -14,7 +14,11 @@ import SDWebImageSwiftUI
 struct SearchByCampingSpotNameView: View {
     
     @Environment(\.dismiss) private var dismiss
+    @FocusState private var isTextFieldFocused: Bool
+    
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
+    
+    
     @State private var isLoading: Bool = false
     @State var keywordForSearching: String = ""
     @State var keywordForParameter: String = ""
@@ -24,8 +28,11 @@ struct SearchByCampingSpotNameView: View {
     
     var body: some View {
         VStack {
-            TextField("캠핑하실 지역을 검색해 주세요.", text: $keywordForSearching)
+            TextField("\(Image(systemName: "magnifyingglass"))캠핑하실 지역을 검색해 주세요.", text: $keywordForSearching)
                 .textFieldStyle(.roundedBorder)
+                .focused($isTextFieldFocused)
+                .showClearButton($keywordForSearching)
+                .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 .submitLabel(.search)
                 .onSubmit {
                     keywordForParameter = keywordForSearching
@@ -42,7 +49,6 @@ struct SearchByCampingSpotNameView: View {
                         "searchingKeyword" : "\(keywordForParameter)",
                       ])
                 }
-                .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 
             if isSearching {
                 VStack() {

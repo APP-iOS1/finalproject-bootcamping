@@ -27,8 +27,7 @@ struct SettingView: View {
                 Text("공지사항")
             }
             NavigationLink(destination: ContactUsView()) {
-                Text("Q&A")
-                //TODO: 자주 묻는 질문(만들어야함!) + 고객센터 메일보내기
+                Text("자주 묻는 질문 FAQ")
             }
             NavigationLink(destination: EmptyView()) {
                 Text("앱 정보")

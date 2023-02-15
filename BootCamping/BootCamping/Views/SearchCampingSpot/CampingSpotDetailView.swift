@@ -111,6 +111,8 @@ struct CampingSpotDetailView: View {
                                 isBookmarked.toggle()
                                 if isBookmarked {
                                     bookmarkStore.addBookmarkSpotCombine(campingSpotId: campingSpot.contentId)
+                                    //탭틱
+                                    UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                                 } else {
                                     bookmarkStore.removeBookmarkCampingSpotCombine(campingSpotId: campingSpot.contentId)
                                 }
@@ -137,6 +139,8 @@ struct CampingSpotDetailView: View {
                             Button {
                                 UIPasteboard.general.string = campingSpot.addr1
                                 isPaste = true
+                                //탭틱
+                                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                             } label: {
                                 HStack {
                                     Image(systemName: "doc.on.doc")
@@ -157,6 +161,8 @@ struct CampingSpotDetailView: View {
                                     .font(.callout)
                                     .foregroundColor(.secondary)
                                 Button {
+                                    //탭틱
+                                    UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                                     if let url = URL(string: "tel://\(campingSpot.tel)"), UIApplication.shared.canOpenURL(url) {
                                         UIApplication.shared.open(url)
                                     }
@@ -366,9 +372,9 @@ struct CampingSpotDetailView: View {
                                         }
                                     }
                                 }
-                            } else if diaryStore.diaryList.filter { !$0.diaryIsPrivate }.count > 3 {
+                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.count > 3 {
                                 HStack {
-                                    ForEach(0...3, id: \.self) { index in
+                                    ForEach(0...2, id: \.self) { index in
                                         NavigationLink {
                                             DiaryDetailView(item: diaryStore.realTimeDiaryUserInfoDiaryList[index])
                                         } label: {

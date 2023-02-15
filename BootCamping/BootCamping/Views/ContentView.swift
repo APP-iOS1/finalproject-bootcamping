@@ -8,6 +8,7 @@
 import CoreData
 import FirebaseAuth
 import SwiftUI
+import FirebaseAnalytics
 
 struct ContentView: View {
     //로그인 유무 변수
@@ -21,6 +22,7 @@ struct ContentView: View {
     @EnvironmentObject var scheduleStore: ScheduleStore
     @EnvironmentObject var blockedUserStore: BlockedUserStore
     @EnvironmentObject var localNotificationCenter: LocalNotificationCenter
+    @EnvironmentObject var reportStore: ReportStore
     
     @State var isLoading: Bool = true
     
@@ -64,10 +66,16 @@ struct ContentView: View {
                     }.tag(TabViewScreen.four)
                 }
                 .onAppear {
-                    diaryStore.firstGetMyDiaryCombine()
-                    diaryStore.mostLikedGetDiarysCombine()
-                    diaryStore.firstGetRealTimeDiaryCombine()
-                    scheduleStore.readScheduleCombine()
+                    if wholeAuthStore.currentUser != nil {
+                        diaryStore.firstGetMyDiaryCombine()
+                        diaryStore.mostLikedGetDiarysCombine()
+                        diaryStore.firstGetRealTimeDiaryCombine()
+                        scheduleStore.readScheduleCombine()
+                        reportStore.readReportCombine()
+                        //                    Analytics.logEvent(AnalyticsEventLogin, parameters: [
+                        //                      AnalyticsParameterMethod: method!
+                        //                      ])
+                    }
                 }
             } else {
                 LoginView()
@@ -77,6 +85,13 @@ struct ContentView: View {
                         }
                     }
 
+            }
+        }
+        .onChange(of: wholeAuthStore.currnetUserInfo) { _ in
+            if wholeAuthStore.currentUser != nil {
+                diaryStore.firstGetMyDiaryCombine()
+                diaryStore.mostLikedGetDiarysCombine()
+                diaryStore.firstGetRealTimeDiaryCombine()
             }
         }
         // 푸시 알림으로 앱 진입 시 네 번째 탭(마이페이지 탭)으로 이동

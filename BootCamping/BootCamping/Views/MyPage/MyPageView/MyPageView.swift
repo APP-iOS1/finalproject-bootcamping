@@ -79,63 +79,72 @@ struct MyPageView: View {
 extension MyPageView{
     // MARK: -View : 유저 프로필이미지, 닉네임 표시
     private var userProfileSection : some View {
-        HStack(spacing: 20){
-            if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
-                WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 60, height: 60)
-                    .clipShape(Circle())
-                
-
-            } else {
-                Image("defaultProfileImage")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 60, height: 60)
-                    .clipShape(Circle())
-                    
-            }
-            Text("\((wholeAuthStore.currnetUserInfo!.nickName)) 님")
-            Group{
-                switch wholeAuthStore.loginPlatform {
-                case .email:
-                    Image(systemName: "")
-                    
-                case .apple:
-                    ZStack{
-                        Circle()
-                            .fill(Color.black)
-                            .frame(width: 30)
-                        Image(systemName: "apple.logo")
-                            .resizable()
-                            .foregroundColor(.white)
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 15)
-                    }
-                case .google:
-                    Image("g-logo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 30)
-                        .clipShape(Circle())
-                case .kakao:
-                    Image("k-logo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 30)
-                        .clipShape(Circle())
-                case .none:
-                    Image(systemName: "")
-                    
-                }
-            }
+        HStack{
             NavigationLink {
                 ProfileSettingView()
                 
             } label: {
-                Image(systemName: "chevron.right")
-                    .bold()
+                HStack(spacing: 20) {
+                    if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
+                        WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 60, height: 60)
+                            .clipShape(Circle())
+                        
+
+                    } else {
+                        Image("defaultProfileImage")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 60, height: 60)
+                            .clipShape(Circle())
+                            
+                    }
+        
+                    Text("\((wholeAuthStore.currnetUserInfo!.nickName)) 님")
+                    
+                    Group{
+                        switch wholeAuthStore.loginPlatform {
+                        case "email":
+                            Image(systemName: "")
+                            
+                        case "apple":
+                            ZStack{
+                                Circle()
+                                    .fill(Color.black)
+                                    .frame(width: 30)
+                                Image(systemName: "apple.logo")
+                                    .resizable()
+                                    .foregroundColor(.white)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 15)
+                            }
+                        case "google":
+                            Image("g-logo")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 30)
+                                .clipShape(Circle())
+                        case "kakao":
+                            Image("k-logo")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 30)
+                                .clipShape(Circle())
+                        case "none":
+                            Image(systemName: "")
+                            
+                        default:
+                            Image(systemName: "")
+                        }
+                    }
+                    
+                    Image(systemName: "chevron.right")
+                        .bold()
+                        .foregroundColor(.bcGreen)
+                }
+                .foregroundColor(.bcBlack)
             }
             
             Spacer()
@@ -147,10 +156,10 @@ extension MyPageView{
     private var loginLogo: some View {
         Group{
             switch wholeAuthStore.loginPlatform {
-            case .email:
+            case "email":
                 Image(systemName: "")
                 
-            case .apple:
+            case "apple":
                 ZStack{
                     Circle()
                         .fill(Color.black)
@@ -161,21 +170,23 @@ extension MyPageView{
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 15)
                 }
-            case .google:
+            case "google":
                 Image("g-logo")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 30)
                     .clipShape(Circle())
-            case .kakao:
+            case "kakao":
                 Image("k-logo")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 30)
                     .clipShape(Circle())
-            case .none:
+            case "none":
                 Image(systemName: "")
                 
+            default:
+                Image(systemName: "")
             }
         }
         

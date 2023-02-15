@@ -87,7 +87,11 @@ struct FirebaseUserService {
                         promise(.failure(FirebaseUserServiceError.badSnapshot))
                         return
                     }
-                    let docData = snapshot.data()!
+                    
+                    guard let docData = snapshot.data() else {
+                        promise(.failure(FirebaseDiaryLikeServiceError.badSnapshot))
+                        return
+                    }
                     
                     let id: String = docData["id"] as? String ?? ""
                     let profileImageName: String = docData["profileImageName"] as? String ?? ""
@@ -109,12 +113,15 @@ struct FirebaseUserService {
     //MARK: - Create FirebaseUserService
 
     func createUserService(user: User) -> AnyPublisher<Void, Error> {
-        Future<Void, Error> { promise in
+        
+        let userNickName = user.nickName.components(separatedBy: "@").first ?? user.nickName
+        
+        return Future<Void, Error> { promise in
             self.database.collection("UserList").document(user.id).setData([
                 "id": user.id,
                 "profileImageName": user.profileImageName,
                 "profileImageURL": user.profileImageURL,
-                "nickName": user.nickName,
+                "nickName": String(describing: userNickName),
                 "userEmail": user.userEmail,
                 "bookMarkedDiaries": user.bookMarkedDiaries,
                 "bookMarkedSpot": user.bookMarkedSpot,
@@ -141,9 +148,8 @@ struct FirebaseUserService {
             storageRef.child(user.profileImageName).delete { error in
                 if let error = error {
                     print("Error removing image from storage: \(error.localizedDescription)")
-                    promise(.failure(FirebaseUserServiceError.deleteUserListError))
                 } else {
-                    print("삭제완")
+                    
                 }
                 
             }
@@ -159,7 +165,6 @@ struct FirebaseUserService {
                 metadata.contentType = "image/jpeg"
                 let uploadTask = storageRef.child(imageName).putData(image, metadata: metadata)
                 uploadTask.observe(.success) { snapshot in
-                    print("1차 시간")
                     group.leave()
                 }
                 uploadTask.observe(.failure) { snapshot in
@@ -192,49 +197,53 @@ struct FirebaseUserService {
                             print(error)
                             promise(.failure(FirebaseUserServiceError.updateUserListError))
                         } else {
-                            print("2차 시간")
                             imageURS = url!.absoluteString
                             group.leave()
                         }
                         
                     }
                     group.notify(queue: .main) {
-                        self.database.collection("UserList").document(user.id).setData([
-                            "id": user.id,
+                        self.database.collection("UserList").document(user.id).updateData([
                             "profileImageName": imageName,
                             "profileImageURL": imageURS,
                             "nickName": user.nickName,
-                            "userEmail": user.userEmail,
-                            "bookMarkedDiaries": user.bookMarkedDiaries,
-                            "bookMarkedSpot": user.bookMarkedSpot,
-                            "blockedUser": user.blockedUser,
                         ]) { error in
                             if let error = error {
                                 print(error)
                                 promise(.failure(FirebaseUserServiceError.updateUserListError))
                             } else {
-                                print("3차 시간")
                                 promise(.success(()))
                             }
                         }
                     }
                 }
             } else {
-                self.database.collection("UserList").document(user.id).setData([
-                    "id": user.id,
-                    "profileImageName": user.profileImageName,
-                    "profileImageURL": user.profileImageURL,
-                    "nickName": user.nickName,
-                    "userEmail": user.userEmail,
-                    "bookMarkedDiaries": user.bookMarkedDiaries,
-                    "bookMarkedSpot": user.bookMarkedSpot,
-                    "blockedUser": user.blockedUser,
-                ]) { error in
-                    if let error = error {
-                        print(error)
-                        promise(.failure(FirebaseUserServiceError.updateUserListError))
-                    } else {
-                        promise(.success(()))
+                
+                if user.userEmail == "" {
+                    self.database.collection("UserList").document(user.id).updateData([
+                        "profileImageName": "",
+                        "profileImageURL": "",
+                        "nickName": user.nickName,
+                    ]) { error in
+                        if let error = error {
+                            print(error)
+                            promise(.failure(FirebaseUserServiceError.updateUserListError))
+                        } else {
+                            promise(.success(()))
+                        }
+                    }
+                } else {
+                    self.database.collection("UserList").document(user.id).updateData([
+                        "profileImageName": user.profileImageName,
+                        "profileImageURL": user.profileImageURL,
+                        "nickName": user.nickName,
+                    ]) { error in
+                        if let error = error {
+                            print(error)
+                            promise(.failure(FirebaseUserServiceError.updateUserListError))
+                        } else {
+                            promise(.success(()))
+                        }
                     }
                 }
             }

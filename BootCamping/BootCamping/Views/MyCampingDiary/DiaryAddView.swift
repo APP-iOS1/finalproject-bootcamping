@@ -19,6 +19,7 @@ enum CurrentField{
 }
 
 struct DiaryAddView: View {
+    @State var isImageView = false
     
     @State var field1 = ""
     @State var field2 = ""
@@ -69,6 +70,7 @@ struct DiaryAddView: View {
     @Namespace var title
     @Namespace var content
     @Namespace var bottom
+    @State var value: CGFloat = 0
     
     var body: some View {
         ZStack {
@@ -76,7 +78,6 @@ struct DiaryAddView: View {
                 VStack {
                     ScrollView{
                         VStack(alignment: .leading) {
-
                             Group {
                                 imagePicker
                                 Divider()
@@ -89,7 +90,7 @@ struct DiaryAddView: View {
                                 
                                 addViewIsPrivate
                                 Divider()
-                                    .padding(.bottom)
+                                    .padding(.bottom, 10)
                             }
                             .font(.subheadline)
                             .onTapGesture {
@@ -117,46 +118,56 @@ struct DiaryAddView: View {
                                         proxy.scrollTo(title, anchor: .center)
                                     }
                                 }
+                            
                             EmptyView()
                                 .id(title)
                             Divider()
-                            
-                            //diaryContent
-                            TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
-                                .frame(minHeight: UIScreen.screenHeight / 4)
-                                .focused($inputFocused)
-                                .focused($activeState, equals: .field2)
-                                .onTapGesture {
-                                    isTapTextField = true
-                                }
-                                .onChange(of: diaryContent) { newValue in
-                                    withAnimation {
-                                        proxy.scrollTo(content, anchor: .center)
-                                    }
-                                }
-                            
-                            EmptyView()
-                                .id(content)
-                            Spacer()
-                            if inputFocused == false {
-                                withAnimation {
-                                    addViewAddButton
-                                        .id(bottom)
-                                }
-                            }
+                                .padding(.vertical,10)
                             
                         }
-                        .padding(.horizontal, UIScreen.screenWidth*0.03)
+
                     }
                     .padding(.bottom, 0.1)
-
+                    
+                    TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
+                        .frame(minHeight: UIScreen.screenHeight / 4)
+                        .focused($inputFocused)
+                        .focused($activeState, equals: .field2)
+                        .onTapGesture {
+                            isTapTextField = true
+                        }
+                        .onChange(of: diaryContent) { newValue in
+                            withAnimation {
+                                proxy.scrollTo(title, anchor: .top)
+                            }
+                        }
+                    Spacer()
+                    
+                    if inputFocused == false {
+                        withAnimation {
+                            addViewAddButton
+                                .id(bottom)
+                        }
+                    }
                 }
+                .offset(y: -self.value)
+//                .animation (.spring())
+                .onAppear {
+                    NotificationCenter.default.addObserver(forName:UIResponder.keyboardWillShowNotification,object:
+                                                            nil, queue: .main) { (noti) in
+                        let value = noti.userInfo! [UIResponder .keyboardFrameEndUserInfoKey] as! CGRect
+                        let height = value.height / 22
+                        self.value = height
+                    }
+                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object:
+                                                            nil, queue: .main) { (noti) in
+                        self.value = 0
+                    }
+                }
+                .padding(.horizontal, UIScreen.screenWidth*0.03)
                 .navigationTitle(Text("캠핑 일기 쓰기"))
                 .onTapGesture {
                     inputFocused = false
-                    withAnimation {
-                        proxy.scrollTo(bottom, anchor: .bottom)
-                    }
                 }
                 .disableAutocorrection(true) //자동 수정 비활성화
                 .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
@@ -181,6 +192,9 @@ struct DiaryAddView: View {
         }
         .toast(isPresenting: $isProcessing) {
             AlertToast(displayMode: .alert, type: .loading)
+        }
+        .sheet(isPresented: $isImageView) {
+            DiaryAddDetailImageView(diaryImages: $diaryImages, isImageView: $isImageView)
         }
     }
 }
@@ -219,43 +233,67 @@ private extension DiaryAddView {
                         }
                     }
                 
-                Text("\(diaryImages.count) / 10")
-                    .font(.caption2)
-                    .foregroundColor(.gray)
+//                Text("\(diaryImages.count) / 10")
+//                    .font(.caption2)
+//                    .foregroundColor(.gray)
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack{
                     if diaryImages == [] {
-                        Text(diaryImages.isEmpty ? "사진을 추가해주세요" : "")
+                        Text(diaryImages.isEmpty ? "사진을 추가해주세요 (최대 10장)" : "")
                             .foregroundColor(.secondary)
                             .opacity(0.5)
                             .frame(height: UIScreen.screenWidth * 0.2)
                             .padding(.leading, UIScreen.screenWidth * 0.05)
                         
-                    } else{
-                        ForEach(Array(zip(0..<(diaryImages.count), diaryImages)), id: \.0) { index, image in
-                            Image(uiImage: UIImage(data: image)!)
-                                .resizeImageData(data: image)
+                    } else {
+                        Button {
+                            isImageView = true
+                        } label: {
+                            Image(uiImage: UIImage(data: diaryImages.first!)!)
+    //                            .resizeImageData(data: diaryImages.first)
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
                                 .clipped()
-                                .overlay(alignment: .topLeading) {
-                                    VStack {
-                                        Text("대표 이미지")
-                                            .font(.caption2)
-                                            .foregroundColor(.white)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 5)
-                                                    .fill(Color.bcGreen)
-                                                    .padding(-0.5)
-                                                
-                                            )
-                                            .padding(2.5)
-                                    }
-                                    .opacity(index == 0 ? 1 : 0)
+                                .overlay(alignment: .topTrailing) {
+//                                    Text("대표 이미지")
+                                    Image(systemName: "hand.tap")
+                                        .font(.footnote)
+                                        .foregroundColor(.white)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 5)
+                                                .fill(Color.bcGreen)
+                                                .padding(-0.5)
+                                        )
+                                        .padding(2.5)
                                 }
                         }
+
+                        
+//                        ForEach(Array(zip(0..<(diaryImages.count), diaryImages)), id: \.0) { index, image in
+//                            Image(uiImage: UIImage(data: image)!)
+//                                .resizeImageData(data: image)
+//                                .resizable()
+//                                .scaledToFill()
+//                                .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
+//                                .clipped()
+//                                .overlay(alignment: .topLeading) {
+//                                    VStack {
+//                                        Text("대표 이미지")
+//                                            .font(.caption2)
+//                                            .foregroundColor(.white)
+//                                            .background(
+//                                                RoundedRectangle(cornerRadius: 5)
+//                                                    .fill(Color.bcGreen)
+//                                                    .padding(-0.5)
+//                                                
+//                                            )
+//                                            .padding(2.5)
+//                                    }
+//                                    .opacity(index == 0 ? 1 : 0)
+//                                }
+//                        }
                     }
                 }
                 .padding(.vertical ,UIScreen.screenWidth * 0.005)

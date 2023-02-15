@@ -7,17 +7,29 @@
 
 import SwiftUI
 import Firebase
+import FirebaseAnalytics
 import SDWebImageSwiftUI
+import Introspect
+import AlertToast
+
+enum ReportState {
+    case alreadyReported
+    case notReported
+    case nowReported
+}
 
 struct DiaryDetailView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var blockedUserStore: BlockedUserStore
+    @EnvironmentObject var reportStore: ReportStore
     
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
     @StateObject var commentStore: CommentStore = CommentStore()
+    
+    @StateObject var scrollViewHelper: ScrollViewHelper = ScrollViewHelper()
     
     var diaryCampingSpot: [Item] {
         get {
@@ -35,7 +47,10 @@ struct DiaryDetailView: View {
     @State private var isShowingConfirmationDialog = false
     @State private var isShowingUserReportAlert = false
     @State private var isShowingUserBlockedAlert = false
-    @State private var isBlocked = false
+    
+    @State private var reportState = ReportState.notReported
+    @State private var isShowingAcceptedToast = false
+    @State private var isShowingBlockedToast = false
     
     //자동 스크롤
     @Namespace var topID
@@ -71,7 +86,7 @@ struct DiaryDetailView: View {
                             Divider()
                             //댓글
                             ForEach(commentStore.commentList) { comment in
-                                    DiaryCommentCellView(item2: item, item: comment)
+                                DiaryCommentCellView(commentStore: commentStore, scrollViewHelper: scrollViewHelper, item2: item, item: comment)
                             }
                         }
                         .padding(.horizontal, UIScreen.screenWidth * 0.03)
@@ -87,7 +102,9 @@ struct DiaryDetailView: View {
                             proxy.scrollTo(topID)
                         }
                     }
-                }
+                }.introspectScrollView(customize: { uiScrollView in
+                    uiScrollView.delegate = scrollViewHelper
+                })
                 .padding(.bottom, 0.1)
 
                  HStack {
@@ -136,19 +153,34 @@ struct DiaryDetailView: View {
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 
             }
-            .sheet(isPresented: $isShowingUserReportAlert) {
-                ReportUserView()
-                // 예를 들어 다음은 화면의 아래쪽 50%를 차지하는 시트를 만듭니다.
-                    .presentationDetents([.fraction(0.5), .medium, .large])
-                    .presentationDragIndicator(.automatic)
+            .toast(isPresenting: $isShowingAcceptedToast) {
+                AlertToast(type: .regular, title: "이 게시물에 대한 신고가 접수되었습니다.")
             }
-            .padding(.top)
+            .toast(isPresenting: $isShowingBlockedToast) {
+                AlertToast(type: .regular, title: "이 사용자를 차단했습니다.", subTitle: "차단 해제는 마이페이지 > 설정에서 가능합니다.")
+            }
+            .sheet(isPresented: $isShowingUserReportAlert) {
+                if reportState == .alreadyReported {
+                    WaitingView()
+                        .presentationDetents([.fraction(0.3), .medium])
+                } else {
+                    ReportView(reportState: $reportState, reportedDiaryId: item.diary.id)
+                    // 예를 들어 다음은 화면의 아래쪽 50%를 차지하는 시트를 만듭니다.
+                        .presentationDetents([.fraction(0.5), .medium, .large])
+                        .presentationDragIndicator(.hidden)
+                }
+            }
+//            .padding(.top)
             .padding(.bottom)
             .navigationTitle("BOOTCAMPING")
             .onAppear{
                 commentStore.readCommentsCombine(diaryId: item.diary.id)
                 campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
+                reportState = (reportStore.reportedDiaries.filter{ reportedDiary in reportedDiary.reportedDiaryId == item.diary.id }.count != 0) ? ReportState.alreadyReported : ReportState.notReported
+            }
+            .onChange(of: reportState) { newReportState in
+                isShowingAcceptedToast = (reportState == ReportState.nowReported)
             }
         }
         .onTapGesture {
@@ -264,16 +296,13 @@ private extension DiaryDetailView {
 
         }
         .confirmationDialog("알림", isPresented: $isShowingConfirmationDialog, titleVisibility: .hidden, actions: {
-            Button("신고하기", role: .destructive) {
+            Button("게시물 신고하기", role: .destructive) {
                 isShowingUserReportAlert.toggle()
             }
-            Button("차단하기", role: .destructive) {
-                print("차단해ㅐㅐㅐㅐ")
-                isBlocked.toggle()
-                if isBlocked {
-                    blockedUserStore.addBlockedUserCombine(blockedUserId: item.diary.uid)
-                }
+            Button("\(item.user.nickName)님 차단하기", role: .destructive) {
+                blockedUserStore.addBlockedUserCombine(blockedUserId: item.diary.uid)
                 wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+                isShowingBlockedToast.toggle()
             }
             Button("취소", role: .cancel) {}
         })
@@ -306,14 +335,13 @@ private extension DiaryDetailView {
                 //포함되있으면 아무것도 안함
             } else {
                 diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
+                //탭틱
+                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
             }
             //TODO: -함수 업데이트되면 넣기
             diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
-            //탭틱
-            let impactMed = UIImpactFeedbackGenerator(style: .soft)
-            impactMed.impactOccurred()
         }
-        .pinchZoomAndDrag()
+//        .pinchZoomAndDrag()
 
     }
     
@@ -323,6 +351,7 @@ private extension DiaryDetailView {
             .font(.system(.title3, weight: .semibold))
             .padding(.top, 10)
             .padding(.bottom, 5)
+            .multilineTextAlignment(.leading)
     }
     
     // MARK: -View : 다이어리 내용
@@ -387,11 +416,10 @@ private extension DiaryDetailView {
                     diaryLikeStore.removeDiaryLikeCombine(diaryId: item.diary.id)
                 } else {
                     diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
+                    //탭틱
+                    UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                 }
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
-                //탭틱
-                let impactMed = UIImpactFeedbackGenerator(style: .soft)
-                impactMed.impactOccurred()
             } label: {
                 Image(systemName: diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")
                 
@@ -425,6 +453,12 @@ private extension DiaryDetailView {
                 .foregroundColor(.secondary)
         }
         .padding(.vertical, 5)
+        .task {
+            Analytics.logEvent("DiaryTest", parameters: [
+                "DiaryID" : "\(item.diary.id)",
+                "Visitor" : "\(String(describing: Auth.auth().currentUser?.email))"
+            ])
+        }
     }
     
     //MARK: - 키보드 dismiss 함수입니다.

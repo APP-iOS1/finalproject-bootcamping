@@ -8,12 +8,15 @@
 import SwiftUI
 import SDWebImageSwiftUI
 import Firebase
+import AlertToast
 
 struct DiaryCellView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var blockedUserStore: BlockedUserStore
+    @EnvironmentObject var reportStore: ReportStore
+    
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
     @StateObject var commentStore: CommentStore = CommentStore()
@@ -28,7 +31,10 @@ struct DiaryCellView: View {
     //유저 신고/ 차단 알림
     @State private var isShowingConfirmationDialog = false
     @State private var isShowingUserReportAlert = false
-    @State private var isBlocked = false
+    
+    @State private var reportState = ReportState.notReported
+    @State private var isShowingAcceptedToast = false
+    @State private var isShowingBlockedToast = false
     
     @EnvironmentObject var faceId: FaceId
     @AppStorage("faceId") var usingFaceId: Bool = false
@@ -77,6 +83,16 @@ struct DiaryCellView: View {
                             diaryTitle
                         }
                         diaryContent
+                        HStack {
+                            Spacer()
+                            HStack{
+                                Text("자세히 보기")
+                                Image(systemName: "chevron.right.2")
+                            }
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                        }
+                        
                         if !campingSpotStore.campingSpotList.isEmpty {
                             diaryCampingLink
                         }
@@ -92,11 +108,22 @@ struct DiaryCellView: View {
                 .foregroundColor(.bcBlack)
             }
         }
+        .toast(isPresenting: $isShowingAcceptedToast) {
+            AlertToast(type: .regular, title: "이 게시물에 대한 신고가 접수되었습니다.")
+        }
+        .toast(isPresenting: $isShowingBlockedToast) {
+            AlertToast(type: .regular, title: "이 사용자를 차단했습니다.", subTitle: "차단 해제는 마이페이지 > 설정에서 가능합니다.")
+        }
         .sheet(isPresented: $isShowingUserReportAlert) {
-            ReportUserView()
-            // 예를 들어 다음은 화면의 아래쪽 50%를 차지하는 시트를 만듭니다.
-                .presentationDetents([.fraction(0.5), .medium, .large])
-                .presentationDragIndicator(.automatic)
+            if reportState == .alreadyReported {
+                WaitingView()
+                    .presentationDetents([.fraction(0.3), .medium])
+            } else {
+                ReportView(reportState: $reportState, reportedDiaryId: item.diary.id)
+                // 예를 들어 다음은 화면의 아래쪽 50%를 차지하는 시트를 만듭니다.
+                    .presentationDetents([.fraction(0.5), .medium, .large])
+                    .presentationDragIndicator(.hidden)
+            }
         }
         .padding(.top, UIScreen.screenWidth * 0.03)
         .onAppear {
@@ -104,6 +131,10 @@ struct DiaryCellView: View {
             campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
             //TODO: -함수 업데이트되면 넣기
             diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
+            reportState = (reportStore.reportedDiaries.filter{ reportedDiary in reportedDiary.reportedDiaryId == item.diary.id }.count != 0) ? ReportState.alreadyReported : ReportState.notReported
+        }
+        .onChange(of: reportState) { newReportState in
+            isShowingAcceptedToast = (reportState == ReportState.nowReported)
         }
     }
 }
@@ -135,14 +166,13 @@ private extension DiaryCellView {
                 //포함되있으면 아무것도 안함
             } else {
                 diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
+                //탭틱
+                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
             }
             //TODO: -함수 업데이트되면 넣기
             diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
-            //탭틱
-            let impactMed = UIImpactFeedbackGenerator(style: .soft)
-            impactMed.impactOccurred()
         }
-        .pinchZoomAndDrag()
+//        .pinchZoomAndDrag()
     }
     
     //MARK: - 다이어리 작성자 프로필
@@ -230,16 +260,13 @@ private extension DiaryCellView {
                 .frame(width: 30,height: 30)
         }
         .confirmationDialog("알림", isPresented: $isShowingConfirmationDialog, titleVisibility: .hidden, actions: {
-            Button("신고하기", role: .destructive) {
+            Button("게시물 신고하기", role: .destructive) {
                 isShowingUserReportAlert.toggle()
             }
-            Button("차단하기", role: .destructive) {
-                print("차단해ㅐㅐㅐㅐ")
-                isBlocked.toggle()
-                if isBlocked {
-                    blockedUserStore.addBlockedUserCombine(blockedUserId: item.diary.uid)
-                }
+            Button("\(item.user.nickName)님 차단하기", role: .destructive) {
+                blockedUserStore.addBlockedUserCombine(blockedUserId: item.diary.uid)
                 wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+                isShowingBlockedToast.toggle()
             }
             Button("취소", role: .cancel) {}
         })
@@ -251,6 +278,7 @@ private extension DiaryCellView {
             .font(.system(.title3, weight: .semibold))
             .padding(.top, 10)
             .padding(.bottom, 5)
+            .multilineTextAlignment(.leading)
     }
     
     // MARK: - 다이어리 공개 여부를 나타내는 이미지
@@ -308,11 +336,10 @@ private extension DiaryCellView {
                     diaryLikeStore.removeDiaryLikeCombine(diaryId: item.diary.id)
                 } else {
                     diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
+                    //탭틱
+                    UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                 }
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
-                //탭틱
-                let impactMed = UIImpactFeedbackGenerator(style: .soft)
-                impactMed.impactOccurred()
                 
             } label: {
                 Image(systemName: diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")

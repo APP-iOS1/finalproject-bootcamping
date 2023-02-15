@@ -28,10 +28,12 @@ struct MyCampingDiaryView: View {
             VStack {
                 ScrollView(showsIndicators: false) {
                     LazyVStack {
-                        ForEach(diaryStore.myDiaryUserInfoDiaryList.indices, id: \.self) { index in
-                            DiaryCellView(item: diaryStore.myDiaryUserInfoDiaryList[index])
+                        ForEach(diaryStore.myDiaryUserInfoDiaryList, id: \.self) { userInfoDiary in
+                            DiaryCellView(item: userInfoDiary)
                                 .task {
-                                    if index == diaryStore.myDiaryUserInfoDiaryList.count - 1 {
+                                    guard let index = diaryStore.myDiaryUserInfoDiaryList.firstIndex(where: { $0.diary.id == userInfoDiary.diary.id}) else { return }
+
+                                    if (index + 1) % 5 == 0 {
                                         Task {
                                             diaryStore.nextGetMyDiaryCombine()
                                         }
@@ -46,6 +48,9 @@ struct MyCampingDiaryView: View {
                     .padding(.bottom, 0.1)
                 }
                 .background(Color.bcWhite)
+                .refreshable {
+                    diaryStore.firstGetMyDiaryCombine()
+                }
 
                 
             }
@@ -54,6 +59,10 @@ struct MyCampingDiaryView: View {
             diaryStore.isProcessing ? Color.black.opacity(0.3) : Color.clear
 
             
+        }
+        .onChange(of: diaryStore.createFinshed) { _ in
+            diaryStore.firstGetMyDiaryCombine()
+            diaryStore.firstGetRealTimeDiaryCombine()
         }
         .toolbar{
             ToolbarItem(placement: .navigationBarLeading) {

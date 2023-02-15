@@ -5,6 +5,9 @@
 //  Created by Donghoon Bae on 2023/02/08.
 //
 
+import Firebase
+import FirebaseAnalytics
+import FirebaseAnalyticsSwift
 import SwiftUI
 
 enum filterCase {
@@ -25,15 +28,22 @@ struct CampingSpotListSearchingView: View {
     
     var body: some View {
         VStack {
-            TextField("캠핑하실 지역을 검색해 주세요.", text: $keywordForSearching)
+            TextField("\(Image(systemName: "magnifyingglass"))캠핑하실 지역을 검색해 주세요", text: $keywordForSearching)
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal, UIScreen.screenWidth*0.03)
+                .submitLabel(.search)
                 .onSubmit {
                     keywordForParameter = keywordForSearching
                     isLoading = false
                     isSearching = true
                     campingSpotStore.campingSpotList.removeAll()
                     campingSpotStore.lastDoc = nil
+                    //For Googole Analystic
+                    Analytics.logEvent("SearchCampingSpot", parameters: [
+                        "searchingKeyword" : "\(keywordForParameter)",
+                    ])
+                    //탭틱
+                    UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                 }
             if isSearching {
                 VStack {

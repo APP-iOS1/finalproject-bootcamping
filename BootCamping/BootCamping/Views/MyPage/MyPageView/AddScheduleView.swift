@@ -184,6 +184,8 @@ extension AddScheduleView {
                 }
             }
             scheduleStore.readScheduleCombine()
+            //탭틱
+            UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
             dismiss()
         } label: {
             Text("등록")

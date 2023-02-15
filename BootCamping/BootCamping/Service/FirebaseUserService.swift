@@ -114,7 +114,7 @@ struct FirebaseUserService {
 
     func createUserService(user: User) -> AnyPublisher<Void, Error> {
         
-        var userNickName = user.nickName.components(separatedBy: "@").first ?? user.nickName
+        let userNickName = user.nickName.components(separatedBy: "@").first ?? user.nickName
         
         return Future<Void, Error> { promise in
             self.database.collection("UserList").document(user.id).setData([
@@ -150,7 +150,7 @@ struct FirebaseUserService {
                     print("Error removing image from storage: \(error.localizedDescription)")
                     promise(.failure(FirebaseUserServiceError.deleteUserListError))
                 } else {
-                    print("삭제완")
+                    
                 }
                 
             }
@@ -166,7 +166,6 @@ struct FirebaseUserService {
                 metadata.contentType = "image/jpeg"
                 let uploadTask = storageRef.child(imageName).putData(image, metadata: metadata)
                 uploadTask.observe(.success) { snapshot in
-                    print("1차 시간")
                     group.leave()
                 }
                 uploadTask.observe(.failure) { snapshot in
@@ -199,43 +198,31 @@ struct FirebaseUserService {
                             print(error)
                             promise(.failure(FirebaseUserServiceError.updateUserListError))
                         } else {
-                            print("2차 시간")
                             imageURS = url!.absoluteString
                             group.leave()
                         }
                         
                     }
                     group.notify(queue: .main) {
-                        self.database.collection("UserList").document(user.id).setData([
-                            "id": user.id,
+                        self.database.collection("UserList").document(user.id).updateData([
                             "profileImageName": imageName,
                             "profileImageURL": imageURS,
                             "nickName": user.nickName,
-                            "userEmail": user.userEmail,
-                            "bookMarkedDiaries": user.bookMarkedDiaries,
-                            "bookMarkedSpot": user.bookMarkedSpot,
-                            "blockedUser": user.blockedUser,
                         ]) { error in
                             if let error = error {
                                 print(error)
                                 promise(.failure(FirebaseUserServiceError.updateUserListError))
                             } else {
-                                print("3차 시간")
                                 promise(.success(()))
                             }
                         }
                     }
                 }
             } else {
-                self.database.collection("UserList").document(user.id).setData([
-                    "id": user.id,
+                self.database.collection("UserList").document(user.id).updateData([
                     "profileImageName": user.profileImageName,
                     "profileImageURL": user.profileImageURL,
                     "nickName": user.nickName,
-                    "userEmail": user.userEmail,
-                    "bookMarkedDiaries": user.bookMarkedDiaries,
-                    "bookMarkedSpot": user.bookMarkedSpot,
-                    "blockedUser": user.blockedUser,
                 ]) { error in
                     if let error = error {
                         print(error)

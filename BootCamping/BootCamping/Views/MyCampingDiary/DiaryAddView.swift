@@ -150,7 +150,6 @@ struct DiaryAddView: View {
                         }
                     }
                 }
-//                .offset(y: -self.value)
                 .onAppear {
                     NotificationCenter.default.addObserver(forName:UIResponder.keyboardWillShowNotification,object:
                                                             nil, queue: .main) { (noti) in

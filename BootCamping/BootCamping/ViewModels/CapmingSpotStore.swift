@@ -18,7 +18,7 @@ class CampingSpotStore: ObservableObject {
     @Published var firebaseCampingSpotServiceError: FirebaseCampingSpotServiceError = .badSnapshot
     @Published var showErrorAlertMessage: String = "Error"
     @Published var lastDoc: QueryDocumentSnapshot?
-    @Published var noImageURL: String = "https://firebasestorage.googleapis.com/v0/b/bootcamping-280fc.appspot.com/o/DiaryImages%2FnoImage.png?alt=media&token=75417e46-f84f-49b0-b893-9e77431daf2a"
+    @Published var noImageURL: String = "https://firebasestorage.googleapis.com/v0/b/bootcamping-280fc.appspot.com/o/BootcampingImage%2FnoImage.png?alt=media&token=d401f6bd-e6db-4e41-9db4-a082e16f8d6e"
     
     let database = Firestore.firestore()
     

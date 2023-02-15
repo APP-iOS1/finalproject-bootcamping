@@ -128,7 +128,7 @@ struct DiaryAddView: View {
                     }
                     
                     TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
-                        .frame(height: UIScreen.screenHeight / 3.7)
+                        .frame(height: UIScreen.screenHeight / 3.7, alignment: .top)
                         .focused($inputFocused)
                         .focused($activeState, equals: .field2)
                         .onTapGesture {

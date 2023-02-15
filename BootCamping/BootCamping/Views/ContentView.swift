@@ -72,6 +72,7 @@ struct ContentView: View {
                         diaryStore.firstGetRealTimeDiaryCombine()
                         scheduleStore.readScheduleCombine()
                         reportStore.readReportCombine()
+                        //For Googole Analystic
                         Analytics.logEvent(AnalyticsEventLogin, parameters: [
                             "LoginEmail": "\(String(describing: Auth.auth().currentUser?.email))",
                             "LoginUID": "\(String(describing: Auth.auth().currentUser?.uid))"

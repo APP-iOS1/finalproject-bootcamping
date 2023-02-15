@@ -113,12 +113,15 @@ struct FirebaseUserService {
     //MARK: - Create FirebaseUserService
 
     func createUserService(user: User) -> AnyPublisher<Void, Error> {
-        Future<Void, Error> { promise in
+        
+        var userNickName = user.nickName.components(separatedBy: "@").first ?? user.nickName
+        
+        return Future<Void, Error> { promise in
             self.database.collection("UserList").document(user.id).setData([
                 "id": user.id,
                 "profileImageName": user.profileImageName,
                 "profileImageURL": user.profileImageURL,
-                "nickName": user.nickName,
+                "nickName": String(describing: userNickName),
                 "userEmail": user.userEmail,
                 "bookMarkedDiaries": user.bookMarkedDiaries,
                 "bookMarkedSpot": user.bookMarkedSpot,

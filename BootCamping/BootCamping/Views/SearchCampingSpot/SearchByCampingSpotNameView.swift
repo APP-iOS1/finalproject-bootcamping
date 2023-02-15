@@ -5,6 +5,9 @@
 //  Created by Donghoon Bae on 2023/02/09.
 //
 
+import Firebase
+import FirebaseAnalytics
+import FirebaseAnalyticsSwift
 import SwiftUI
 import SDWebImageSwiftUI
 
@@ -29,6 +32,12 @@ struct SearchByCampingSpotNameView: View {
                     isSearching = true
                     campingSpotStore.campingSpotList.removeAll()
                     campingSpotStore.lastDoc = nil
+                    //For Googole Analystic
+                    Analytics.logEvent(AnalyticsEventSearch, parameters: [
+                        "UID" : "\(String(describing: Auth.auth().currentUser?.uid))",
+                        "Email" : "\(String(describing: Auth.auth().currentUser?.email))",
+                        "searchingKeyword" : "\(keywordForParameter)",
+                      ])
                 }
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 

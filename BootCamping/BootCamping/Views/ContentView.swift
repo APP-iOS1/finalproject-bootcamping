@@ -72,6 +72,7 @@ struct ContentView: View {
                         diaryStore.firstGetRealTimeDiaryCombine()
                         scheduleStore.readScheduleCombine()
                         reportStore.readReportCombine()
+                        wholeAuthStore.getUserInfo(userUID: wholeAuthStore.currentUser!.uid) {}
                         //                    Analytics.logEvent(AnalyticsEventLogin, parameters: [
                         //                      AnalyticsParameterMethod: method!
                         //                      ])

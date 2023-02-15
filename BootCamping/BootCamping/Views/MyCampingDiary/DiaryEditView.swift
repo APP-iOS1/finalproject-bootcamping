@@ -154,6 +154,7 @@ struct DiaryEditView: View {
             }
         }
         .task {
+            selectedDate = item.diary.diaryVisitedDate
             campingSpot = campingSpotItem.facltNm
             locationInfo = campingSpotItem.contentId
         }
@@ -283,7 +284,9 @@ extension DiaryEditView {
         HStack {
             Spacer()
             Button {
-                
+                diaryStore.isProcessing = true
+                diaryStore.updateDiaryCombine(diary: Diary(id: item.diary.id, uid: item.diary.uid, diaryUserNickName: item.diary.diaryUserNickName, diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: item.diary.diaryImageNames, diaryImageURLs: item.diary.diaryImageURLs, diaryCreatedDate: item.diary.diaryCreatedDate, diaryVisitedDate: selectedDate, diaryLike: item.diary.diaryLike, diaryIsPrivate: diaryIsPrivate))
+                dismiss()
             } label: {
                 Text(diaryTitle.isEmpty || diaryContent.isEmpty ? "내용을 작성해주세요" : "수정하기")
                     .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07) // 이거 밖에 있으면 글씨 부분만 버튼 적용됨

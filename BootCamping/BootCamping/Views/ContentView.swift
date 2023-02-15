@@ -66,15 +66,16 @@ struct ContentView: View {
                     }.tag(TabViewScreen.four)
                 }
                 .onAppear {
-                    diaryStore.firstGetMyDiaryCombine()
-                    diaryStore.mostLikedGetDiarysCombine()
-                    diaryStore.firstGetRealTimeDiaryCombine()
-                    scheduleStore.readScheduleCombine()
-                    reportStore.readReportCombine()
-//                    Analytics.logEvent(AnalyticsEventLogin, parameters: [
-//                      AnalyticsParameterMethod: method!
-//                      ])
-                    
+                    if wholeAuthStore.currentUser != nil {
+                        diaryStore.firstGetMyDiaryCombine()
+                        diaryStore.mostLikedGetDiarysCombine()
+                        diaryStore.firstGetRealTimeDiaryCombine()
+                        scheduleStore.readScheduleCombine()
+                        reportStore.readReportCombine()
+                        //                    Analytics.logEvent(AnalyticsEventLogin, parameters: [
+                        //                      AnalyticsParameterMethod: method!
+                        //                      ])
+                    }
                 }
             } else {
                 LoginView()
@@ -87,9 +88,11 @@ struct ContentView: View {
             }
         }
         .onChange(of: wholeAuthStore.currnetUserInfo) { _ in
-            diaryStore.firstGetMyDiaryCombine()
-            diaryStore.mostLikedGetDiarysCombine()
-            diaryStore.firstGetRealTimeDiaryCombine()
+            if wholeAuthStore.currentUser != nil {
+                diaryStore.firstGetMyDiaryCombine()
+                diaryStore.mostLikedGetDiarysCombine()
+                diaryStore.firstGetRealTimeDiaryCombine()
+            }
         }
         // 푸시 알림으로 앱 진입 시 네 번째 탭(마이페이지 탭)으로 이동
         .onReceive(localNotificationCenter.$pageToNavigationTo) {

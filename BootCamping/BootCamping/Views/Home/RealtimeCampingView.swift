@@ -62,5 +62,10 @@ struct RealtimeCampingView: View {
             }
             .padding(.bottom, 1)
         }
+        .onChange(of: diaryStore.createFinshed) { _ in
+            diaryStore.firstGetMyDiaryCombine()
+            diaryStore.firstGetRealTimeDiaryCombine()
+            diaryStore.mostLikedGetDiarysCombine()
+        }
     }
 }

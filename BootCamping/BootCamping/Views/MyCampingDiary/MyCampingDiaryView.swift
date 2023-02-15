@@ -70,6 +70,7 @@ struct MyCampingDiaryView: View {
         .onChange(of: diaryStore.createFinshed) { _ in
             diaryStore.firstGetMyDiaryCombine()
             diaryStore.firstGetRealTimeDiaryCombine()
+            diaryStore.mostLikedGetDiarysCombine()
         }
         .toolbar{
             ToolbarItem(placement: .navigationBarLeading) {

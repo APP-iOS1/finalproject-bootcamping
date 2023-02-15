@@ -37,13 +37,18 @@ struct WeeklyPopulerCampingView: View {
                 }
             }
         }
+        .onChange(of: diaryStore.createFinshed) { _ in
+            diaryStore.firstGetMyDiaryCombine()
+            diaryStore.firstGetRealTimeDiaryCombine()
+            diaryStore.mostLikedGetDiarysCombine()
+        }
     }
 }
 
 //MARK: - 포토카드 위 글씨
 struct PhotoMainStory: View {
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
-    @StateObject var diaryStore: DiaryStore = DiaryStore()
+    @EnvironmentObject var diaryStore: DiaryStore
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
 
     var item: Diary

@@ -23,13 +23,16 @@ struct MyCampingDiaryView: View {
     @AppStorage("faceId") var usingFaceId: Bool? //페이스id 설정 사용하는지
     //faceId.isLocked // 페이스 아이디가 잠겨있는지.
     
+    @State private var isShowingAcceptedToast = false
+    @State private var isShowingBlockedToast = false
+    
     var body: some View {
         ZStack {
             VStack {
                 ScrollView(showsIndicators: false) {
                     LazyVStack {
                         ForEach(diaryStore.myDiaryUserInfoDiaryList, id: \.self) { userInfoDiary in
-                            DiaryCellView(item: userInfoDiary)
+                            DiaryCellView(item: userInfoDiary, isShowingAcceptedToast: $isShowingAcceptedToast, isShowingBlockedToast: $isShowingBlockedToast)
                                 .task {
                                     guard let index = diaryStore.myDiaryUserInfoDiaryList.firstIndex(where: { $0.diary.id == userInfoDiary.diary.id}) else { return }
 

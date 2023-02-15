@@ -94,12 +94,13 @@ struct DiaryEditView: View {
                             .onTapGesture {
                                 isTapTextField = true
                                 withAnimation {
-                                    proxy.scrollTo(title, anchor: .center)
+                                    proxy.scrollTo(title, anchor: .top)
                                 }
                             }
+                        Divider()
                         EmptyView()
                             .id(title)
-                        Divider()
+
 
                     }
                 }
@@ -112,11 +113,7 @@ struct DiaryEditView: View {
                     .onTapGesture {
                         isTapTextField = true
                     }
-                    .onChange(of: diaryContent) { newValue in
-                        withAnimation {
-                            proxy.scrollTo(title, anchor: .top)
-                        }
-                    }
+                
                 Spacer()
                 
                 if inputFocused == false {
@@ -128,7 +125,6 @@ struct DiaryEditView: View {
                 
             }
             .offset(y: -self.value)
-//            .animation (.spring())
             .onAppear {
                 NotificationCenter.default.addObserver(forName:UIResponder.keyboardWillShowNotification,object:
                                                         nil, queue: .main) { (noti) in

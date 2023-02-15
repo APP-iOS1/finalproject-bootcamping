@@ -430,7 +430,7 @@ struct CampingSpotDiaryRow: View {
             Text(item.diary.diaryTitle)
                 .font(.callout)
                 .frame(width: 120)
-                .lineLimit(2)
+                .lineLimit(1)
         }
         .foregroundColor(Color.bcBlack)
     }

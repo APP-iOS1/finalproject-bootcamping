@@ -224,7 +224,7 @@ extension SearchCampingSpotView {
                         HStack{
 
                             //MARK: 추천 캠핑장 제일 첫번째 거 광고 표시
-                            if index == 0 {
+                            if index == 999 {
                                 VStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .foregroundColor(Color.bcGreen)

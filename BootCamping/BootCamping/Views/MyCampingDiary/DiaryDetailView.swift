@@ -341,7 +341,7 @@ private extension DiaryDetailView {
             //TODO: -함수 업데이트되면 넣기
             diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
         }
-        .pinchZoomAndDrag()
+//        .pinchZoomAndDrag()
 
     }
     

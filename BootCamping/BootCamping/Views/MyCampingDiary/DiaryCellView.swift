@@ -172,7 +172,7 @@ private extension DiaryCellView {
             //TODO: -함수 업데이트되면 넣기
             diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
         }
-        .pinchZoomAndDrag()
+//        .pinchZoomAndDrag()
     }
     
     //MARK: - 다이어리 작성자 프로필

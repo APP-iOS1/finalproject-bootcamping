@@ -8,6 +8,7 @@
 import CoreData
 import FirebaseAuth
 import SwiftUI
+import FirebaseAnalytics
 
 struct ContentView: View {
     //로그인 유무 변수
@@ -70,6 +71,10 @@ struct ContentView: View {
                     diaryStore.firstGetRealTimeDiaryCombine()
                     scheduleStore.readScheduleCombine()
                     reportStore.readReportCombine()
+//                    Analytics.logEvent(AnalyticsEventLogin, parameters: [
+//                      AnalyticsParameterMethod: method!
+//                      ])
+                    
                 }
             } else {
                 LoginView()

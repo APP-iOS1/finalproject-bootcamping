@@ -83,6 +83,16 @@ struct DiaryCellView: View {
                             diaryTitle
                         }
                         diaryContent
+                        HStack {
+                            Spacer()
+                            HStack{
+                                Text("자세히 보기")
+                                Image(systemName: "chevron.right.2")
+                            }
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                        }
+                        
                         if !campingSpotStore.campingSpotList.isEmpty {
                             diaryCampingLink
                         }

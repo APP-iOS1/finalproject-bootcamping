@@ -79,24 +79,8 @@ struct MyPageView: View {
 extension MyPageView{
     // MARK: -View : 유저 프로필이미지, 닉네임 표시
     private var userProfileSection : some View {
-        HStack(spacing: 20){
-            if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
-                WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 60, height: 60)
-                    .clipShape(Circle())
-                
+        HStack{
 
-            } else {
-                Image("defaultProfileImage")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 60, height: 60)
-                    .clipShape(Circle())
-                    
-            }
-            Text("\((wholeAuthStore.currnetUserInfo!.nickName)) 님")
             Group{
                 switch wholeAuthStore.loginPlatform {
                 case .email:
@@ -134,8 +118,29 @@ extension MyPageView{
                 ProfileSettingView()
                 
             } label: {
-                Image(systemName: "chevron.right")
-                    .bold()
+                HStack(spacing: 20) {
+                    if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
+                        WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 60, height: 60)
+                            .clipShape(Circle())
+                        
+
+                    } else {
+                        Image("defaultProfileImage")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 60, height: 60)
+                            .clipShape(Circle())
+                            
+                    }
+                    Text("\((wholeAuthStore.currnetUserInfo!.nickName)) 님")
+                    Image(systemName: "chevron.right")
+                        .bold()
+                        .foregroundColor(.bcGreen)
+                }
+                .foregroundColor(.bcBlack)
             }
             
             Spacer()

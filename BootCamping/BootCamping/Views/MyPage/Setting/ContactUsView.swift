@@ -8,13 +8,9 @@
 import SwiftUI
 
 struct ContactUsView: View {
-    @State private var mailData = ComposeMailData(subject: "A subject",
-                                                  recipients: ["contact@bootcamping.com"],
-                                                  message: "문의사항을 작성해 주세요.",
-                                                  attachments: [AttachmentData(data: "Some text".data(using: .utf8)!,
-                                                                               mimeType: "text/plain",
-                                                                               fileName: "text.txt")
-                                                 ])
+    @State private var mailData = ComposeMailData(subject: "문의 제목을 입력해주세요.",
+                                                  recipients: ["thekoon0456+bootcamping@gmail.com"],
+                                                  message: "문의사항 내용을 작성해주세요.")
    @State private var showMailView = false
     
     var body: some View {

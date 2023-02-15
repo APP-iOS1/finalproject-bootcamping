@@ -50,7 +50,7 @@ struct DiaryDetailView: View {
     
     @State private var reportState = ReportState.notReported
     @State private var isShowingAcceptedToast = false
-    @State private var isBlocked = false
+    @State private var isShowingBlockedToast = false
     
     //자동 스크롤
     @Namespace var topID
@@ -293,16 +293,13 @@ private extension DiaryDetailView {
 
         }
         .confirmationDialog("알림", isPresented: $isShowingConfirmationDialog, titleVisibility: .hidden, actions: {
-            Button("신고하기", role: .destructive) {
+            Button("게시물 신고하기", role: .destructive) {
                 isShowingUserReportAlert.toggle()
             }
-            Button("차단하기", role: .destructive) {
-                print("차단해ㅐㅐㅐㅐ")
-                isBlocked.toggle()
-                if isBlocked {
-                    blockedUserStore.addBlockedUserCombine(blockedUserId: item.diary.uid)
-                }
+            Button("\(item.user.nickName)님 차단하기", role: .destructive) {
+                blockedUserStore.addBlockedUserCombine(blockedUserId: item.diary.uid)
                 wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+                isShowingBlockedToast.toggle()
             }
             Button("취소", role: .cancel) {}
         })

@@ -29,7 +29,7 @@ struct PrivacyView: View {
                     } label: {
                         Text("차단한 멤버 관리")
                     }
-                    if wholeAuthStore.loginPlatform == .email {
+                    if wholeAuthStore.loginPlatform == "email" {
                         NavigationLink {
                             PasswordChangeView()
                         } label: {

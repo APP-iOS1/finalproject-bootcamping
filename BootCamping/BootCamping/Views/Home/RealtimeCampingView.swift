@@ -14,13 +14,13 @@ struct RealtimeCampingView: View {
     
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var commentStore: CommentStore
+    @EnvironmentObject var blockedUserStore: BlockedUserStore
     
     var body: some View {
         VStack {
             ScrollView(showsIndicators: false) {
                 LazyVStack {
-                    ForEach(diaryStore.realTimeDiaryUserInfoDiaryList, id: \.self) { userInfoDiary in
-                        
+                    ForEach(diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !blockedUserStore.blockedUsers.contains($0.diary.uid) }, id: \.self) { userInfoDiary in
                         DiaryCellView(item: userInfoDiary)
                             .task {
                                 guard let index = diaryStore.realTimeDiaryUserInfoDiaryList.firstIndex(where: { $0.diary.id == userInfoDiary.diary.id}) else { return }

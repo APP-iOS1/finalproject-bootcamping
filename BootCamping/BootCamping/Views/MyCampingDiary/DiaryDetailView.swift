@@ -456,7 +456,7 @@ private extension DiaryDetailView {
         }
         .padding(.vertical, 5)
         .task {
-            Analytics.logEvent("DiaryTest", parameters: [
+            Analytics.logEvent("ViewDiary", parameters: [
                 "DiaryID" : "\(item.diary.id)",
                 "Visitor" : "\(String(describing: Auth.auth().currentUser?.email))"
             ])

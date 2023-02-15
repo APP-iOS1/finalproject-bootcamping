@@ -38,6 +38,10 @@ struct SettingView: View {
             NavigationLink(destination: PrivacyView()) {
                 Text("개인/보안설정") //페이스아이디, 비밀번호 수정, 회원탈퇴
             }
+            NavigationLink(destination: BusinessView()) {
+                Text("비즈니스 문의") //페이스아이디, 비밀번호 수정, 회원탈퇴
+            }
+            
             Button {
                 showingAlertLogOut.toggle()
             } label: {

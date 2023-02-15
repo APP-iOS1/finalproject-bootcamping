@@ -231,16 +231,23 @@ extension MyPageView{
             case .myCamping:
                 CalendarView()
             case .bookmarkedCampingSpot:
-                VStack(spacing: 10){
-                    ForEach(campingSpotStore.campingSpotList, id: \.contentId) { campingSpot in
-                        NavigationLink {
-                            CampingSpotDetailView(campingSpot: campingSpot)
-                        } label: {
-                            BookmarkCellView(campingSpot: campingSpot)
+                if campingSpotStore.campingSpotList.isEmpty {
+                    VStack(alignment: .center) {
+                        Text("\n\n\n")
+                        Text("캠핑장을 검색해서 북마크해주세요").foregroundColor(Color.bcBlack)
+                    }
+                } else {
+                    VStack(spacing: 10){
+                        ForEach(campingSpotStore.campingSpotList, id: \.contentId) { campingSpot in
+                            NavigationLink {
+                                CampingSpotDetailView(campingSpot: campingSpot)
+                            } label: {
+                                BookmarkCellView(campingSpot: campingSpot)
+                            }
                         }
                     }
+                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 }
-                .padding(.horizontal, UIScreen.screenWidth * 0.03)
             }
         }
     }

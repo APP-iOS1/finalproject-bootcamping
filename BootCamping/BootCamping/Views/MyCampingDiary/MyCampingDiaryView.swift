@@ -44,12 +44,16 @@ struct MyCampingDiaryView: View {
                     }
                     .refreshable {
                         diaryStore.firstGetMyDiaryCombine()
+                        //탭틱
+                        UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                     }
                     .padding(.bottom, 0.1)
                 }
                 .background(Color.bcWhite)
                 .refreshable {
                     diaryStore.firstGetMyDiaryCombine()
+                    //탭틱
+                    UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                 }
 
                 

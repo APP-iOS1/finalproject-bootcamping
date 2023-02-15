@@ -39,6 +39,8 @@ struct RealtimeCampingView: View {
             }
             .refreshable {
                 diaryStore.firstGetRealTimeDiaryCombine()
+                //탭틱
+                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
             }
             .alert("다이어리 만들기에 실패했습니다.. 다시 시도해 주세요.", isPresented: $diaryStore.isError) {
                 Button("확인", role: .cancel) {

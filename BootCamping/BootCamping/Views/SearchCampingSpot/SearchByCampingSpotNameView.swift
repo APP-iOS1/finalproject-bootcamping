@@ -49,6 +49,9 @@ struct SearchByCampingSpotNameView: View {
                         "searchingKeyword" : "\(keywordForParameter)",
                       ])
                 }
+                .task {
+                    self.isTextFieldFocused = true
+                }
                 
             if isSearching {
                 VStack() {

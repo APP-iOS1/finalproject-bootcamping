@@ -59,7 +59,7 @@ class BlockedUserStore: ObservableObject {
     }
     
     //MARK: - Add Blocked User to Blocked User Combine
-    func addBlockedUserCombine(blockedUsers: [String]) {
+    func updateBlockedUserCombine(blockedUsers: [String]) {
         FirebaseBlockedUserService().updateBlockedUserService(blockedUsers: blockedUsers)
             .receive(on: DispatchQueue.main)
             .sink { completion in

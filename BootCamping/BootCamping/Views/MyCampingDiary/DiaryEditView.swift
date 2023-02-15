@@ -34,6 +34,7 @@ struct DiaryEditView: View {
     //텍스트필드 포커싱
     @Namespace var title
     @Namespace var content
+    @Namespace var under
     @Namespace var bottom
     @State var value: CGFloat = 0
     
@@ -100,21 +101,23 @@ struct DiaryEditView: View {
                         Divider()
                         EmptyView()
                             .id(title)
+                        
+                        TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
+                            .lineLimit(8)
+                            .focused($inputFocused)
+                            .focused($activeState, equals: .field2)
+                            .onChange(of: diaryContent.count, perform: { _ in
+                                proxy.scrollTo(under, anchor: .bottom)
+                            })
+                            .onTapGesture {
+                                isTapTextField = true
+                            }
+                        
 
+                        Text("\n\n\n\n\n\n").id(under)
 
                     }
                 }
-
-                
-                TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
-                    .frame(minHeight: UIScreen.screenHeight / 3.7, maxHeight: UIScreen.screenHeight / 2.7)
-                    .focused($inputFocused)
-                    .focused($activeState, equals: .field2)
-                    .onTapGesture {
-                        isTapTextField = true
-                    }
-                
-                Spacer()
                 
                 if inputFocused == false {
                     withAnimation {
@@ -122,9 +125,7 @@ struct DiaryEditView: View {
                             .id(bottom)
                     }
                 }
-                
             }
-            .offset(y: -self.value)
             .onAppear {
                 NotificationCenter.default.addObserver(forName:UIResponder.keyboardWillShowNotification,object:
                                                         nil, queue: .main) { (noti) in

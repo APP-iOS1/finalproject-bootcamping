@@ -106,10 +106,10 @@ extension MyPageView{
                     
                     Group{
                         switch wholeAuthStore.loginPlatform {
-                        case .email:
+                        case "email":
                             Image(systemName: "")
                             
-                        case .apple:
+                        case "apple":
                             ZStack{
                                 Circle()
                                     .fill(Color.black)
@@ -120,21 +120,23 @@ extension MyPageView{
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 15)
                             }
-                        case .google:
+                        case "google":
                             Image("g-logo")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 30)
                                 .clipShape(Circle())
-                        case .kakao:
+                        case "kakao":
                             Image("k-logo")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 30)
                                 .clipShape(Circle())
-                        case .none:
+                        case "none":
                             Image(systemName: "")
                             
+                        default:
+                            Image(systemName: "")
                         }
                     }
                     
@@ -154,10 +156,10 @@ extension MyPageView{
     private var loginLogo: some View {
         Group{
             switch wholeAuthStore.loginPlatform {
-            case .email:
+            case "email":
                 Image(systemName: "")
                 
-            case .apple:
+            case "apple":
                 ZStack{
                     Circle()
                         .fill(Color.black)
@@ -168,21 +170,23 @@ extension MyPageView{
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 15)
                 }
-            case .google:
+            case "google":
                 Image("g-logo")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 30)
                     .clipShape(Circle())
-            case .kakao:
+            case "kakao":
                 Image("k-logo")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 30)
                     .clipShape(Circle())
-            case .none:
+            case "none":
                 Image(systemName: "")
                 
+            default:
+                Image(systemName: "")
             }
         }
         

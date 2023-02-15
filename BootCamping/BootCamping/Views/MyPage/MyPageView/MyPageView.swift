@@ -232,7 +232,10 @@ extension MyPageView{
                 CalendarView()
             case .bookmarkedCampingSpot:
                 if campingSpotStore.campingSpotList.isEmpty {
-                    Text("캠핑장을 검색해서 북마크해주세요").foregroundColor(Color.bcBlack)
+                    VStack(alignment: .center) {
+                        Text("\n\n\n")
+                        Text("캠핑장을 검색해서 북마크해주세요").foregroundColor(Color.bcBlack)
+                    }
                 } else {
                     VStack(spacing: 10){
                         ForEach(campingSpotStore.campingSpotList, id: \.contentId) { campingSpot in

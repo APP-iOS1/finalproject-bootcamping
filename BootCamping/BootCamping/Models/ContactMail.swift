@@ -11,7 +11,7 @@ struct ComposeMailData {
   let subject: String
   let recipients: [String]?
   let message: String
-  let attachments: [AttachmentData]?
+  let attachments: [AttachmentData]? = nil
 }
 
 struct AttachmentData {

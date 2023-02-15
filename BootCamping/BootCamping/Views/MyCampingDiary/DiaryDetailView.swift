@@ -221,10 +221,7 @@ private extension DiaryDetailView {
                     .clipShape(Circle())
             }
             
-            //유저 닉네임
-//            Text(item.diary.diaryUserNickName)
-            // 이게 맞나
-            Text(item.user.nickName)
+            Text(item.diary.diaryUserNickName)
                 .font(.callout)
             Spacer()
             

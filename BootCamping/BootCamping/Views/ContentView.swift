@@ -77,6 +77,7 @@ struct ContentView: View {
                             "LoginEmail": "\(String(describing: Auth.auth().currentUser?.email))",
                             "LoginUID": "\(String(describing: Auth.auth().currentUser?.uid))"
                         ])
+                        wholeAuthStore.getUserInfo(userUID: wholeAuthStore.currentUser!.uid) {}
                     }
                 }
             } else {

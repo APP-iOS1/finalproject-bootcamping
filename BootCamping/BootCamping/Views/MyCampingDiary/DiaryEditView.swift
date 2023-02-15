@@ -128,7 +128,7 @@ struct DiaryEditView: View {
                 
             }
             .offset(y: -self.value)
-            .animation (.spring())
+//            .animation (.spring())
             .onAppear {
                 NotificationCenter.default.addObserver(forName:UIResponder.keyboardWillShowNotification,object:
                                                         nil, queue: .main) { (noti) in

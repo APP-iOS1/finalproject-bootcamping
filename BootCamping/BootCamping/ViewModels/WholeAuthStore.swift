@@ -155,15 +155,10 @@ class WholeAuthStore: ObservableObject {
                             "UID": "\(String(describing: Auth.auth().currentUser?.uid))"
                           ])
                         self.readUserListCombine()
-                        if self.loginPlatform == "email" {
-                            withAnimation(.easeInOut) {
-                                self.isError = false
-                                self.isProcessing = false
-                                self.isSignIn = true
-                            }
-                        } else {
+                        withAnimation(.easeInOut) {
                             self.isError = false
                             self.isProcessing = false
+                            self.isSignIn = true
                         }
                     }
                     return

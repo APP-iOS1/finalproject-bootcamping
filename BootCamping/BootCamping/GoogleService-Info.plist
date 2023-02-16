@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>446099408891-isntperpf737fqrgp8s34on3v6dans24.apps.googleusercontent.com</string>
+	<string>446099408891-d4g9mpn4se9jdq1ri0nb51dbj2tjm0h9.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.446099408891-isntperpf737fqrgp8s34on3v6dans24</string>
+	<string>com.googleusercontent.apps.446099408891-d4g9mpn4se9jdq1ri0nb51dbj2tjm0h9</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCvecmVIYEmtI7grvo0fDhbbZPnJ_y4TKw</string>
 	<key>GCM_SENDER_ID</key>
@@ -19,16 +19,16 @@
 	<key>STORAGE_BUCKET</key>
 	<string>bootcamping-280fc.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:446099408891:ios:c27425e17488140fe92d5e</string>
+	<string>1:446099408891:ios:ee5e2b25fca04873e92d5e</string>
 </dict>
 </plist>

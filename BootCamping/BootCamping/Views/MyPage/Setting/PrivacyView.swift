@@ -77,6 +77,7 @@ private extension PrivacyView {
             Toggle(isOn: $toggleUsingFaceId) {
                 Text("내 캠핑일기 잠그기")
             }
+            .toggleStyle(SwitchToggleStyle(tint: .bcGreen))
             .onChange(of: toggleUsingFaceId) { _ in
                 if toggleUsingFaceId {
                     usingFaceId = true

@@ -17,12 +17,7 @@ struct ContactUsView: View {
                               answer: """
                             부트캠핑 입점 광고를 원하실 경우 우측 상단의 1:1 문의를 통해 메일 주시면 빠른 시일내로 답변 드리겠습니다.
                             감사합니다.
-                            """),
-                          QnA(question: "민2", answer: "콩2"),
-                          QnA(question: "민3", answer: "콩3"),
-                          QnA(question: "민4", answer: "콩4"),
-                          QnA(question: "민5", answer: "콩5"),
-                          QnA(question: "민6", answer: "콩6")]
+                            """)]
     
     
     @State private var mailData = ComposeMailData(subject: "문의 제목을 입력해주세요.",
@@ -33,7 +28,7 @@ struct ContactUsView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: UIScreen.screenWidth*0.03){
-            Text("자주 묻는 문의 TOP7")
+            Text("자주 묻는 문의")
                 .fontWeight(.heavy)
                 .font(.title2)
             Divider()

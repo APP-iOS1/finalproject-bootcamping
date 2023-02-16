@@ -346,6 +346,8 @@ private extension DiaryAddView {
             Spacer()
             Button {
                 diaryIsPrivate.toggle()
+                //탭틱
+                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
             } label: {
                 VStack {
                     Image(systemName: diaryIsPrivate ? "lock" : "lock.open" )

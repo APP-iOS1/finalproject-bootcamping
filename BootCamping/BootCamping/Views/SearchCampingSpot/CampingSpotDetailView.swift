@@ -33,6 +33,7 @@ struct CampingSpotDetailView: View {
     @State var annotatedItem: [AnnotatedItem] = []
     @State private var isPaste: Bool = false
     @State private var isBookmarked: Bool = false
+    @State private var isSafari: Bool = false
     
     var campingSpot: Item
     
@@ -182,12 +183,16 @@ struct CampingSpotDetailView: View {
                                 Image(systemName: "safari.fill")
                                     .font(.callout)
                                     .foregroundColor(.secondary)
-                                Link(destination: ((URL(string: campingSpot.resveUrl) ?? URL(string: campingSpot.homepage)) ?? URL(string: "https://www.google.com"))!, label: {
+                                Button {
+                                    isSafari = true
+                                } label: {
                                     Text("예약하러 가기")
+                                        .underline()
                                         .font(.callout)
                                         .foregroundColor(.secondary)
-                                        .underline()
-                                })
+                                        .lineLimit(1)
+                                }
+
                             }
                         }
                         Text(" ")
@@ -398,7 +403,7 @@ struct CampingSpotDetailView: View {
             isBookmarked = bookmarkStore.checkBookmarkedSpot(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, campingSpotId: campingSpot.contentId)
             diaryStore.readCampingSpotsDiariesCombine(contentId: campingSpot.contentId)
             //For Googole Analystic
-            Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+            Analytics.logEvent("SelectedCampingSpotInfo", parameters: [
                 "contentID" : "\(campingSpot.contentId)",
                 "campingSpotName" : "\(campingSpot.facltNm)",
                 "campingSpotLocationDo" : "\(campingSpot.doNm)",
@@ -411,6 +416,15 @@ struct CampingSpotDetailView: View {
             Button("완료") {
                 isPaste = false
             }
+        }
+        .alert("웹으로 이동하시겠습니까?", isPresented: $isSafari) {
+            Link(destination: ((URL(string: campingSpot.resveUrl) ?? URL(string: campingSpot.homepage)) ?? URL(string: "https://www.google.com"))!, label: {
+                Text("확인")
+                    .font(.callout)
+                    .foregroundColor(.secondary)
+                    .underline()
+            })
+            Button("취소", role: .cancel) {}
         }
     }
 }

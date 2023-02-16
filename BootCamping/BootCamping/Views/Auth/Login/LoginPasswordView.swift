@@ -43,12 +43,12 @@ struct LoginPasswordView: View {
         .foregroundColor(.bcBlack)
         .padding(.horizontal, UIScreen.screenWidth * 0.05)
         .padding(.vertical, 10)
-        .alert("이메일, 비밀번호를 확인하세요", isPresented: authStore.isError) {
+        .alert("이메일, 비밀번호를 확인하세요", isPresented: $authStore.isError) {
             Button("확인", role: .cancel) {
                 authStore.isError = false
             }
         }
-        .toast(isPresenting: authStore.isProcessing) {
+        .toast(isPresenting: $authStore.isProcessing) {
             AlertToast(displayMode: .alert, type: .loading)
         }
     }

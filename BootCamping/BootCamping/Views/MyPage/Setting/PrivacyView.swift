@@ -10,7 +10,7 @@ import SwiftUI
 struct PrivacyView: View {
     @State var showingAlert: Bool = false
     @EnvironmentObject var diaryStore: DiaryStore
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     @EnvironmentObject var tabSelection: TabSelector
     @EnvironmentObject var faceId: FaceId
     @Environment(\.dismiss) private var dismiss
@@ -30,7 +30,7 @@ struct PrivacyView: View {
                     } label: {
                         Text("차단한 멤버 관리")
                     }
-                    if wholeAuthStore.loginPlatform == "email" {
+                    if authStore.loginPlatform == "email" {
                         NavigationLink {
                             PasswordChangeView()
                         } label: {
@@ -49,8 +49,8 @@ struct PrivacyView: View {
                               primaryButton: .default(Text("취소"), action: {} ),
                               secondaryButton: .destructive(Text("탈퇴하기"),action: {
                             // 탈퇴 시 무슨 액션?? 새로운 뷰 띄워서 동의하기 체크 후 최종 탈퇴??
-                            diaryStore.updateDiarysNickNameCombine(userUID: wholeAuthStore.currentUser!.uid, nickName: "(사용자 정보 없음)")
-                            wholeAuthStore.userWithdrawal()
+                            diaryStore.updateDiarysNickNameCombine(userUID: authStore.currentUser!.uid, nickName: "(사용자 정보 없음)")
+                            authStore.userWithdrawal()
                             dismiss()
                             tabSelection.screen = .one
                         })

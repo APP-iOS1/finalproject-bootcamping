@@ -16,7 +16,7 @@ enum TapMypage : String, CaseIterable {
 
 // MARK: - 마이페이지 첫 화면에 나타나는 뷰
 struct MyPageView: View {
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     
@@ -28,7 +28,7 @@ struct MyPageView: View {
     
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
-        for user in wholeAuthStore.userList {
+        for user in authStore.userList {
             if user.id == Auth.auth().currentUser?.uid {
                 return user.nickName
             }
@@ -36,7 +36,7 @@ struct MyPageView: View {
         return nil
     }
     var userImage: String? {
-        for user in wholeAuthStore.userList {
+        for user in authStore.userList {
             if user.id == Auth.auth().currentUser?.uid {
                 return user.profileImageURL
             }
@@ -64,9 +64,8 @@ struct MyPageView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .task {
-                wholeAuthStore.readUserListCombine()
                 campingSpotStore.campingSpotList.removeAll()
-                campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: wholeAuthStore.currnetUserInfo?.bookMarkedSpot ?? []))
+                campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: authStore.currnetUserInfo?.bookMarkedSpot ?? []))
             }
         }
         //        .onAppear{
@@ -85,8 +84,8 @@ extension MyPageView{
                 
             } label: {
                 HStack(spacing: 20) {
-                    if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
-                        WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
+                    if authStore.currnetUserInfo?.profileImageURL != "" {
+                        WebImage(url: URL(string: authStore.currnetUserInfo!.profileImageURL))
                             .resizable()
                             .scaledToFill()
                             .frame(width: 60, height: 60)
@@ -102,10 +101,10 @@ extension MyPageView{
                             
                     }
         
-                    Text("\((wholeAuthStore.currnetUserInfo!.nickName)) 님")
+                    Text("\((authStore.currnetUserInfo!.nickName)) 님")
                     
                     Group{
-                        switch wholeAuthStore.loginPlatform {
+                        switch authStore.loginPlatform {
                         case "email":
                             Image(systemName: "")
                             
@@ -155,7 +154,7 @@ extension MyPageView{
     // MARK: 로그인 플랫폼?에 따른 로고
     private var loginLogo: some View {
         Group{
-            switch wholeAuthStore.loginPlatform {
+            switch authStore.loginPlatform {
             case "email":
                 Image(systemName: "")
                 

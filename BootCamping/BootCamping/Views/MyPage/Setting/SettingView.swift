@@ -9,7 +9,7 @@ import SwiftUI
 
 // TODO: 목업으로 뷰 추가해놓기
 struct SettingView: View {
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     
     //로그아웃 시 탭 변경하기 위한 변수
     @EnvironmentObject var tabSelection: TabSelector
@@ -53,7 +53,7 @@ struct SettingView: View {
                       primaryButton: .default(Text("취소"), action: {} ),
                       secondaryButton: .destructive(Text("로그아웃"),action: {
                     tabSelection.screen = .one
-                    wholeAuthStore.combineLogOut()
+                    authStore.combineLogOut()
                 })
                 )
             }
@@ -66,9 +66,9 @@ struct SettingView: View {
 
         }
         .listStyle(.plain)
-        .alert("로그아웃에 실패하였습니다. 다시 시도해 주세요.", isPresented: $wholeAuthStore.isError) {
+        .alert("로그아웃에 실패하였습니다. 다시 시도해 주세요.", isPresented: $authStore.isError) {
             Button("확인", role: .cancel) {
-                wholeAuthStore.isError = false
+                authStore.isError = false
             }
         }
         

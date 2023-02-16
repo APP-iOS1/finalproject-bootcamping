@@ -13,7 +13,7 @@ struct DiaryListForCampingSpotView: View {
     @StateObject var diaryStore: DiaryStore
     @StateObject var commentStore: CommentStore = CommentStore()
     
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     
     @State private var isShowingAcceptedToast = false
     @State private var isShowingBlockedToast = false
@@ -22,7 +22,7 @@ struct DiaryListForCampingSpotView: View {
         VStack {
             ScrollView(showsIndicators: false) {
                 LazyVStack {
-                    ForEach(diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }, id: \.self) { item in
+                    ForEach(diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !authStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }, id: \.self) { item in
                         DiaryCellView(item: item, isShowingAcceptedToast: $isShowingAcceptedToast, isShowingBlockedToast: $isShowingBlockedToast)
                         }
                     }

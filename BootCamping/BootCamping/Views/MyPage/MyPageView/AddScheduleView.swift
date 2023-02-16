@@ -12,7 +12,7 @@ struct AddScheduleView: View {
     @Environment(\.dismiss) private var dismiss
     
     @EnvironmentObject var scheduleStore: ScheduleStore
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     @EnvironmentObject var localNotificationCenter: LocalNotificationCenter
     
 

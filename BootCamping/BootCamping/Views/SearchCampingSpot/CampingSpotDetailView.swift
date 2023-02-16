@@ -21,7 +21,7 @@ struct AnnotatedItem: Identifiable {
 
 struct CampingSpotDetailView: View {
     
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     @EnvironmentObject var bookmarkStore: BookmarkStore
     
     @StateObject var diaryStore: DiaryStore = DiaryStore()
@@ -71,7 +71,7 @@ struct CampingSpotDetailView: View {
 //                                } else {
 //                                    bookmarkStore.removeBookmarkCampingSpotCombine(campingSpotId: campingSpot.contentId)
 //                                }
-//                                wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+//                                authStore.readMyInfoCombine(user: authStore.currnetUserInfo!)
 //                            } label: {
 //                                Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
 //                                    .foregroundColor(Color.accentColor)
@@ -91,7 +91,7 @@ struct CampingSpotDetailView: View {
 //                                } else{
 //                                    bookmarkStore.removeBookmarkCampingSpotCombine(campingSpotId: campingSpot.contentId)
 //                                }
-//                                wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+//                                authStore.readMyInfoCombine(user: authStore.currnetUserInfo!)
 //                            } label: {
 //                                Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
 //                                    .foregroundColor(Color.accentColor)
@@ -119,7 +119,7 @@ struct CampingSpotDetailView: View {
                                 } else {
                                     bookmarkStore.removeBookmarkCampingSpotCombine(campingSpotId: campingSpot.contentId)
                                 }
-                                wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+                                authStore.readMyInfoCombine(user: authStore.currnetUserInfo!)
                             } label: {
                                 Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
                                     .foregroundColor(Color.accentColor)
@@ -361,11 +361,11 @@ struct CampingSpotDetailView: View {
                             }
                         }
                         ScrollView(.horizontal, showsIndicators: false) {
-                            if diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }.isEmpty {
+                            if diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !authStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }.isEmpty {
                                 Text("등록된 캠핑일기가 없습니다.")
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
-                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }.count <= 3 {
+                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !authStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }.count <= 3 {
                                 HStack {
                                     ForEach(diaryStore.realTimeDiaryUserInfoDiaryList.indices, id: \.self) { index in
                                         NavigationLink {
@@ -375,7 +375,7 @@ struct CampingSpotDetailView: View {
                                         }
                                     }
                                 }
-                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }.count > 3 {
+                            } else if diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !authStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }.count > 3 {
                                 HStack {
                                     ForEach(0...2, id: \.self) { index in
                                         NavigationLink {
@@ -395,7 +395,7 @@ struct CampingSpotDetailView: View {
         }
         .task {
             annotatedItem.append(AnnotatedItem(name: campingSpot.facltNm, coordinate: CLLocationCoordinate2D(latitude: Double(campingSpot.mapY) ?? 23.0, longitude: Double(campingSpot.mapX) ?? 36.0)))
-            isBookmarked = bookmarkStore.checkBookmarkedSpot(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, campingSpotId: campingSpot.contentId)
+            isBookmarked = bookmarkStore.checkBookmarkedSpot(currentUser: authStore.currentUser, userList: authStore.userList, campingSpotId: campingSpot.contentId)
             diaryStore.readCampingSpotsDiariesCombine(contentId: campingSpot.contentId)
             //For Googole Analystic
             Analytics.logEvent(AnalyticsEventSelectContent, parameters: [

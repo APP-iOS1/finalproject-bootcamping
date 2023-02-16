@@ -18,7 +18,7 @@ struct ContentView: View {
     //탭뷰 화면전환 셀렉션 변수
     @EnvironmentObject var tabSelection: TabSelector
     @EnvironmentObject var diaryStore: DiaryStore
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authSotre: AuthStore
     @EnvironmentObject var scheduleStore: ScheduleStore
     @EnvironmentObject var blockedUserStore: BlockedUserStore
     @EnvironmentObject var localNotificationCenter: LocalNotificationCenter
@@ -66,7 +66,7 @@ struct ContentView: View {
                     }.tag(TabViewScreen.four)
                 }
                 .onAppear {
-                    if wholeAuthStore.currentUser != nil {
+                    if authSotre.currentUser != nil {
                         diaryStore.firstGetMyDiaryCombine()
                         diaryStore.mostLikedGetDiarysCombine()
                         diaryStore.firstGetRealTimeDiaryCombine()
@@ -77,7 +77,7 @@ struct ContentView: View {
                             "LoginEmail": "\(String(describing: Auth.auth().currentUser?.email))",
                             "LoginUID": "\(String(describing: Auth.auth().currentUser?.uid))"
                         ])
-                        wholeAuthStore.getUserInfo(userUID: wholeAuthStore.currentUser!.uid) {}
+                        authSotre.getUserInfo(userUID: authSotre.currentUser!.uid) {}
                     }
                 }
             } else {
@@ -90,8 +90,8 @@ struct ContentView: View {
 
             }
         }
-        .onChange(of: wholeAuthStore.currnetUserInfo) { _ in
-            if wholeAuthStore.currentUser != nil {
+        .onChange(of: authSotre.currnetUserInfo) { _ in
+            if authSotre.currentUser != nil {
                 diaryStore.firstGetMyDiaryCombine()
                 diaryStore.mostLikedGetDiarysCombine()
                 diaryStore.firstGetRealTimeDiaryCombine()
@@ -102,7 +102,7 @@ struct ContentView: View {
                     "LoginEmail": "\(String(describing: Auth.auth().currentUser?.email))",
                     "LoginUID": "\(String(describing: Auth.auth().currentUser?.uid))"
                 ])
-                wholeAuthStore.getUserInfo(userUID: wholeAuthStore.currentUser!.uid) {}
+                authSotre.getUserInfo(userUID: authSotre.currentUser!.uid) {}
             }
         }
         // 푸시 알림으로 앱 진입 시 네 번째 탭(마이페이지 탭)으로 이동
@@ -114,7 +114,7 @@ struct ContentView: View {
             localNotificationCenter.getCurrentSetting()
             //현재 로그인 되어있는지
             if isSignIn {
-                wholeAuthStore.getUserInfo(userUID: wholeAuthStore.currentUser!.uid) {
+                authSotre.getUserInfo(userUID: authSotre.currentUser!.uid) {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
                         withAnimation { isLoading.toggle() }
                     })

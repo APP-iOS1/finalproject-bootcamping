@@ -10,7 +10,7 @@ import Firebase
 import SDWebImageSwiftUI
 
 struct DiaryCommentCellView: View {
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     @StateObject var commentStore: CommentStore
     @EnvironmentObject var diaryStore: DiaryStore
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
@@ -56,7 +56,7 @@ struct DiaryCommentCellView: View {
                 }
 
             }
-            if (wholeAuthStore.currentUser?.uid == item2.diary.uid) || (wholeAuthStore.currentUser?.uid == item.uid) {
+            if (authStore.currentUser?.uid == item2.diary.uid) || (authStore.currentUser?.uid == item.uid) {
                 HStack(alignment: .top) {
                     diaryCommetUserProfile
 //                        .frame(width: 35)

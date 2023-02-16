@@ -18,7 +18,7 @@ struct ProfileSettingView: View {
     @State private var profileImage: Data?          // selectedImage를 Data 타입으로 저장
     @Environment(\.dismiss) private var dismiss
     
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     @EnvironmentObject var diaryStore: DiaryStore
 
     
@@ -55,8 +55,8 @@ extension ProfileSettingView {
                 imagePickerPresented.toggle()
             }, label: {
                 if profileImage == nil {
-                    if wholeAuthStore.currnetUserInfo!.profileImageURL != "" && isProfileImageReset == false {
-                        WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
+                    if authStore.currnetUserInfo!.profileImageURL != "" && isProfileImageReset == false {
+                        WebImage(url: URL(string: authStore.currnetUserInfo!.profileImageURL))
                             .resizable()
                             .scaledToFill()
                             .clipped()
@@ -76,7 +76,7 @@ extension ProfileSettingView {
                                         .offset(x: 40, y: 40)
                                 }
                             }
-                    } else if wholeAuthStore.currnetUserInfo!.profileImageURL == "" || isProfileImageReset == true{
+                    } else if authStore.currnetUserInfo!.profileImageURL == "" || isProfileImageReset == true{
                         Image("defaultProfileImage")
                             .resizable()
 //                            .foregroundColor(.bcBlack)
@@ -162,7 +162,7 @@ extension ProfileSettingView {
             Text("닉네임")
                 .font(.title3)
                 .bold()
-            TextField("닉네임", text: $updateNickname,prompt: Text("\(wholeAuthStore.currnetUserInfo!.nickName)"))
+            TextField("닉네임", text: $updateNickname,prompt: Text("\(authStore.currnetUserInfo!.nickName)"))
                 .textFieldStyle(.roundedBorder)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.never)
@@ -177,21 +177,21 @@ extension ProfileSettingView {
             if updateNickname == "" {
                 //닉네임 x 사진 기본으로
                 if isProfileImageReset {
-                    wholeAuthStore.updateUserCombine(image: nil, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: wholeAuthStore.currnetUserInfo!.profileImageURL, nickName: wholeAuthStore.currnetUserInfo!.nickName, userEmail: "", bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot, blockedUser: wholeAuthStore.currnetUserInfo!.blockedUser))
+                    authStore.updateUserCombine(image: nil, user: User(id: authStore.currnetUserInfo!.id, profileImageName: authStore.currnetUserInfo!.profileImageName, profileImageURL: authStore.currnetUserInfo!.profileImageURL, nickName: authStore.currnetUserInfo!.nickName, userEmail: "", bookMarkedDiaries: authStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: authStore.currnetUserInfo!.bookMarkedSpot, blockedUser: authStore.currnetUserInfo!.blockedUser))
                 
                 } else {
                     // 닉네임 x 사진 변경
-                    wholeAuthStore.updateUserCombine(image: profileImage, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: wholeAuthStore.currnetUserInfo!.profileImageURL, nickName: wholeAuthStore.currnetUserInfo!.nickName, userEmail: wholeAuthStore.currnetUserInfo!.userEmail, bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot, blockedUser: wholeAuthStore.currnetUserInfo!.blockedUser))
+                    authStore.updateUserCombine(image: profileImage, user: User(id: authStore.currnetUserInfo!.id, profileImageName: authStore.currnetUserInfo!.profileImageName, profileImageURL: authStore.currnetUserInfo!.profileImageURL, nickName: authStore.currnetUserInfo!.nickName, userEmail: authStore.currnetUserInfo!.userEmail, bookMarkedDiaries: authStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: authStore.currnetUserInfo!.bookMarkedSpot, blockedUser: authStore.currnetUserInfo!.blockedUser))
                 }
             } else {
                 //닉네임 o 사진 기본으로
                 if isProfileImageReset {
-                    wholeAuthStore.updateUserCombine(image: nil, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: wholeAuthStore.currnetUserInfo!.profileImageURL, nickName: updateNickname, userEmail: "", bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot, blockedUser: wholeAuthStore.currnetUserInfo!.blockedUser))
-                    diaryStore.updateDiarysNickNameCombine(userUID: wholeAuthStore.currnetUserInfo!.id, nickName: updateNickname)
+                    authStore.updateUserCombine(image: nil, user: User(id: authStore.currnetUserInfo!.id, profileImageName: authStore.currnetUserInfo!.profileImageName, profileImageURL: authStore.currnetUserInfo!.profileImageURL, nickName: updateNickname, userEmail: "", bookMarkedDiaries: authStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: authStore.currnetUserInfo!.bookMarkedSpot, blockedUser: authStore.currnetUserInfo!.blockedUser))
+                    diaryStore.updateDiarysNickNameCombine(userUID: authStore.currnetUserInfo!.id, nickName: updateNickname)
                 } else {
                     //닉네임 o 사진 변경또는 그대로
-                    wholeAuthStore.updateUserCombine(image: profileImage, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: wholeAuthStore.currnetUserInfo!.profileImageURL, nickName: updateNickname, userEmail: wholeAuthStore.currnetUserInfo!.userEmail, bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot, blockedUser: wholeAuthStore.currnetUserInfo!.blockedUser))
-                    diaryStore.updateDiarysNickNameCombine(userUID: wholeAuthStore.currnetUserInfo!.id, nickName: updateNickname)
+                    authStore.updateUserCombine(image: profileImage, user: User(id: authStore.currnetUserInfo!.id, profileImageName: authStore.currnetUserInfo!.profileImageName, profileImageURL: authStore.currnetUserInfo!.profileImageURL, nickName: updateNickname, userEmail: authStore.currnetUserInfo!.userEmail, bookMarkedDiaries: authStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: authStore.currnetUserInfo!.bookMarkedSpot, blockedUser: authStore.currnetUserInfo!.blockedUser))
+                    diaryStore.updateDiarysNickNameCombine(userUID: authStore.currnetUserInfo!.id, nickName: updateNickname)
                 }
             }
             dismiss()

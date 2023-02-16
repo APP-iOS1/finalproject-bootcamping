@@ -12,7 +12,7 @@ struct BlockUserEditView: View {
     
     @Environment(\.editMode) var editMode
     
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     @EnvironmentObject var blockedUserStore: BlockedUserStore
 
     @State private var blockedUIDs: [String] = []
@@ -21,7 +21,7 @@ struct BlockUserEditView: View {
     var body: some View {
         List {
             Section {
-                if let blockedUserList = (wholeAuthStore.userList.filter{ blockedUIDs.contains($0.id) }) {
+                if let blockedUserList = (authStore.userList.filter{ blockedUIDs.contains($0.id) }) {
                     if !blockedUserList.isEmpty{
                         ForEach(Array(zip(blockedUserList.indices, blockedUserList)), id: \.0) { index, blockedUser in
                             HStack {
@@ -30,7 +30,7 @@ struct BlockUserEditView: View {
                                 Button {
                                     blockedUIDs.remove(at: index)
                                     blockedUserStore.updateBlockedUserCombine(blockedUsers: blockedUIDs)
-                                    wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+                                    authStore.readMyInfoCombine(user: authStore.currnetUserInfo!)
                                     isShowingUnblockToast.toggle()
                                 } label: {
                                     Text("차단 해제")
@@ -57,7 +57,7 @@ struct BlockUserEditView: View {
             AlertToast(type: .regular, title: "해당 사용자를 차단해제했습니다.", subTitle: "이 사용자의 글을 이제 확인할 수 있습니다.")
         }
         .onAppear{
-            blockedUIDs = wholeAuthStore.currnetUserInfo!.blockedUser
+            blockedUIDs = authStore.currnetUserInfo!.blockedUser
         }
         .navigationTitle("차단한 사용자 관리")
     }

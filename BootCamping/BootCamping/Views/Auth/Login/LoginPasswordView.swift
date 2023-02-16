@@ -16,7 +16,7 @@ struct LoginPasswordView: View {
     
     @AppStorage("login") var isSignIn: Bool?
     
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
 
     var trimUserEmail: String {
         userEmail.trimmingCharacters(in: .whitespaces)
@@ -43,12 +43,12 @@ struct LoginPasswordView: View {
         .foregroundColor(.bcBlack)
         .padding(.horizontal, UIScreen.screenWidth * 0.05)
         .padding(.vertical, 10)
-        .alert("이메일, 비밀번호를 확인하세요", isPresented: $wholeAuthStore.isError) {
+        .alert("이메일, 비밀번호를 확인하세요", isPresented: authStore.isError) {
             Button("확인", role: .cancel) {
-                wholeAuthStore.isError = false
+                authStore.isError = false
             }
         }
-        .toast(isPresenting: $wholeAuthStore.isProcessing) {
+        .toast(isPresenting: authStore.isProcessing) {
             AlertToast(displayMode: .alert, type: .loading)
         }
     }
@@ -88,8 +88,8 @@ extension LoginPasswordView {
     var loginButton: some View {
         Button {
             Task {
-                wholeAuthStore.isProcessing = true
-                wholeAuthStore.authSignInCombine(userEmail: userEmail, password: password)
+                authStore.isProcessing = true
+                authStore.authSignInCombine(userEmail: userEmail, password: password)
             }
         } label: {
             Text("계속")

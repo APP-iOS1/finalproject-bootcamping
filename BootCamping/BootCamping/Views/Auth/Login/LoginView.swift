@@ -19,7 +19,7 @@ import AlertToast
 struct LoginView: View {
     @AppStorage("login") var isSignIn: Bool?
     
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     
     
     var body: some View {
@@ -47,16 +47,16 @@ struct LoginView: View {
                 }
                 .foregroundColor(.black)
                 .padding(UIScreen.screenWidth * 0.05)
-                wholeAuthStore.isProcessing ? Color.black.opacity(0.3) : Color.clear
+                authStore.isProcessing ? Color.black.opacity(0.3) : Color.clear
             }
             .ignoresSafeArea()
         }
-        .alert("로그인에 실패하였습니다. 다시 시도해 주세요.", isPresented: $wholeAuthStore.isError) {
+        .alert("로그인에 실패하였습니다. 다시 시도해 주세요.", isPresented: $authStore.isError) {
             Button("확인", role: .cancel) {
-                wholeAuthStore.isError = false
+                authStore.isError = false
             }
         }
-        .toast(isPresenting: $wholeAuthStore.isProcessing) {
+        .toast(isPresenting: $authStore.isProcessing) {
             AlertToast(displayMode: .alert, type: .loading)
         }
         
@@ -86,7 +86,7 @@ extension LoginView {
     // 카카오 로그인 버튼
     var kakaoLoginButton: some View {
         Button {
-            wholeAuthStore.kakaoLogInCombine()
+            authStore.kakaoLogInCombine()
         } label: {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(.yellow)
@@ -106,7 +106,7 @@ extension LoginView {
     // 구글 로그인 버튼
     var googleLoginButton: some View {
         Button {
-            wholeAuthStore.googleSignIn()
+            authStore.googleSignIn()
         } label: {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(.white)
@@ -127,9 +127,9 @@ extension LoginView {
     var appleLoginButton: some View {
         SignInWithAppleButton { (request) in
             // requesting paramertes from apple login...
-            wholeAuthStore.nonce = randomNonceString()
+            authStore.nonce = randomNonceString()
             request.requestedScopes = [.email, .fullName]
-            request.nonce = sha256(wholeAuthStore.nonce)
+            request.nonce = sha256(authStore.nonce)
         } onCompletion: { (result) in
             switch result {
             case .success(let user):
@@ -139,9 +139,9 @@ extension LoginView {
                     print("error with firebase")
                     return
                 }
-                wholeAuthStore.appleLogin(credential: credential)
+                authStore.appleLogin(credential: credential)
             case .failure(let error):
-                wholeAuthStore.isError = true
+                authStore.isError = true
                 print(error.localizedDescription)
             }
         }

@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseAuth
 
 struct SplashScreenView: View {
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     @State private var isActive = false
     @State private var size = 0.8
     @State private var opacity = 0.5

@@ -63,7 +63,7 @@ struct BootCampingApp: App {
                 .environmentObject(ScheduleStore())
                 .environmentObject(FaceId())
                 .environmentObject(BookmarkStore())
-                .environmentObject(WholeAuthStore())
+                .environmentObject(AuthStore())
                 .environmentObject(CommentStore())
                 .environmentObject(DiaryLikeStore())
                 .environmentObject(BlockedUserStore())

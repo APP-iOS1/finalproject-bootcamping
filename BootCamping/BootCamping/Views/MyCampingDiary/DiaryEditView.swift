@@ -22,7 +22,7 @@ struct DiaryEditView: View {
     @State var diaryContent: String
     
     @EnvironmentObject var diaryStore: DiaryStore
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     @Environment(\.dismiss) private var dismiss
     
     //키보드 dismiss 변수
@@ -44,7 +44,7 @@ struct DiaryEditView: View {
     //글 작성 유저 닉네임 변수
     var userNickName: String? {
         get {
-            for user in wholeAuthStore.userList {
+            for user in authStore.userList {
                 if user.id == Auth.auth().currentUser?.uid {
                     return user.nickName
                 }

@@ -15,7 +15,7 @@ struct RealtimeCampingView: View {
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var commentStore: CommentStore
     @EnvironmentObject var blockedUserStore: BlockedUserStore
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     
     @State private var isShowingAcceptedToast = false
     @State private var isShowingBlockedToast = false
@@ -24,7 +24,7 @@ struct RealtimeCampingView: View {
         VStack {
             ScrollView(showsIndicators: false) {
                 LazyVStack {
-                    ForEach(diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }, id: \.self) { userInfoDiary in
+                    ForEach(diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !authStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }, id: \.self) { userInfoDiary in
                         DiaryCellView(item: userInfoDiary, isShowingAcceptedToast: $isShowingAcceptedToast, isShowingBlockedToast: $isShowingBlockedToast)
                             .task {
                                 guard let index = diaryStore.realTimeDiaryUserInfoDiaryList.firstIndex(where: { $0.diary.id == userInfoDiary.diary.id}) else { return }

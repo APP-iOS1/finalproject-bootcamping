@@ -101,7 +101,7 @@
 		AD21BAE32989F28C007ED6B7 /* FirebaseCommentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD21BAE22989F28C007ED6B7 /* FirebaseCommentService.swift */; };
 		AD2DBF5229940009008534BA /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = AD2DBF5129940009008534BA /* AlertToast */; };
 		AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD373AF92977D68A00E1236A /* DiaryCellView.swift */; };
-		AD672121298CA983008C34B3 /* WholeAuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD672120298CA983008C34B3 /* WholeAuthStore.swift */; };
+		AD672121298CA983008C34B3 /* AuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD672120298CA983008C34B3 /* AuthStore.swift */; };
 		AD672123298CBFB0008C34B3 /* FirebaseUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD672122298CBFB0008C34B3 /* FirebaseUserService.swift */; };
 		AD672125298CE2BB008C34B3 /* AuthEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD672124298CE2BB008C34B3 /* AuthEmailService.swift */; };
 		AD851262299B729000FA8E2E /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = AD851261299B729000FA8E2E /* Introspect */; };
@@ -201,7 +201,7 @@
 		AD1FED35298B930F001FB3E5 /* FirebaseScheduleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseScheduleService.swift; sourceTree = "<group>"; };
 		AD21BAE22989F28C007ED6B7 /* FirebaseCommentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseCommentService.swift; sourceTree = "<group>"; };
 		AD373AF92977D68A00E1236A /* DiaryCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCellView.swift; sourceTree = "<group>"; };
-		AD672120298CA983008C34B3 /* WholeAuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WholeAuthStore.swift; sourceTree = "<group>"; };
+		AD672120298CA983008C34B3 /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
 		AD672122298CBFB0008C34B3 /* FirebaseUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUserService.swift; sourceTree = "<group>"; };
 		AD672124298CE2BB008C34B3 /* AuthEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthEmailService.swift; sourceTree = "<group>"; };
 		AD851263299B735B00FA8E2E /* ScrollViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewHelper.swift; sourceTree = "<group>"; };
@@ -350,7 +350,7 @@
 		63AF45B32977CDC90014B1E1 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				AD672120298CA983008C34B3 /* WholeAuthStore.swift */,
+				AD672120298CA983008C34B3 /* AuthStore.swift */,
 				CA729F422988FCBA00CCC3BB /* ScheduleStore.swift */,
 				790B62DA29792B4C0048C110 /* CommentStore.swift */,
 				639129EE29792CB700F6EDD7 /* CapmingSpotStore.swift */,
@@ -687,7 +687,7 @@
 				AD373AFA2977D68A00E1236A /* DiaryCellView.swift in Sources */,
 				7CA272FE2991CE6600443111 /* DiaryLockedView.swift in Sources */,
 				639129E92979291D00F6EDD7 /* Places.swift in Sources */,
-				AD672121298CA983008C34B3 /* WholeAuthStore.swift in Sources */,
+				AD672121298CA983008C34B3 /* AuthStore.swift in Sources */,
 				63463A452990EF260000F523 /* Filtering.swift in Sources */,
 				7CDDE5B2299B44DF000610CA /* KeyboardSetting.swift in Sources */,
 				6E8CACBE2994E4BD000C2274 /* BlockedUserStore.swift in Sources */,

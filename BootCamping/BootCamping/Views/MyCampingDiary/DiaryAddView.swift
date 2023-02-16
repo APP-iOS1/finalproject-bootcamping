@@ -34,7 +34,7 @@ struct DiaryAddView: View {
     @State private var diaryContent: String = ""
     
     @EnvironmentObject var diaryStore: DiaryStore
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     @Environment(\.dismiss) private var dismiss
     
     //키보드 dismiss 변수
@@ -416,7 +416,7 @@ private extension DiaryAddView {
             Spacer()
             Button {
                 diaryStore.isProcessing = true
-                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: wholeAuthStore.currnetUserInfo?.nickName ?? "BootCamper", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages)
+                diaryStore.createDiaryCombine(diary: Diary(id: UUID().uuidString, uid: Auth.auth().currentUser?.uid ?? "", diaryUserNickName: authStore.currnetUserInfo?.nickName ?? "BootCamper", diaryTitle: diaryTitle, diaryAddress: locationInfo, diaryContent: diaryContent, diaryImageNames: [], diaryImageURLs: [], diaryCreatedDate: Timestamp(), diaryVisitedDate: selectedDate, diaryLike: [], diaryIsPrivate: diaryIsPrivate), images: diaryImages)
                 //탭틱
                 UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                 dismiss()

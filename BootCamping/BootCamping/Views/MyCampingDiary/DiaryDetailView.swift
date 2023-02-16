@@ -20,7 +20,7 @@ enum ReportState {
 
 struct DiaryDetailView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var blockedUserStore: BlockedUserStore
     @EnvironmentObject var reportStore: ReportStore
@@ -71,7 +71,7 @@ struct DiaryDetailView: View {
                         diaryDetailImage.zIndex(1) 
                         Group {
                             HStack(alignment: .center){
-                                if (item.diary.uid == wholeAuthStore.currnetUserInfo!.id && item.diary.diaryIsPrivate) {
+                                if (item.diary.uid == authStore.currnetUserInfo!.id && item.diary.diaryIsPrivate) {
                                     isPrivateImage
                                 }
                                 diaryDetailTitle
@@ -109,8 +109,8 @@ struct DiaryDetailView: View {
                 .padding(.bottom, 0.1)
 
                  HStack {
-                    if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
-                        WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
+                    if authStore.currnetUserInfo?.profileImageURL != "" {
+                        WebImage(url: URL(string: authStore.currnetUserInfo!.profileImageURL))
                             .resizable()
                             .scaledToFill()
                             .frame(width: 30, height: 30)
@@ -134,7 +134,7 @@ struct DiaryDetailView: View {
                         }
 
                     Button {
-                        commentStore.createCommentCombine(diaryId: item.diary.id, comment: Comment(id: UUID().uuidString, diaryId: item.diary.id, uid: wholeAuthStore.currnetUserInfo?.id ?? "" , nickName: wholeAuthStore.currnetUserInfo?.nickName ?? "", profileImage: wholeAuthStore.currnetUserInfo?.profileImageURL ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp()))
+                        commentStore.createCommentCombine(diaryId: item.diary.id, comment: Comment(id: UUID().uuidString, diaryId: item.diary.id, uid: authStore.currnetUserInfo?.id ?? "" , nickName: authStore.currnetUserInfo?.nickName ?? "", profileImage: authStore.currnetUserInfo?.profileImageURL ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp()))
                         commentStore.readCommentsCombine(diaryId: item.diary.id)
                         withAnimation {
                             proxy.scrollTo(bottomID, anchor: .bottom)
@@ -303,7 +303,7 @@ private extension DiaryDetailView {
             }
             Button("\(item.user.nickName)님 차단하기", role: .destructive) {
                 blockedUserStore.addBlockedUserCombine(blockedUserId: item.diary.uid)
-                wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+                authStore.readMyInfoCombine(user: authStore.currnetUserInfo!)
                 isShowingBlockedToast.toggle()
             }
             Button("취소", role: .cancel) {}
@@ -333,7 +333,7 @@ private extension DiaryDetailView {
         //사진 두번 클릭시 좋아요
         .onTapGesture(count: 2) {
             //좋아요 버튼, 카운드
-            if diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") {
+            if diaryLikeStore.diaryLikeList.contains(authStore.currentUser?.uid ?? "") {
                 //포함되있으면 아무것도 안함
             } else {
                 diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
@@ -414,7 +414,7 @@ private extension DiaryDetailView {
         HStack {
             Button {
                 //좋아요 버튼, 카운드
-                if diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") {
+                if diaryLikeStore.diaryLikeList.contains(authStore.currentUser?.uid ?? "") {
                     diaryLikeStore.removeDiaryLikeCombine(diaryId: item.diary.id)
                 } else {
                     diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
@@ -423,9 +423,9 @@ private extension DiaryDetailView {
                 }
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
             } label: {
-                Image(systemName: diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")
+                Image(systemName: diaryLikeStore.diaryLikeList.contains(authStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")
                 
-                    .foregroundColor(diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? .red : .secondary)
+                    .foregroundColor(diaryLikeStore.diaryLikeList.contains(authStore.currentUser?.uid ?? "") ? .red : .secondary)
             }
             Text("\(diaryLikeStore.diaryLikeList.count)")
                 .font(.callout)

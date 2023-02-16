@@ -45,7 +45,7 @@ enum LoginPlatform {
 }
 
 
-class WholeAuthStore: ObservableObject {
+class AuthStore: ObservableObject {
     
     //로그인상태 저장
     @AppStorage("login") var isSignIn: Bool = false
@@ -83,7 +83,7 @@ class WholeAuthStore: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
 
-    static let shared = WholeAuthStore()
+    static let shared = AuthStore()
     
     // MARK: - Firebase UserList CRUD Combine
 
@@ -154,16 +154,10 @@ class WholeAuthStore: ObservableObject {
                             "Email": "\(String(describing: Auth.auth().currentUser?.email))",
                             "UID": "\(String(describing: Auth.auth().currentUser?.uid))"
                           ])
-                        self.readUserListCombine()
-                        if self.loginPlatform == "email" {
-                            withAnimation(.easeInOut) {
-                                self.isError = false
-                                self.isProcessing = false
-                                self.isSignIn = true
-                            }
-                        } else {
+                        withAnimation(.easeInOut) {
                             self.isError = false
                             self.isProcessing = false
+                            self.isSignIn = true
                         }
                     }
                     return

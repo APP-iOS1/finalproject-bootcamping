@@ -13,7 +13,7 @@ import AlertToast
 struct DiaryCellView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var diaryStore: DiaryStore
-    @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var authStore: AuthStore
     @EnvironmentObject var blockedUserStore: BlockedUserStore
     @EnvironmentObject var reportStore: ReportStore
     
@@ -78,7 +78,7 @@ struct DiaryCellView: View {
                 } label: {
                     VStack(alignment: .leading) {
                         HStack(alignment: .center){
-                            if (item.diary.uid == wholeAuthStore.currnetUserInfo!.id && item.diary.diaryIsPrivate) {
+                            if (item.diary.uid == authStore.currnetUserInfo!.id && item.diary.diaryIsPrivate) {
                                 isPrivateImage
                             }
                             diaryTitle
@@ -157,7 +157,7 @@ private extension DiaryCellView {
         //사진 두번 클릭시 좋아요
         .onTapGesture(count: 2) {
             //좋아요 버튼, 카운드
-            if diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") {
+            if diaryLikeStore.diaryLikeList.contains(authStore.currentUser?.uid ?? "") {
                 //포함되있으면 아무것도 안함
             } else {
                 diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
@@ -259,7 +259,7 @@ private extension DiaryCellView {
             }
             Button("\(item.user.nickName)님 차단하기", role: .destructive) {
                 blockedUserStore.addBlockedUserCombine(blockedUserId: item.diary.uid)
-                wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
+                authStore.readMyInfoCombine(user: authStore.currnetUserInfo!)
                 isShowingBlockedToast.toggle()
             }
             Button("취소", role: .cancel) {}
@@ -326,7 +326,7 @@ private extension DiaryCellView {
         HStack {
             Button {
                 //좋아요 버튼, 카운드
-                if diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") {
+                if diaryLikeStore.diaryLikeList.contains(authStore.currentUser?.uid ?? "") {
                     diaryLikeStore.removeDiaryLikeCombine(diaryId: item.diary.id)
                 } else {
                     diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
@@ -336,8 +336,8 @@ private extension DiaryCellView {
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
                 
             } label: {
-                Image(systemName: diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")
-                    .foregroundColor(diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? .red : .secondary)
+                Image(systemName: diaryLikeStore.diaryLikeList.contains(authStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")
+                    .foregroundColor(diaryLikeStore.diaryLikeList.contains(authStore.currentUser?.uid ?? "") ? .red : .secondary)
             }
             Text("\(diaryLikeStore.diaryLikeList.count)")
                 .font(.callout)

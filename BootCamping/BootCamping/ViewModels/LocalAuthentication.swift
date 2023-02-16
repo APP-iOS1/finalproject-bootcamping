@@ -11,6 +11,7 @@ import LocalAuthentication
 class FaceId: ObservableObject {
     //기본 faceID 설정 해제
     @Published var islocked: Bool = false
+    @Published var isSettingLocked: Bool = false
     
     //    func auth() {
     //        let context = LAContext()
@@ -36,9 +37,12 @@ class FaceId: ObservableObject {
                 DispatchQueue.main.async {
                     if success {
                         self.islocked = false
+                        self.isSettingLocked = false
                     } else {
                         // there was a problem
                         self.islocked = true
+                        self.isSettingLocked = true
+                        print("문제있다이거=-----------")
                     }
                 }
                 

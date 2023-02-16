@@ -217,6 +217,54 @@ struct FirebaseDiaryService {
         .eraseToAnyPublisher()
     }
     
+    //MARK: - 프로필 업데이트할때 유저이름 바꿔줌
+    func updateDiarysNickNameService(userUID: String, nickName: String) -> AnyPublisher<Void, Error> {
+        Future<Void, Error> { promise in
+            self.database.collection("Diarys").whereField("uid", isEqualTo: userUID).getDocuments { snapshot, error in
+                if let error = error {
+                    promise(.failure(error))
+                    return
+                }
+                guard let snapshot = snapshot else {
+                    promise(.failure(FirebaseDiaryServiceError.badSnapshot))
+                    return
+                }
+                
+                let group = DispatchGroup()
+                
+                var diaryIds: [String] = []
+                
+                for document in snapshot.documents {
+                    let docData = document.data()
+                    
+                    let id: String = docData["id"] as? String ?? ""
+                    diaryIds.append(id)
+                }
+                
+                
+                for diaryId in diaryIds {
+                    group.enter()
+                    database
+                        .collection("Diarys")
+                        .document(diaryId)
+                        .updateData([
+                            "diaryUserNickName" : nickName
+                        ]) { error in
+                            if let error = error {
+                                print(error)
+                                promise(.failure(FirebaseDiaryServiceError.updateDiaryError))
+                            } else {
+                                group.leave()
+                            }
+                        }
+                }
+                group.notify(queue: .main) {
+                    promise(.success(()))
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
     // MARK: - 다이어리 공개 여부만 Update하는 함수
     func updateIsPrivateDiaryService(diaryId: String, isPrivate: Bool) -> AnyPublisher<Void, Error> {
         Future<Void, Error>  { promise in

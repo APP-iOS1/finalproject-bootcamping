@@ -398,7 +398,7 @@ struct CampingSpotDetailView: View {
             isBookmarked = bookmarkStore.checkBookmarkedSpot(currentUser: wholeAuthStore.currentUser, userList: wholeAuthStore.userList, campingSpotId: campingSpot.contentId)
             diaryStore.readCampingSpotsDiariesCombine(contentId: campingSpot.contentId)
             //For Googole Analystic
-            Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+            Analytics.logEvent("SelectedCampingSpotInfo", parameters: [
                 "contentID" : "\(campingSpot.contentId)",
                 "campingSpotName" : "\(campingSpot.facltNm)",
                 "campingSpotLocationDo" : "\(campingSpot.doNm)",

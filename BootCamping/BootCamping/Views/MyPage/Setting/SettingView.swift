@@ -24,15 +24,13 @@ struct SettingView: View {
     var body: some View {
         List{
             //TODO: -EmptyView 마저 채우기, 개인정보 취급 노션에서 추가하기
-            NavigationLink(destination: EmptyView()) {
+            NavigationLink(destination: AnnouncementView()) {
                 Text("공지사항")
             }
             NavigationLink(destination: ContactUsView()) {
                 Text("자주 묻는 질문 FAQ")
             }
-            NavigationLink(destination: EmptyView()) {
-                Text("앱 정보")
-            }
+            Link("앱 정보", destination: URL(string: "https://thekoon0456.notion.site/thekoon0456/BootCamping-5e0a340949c24aec8c76913a84407c52")!)
             NavigationLink(destination: NotificationSettingsView()) {
                 Text("알림설정")
             }
@@ -57,13 +55,6 @@ struct SettingView: View {
                 })
                 )
             }
-//            Button {
-//                // TODO: 회원 탈퇴
-//                /// 얼럿 띄우고 탈퇴하는 뷰에 연결하기
-//            } label: {
-//                Text("회원 탈퇴")
-//            }
-
         }
         .listStyle(.plain)
         .alert("로그아웃에 실패하였습니다. 다시 시도해 주세요.", isPresented: $wholeAuthStore.isError) {

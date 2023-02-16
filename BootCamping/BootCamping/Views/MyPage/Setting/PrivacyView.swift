@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PrivacyView: View {
     @State var showingAlert: Bool = false
+    @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var tabSelection: TabSelector
     @EnvironmentObject var faceId: FaceId
@@ -48,6 +49,7 @@ struct PrivacyView: View {
                               primaryButton: .default(Text("취소"), action: {} ),
                               secondaryButton: .destructive(Text("탈퇴하기"),action: {
                             // 탈퇴 시 무슨 액션?? 새로운 뷰 띄워서 동의하기 체크 후 최종 탈퇴??
+                            diaryStore.updateDiarysNickNameCombine(userUID: wholeAuthStore.currentUser!.uid, nickName: "(사용자 정보 없음)")
                             wholeAuthStore.userWithdrawal()
                             dismiss()
                             tabSelection.screen = .one

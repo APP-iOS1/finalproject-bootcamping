@@ -78,6 +78,7 @@
 		792C42442990D0A800B7772C /* PasswordChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C42432990D0A800B7772C /* PasswordChangeView.swift */; };
 		794ACB1E299929950037DDDD /* DiaryEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794ACB1D299929950037DDDD /* DiaryEditView.swift */; };
 		7970EFF6299B65D500A9AC7C /* DiaryAddDetailImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7970EFF5299B65D500A9AC7C /* DiaryAddDetailImageView.swift */; };
+		7C206448299E14020046C60E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C206447299E14020046C60E /* GoogleService-Info.plist */; };
 		7C20C300299380DF0030CB21 /* FirebaseDiaryLikeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C20C2FF299380DF0030CB21 /* FirebaseDiaryLikeService.swift */; };
 		7C20C30229938CC90030CB21 /* DiaryLIkeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C20C30129938CC90030CB21 /* DiaryLIkeStore.swift */; };
 		7C294CAC299513570024CEA9 /* BlockUserEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C294CAB299513570024CEA9 /* BlockUserEditView.swift */; };
@@ -85,7 +86,6 @@
 		7C3FC49729877C7200E96A01 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7C3FC49629877C7200E96A01 /* SDWebImageSwiftUI */; };
 		7C6A94AC2992BE6900B0E125 /* DiaryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */; };
 		7C715C982977E056009BC678 /* Diary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C715C972977E056009BC678 /* Diary.swift */; };
-		7C95F191298A55120095A6BC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C95F190298A55120095A6BC /* GoogleService-Info.plist */; };
 		7CA272FE2991CE6600443111 /* DiaryLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA272FD2991CE6600443111 /* DiaryLockedView.swift */; };
 		7CACABBF299947E30044520F /* PinchZoomAndDrag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CACABBE299947E30044520F /* PinchZoomAndDrag.swift */; };
 		7CC3AD4E29890970002EF992 /* DiaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3AD4D29890970002EF992 /* DiaryStore.swift */; };
@@ -117,6 +117,7 @@
 		CA27A652299B291600A6AEE5 /* ReportedDiary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A651299B291600A6AEE5 /* ReportedDiary.swift */; };
 		CA27A654299B455400A6AEE5 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A653299B455300A6AEE5 /* ReportView.swift */; };
 		CA27A658299B4B9C00A6AEE5 /* WaitingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27A657299B4B9C00A6AEE5 /* WaitingView.swift */; };
+		CA35B01F299DC80400657F34 /* AnnouncementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA35B01E299DC80400657F34 /* AnnouncementView.swift */; };
 		CA729F3329792DE000CCC3BB /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F3229792DE000CCC3BB /* CalendarView.swift */; };
 		CA729F352979315400CCC3BB /* CustomDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F342979315400CCC3BB /* CustomDatePickerView.swift */; };
 		CA729F392979340600CCC3BB /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA729F382979340600CCC3BB /* Schedule.swift */; };
@@ -180,13 +181,13 @@
 		792C42432990D0A800B7772C /* PasswordChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeView.swift; sourceTree = "<group>"; };
 		794ACB1D299929950037DDDD /* DiaryEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryEditView.swift; sourceTree = "<group>"; };
 		7970EFF5299B65D500A9AC7C /* DiaryAddDetailImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryAddDetailImageView.swift; sourceTree = "<group>"; };
+		7C206447299E14020046C60E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7C20C2FF299380DF0030CB21 /* FirebaseDiaryLikeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDiaryLikeService.swift; sourceTree = "<group>"; };
 		7C20C30129938CC90030CB21 /* DiaryLIkeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryLIkeStore.swift; sourceTree = "<group>"; };
 		7C294CAB299513570024CEA9 /* BlockUserEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserEditView.swift; sourceTree = "<group>"; };
 		7C3E8BD92992222600A6C1D6 /* DiaryCommentCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCommentCellView.swift; sourceTree = "<group>"; };
 		7C6A94AB2992BE6900B0E125 /* DiaryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryEmptyView.swift; sourceTree = "<group>"; };
 		7C715C972977E056009BC678 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
-		7C95F190298A55120095A6BC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7CA272FD2991CE6600443111 /* DiaryLockedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryLockedView.swift; sourceTree = "<group>"; };
 		7CACABBE299947E30044520F /* PinchZoomAndDrag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinchZoomAndDrag.swift; sourceTree = "<group>"; };
 		7CC3AD4D29890970002EF992 /* DiaryStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryStore.swift; sourceTree = "<group>"; };
@@ -216,6 +217,7 @@
 		CA27A651299B291600A6AEE5 /* ReportedDiary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportedDiary.swift; sourceTree = "<group>"; };
 		CA27A653299B455300A6AEE5 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
 		CA27A657299B4B9C00A6AEE5 /* WaitingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingView.swift; sourceTree = "<group>"; };
+		CA35B01E299DC80400657F34 /* AnnouncementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementView.swift; sourceTree = "<group>"; };
 		CA729F3229792DE000CCC3BB /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		CA729F342979315400CCC3BB /* CustomDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerView.swift; sourceTree = "<group>"; };
 		CA729F382979340600CCC3BB /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
@@ -285,7 +287,7 @@
 				63AF45B62977CDD50014B1E1 /* Views */,
 				63AF45A92977CDA30014B1E1 /* Components */,
 				630ADB522977CC6D000A517B /* Assets.xcassets */,
-				7C95F190298A55120095A6BC /* GoogleService-Info.plist */,
+				7C206447299E14020046C60E /* GoogleService-Info.plist */,
 				630ADB542977CC6D000A517B /* BootCamping.entitlements */,
 				630ADB552977CC6D000A517B /* Preview Content */,
 				790B62F5297A2D710048C110 /* Config.xcconfig */,
@@ -467,6 +469,7 @@
 			isa = PBXGroup;
 			children = (
 				63AF45D42977CE4C0014B1E1 /* SettingView.swift */,
+				CA35B01E299DC80400657F34 /* AnnouncementView.swift */,
 				6E688E16299220B7006DCEE5 /* ContactUsView.swift */,
 				6E688E3B29923542006DCEE5 /* MailView.swift */,
 				792C42412990CAD200B7772C /* PrivacyView.swift */,
@@ -595,7 +598,7 @@
 			};
 			buildConfigurationList = 630ADB462977CC6C000A517B /* Build configuration list for PBXProject "BootCamping" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -632,9 +635,9 @@
 				630ADB572977CC6D000A517B /* Preview Assets.xcassets in Resources */,
 				6E688E102991F0FE006DCEE5 /* tent.json in Resources */,
 				630ADB532977CC6D000A517B /* Assets.xcassets in Resources */,
-				7C95F191298A55120095A6BC /* GoogleService-Info.plist in Resources */,
 				6E688E1229920F5D006DCEE5 /* diary_lottie.json in Resources */,
 				6E688E1429920F7B006DCEE5 /* picture_lottie.json in Resources */,
+				7C206448299E14020046C60E /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -730,6 +733,7 @@
 				AD672125298CE2BB008C34B3 /* AuthEmailService.swift in Sources */,
 				63AF45BD2977CDE20014B1E1 /* LoginView.swift in Sources */,
 				6E96013B298A32D6009C60F2 /* FullMapView.swift in Sources */,
+				CA35B01F299DC80400657F34 /* AnnouncementView.swift in Sources */,
 				63AF45AE2977CDB40014B1E1 /* ViewModifiers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -788,6 +792,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -841,6 +846,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -859,7 +865,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BootCamping/Preview Content\"";
-				DEVELOPMENT_TEAM = 6R3M7VGRP2;
+				DEVELOPMENT_TEAM = W6X76DS4Z7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -881,7 +887,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCampingDev;
+				PRODUCT_BUNDLE_IDENTIFIER = com.BootCampingTeam1.BootCamping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -904,7 +910,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BootCamping/Preview Content\"";
-				DEVELOPMENT_TEAM = 6R3M7VGRP2;
+				DEVELOPMENT_TEAM = W6X76DS4Z7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -926,7 +932,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thekoon.BootCampingDev;
+				PRODUCT_BUNDLE_IDENTIFIER = com.BootCampingTeam1.BootCamping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

@@ -19,6 +19,8 @@ struct ProfileSettingView: View {
     @Environment(\.dismiss) private var dismiss
     
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
+    @EnvironmentObject var diaryStore: DiaryStore
+
     
     @State private var updateNickname: String = ""
     
@@ -185,9 +187,11 @@ extension ProfileSettingView {
                 //닉네임 o 사진 기본으로
                 if isProfileImageReset {
                     wholeAuthStore.updateUserCombine(image: nil, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: wholeAuthStore.currnetUserInfo!.profileImageURL, nickName: updateNickname, userEmail: "", bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot, blockedUser: wholeAuthStore.currnetUserInfo!.blockedUser))
+                    diaryStore.updateDiarysNickNameCombine(userUID: wholeAuthStore.currnetUserInfo!.id, nickName: updateNickname)
                 } else {
                     //닉네임 o 사진 변경또는 그대로
                     wholeAuthStore.updateUserCombine(image: profileImage, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: wholeAuthStore.currnetUserInfo!.profileImageURL, nickName: updateNickname, userEmail: wholeAuthStore.currnetUserInfo!.userEmail, bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot, blockedUser: wholeAuthStore.currnetUserInfo!.blockedUser))
+                    diaryStore.updateDiarysNickNameCombine(userUID: wholeAuthStore.currnetUserInfo!.id, nickName: updateNickname)
                 }
             }
             dismiss()

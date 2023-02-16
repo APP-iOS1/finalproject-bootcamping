@@ -155,15 +155,10 @@ class WholeAuthStore: ObservableObject {
                             "UID": "\(String(describing: Auth.auth().currentUser?.uid))"
                           ])
                         self.readUserListCombine()
-                        if self.loginPlatform == "email" {
-                            withAnimation(.easeInOut) {
-                                self.isError = false
-                                self.isProcessing = false
-                                self.isSignIn = true
-                            }
-                        } else {
+                        withAnimation(.easeInOut) {
                             self.isError = false
                             self.isProcessing = false
+                            self.isSignIn = true
                         }
                     }
                     return
@@ -303,10 +298,6 @@ class WholeAuthStore: ObservableObject {
                     return
                 case .finished:
                     print("Finished SingIn User")
-                    //For Googole Analystic
-                    Analytics.logEvent("SignIn", parameters: [
-                        "userName" : "\(userEmail)",
-                    ])
                     return
                 }
             } receiveValue: { [weak self] user in

@@ -126,6 +126,29 @@ class DiaryStore: ObservableObject {
             .store(in: &cancellables)
     }
     
+    // MARK: updateUserDiaryCombine 유저 업데이트
+    
+    func updateDiarysNickNameCombine(userUID: String, nickName: String) {
+        FirebaseDiaryService().updateDiarysNickNameService(userUID: userUID, nickName: nickName)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                    print("Failed update Diary Nickname")
+                    self.firebaseDiaryServiceError = .updateDiaryError
+                    self.showErrorAlertMessage = self.firebaseDiaryServiceError.errorDescription!
+                    return
+                case .finished:
+                    print("Finished update Diary Nickname")
+                    return
+                }
+            } receiveValue: { _ in
+                
+            }
+            .store(in: &cancellables)
+    }
+    
     //MARK: - update IsPrivate Diary Combine
     
     func updateIsPrivateDiaryCombine(diaryId: String, isPrivate: Bool) {

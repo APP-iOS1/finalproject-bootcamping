@@ -2,12 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
 	<key>CLIENT_ID</key>
-	<string>446099408891-3odasg5m4dbl2uatm42ktcmrrjetqovo.apps.googleusercontent.com</string>
+	<string>446099408891-isntperpf737fqrgp8s34on3v6dans24.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.446099408891-3odasg5m4dbl2uatm42ktcmrrjetqovo</string>
+	<string>com.googleusercontent.apps.446099408891-isntperpf737fqrgp8s34on3v6dans24</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCvecmVIYEmtI7grvo0fDhbbZPnJ_y4TKw</string>
 	<key>GCM_SENDER_ID</key>
@@ -15,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.thekoon.BootCampingDev</string>
+	<string>com.BootCampingTeam1.BootCamping</string>
 	<key>PROJECT_ID</key>
 	<string>bootcamping-280fc</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:446099408891:ios:1577fff08bed4c02e92d5e</string>
+	<string>1:446099408891:ios:c27425e17488140fe92d5e</string>
 </dict>
 </plist>

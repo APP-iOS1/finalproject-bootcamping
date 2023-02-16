@@ -23,7 +23,7 @@ struct BusinessView: View {
             Divider()
             Text("광고, 입점 등의 문의는\n bootcampteam@gmail.com으로 연락주세요.")
                 .padding(.bottom, 10)
-            Link("홈페이지 링크", destination: URL(string: "https://www.notion.so/thekoon0456/BootCamping-5e0a340949c24aec8c76913a84407c52")!)
+            Link("홈페이지 링크", destination: URL(string: "https://thekoon0456.notion.site/thekoon0456/BootCamping-5e0a340949c24aec8c76913a84407c52")!)
                 .fontWeight(.heavy)
                 .font(.title3)
             Spacer()

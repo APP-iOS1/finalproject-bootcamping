@@ -30,7 +30,7 @@ struct SettingView: View {
             NavigationLink(destination: ContactUsView()) {
                 Text("자주 묻는 질문 FAQ")
             }
-            Link("앱 정보", destination: URL(string: "https://www.notion.so/thekoon0456/BootCamping-5e0a340949c24aec8c76913a84407c52")!)
+            Link("앱 정보", destination: URL(string: "https://thekoon0456.notion.site/thekoon0456/BootCamping-5e0a340949c24aec8c76913a84407c52")!)
             NavigationLink(destination: NotificationSettingsView()) {
                 Text("알림설정")
             }

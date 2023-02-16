@@ -44,7 +44,7 @@ struct CampingSpotListSearchingView: View {
                     campingSpotStore.campingSpotList.removeAll()
                     campingSpotStore.lastDoc = nil
                     //For Googole Analystic
-                    Analytics.logEvent(AnalyticsEventSearch, parameters: [
+                    Analytics.logEvent("Search", parameters: [
                         "UID" : "\(String(describing: Auth.auth().currentUser?.uid))",
                         "Email" : "\(String(describing: Auth.auth().currentUser?.email))",
                         "searchingKeyword" : "\(keywordForParameter)",

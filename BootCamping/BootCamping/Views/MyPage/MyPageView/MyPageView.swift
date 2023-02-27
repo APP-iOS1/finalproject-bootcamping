@@ -47,7 +47,7 @@ struct MyPageView: View {
     var body: some View {
         VStack {
             ScrollView(showsIndicators: false) {
-                    userProfileSection
+                userProfileSection
                 animate()
                     .padding(.top, UIScreen.screenHeight*0.02)
                 myPageTap
@@ -69,11 +69,7 @@ struct MyPageView: View {
                 campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: wholeAuthStore.currnetUserInfo?.bookMarkedSpot ?? []))
             }
         }
-        //        .onAppear{
-        //            wholeAuthStore.readUserListCombine()
-        //        }
     }
-    
 }
 
 extension MyPageView{
@@ -92,19 +88,20 @@ extension MyPageView{
                             .frame(width: 60, height: 60)
                             .clipShape(Circle())
                         
-
+                        
                     } else {
                         Image("defaultProfileImage")
                             .resizable()
                             .scaledToFill()
                             .frame(width: 60, height: 60)
                             .clipShape(Circle())
-                            
+                        
                     }
-        
+                    
                     Text("\((wholeAuthStore.currnetUserInfo!.nickName)) 님")
                     
                     Group{
+                        // MARK: 로그인 플랫폼에 따른 로고
                         switch wholeAuthStore.loginPlatform {
                         case "email":
                             Image(systemName: "")
@@ -152,46 +149,6 @@ extension MyPageView{
         
     }
     
-    // MARK: 로그인 플랫폼?에 따른 로고
-    private var loginLogo: some View {
-        Group{
-            switch wholeAuthStore.loginPlatform {
-            case "email":
-                Image(systemName: "")
-                
-            case "apple":
-                ZStack{
-                    Circle()
-                        .fill(Color.black)
-                        .frame(width: 30)
-                    Image(systemName: "apple.logo")
-                        .resizable()
-                        .foregroundColor(.white)
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 15)
-                }
-            case "google":
-                Image("g-logo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 30)
-                    .clipShape(Circle())
-            case "kakao":
-                Image("k-logo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 30)
-                    .clipShape(Circle())
-            case "none":
-                Image(systemName: "")
-                
-            default:
-                Image(systemName: "")
-            }
-        }
-        
-        
-    }
     
     // MARK: -ViewBuilder : 탭으로 일정, 북마크 표시
     @ViewBuilder

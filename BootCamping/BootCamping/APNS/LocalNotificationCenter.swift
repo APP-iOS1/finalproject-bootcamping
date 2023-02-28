@@ -107,12 +107,12 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
         completionHandler()
     }
     
+    // MARK: - removeNotifications
     func removeNotifications(selectedDate : String) {
-        // 해당 일정에 해당하는 게 있으면 remove~
-        for index in 0..<localNotifications.count {
-            notificationCenter.removeDeliveredNotifications(withIdentifiers: [selectedDate])
-            notificationCenter.removePendingNotificationRequests(withIdentifiers: [selectedDate])
-        }
+        // FIXME: - 캠핑 일정 모델의 날짜를 배열로 받고 나면 수정해야 함
+        // 해당 일정에 해당하는 알림의 identifier는 시작일로 통일되어 있으므로 시작일만 확인해서 지워주면 된다.
+        notificationCenter.removeDeliveredNotifications(withIdentifiers: [selectedDate])
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: [selectedDate])
     }
     
     // MARK: - requestAuthorization
@@ -162,8 +162,10 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
                 
                 let identifierStartDate = dateFormatter.string(from: startDate)
 
+                // 트리거는 시작일 날짜 기준으로 일주일 전부터 출발 당일까지 설정한다
                 let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
                 
+                // 각 알림의 identifier는 시작일로 통일한다
                 let request = UNNotificationRequest(identifier: identifierStartDate, content: content, trigger: trigger)
                 
                 UNUserNotificationCenter.current().add(request) { error in

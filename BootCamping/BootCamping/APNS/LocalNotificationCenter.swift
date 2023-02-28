@@ -23,18 +23,6 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
     // 알림 설정을 위한 인스턴스 선언
     let notificationCenter = UNUserNotificationCenter.current()
     
-    // 알림 설정 권한 확인을 위한 변수
-    @Published var authorizationStatus: UNAuthorizationStatus = .notDetermined
-    // 설정된 푸시 알림을 갖고 있는 배열
-    @Published var notificationRequests: [UNNotificationRequest] = []
-    // 푸시 알림을 통해 앱 진입 시 화면 이동(마이페이지 탭으로 이동)을 위한 변수
-    @Published var pageToNavigationTo : TabViewScreen?
-    
-    override init() {
-        super.init()
-        notificationCenter.delegate = self
-    }
-    
     /*
      enum UNAuthorizationStatus
      
@@ -49,6 +37,18 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
      case ephemeral
      앱은 제한된 시간 동안 알림을 예약하거나 수신할 수 있는 권한이 있습니다.
      */
+    
+    // 알림 설정 권한 확인을 위한 변수
+    @Published var authorizationStatus: UNAuthorizationStatus = .notDetermined
+    // 설정된 푸시 알림을 갖고 있는 배열
+    @Published var notificationRequests: [UNNotificationRequest] = []
+    // 푸시 알림을 통해 앱 진입 시 화면 이동(마이페이지 탭으로 이동)을 위한 변수
+    @Published var pageToNavigationTo : TabViewScreen?
+    
+    override init() {
+        super.init()
+        notificationCenter.delegate = self
+    }
     
     /*
      스케줄에 대한 알림 설정 시,
@@ -81,7 +81,7 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
     // MARK: - 알람 처리 메소드 구현
     /** Handle notification when the app is in foreground */
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        /* 앱이 포그라운드에서 실행될 때 도착한 알람 처리 */
+        // 앱이 포그라운드에 있는 동안 알림을 받을 때마다 호출되며, 도착한 알람을 처리합니다,
         let userInfo = notification.request.content.userInfo
         
         print(#function, "+++ willPresent: userInfo: ", userInfo)
@@ -91,6 +91,7 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
     
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        // 사용자가 알림을 탭하면 호출됩니다.
         let identifier = response.notification.request.identifier
         
         // 알림을 통해 앱을 진입하면 뱃지 숫자를 0으로 바꿔준다
@@ -113,7 +114,6 @@ class LocalNotificationCenter: NSObject, ObservableObject, UNUserNotificationCen
             notificationCenter.removePendingNotificationRequests(withIdentifiers: [selectedDate])
         }
     }
-//    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) { }
     
     // MARK: - requestAuthorization
     /// 앱의 알림 설정에 필요한 권한을 요청한다

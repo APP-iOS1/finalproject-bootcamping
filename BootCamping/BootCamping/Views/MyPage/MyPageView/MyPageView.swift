@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 import SDWebImageSwiftUI
 
+// MARK: - 탭 설정을 위한 enum
 enum TapMypage : String, CaseIterable {
     case myCamping = "나의 캠핑 일정"
     case bookmarkedCampingSpot = "북마크한 캠핑장"
@@ -47,7 +48,7 @@ struct MyPageView: View {
     var body: some View {
         VStack {
             ScrollView(showsIndicators: false) {
-                    userProfileSection
+                userProfileSection
                 animate()
                     .padding(.top, UIScreen.screenHeight*0.02)
                 myPageTap
@@ -69,11 +70,7 @@ struct MyPageView: View {
                 campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: wholeAuthStore.currnetUserInfo?.bookMarkedSpot ?? []))
             }
         }
-        //        .onAppear{
-        //            wholeAuthStore.readUserListCombine()
-        //        }
     }
-    
 }
 
 extension MyPageView{
@@ -91,19 +88,16 @@ extension MyPageView{
                             .scaledToFill()
                             .frame(width: 60, height: 60)
                             .clipShape(Circle())
-                        
-
                     } else {
                         Image("defaultProfileImage")
                             .resizable()
                             .scaledToFill()
                             .frame(width: 60, height: 60)
                             .clipShape(Circle())
-                            
                     }
-        
-                    Text("\((wholeAuthStore.currnetUserInfo!.nickName)) 님")
                     
+                    Text("\((wholeAuthStore.currnetUserInfo!.nickName)) 님")
+
                     Group{
                         switch wholeAuthStore.loginPlatform {
                         case "email":
@@ -146,10 +140,8 @@ extension MyPageView{
                 }
                 .foregroundColor(.bcBlack)
             }
-            
             Spacer()
         }
-        
     }
     
     // MARK: 로그인 플랫폼?에 따른 로고

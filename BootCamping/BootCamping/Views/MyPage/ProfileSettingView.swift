@@ -10,6 +10,8 @@ import PhotosUI
 import FirebaseAuth
 import SDWebImageSwiftUI
 
+// MARK: - View: ProfileSettingView
+/// 사용자의 프로필 사진과 닉네임을 변경할 수 있는 뷰
 struct ProfileSettingView: View {
     
     //이미지 피커

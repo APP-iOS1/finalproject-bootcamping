@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - View: ContactUsView
+/// 고객 문의 뷰
 struct ContactUsView: View {
     let qnaList: [QnA] = [QnA(question: "이메일로 회원가입은 안 되나요?",
                               answer: """
@@ -63,7 +65,7 @@ struct ContactUsView: View {
     }
 }
 
-
+// MARK: - View: QuestionCell
 struct QuestionCell: View{
     let qna: QnA
     @State private var isShowingAnswer = false
@@ -95,6 +97,7 @@ struct QuestionCell: View{
     }
 }
 
+// MARK: - QnA 구조체
 struct QnA: Hashable {
     let question: String
     let answer: String

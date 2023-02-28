@@ -8,10 +8,8 @@
 import SwiftUI
 import AlertToast
 
+// MARK: - 사용자가 차단한 유저들을 확인하고 차단 해제할 수 있는 뷰
 struct BlockUserEditView: View {
-    
-    @Environment(\.editMode) var editMode
-    
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var blockedUserStore: BlockedUserStore
 

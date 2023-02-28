@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-// TODO: 목업으로 뷰 추가해놓기
+// MARK: - View: SettingView
+/// 설정 뷰(마이프로필 - 설정)
 struct SettingView: View {
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     
@@ -23,7 +24,6 @@ struct SettingView: View {
     
     var body: some View {
         List{
-            //TODO: -EmptyView 마저 채우기, 개인정보 취급 노션에서 추가하기
             NavigationLink(destination: AnnouncementView()) {
                 Text("공지사항")
             }
@@ -38,7 +38,7 @@ struct SettingView: View {
                 Text("개인/보안설정") //페이스아이디, 비밀번호 수정, 회원탈퇴
             }
             NavigationLink(destination: BusinessView()) {
-                Text("비즈니스 문의") //페이스아이디, 비밀번호 수정, 회원탈퇴
+                Text("비즈니스 문의")
             }
             
             Button {

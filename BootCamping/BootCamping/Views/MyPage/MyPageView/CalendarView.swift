@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-//MARK: 메인 뷰
+//MARK: - 나의 캠핑 일정에 나타나는 캘린더 뷰
 struct CalendarView: View {
     
     @State var currentDate: Date = Date()
@@ -15,7 +15,6 @@ struct CalendarView: View {
     
     var body: some View {
         VStack {
-            //달력섹션
             CustomDatePickerView(currentDate: $currentDate, currentMonth: $currentMonth)
         }
         .padding(.vertical)

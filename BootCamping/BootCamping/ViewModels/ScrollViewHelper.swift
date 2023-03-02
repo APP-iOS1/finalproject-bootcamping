@@ -10,6 +10,7 @@ import UIKit
 import Combine
 import SwiftUI
 
+// MARK: - 스크롤 뷰 움직임 감지를 도와주는 class
 
 class ScrollViewHelper: NSObject, UIScrollViewDelegate, ObservableObject {
     

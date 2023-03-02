@@ -28,7 +28,7 @@ struct DiaryEditView: View {
     //키보드 dismiss 변수
     @FocusState private var inputFocused: Bool
     
-    @State var campingSpotItem: Item
+    @State var campingSpotItem: CampingSpot
     @State var campingSpot: String
     
     //텍스트필드 포커싱

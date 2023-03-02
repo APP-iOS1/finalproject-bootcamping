@@ -32,6 +32,7 @@ struct DiaryCellView: View {
     @State private var isShowingConfirmationDialog = false
     @State private var isShowingUserReportAlert = false
     
+    // 현재 게시물의 신고 상태를 나타낼 변수
     @State private var reportState = ReportState.notReported
     
     @Binding var isShowingAcceptedToast: Bool
@@ -40,7 +41,7 @@ struct DiaryCellView: View {
     @EnvironmentObject var faceId: FaceId
     @AppStorage("faceId") var usingFaceId: Bool = false
     
-    var diaryCampingSpot: [Item] {
+    var diaryCampingSpot: [CampingSpot] {
         get {
             return campingSpotStore.campingSpotList.filter{
                 $0.contentId == item.diary.diaryAddress
@@ -101,7 +102,6 @@ struct DiaryCellView: View {
                         Divider().padding(.top, 5)
                         
                         diaryDetailInfo
-//                        Divider().padding(.bottom, 3)
                         
                     }
                     .padding(.horizontal, UIScreen.screenWidth * 0.03)
@@ -111,12 +111,13 @@ struct DiaryCellView: View {
         }
         .sheet(isPresented: $isShowingUserReportAlert) {
             if reportState == .alreadyReported {
+                // 현재 다이어리의 reportState가 .alreadyReported인 경우 WaitingView(신고가 이미 접수되었음을 알려주는 뷰)를 나타낸다
                 WaitingView()
                     .presentationDetents([.fraction(0.3), .medium])
             } else {
+                // 현재 다이어리의 reportState가 .alreadyReported가 아닌 경우 ReportView를 띄워 신고가 가능하게 한다
                 ReportView(reportState: $reportState, reportedDiaryId: item.diary.id)
-                // 예를 들어 다음은 화면의 아래쪽 50%를 차지하는 시트를 만듭니다.
-                    .presentationDetents([.fraction(0.5), .medium, .large])
+                    .presentationDetents([.fraction(0.5), .medium, .large]) // 화면의 아래쪽 50%를 차지하는 시트를 만든다
                     .presentationDragIndicator(.hidden)
             }
         }
@@ -126,8 +127,10 @@ struct DiaryCellView: View {
             campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
             //TODO: -함수 업데이트되면 넣기
             diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
+            // 현재 다이어리가 신고된 다이어리인 경우 reportState를 .alreadyReported로, 그렇지 않은 경우 .notReported로 설정한다
             reportState = (reportStore.reportedDiaries.filter{ reportedDiary in reportedDiary.reportedDiaryId == item.diary.id }.count != 0) ? ReportState.alreadyReported : ReportState.notReported
         }
+        // 다이어리의 상태가 nowReported(지금 신고된 경우)로 변경될 때 신고가 접수되었따는 토스트 알림을 뛰운다.
         .onChange(of: reportState) { newReportState in
             isShowingAcceptedToast = (reportState == ReportState.nowReported)
         }
@@ -164,7 +167,6 @@ private extension DiaryCellView {
                 //탭틱
                 UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
             }
-            //TODO: -함수 업데이트되면 넣기
             diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
         }
 //        .pinchZoomAndDrag()
@@ -346,9 +348,6 @@ private extension DiaryCellView {
                 .frame(width: 20, alignment: .leading)
             
             //댓글 버튼
-            //            Button {
-            //"댓글 작성 버튼으로 이동하려고 했는데 그냥 텍스트로~
-            //            } label: {
             Image(systemName: "message")
                 .font(.callout)
                 .foregroundColor(.secondary)

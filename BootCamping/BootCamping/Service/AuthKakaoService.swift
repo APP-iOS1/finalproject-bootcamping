@@ -14,6 +14,7 @@ import FirebaseCore
 import FirebaseFirestore
 import FirebaseAuth
 
+// MARK: - 카카오 로그인 서비스
 
 struct AuthKakaoService {
     

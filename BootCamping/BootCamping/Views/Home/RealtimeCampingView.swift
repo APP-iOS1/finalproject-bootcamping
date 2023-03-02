@@ -24,6 +24,7 @@ struct RealtimeCampingView: View {
         VStack {
             ScrollView(showsIndicators: false) {
                 LazyVStack {
+                    // 차단한 유저의 글을 제외하고 보여준다
                     ForEach(diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }, id: \.self) { userInfoDiary in
                         DiaryCellView(item: userInfoDiary, isShowingAcceptedToast: $isShowingAcceptedToast, isShowingBlockedToast: $isShowingBlockedToast)
                             .task {
@@ -55,7 +56,6 @@ struct RealtimeCampingView: View {
                 Button("확인", role: .cancel) {
                     diaryStore.isError = false
                 }
-                
             }
             .toast(isPresenting: $diaryStore.isProcessing) {
                 AlertToast(displayMode: .alert, type: .loading)

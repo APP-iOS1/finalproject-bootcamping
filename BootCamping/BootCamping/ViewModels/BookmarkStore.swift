@@ -58,6 +58,7 @@ class BookmarkStore: ObservableObject {
 }
 
 extension BookmarkStore{
+    // FIXME: - currentUserInfo가 생기기 전에 만들어놓은 함수라 이거 없애고 캠핑스팟리스트디테일뷰에서 같은 기능하는 함수 새로 만들어주면 될 듯
     // MARK: - 북마크 된 캠핑장인지 확인하기
     func checkBookmarkedSpot(currentUser: Firebase.User?, userList: [User], campingSpotId: String) -> Bool {
         if let currentUser = currentUser {

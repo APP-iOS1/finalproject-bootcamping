@@ -35,7 +35,7 @@ struct CampingSpotDetailView: View {
     @State private var isBookmarked: Bool = false
     @State private var isSafari: Bool = false
     
-    var campingSpot: Item
+    var campingSpot: CampingSpot
     
     var body: some View {
         
@@ -452,7 +452,7 @@ struct CampingSpotDiaryRow: View {
 
 // 편의시설 및 서비스 아이콘 구조체
 struct ServiceIcon: View {
-    var campingSpot: Item
+    var campingSpot: CampingSpot
     
     let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())] // 5개 한줄에 띄우려면 5개 넣으면 됨...!
     

@@ -32,6 +32,8 @@ extension Color {
     
 }
 
+// MARK: - 스케줄 모델에 색상 선택시 사용하는 컬러 익스텐션입니다.
+/// Color[colorName]의 형태로 사용하기 위한 extension
 extension Color {
     static subscript(name: String) -> Color {
         switch name {
@@ -62,6 +64,7 @@ extension View {
     }
 }
 
+//MARK: 이미지 크기를 줄이기 위한 extension
 extension UIImage {
     
     func resize(newWidth: CGFloat) -> UIImage {
@@ -78,6 +81,7 @@ extension UIImage {
     }
 }
 
+//MARK: 이미지 크기를 줄이기 위한 extension (위의 UIImage로 스케일을 줄여서 사용)
 extension Image {
     func resizeImage(imgName: String) -> Image {
         guard let img = UIImage(named: imgName)?.resize(newWidth: UIScreen.screenWidth) else { fatalError("Fail to load image") }
@@ -90,6 +94,7 @@ extension Image {
     }
 }
 
+//MARK: 일반 텍스트 필드에 x버튼을 추가하는 Modifier
 struct TextFieldClearButton: ViewModifier {
     @Binding var fieldText: String
 
@@ -112,6 +117,7 @@ struct TextFieldClearButton: ViewModifier {
     }
 }
 
+//MARK: 일반 텍스트 필드에 x버튼을 추가하는 extention
 extension View {
     func showClearButton(_ text: Binding<String>) -> some View {
         self.modifier(TextFieldClearButton(fieldText: text))

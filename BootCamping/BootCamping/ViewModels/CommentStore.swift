@@ -13,6 +13,8 @@ import SwiftUI
 import FirebaseStorage
 import Combine
 
+// MARK: - 댓글 정보를 가지고 있는 스토어
+
 class CommentStore: ObservableObject {
     
     @Published var commentList: [Comment] = []

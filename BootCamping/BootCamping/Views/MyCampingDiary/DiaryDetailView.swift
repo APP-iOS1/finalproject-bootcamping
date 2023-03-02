@@ -12,12 +12,6 @@ import SDWebImageSwiftUI
 import Introspect
 import AlertToast
 
-enum ReportState {
-    case alreadyReported
-    case notReported
-    case nowReported
-}
-
 struct DiaryDetailView: View {
     @EnvironmentObject var bookmarkStore: BookmarkStore
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
@@ -32,7 +26,7 @@ struct DiaryDetailView: View {
     
     @StateObject var scrollViewHelper: ScrollViewHelper = ScrollViewHelper()
     
-    var diaryCampingSpot: [Item] {
+    var diaryCampingSpot: [CampingSpot] {
         get {
             return campingSpotStore.campingSpotList.filter{
                 $0.contentId == item.diary.diaryAddress
@@ -49,7 +43,9 @@ struct DiaryDetailView: View {
     @State private var isShowingUserReportAlert = false
     @State private var isShowingUserBlockedAlert = false
     
+    // 현재 게시물의 신고 상태를 나타낼 변수
     @State private var reportState = ReportState.notReported
+    
     @State private var isShowingAcceptedToast = false
     @State private var isShowingBlockedToast = false
     
@@ -162,12 +158,13 @@ struct DiaryDetailView: View {
             }
             .sheet(isPresented: $isShowingUserReportAlert) {
                 if reportState == .alreadyReported {
+                    // 현재 다이어리의 reportState가 .alreadyReported인 경우 WaitingView(신고가 이미 접수되었음을 알려주는 뷰)를 나타낸다
                     WaitingView()
                         .presentationDetents([.fraction(0.3), .medium])
                 } else {
+                    // 현재 다이어리의 reportState가 .alreadyReported가 아닌 경우 ReportView를 띄워 신고가 가능하게 한다
                     ReportView(reportState: $reportState, reportedDiaryId: item.diary.id)
-                    // 예를 들어 다음은 화면의 아래쪽 50%를 차지하는 시트를 만듭니다.
-                        .presentationDetents([.fraction(0.5), .medium, .large])
+                        .presentationDetents([.fraction(0.5), .medium, .large]) // 화면의 아래쪽 50%를 차지하는 시트를 만든다
                         .presentationDragIndicator(.hidden)
                 }
             }
@@ -178,8 +175,10 @@ struct DiaryDetailView: View {
                 commentStore.readCommentsCombine(diaryId: item.diary.id)
                 campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
+                // 현재 다이어리가 신고된 다이어리인 경우 reportState를 .alreadyReported로, 그렇지 않은 경우 .notReported로 설정한다
                 reportState = (reportStore.reportedDiaries.filter{ reportedDiary in reportedDiary.reportedDiaryId == item.diary.id }.count != 0) ? ReportState.alreadyReported : ReportState.notReported
             }
+            // 다이어리의 상태가 nowReported(지금 신고된 경우)로 변경될 때 신고가 접수되었따는 토스트 알림을 뛰운다.
             .onChange(of: reportState) { newReportState in
                 isShowingAcceptedToast = (reportState == ReportState.nowReported)
             }
@@ -228,13 +227,9 @@ private extension DiaryDetailView {
             //MARK: -...버튼 글 쓴 유저일때만 ...나타나도록
             if item.diary.uid == Auth.auth().currentUser?.uid {
                 alertMenu
-//                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
-              //      .padding(.top, 5)
             }
             else {
                 reportAlertMenu
-//                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
-              //      .padding(.top, 5)
             }
             
         }
@@ -251,9 +246,6 @@ private extension DiaryDetailView {
     var alertMenu: some View {
         //MARK: - ... 버튼입니다.
         Menu {
-            
-            
-            
             NavigationLink {
                 DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", item: item, selectedDate: item.diary.diaryVisitedDate)
             } label: {
@@ -433,10 +425,6 @@ private extension DiaryDetailView {
                 .padding(.leading, -2)
                 .frame(width: 20, alignment: .leading)
             
-            //댓글 버튼
-            //            Button {
-            //"댓글 작성 버튼으로 이동하려고 했는데 그냥 텍스트로~
-            //            } label: {
             Image(systemName: "message")
                 .font(.callout)
                 .foregroundColor(.secondary)

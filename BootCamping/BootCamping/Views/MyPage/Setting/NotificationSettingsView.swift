@@ -34,7 +34,7 @@ struct NotificationSettingsView: View {
             }
         }
         //MARK: - PUSH 알림 설정을 위한 alert
-        /// PUSH 알림 설정은 처음 설정 이후 코드로 변경이 불가능해서 사용자가 직접 변경이 가능하도록 얼럿으로 고지한다.
+        /// PUSH 알림 설정을 거부하게 되면(.denied) 이후 코드로 변경이 불가능해서 사용자가 직접 변경이 가능하도록 얼럿으로 고지하고 설정을 열어서 사용자가 수정할 수 있도록 한다.
         .alert("PUSH 알림 설정을 '설정 > 알림 > 부트캠핑 > 알림허용'에서 변경해주세요", isPresented: $isShowingAlertForPN) {
             Button("닫기", role: .cancel) {
                 isShowingAlertForPN = false
@@ -44,12 +44,15 @@ struct NotificationSettingsView: View {
             }
         }
         .task {
+            // 뷰 진입 시, 현재 푸시알림 설정 상태가 .authorized인 경우 토글 값이 참으로 되도록 한다.
             isSettingSchedulePN = (localNotificationCenter.authorizationStatus == .authorized)
         }
     }
 }
 
 extension NotificationSettingsView {
+    // MARK: - Button: schedulePushNotification
+    /// 캠핑 일정에 대한 푸시 알림 설정
     private var schedulePushNotification: some View{
         HStack{
             Toggle(isOn: $isSettingSchedulePN) {
@@ -68,6 +71,11 @@ extension NotificationSettingsView {
             }
         }
     }
+    
+    // MARK: - Button: appPushNotification
+    /// **현재는 사용되지 않는 버튼**
+    /// 앱 전체에 대한 푸시 알림 설정 버튼
+    /// 공지사항, 이벤트, 추천 소식이 아직 준비되지 않아서 현재는 사용되지 않습니다
     private var appPushNotification: some View{
         HStack{
             Toggle(isOn: $isSettingAppPN){

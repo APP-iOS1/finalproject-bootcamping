@@ -8,12 +8,21 @@
 import SwiftUI
 import AlertToast
 
+enum ReportState {
+    case alreadyReported
+    case notReported
+    case nowReported
+}
+
+// MARK: - View: ReportView
+/// 게시물 신고하기에서 신고 사유를 선택할 수 있는 뷰
 struct ReportView: View {
     @EnvironmentObject var reportStore: ReportStore
     
     @Environment(\.dismiss) private var dismiss
     
     @State private var selectedOption: String? = nil
+    // 현재 게시물의 신고 상태
     @Binding var reportState: ReportState
     
     let reportedDiaryId: String

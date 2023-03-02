@@ -19,7 +19,7 @@ struct DiaryCommentCellView: View {
     //선택한 다이어리 정보 변수입니다.
     var item2: UserInfoDiary
     
-    var diaryCampingSpot: [Item] {
+    var diaryCampingSpot: [CampingSpot] {
         get {
             return campingSpotStore.campingSpotList.filter{
                 $0.contentId == item2.diary.diaryAddress
@@ -126,7 +126,7 @@ struct DiaryCommentCellView: View {
         
         
     }
-    
+    // 스크롤뷰에서 드래그 재스쳐를 이용해 댓글 삭제 기능을 구현하기 위한 함수
     func onChanged(value: DragGesture.Value) {
         withAnimation(.easeOut) {
             for i in scrollViewHelper.commentOffset {
@@ -144,7 +144,7 @@ struct DiaryCommentCellView: View {
             }
         }
     }
-    
+    // 스크롤뷰에서 드래그 재스쳐를 이용해 댓글 삭제 기능을 구현하기 위한 함수
     func onEnd(value: DragGesture.Value) {
         
         withAnimation(.easeOut) {

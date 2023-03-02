@@ -13,6 +13,8 @@ import SwiftUI
 import FirebaseStorage
 import Combine
 
+// MARK: - 다이어리 정보를 가지고 있는 스토어
+
 class DiaryStore: ObservableObject {
     //저장된 다이어리 리스트
     @Published var diaryList: [Diary] = []

@@ -15,8 +15,6 @@ struct FirebaseReportService {
     //MARK: - Read FirebaseReportService
     func readReportService() -> AnyPublisher<[ReportedDiary], Error> {
         Future<[ReportedDiary], Error> { promise in
-            guard let userUID = Auth.auth().currentUser?.uid else { return }
-            
             database.collection("ReportedDiaries")
                 .getDocuments { (snapshot, error) in
                     if let error = error {

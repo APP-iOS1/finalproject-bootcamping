@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - View: AnnouncementView
+/// 공지사항 뷰
 struct AnnouncementView: View {
     let announcementList: [QnA] = [QnA(question: "부트캠핑 1.0 출시 소식",
                                        answer: """

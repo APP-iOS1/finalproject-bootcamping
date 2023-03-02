@@ -41,13 +41,6 @@ struct DiaryAddDetailImageView: View {
                                     .padding(3)
                             .opacity(index == 0 ? 1 : 0)
                         }
-//                    Text("\(index+1)/\(diaryImages.count)")
-//                        .padding(5)
-//                        .background(
-//                            RoundedRectangle(cornerRadius: 10)
-//                                .fill(Color.bcDarkGray)
-//                                .opacity(0.3)
-//                        )
                 }
 
             }

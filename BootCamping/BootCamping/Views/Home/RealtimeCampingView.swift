@@ -55,7 +55,6 @@ struct RealtimeCampingView: View {
                 Button("확인", role: .cancel) {
                     diaryStore.isError = false
                 }
-                
             }
             .toast(isPresenting: $diaryStore.isProcessing) {
                 AlertToast(displayMode: .alert, type: .loading)

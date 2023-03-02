@@ -259,31 +259,6 @@ private extension DiaryAddView {
                                         .padding(2.5)
                                 }
                         }
-
-                        
-//                        ForEach(Array(zip(0..<(diaryImages.count), diaryImages)), id: \.0) { index, image in
-//                            Image(uiImage: UIImage(data: image)!)
-//                                .resizeImageData(data: image)
-//                                .resizable()
-//                                .scaledToFill()
-//                                .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
-//                                .clipped()
-//                                .overlay(alignment: .topLeading) {
-//                                    VStack {
-//                                        Text("대표 이미지")
-//                                            .font(.caption2)
-//                                            .foregroundColor(.white)
-//                                            .background(
-//                                                RoundedRectangle(cornerRadius: 5)
-//                                                    .fill(Color.bcGreen)
-//                                                    .padding(-0.5)
-//                                                
-//                                            )
-//                                            .padding(2.5)
-//                                    }
-//                                    .opacity(index == 0 ? 1 : 0)
-//                                }
-//                        }
                     }
                 }
                 .padding(.vertical ,UIScreen.screenWidth * 0.005)

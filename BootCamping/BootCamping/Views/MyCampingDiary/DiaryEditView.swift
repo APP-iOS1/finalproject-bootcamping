@@ -9,12 +9,7 @@ import SwiftUI
 import Firebase
 
 struct DiaryEditView: View {
-    @State var field1 = ""
-    @State var field2 = ""
     @FocusState var activeState: CurrentField?
-    
-    // 탭 했을 때 작성하기 버튼 숨기기 위해서
-    @State var isTapTextField = false
     
     @State private var locationInfo: String = ""
     @State var diaryTitle: String
@@ -75,12 +70,7 @@ struct DiaryEditView: View {
                             Divider()
                         }
                         .font(.subheadline)
-                        .onTapGesture {
-                            isTapTextField = false
-                            dismissKeyboard()
-                        }
                         
-                        //                            addViewTitle
                         TextField("제목을 입력해주세요(최대 20자)", text: $diaryTitle)
                             .font(.title3)
                             .padding(.vertical, 5)
@@ -95,7 +85,6 @@ struct DiaryEditView: View {
                                 activeState = .field2
                             }
                             .onTapGesture {
-                                isTapTextField = true
                                 withAnimation {
                                     proxy.scrollTo(title, anchor: .top)
                                 }
@@ -112,10 +101,6 @@ struct DiaryEditView: View {
                             .onChange(of: diaryContent.count, perform: { _ in
                                 proxy.scrollTo(under, anchor: .bottom)
                             })
-                            .onTapGesture {
-                                isTapTextField = true
-                            }
-                        
 
                         Text("").id(under)
 
@@ -152,8 +137,8 @@ struct DiaryEditView: View {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
                     Button {
-                        submit()
-                        isTapTextField = false
+                        submit()                // 키보드 내림
+                        inputFocused = false    // 작성완료 버튼 나옴
                         proxy.scrollTo(top, anchor: .top)
                     } label: {
                         Image(systemName: "keyboard.chevron.compact.down")
@@ -252,42 +237,7 @@ extension DiaryEditView {
         
     }
     
-//    // MARK: 제목
-//    var addViewTitle: some View {
-//        Section {
-//            TextField("제목을 입력해주세요(최대 20자)", text: $diaryTitle)
-//                .font(.title3)
-//                .padding(.vertical)
-//                .submitLabel(.next)
-//                .onChange(of: diaryTitle) { newValue in             // 제목 20글자까지 가능
-//                    if newValue.count > 20 {
-//                        diaryTitle = String(newValue.prefix(20))
-//                    }
-//                }
-//        }
-//        .focused($inputFocused)
-//        .onSubmit{
-//            activeState = .field2
-//        }
-//        .onTapGesture {
-//            isTapTextField = true
-//        }
-//    }
-    
-//    //MARK: - 일기 작성 뷰
-//    var addViewDiaryContent: some View {
-//        VStack {
-//
-//            TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
-//                .focused($inputFocused)
-//                .onTapGesture {
-//                    isTapTextField = true
-//                }
-//                .focused($activeState, equals: .field2)
-//        }
-//    }
 
-    
     //MARK: - 추가버튼
     var addViewAddButton: some View {
         HStack {

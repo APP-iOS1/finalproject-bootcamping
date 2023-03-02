@@ -7,34 +7,8 @@
 
 import Foundation
 
-// MARK: - Places
-struct Places: Codable, Hashable {
-    let response: Response
-}
-
-// MARK: - Response
-struct Response: Codable, Hashable {
-    let header: Header
-    let body: Body
-}
-
-// MARK: - Body
-struct Body: Codable, Hashable {
-    let items: Items
-    let numOfRows, pageNo, totalCount: Int
-}
-
-// MARK: - Items
-struct Items: Codable, Hashable {
-    let item: [Item]
-}
-
-// MARK: - Header
-struct Header: Codable, Hashable {
-    let resultCode, resultMsg: String
-}
-
-struct Item: Codable, Hashable {
+//MARK: - 캠핑장 리스트 구조체
+struct CampingSpot: Codable, Hashable {
     let contentId: String
     let facltNm: String
     let lineIntro: String
@@ -118,12 +92,12 @@ struct Item: Codable, Hashable {
     let modifiedtime: String
 }
 
-//// 카테고리 별 데이터를 리턴해주는 ObservableObject 추가
+// 카테고리 별 데이터를 리턴해주는 ObservableObject 추가 (현재 안씀)
 class PlaceStore: ObservableObject {
-    @Published var places: [Item] = []
+    @Published var places: [CampingSpot] = []
     @Published var selectedCategory: String = "all"
     
-    func returnPlaces() -> [Item] {
+    func returnPlaces() -> [CampingSpot] {
         switch selectedCategory {
         case "all" :
             return places

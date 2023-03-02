@@ -40,7 +40,7 @@ struct DiaryCellView: View {
     @EnvironmentObject var faceId: FaceId
     @AppStorage("faceId") var usingFaceId: Bool = false
     
-    var diaryCampingSpot: [Item] {
+    var diaryCampingSpot: [CampingSpot] {
         get {
             return campingSpotStore.campingSpotList.filter{
                 $0.contentId == item.diary.diaryAddress

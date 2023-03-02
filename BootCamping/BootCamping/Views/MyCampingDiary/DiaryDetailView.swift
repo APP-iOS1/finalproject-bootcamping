@@ -32,7 +32,7 @@ struct DiaryDetailView: View {
     
     @StateObject var scrollViewHelper: ScrollViewHelper = ScrollViewHelper()
     
-    var diaryCampingSpot: [Item] {
+    var diaryCampingSpot: [CampingSpot] {
         get {
             return campingSpotStore.campingSpotList.filter{
                 $0.contentId == item.diary.diaryAddress

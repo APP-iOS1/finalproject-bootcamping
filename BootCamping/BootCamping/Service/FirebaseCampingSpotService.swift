@@ -12,27 +12,21 @@ import Foundation
 
 enum FirebaseCampingSpotServiceError: Error {
     case badSnapshot
-    case createCampingSpotError
     case updateCampingSpotError
-    case deleteCampingSpotError
     
     var errorDescription: String? {
         switch self {
         case .badSnapshot:
-            return "게시물 가져오기 실패"
-        case .createCampingSpotError:
-            return "게시물 작성 실패"
+            return "캠핑장리스트 가져오기 실패"
         case .updateCampingSpotError:
-            return "게시물 업데이트 실패"
-        case .deleteCampingSpotError:
-            return "게시물 삭제 실패"
+            return "캠핑장리스트 업데이트 실패"
         }
     }
 }
 
-
+//MARK: - 캠핑장 리스트 페이지네이션에 필요한 구조체
 struct ReadDocuments {
-    var campingSpots: [Item]?
+    var campingSpots: [CampingSpot]?
     //addr1
     var campingSpotLocation: [String] = []
     //lctCl
@@ -47,6 +41,7 @@ struct ReadDocuments {
     var lastDoc: QueryDocumentSnapshot?
 }
 
+//MARK: - 캠핑장 리스트 불러오기 위한 컴바인 서비스
 struct FirebaseCampingSpotService {
     
     let database = Firestore.firestore()
@@ -72,10 +67,10 @@ struct FirebaseCampingSpotService {
                             }
                             
                             var readDocument: ReadDocuments = ReadDocuments()
-                            var campingSpots: [Item] = []
+                            var campingSpots: [CampingSpot] = []
                             
                             campingSpots = snapshot.documents.map { docData in
-                                return Item(
+                                return CampingSpot(
                                     contentId: docData["contentId"] as? String ?? "",
                                     facltNm: docData["facltNm"] as? String ?? "",
                                     lineIntro: docData["lineIntro"] as? String ?? "",
@@ -185,10 +180,10 @@ struct FirebaseCampingSpotService {
                             }
                             
                             var readDocument: ReadDocuments = ReadDocuments()
-                            var campingSpots: [Item] = []
+                            var campingSpots: [CampingSpot] = []
                             
                             campingSpots = snapshot.documents.map { docData in
-                                return Item(
+                                return CampingSpot(
                                     contentId: docData["contentId"] as? String ?? "",
                                     facltNm: docData["facltNm"] as? String ?? "",
                                     lineIntro: docData["lineIntro"] as? String ?? "",
@@ -298,10 +293,10 @@ struct FirebaseCampingSpotService {
                             }
                             
                             var readDocument: ReadDocuments = ReadDocuments()
-                            var campingSpots: [Item] = []
+                            var campingSpots: [CampingSpot] = []
                             
                             campingSpots = snapshot.documents.map { docData in
-                                return Item(
+                                return CampingSpot(
                                     contentId: docData["contentId"] as? String ?? "",
                                     facltNm: docData["facltNm"] as? String ?? "",
                                     lineIntro: docData["lineIntro"] as? String ?? "",
@@ -410,10 +405,10 @@ struct FirebaseCampingSpotService {
                             }
                             
                             var readDocument: ReadDocuments = ReadDocuments()
-                            var campingSpots: [Item] = []
+                            var campingSpots: [CampingSpot] = []
                             
                             campingSpots = snapshot.documents.map { docData in
-                                return Item(
+                                return CampingSpot(
                                     contentId: docData["contentId"] as? String ?? "",
                                     facltNm: docData["facltNm"] as? String ?? "",
                                     lineIntro: docData["lineIntro"] as? String ?? "",
@@ -523,10 +518,10 @@ struct FirebaseCampingSpotService {
                             }
                             
                             var readDocument: ReadDocuments = ReadDocuments()
-                            var campingSpots: [Item] = []
+                            var campingSpots: [CampingSpot] = []
                             
                             campingSpots = snapshot.documents.map { docData in
-                                return Item(
+                                return CampingSpot(
                                     contentId: docData["contentId"] as? String ?? "",
                                     facltNm: docData["facltNm"] as? String ?? "",
                                     lineIntro: docData["lineIntro"] as? String ?? "",
@@ -640,10 +635,10 @@ struct FirebaseCampingSpotService {
                             }
                             
                             var readDocument: ReadDocuments = ReadDocuments()
-                            var campingSpots: [Item] = []
+                            var campingSpots: [CampingSpot] = []
                             
                             campingSpots = snapshot.documents.map { docData in
-                                return Item(
+                                return CampingSpot(
                                     contentId: docData["contentId"] as? String ?? "",
                                     facltNm: docData["facltNm"] as? String ?? "",
                                     lineIntro: docData["lineIntro"] as? String ?? "",
@@ -754,10 +749,10 @@ struct FirebaseCampingSpotService {
                             }
                             
                             var readDocument: ReadDocuments = ReadDocuments()
-                            var campingSpots: [Item] = []
+                            var campingSpots: [CampingSpot] = []
                             
                             campingSpots = snapshot.documents.map { docData in
-                                return Item(
+                                return CampingSpot(
                                     contentId: docData["contentId"] as? String ?? "",
                                     facltNm: docData["facltNm"] as? String ?? "",
                                     lineIntro: docData["lineIntro"] as? String ?? "",
@@ -870,10 +865,10 @@ struct FirebaseCampingSpotService {
                             }
                             
                             var readDocument: ReadDocuments = ReadDocuments()
-                            var campingSpots: [Item] = []
+                            var campingSpots: [CampingSpot] = []
                             
                             campingSpots = snapshot.documents.map { docData in
-                                return Item(
+                                return CampingSpot(
                                     contentId: docData["contentId"] as? String ?? "",
                                     facltNm: docData["facltNm"] as? String ?? "",
                                     lineIntro: docData["lineIntro"] as? String ?? "",
@@ -983,10 +978,10 @@ struct FirebaseCampingSpotService {
                             }
                             
                             var readDocument: ReadDocuments = ReadDocuments()
-                            var campingSpots: [Item] = []
+                            var campingSpots: [CampingSpot] = []
                             
                             campingSpots = snapshot.documents.map { docData in
-                                return Item(
+                                return CampingSpot(
                                     contentId: docData["contentId"] as? String ?? "",
                                     facltNm: docData["facltNm"] as? String ?? "",
                                     lineIntro: docData["lineIntro"] as? String ?? "",
@@ -1097,10 +1092,10 @@ struct FirebaseCampingSpotService {
                             }
                             
                             var readDocument: ReadDocuments = ReadDocuments()
-                            var campingSpots: [Item] = []
+                            var campingSpots: [CampingSpot] = []
                             
                             campingSpots = snapshot.documents.map { docData in
-                                return Item(
+                                return CampingSpot(
                                     contentId: docData["contentId"] as? String ?? "",
                                     facltNm: docData["facltNm"] as? String ?? "",
                                     lineIntro: docData["lineIntro"] as? String ?? "",

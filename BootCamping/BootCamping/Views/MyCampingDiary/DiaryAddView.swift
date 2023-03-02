@@ -40,7 +40,7 @@ struct DiaryAddView: View {
     //키보드 dismiss 변수
     @FocusState private var inputFocused: Bool
     
-    @State private var campingSpotItem: Item = CampingSpotStore().campingSpot
+    @State private var campingSpotItem: CampingSpot = CampingSpotStore().campingSpot
     @State private var campingSpot: String = ""
     
     //MARK: - DatePicker 변수

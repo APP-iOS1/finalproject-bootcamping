@@ -20,10 +20,10 @@
 <br>
 
 ## 📱구동 화면
-|<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222374943-9ec9e2d9-d1ef-4cbf-9d5f-6c3024c961a7.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222375225-5f308651-00d8-434e-abd2-248f05dd1fbd.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|
+|<img src="https://user-images.githubusercontent.com/114223237/222382498-420efc96-fb3b-4eeb-ade8-39ccc306bb40.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222381783-de2153bc-5b53-49b7-af76-5c2af1d321b0.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222381623-6ee28409-21ee-4427-9c60-e1ce0e7f68dc.gif"></img>|<img src="-"></img>|
 |:-:|:-:|:-:|:-:|
 |`스플래시뷰`|`온보딩뷰`|`로그인 및 회원가입`|`친구추가???`|
-|<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|<img src="-"></img>|<img src="-f"></img>|<img src="-"></img>|
+|<img src="-"></img>|<img src="https://user-images.githubusercontent.com/114223237/222382137-6c9223de-2505-4486-a209-dfa6217d2fe6.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222382016-757b9274-8556-4f96-88ca-d797fe76bfed.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222381916-de59591f-1f5e-4666-b5cd-2736d8c945f5.gif"></img>|
 |`인기 캠핑 포토카드`|`실시간 캠핑 피드`|`캠핑장 검색`|`캠핑장 정보`|
 |<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222380498-9a937eaf-e2d7-4238-a58e-47faaa6832fa.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222377310-dccaf43f-e404-4a0c-8b3e-2c5cbab1c7c0.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222379262-bc0d69ce-7162-4d27-aa4f-9835c76c41c9.gif"></img>|
 |`내 캠핑일기`|`캠핑일기 작성`|`마이페이지`|`북마크`|

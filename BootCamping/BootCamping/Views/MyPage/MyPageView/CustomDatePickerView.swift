@@ -15,7 +15,6 @@ struct CustomDatePickerView: View {
     @Binding var currentMonth: Int
     
     let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
-    //lazy grid columns
     let columns = Array(repeating: GridItem(.flexible()), count: 7)
     
     var body: some View {
@@ -40,7 +39,7 @@ struct CustomDatePickerView: View {
         }
     }
     
-    // MARK: - 날짜 비교
+    // MARK: - 두 날짜를 매개변수로 받아와서 같은지 비교
     func isSameDay(date1: Date, date2: Date) -> Bool {
         let calendar = Calendar.current
         
@@ -58,6 +57,7 @@ struct CustomDatePickerView: View {
         
         return date.components(separatedBy: " ")
     }
+    
     // MARK: - 현재 날짜의 달, 일(day), 요일만 String으로 변환. 반환형식 예시: 01
     ///달력이 나타내는 달, 일(day)을 알려주기 위한 함수. 현재 날짜(currentDate)변수의 데이터를 Date -> String 타입 변환,
     ///"MM DD"형식으로 반환. (예시: 01)
@@ -153,6 +153,7 @@ extension CustomDatePickerView{
     }
     
     // MARK: - 날짜 그리드 뷰
+    /// 선택된 날짜에 대해서 배경 색을 지정하여 선택되었음을 시각적으로 나타낸다
     private var calendarView: some View{
         LazyVGrid(columns: columns, spacing: 5) {
             ForEach(extractDate()) { value in
@@ -169,13 +170,14 @@ extension CustomDatePickerView{
             }
         }
     }
-    // MARK: - 일정 뷰
+    // MARK: - View : 일정 뷰
+    /// 각 날짜에 해당되는 캠핑 일정이 존재하는 경우와 일정이 존재하지 않는 경우를 나눠서 나타낸다
     private var taskView: some View{
         VStack(alignment: .leading) {
-            //MARK: 일정 디테일
             if scheduleStore.scheduleList.first(where: { schedule in
                 return isSameDay(date1: schedule.date, date2: currentDate)
             }) != nil{
+                // 각 날짜에 해당되는 캠핑 일정이 존재하는 경우
                 ScrollView(showsIndicators: false) {
                     ForEach(scheduleStore.scheduleList.filter{ schedule in
                         return isSameDay(date1: schedule.date, date2: currentDate)
@@ -191,7 +193,8 @@ extension CustomDatePickerView{
     }
     
     // MARK: - 달력 디테일 뷰 생성
-    ///달력 디테일 뷰(day 데이터) 구성하는 함수
+    /// 달력 디테일 뷰(day 데이터) 구성하는 함수
+    /// 각 날짜에 해당되는 캠핑 일정이 존재하는 경우와 일정이 존재하지 않는 경우를 나눠서 나타낸다
     @ViewBuilder
     func CardView(value: DateValue) -> some View {
         VStack {
@@ -199,6 +202,7 @@ extension CustomDatePickerView{
                 if scheduleStore.scheduleList.first(where: { schedule in
                     return isSameDay(date1: schedule.date, date2: value.date)
                 }) != nil {
+                    // 각 날짜에 해당되는 캠핑 일정이 존재하는 경우
                     Text("\(value.day)")
                         .font(.body.bold())
                     Spacer()

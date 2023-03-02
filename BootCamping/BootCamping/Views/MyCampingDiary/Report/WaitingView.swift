@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - WaitingView
+/// 중복신고가 불가능하도록 이미 신고된 게시물에 대해서 표시하는 뷰
 struct WaitingView: View {
     @Environment(\.dismiss) private var dismiss
     

@@ -32,6 +32,8 @@ extension Color {
     
 }
 
+// MARK: - 스케줄 모델에 색상 선택시 사용하는 컬러 익스텐션입니다.
+/// Color[colorName]의 형태로 사용하기 위한 extension
 extension Color {
     static subscript(name: String) -> Color {
         switch name {

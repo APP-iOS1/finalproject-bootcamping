@@ -36,10 +36,10 @@ struct TaskCellView: View{
                 Image(systemName: "trash")
                     .foregroundColor(Color[color])
             }
-            /// ios15부터 .alert 형태로 사용
             .alert("이 일정을 정말 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert, actions: {
                 Button("취소", role: .cancel) {}
                 Button("삭제", role: .destructive) {
+                    // 일정 삭제시, 파이어베이스 내에서 삭제하고, 연결된 푸시알림도 삭제한다.
                     scheduleStore.deleteScheduleCombine(schedule: schedule)
                     localNotificationCenter.removeNotifications(selectedDate: schedule.date.formatted()) }
             }
@@ -52,9 +52,8 @@ struct TaskCellView: View{
     }
 }
 
-//MARK: 일정 구분선
-///달력 뷰에서 일정별로 구분해주는 선을 그려주는 구조체입니다. Color를 인자로 받습니다.
-///해당 색은 구분선의 색으로 사용됩니다.
+// MARK: - 일정 구분선
+/// 달력 뷰에서 일정별로 구분해주는 선을 그려주는 구조체로 구분선의 색으로 사용되는 Color를 인자로 받는다
 struct ExDivider: View {
     let color: Color
     let width: CGFloat = 5

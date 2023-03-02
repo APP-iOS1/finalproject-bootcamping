@@ -36,7 +36,7 @@
 ![Google](https://img.shields.io/badge/google-4285F4?style=for-the-badge&logo=google&logoColor=white)
 ![KakaoTalk](https://img.shields.io/badge/kakaotalk-ffcd00.svg?style=for-the-badge&logo=kakaotalk&logoColor=000000)
 
-![Combine](https://img.shields.io/badge/swift-F54A2A?style=for-the-badge&logo=Combine&logoColor=white)
+![Combine](https://img.shields.io/badge/Combine-F54A2A?style=for-the-badge&logo=swift&logoColor=white)
 ![Lottie](https://img.shields.io/badge/Lottie-007ACC?style=for-the-badge&logo=Lottie&logoColor=white)
 <br>
 <br>

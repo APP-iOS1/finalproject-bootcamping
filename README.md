@@ -20,9 +20,9 @@
 <br>
 
 ## 📱구동 화면
-|<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|
+|<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222374943-9ec9e2d9-d1ef-4cbf-9d5f-6c3024c961a7.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222375225-5f308651-00d8-434e-abd2-248f05dd1fbd.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|
 |:-:|:-:|:-:|:-:|
-|`스플래시뷰`|`온보딩뷰`|`로그인 및 회원가입`|`친구추가`|
+|`스플래시뷰`|`온보딩뷰`|`로그인 및 회원가입`|`친구추가???`|
 |<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|<img src="-"></img>|<img src="-f"></img>|<img src="-"></img>|
 |`인기 캠핑 포토카드`|`실시간 캠핑 피드`|`캠핑장 검색`|`캠핑장 정보`|
 |<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|<img src="-"></img>|<img src="-"></img>|<img src="-"></img>|

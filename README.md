@@ -25,7 +25,7 @@
 |`스플래시뷰`|`온보딩뷰`|`로그인 및 회원가입`|`친구추가???`|
 |<img src="-"></img>|<img src="https://user-images.githubusercontent.com/114223237/222382137-6c9223de-2505-4486-a209-dfa6217d2fe6.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222382016-757b9274-8556-4f96-88ca-d797fe76bfed.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222381916-de59591f-1f5e-4666-b5cd-2736d8c945f5.gif"></img>|
 |`인기 캠핑 포토카드`|`실시간 캠핑 피드`|`캠핑장 검색`|`캠핑장 정보`|
-|<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222380498-9a937eaf-e2d7-4238-a58e-47faaa6832fa.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222377310-dccaf43f-e404-4a0c-8b3e-2c5cbab1c7c0.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222379262-bc0d69ce-7162-4d27-aa4f-9835c76c41c9.gif"></img>|
+|<img src="https://user-images.githubusercontent.com/114223237/222383116-b7fb7fdc-cf86-438e-8119-03da92cea9e8.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222383091-b3863957-1ddf-4579-8306-fd403ab82fb5.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222383712-cf3d4f1a-5247-4d35-b4d3-6cd8e343ed19.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222383656-e70ba78f-bb1e-4a04-988c-34f05be1b7f2.gif"></img>|
 |`내 캠핑일기`|`캠핑일기 작성`|`마이페이지`|`북마크`|
 <br>
 <br>

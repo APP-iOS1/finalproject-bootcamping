@@ -31,10 +31,15 @@
 <br>
 
 ## 🧑🏻‍💻핵심 키워드 (활용한 기술?)
-- SwiftUI <br>
-- 키워드추가 <br>
-- 키워드추가 <br>
-- 키워드추가 <br>
+![iOS](https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white)
+![Swift](https://img.shields.io/badge/SwiftUI-0052CC?style=for-the-badge&logo=swift&logoColor=white)
+![Swift](https://img.shields.io/badge/swift-F54A2A?style=for-the-badge&logo=swift&logoColor=white)
+![Xcode](https://img.shields.io/badge/Xcode-007ACC?style=for-the-badge&logo=Xcode&logoColor=white)
+
+![Firebase](https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white)
+![Google](https://img.shields.io/badge/google-4285F4?style=for-the-badge&logo=google&logoColor=white)
+![KakaoTalk](https://img.shields.io/badge/kakaotalk-ffcd00.svg?style=for-the-badge&logo=kakaotalk&logoColor=000000)
+![Naver](https://img.shields.io/badge/Naver-00C300?style=for-the-badge&logo=naver&logoColor=white)
 <br>
 <br>
 

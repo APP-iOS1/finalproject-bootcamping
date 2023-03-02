@@ -18,7 +18,6 @@ class ScrollViewHelper: NSObject, UIScrollViewDelegate, ObservableObject {
     @Published var commentOffset: [String: CGFloat] = [ : ]
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         withAnimation(.easeOut) {
-            
             self.commentOffset = [ : ]
         }
     }

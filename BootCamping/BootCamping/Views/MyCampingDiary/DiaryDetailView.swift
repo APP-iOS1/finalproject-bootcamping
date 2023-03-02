@@ -227,13 +227,9 @@ private extension DiaryDetailView {
             //MARK: -...버튼 글 쓴 유저일때만 ...나타나도록
             if item.diary.uid == Auth.auth().currentUser?.uid {
                 alertMenu
-//                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
-              //      .padding(.top, 5)
             }
             else {
                 reportAlertMenu
-//                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
-              //      .padding(.top, 5)
             }
             
         }
@@ -250,9 +246,6 @@ private extension DiaryDetailView {
     var alertMenu: some View {
         //MARK: - ... 버튼입니다.
         Menu {
-            
-            
-            
             NavigationLink {
                 DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", item: item, selectedDate: item.diary.diaryVisitedDate)
             } label: {
@@ -432,10 +425,6 @@ private extension DiaryDetailView {
                 .padding(.leading, -2)
                 .frame(width: 20, alignment: .leading)
             
-            //댓글 버튼
-            //            Button {
-            //"댓글 작성 버튼으로 이동하려고 했는데 그냥 텍스트로~
-            //            } label: {
             Image(systemName: "message")
                 .font(.callout)
                 .foregroundColor(.secondary)

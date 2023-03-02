@@ -21,7 +21,6 @@ struct MyCampingDiaryView: View {
     @EnvironmentObject var tabSelection: TabSelector
     
     @AppStorage("faceId") var usingFaceId: Bool? //페이스id 설정 사용하는지
-    //faceId.isLocked // 페이스 아이디가 잠겨있는지.
     
     @State private var isShowingAcceptedToast = false
     @State private var isShowingBlockedToast = false

@@ -10,7 +10,6 @@ import Firebase
 import SDWebImageSwiftUI
 
 struct WeeklyPopulerCampingView: View {
-    //TODO: - 좋아요 많이 받은 글 10개만 뜰 수 있도록
     @EnvironmentObject var diaryStore: DiaryStore
     @EnvironmentObject var commentStore: CommentStore
     @EnvironmentObject var diaryLikeStore: DiaryLikeStore
@@ -22,7 +21,7 @@ struct WeeklyPopulerCampingView: View {
                 HStack {
                     ForEach(diaryStore.popularDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }, id: \.self) { item in
                         NavigationLink {
-                            DiaryDetailView(item: item) //맞나
+                            DiaryDetailView(item: item)
                         } label: {
                             ZStack(alignment: .topLeading) {
                                 PhotoCardFrame(image: item.diary.diaryImageURLs[0])
@@ -42,6 +41,32 @@ struct WeeklyPopulerCampingView: View {
             diaryStore.firstGetRealTimeDiaryCombine()
             diaryStore.mostLikedGetDiarysCombine()
         }
+    }
+}
+
+//MARK: - 포토카드 프레임
+struct PhotoCardFrame: View {
+    var image: String
+    
+    var body: some View {
+        WebImage(url: URL(string: image))
+            .resizable()
+            .scaledToFill()
+            .frame(width: UIScreen.screenWidth * 0.75, height: UIScreen.screenHeight * 0.7)
+            .clipped()
+            .cornerRadius(20)
+            .overlay(alignment: .bottomTrailing, content: {
+                HStack{
+                    Text("자세히 보기")
+                    Image(systemName: "chevron.right.2")
+                }
+                .shadow(radius: 10)
+                .foregroundColor(.bcWhite)
+                .font(.subheadline)
+                .kerning(-0.7)
+                .padding(20)
+                .padding(.bottom, 30)
+            })
     }
 }
 
@@ -93,31 +118,7 @@ struct PhotoMainStory: View {
     }
 }
 
-//MARK: - 포토카드 프레임
-struct PhotoCardFrame: View {
-    var image: String
-    
-    var body: some View {
-        WebImage(url: URL(string: image))
-            .resizable()
-            .scaledToFill()
-            .frame(width: UIScreen.screenWidth * 0.75, height: UIScreen.screenHeight * 0.7)
-            .clipped()
-            .cornerRadius(20)
-            .overlay(alignment: .bottomTrailing, content: {
-                HStack{
-                    Text("자세히 보기")
-                    Image(systemName: "chevron.right.2")
-                }
-                .shadow(radius: 10)
-                .foregroundColor(.bcWhite)
-                .font(.subheadline)
-                .kerning(-0.7)
-                .padding(20)
-                .padding(.bottom, 30)
-            })
-    }
-}
+
 
 //MARK: - 서버에서 받아오는 뷰라 프리뷰 불가능합니다.
 //struct WeeklyPopulerCampingView_Previews: PreviewProvider {

@@ -9,42 +9,29 @@ import Foundation
 import LocalAuthentication
 
 class FaceId: ObservableObject {
-    //기본 faceID 설정 해제
+    //false: 기본 faceID 설정 해제
     @Published var islocked: Bool = false
-    
-    //    func auth() {
-    //        let context = LAContext()
-    //        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "인증이 필요합니다") {
-    //            [weak self] (res, err) in
-    //            DispatchQueue.main.async {
-    //                self?.loggedIn = res
-    //            }
-    //        }
-    //    }
     
     func authenticate() {
         let context = LAContext()
         var error: NSError?
         
-        // check whether biometric authentication is possible
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            // it's possible, so go ahead and use it
             let reason = "We need to unlock your data."
             
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
-                // authentication has now completed
+                //인증 완료시
                 DispatchQueue.main.async {
                     if success {
                         self.islocked = false
                     } else {
-                        // there was a problem
                         self.islocked = true
                     }
                 }
                 
             }
         } else {
-            // no biometrics
+            //인증 실패시
         }
     }
 }

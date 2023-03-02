@@ -13,7 +13,7 @@ struct FullMapView: View {
     
     @State var annotatedItem: [AnnotatedItem]
     @State var region: MKCoordinateRegion
-    var campingSpot: Item
+    var campingSpot: CampingSpot
     
     var body: some View {
         VStack {

@@ -19,7 +19,7 @@ struct DiaryCommentCellView: View {
     //선택한 다이어리 정보 변수입니다.
     var item2: UserInfoDiary
     
-    var diaryCampingSpot: [Item] {
+    var diaryCampingSpot: [CampingSpot] {
         get {
             return campingSpotStore.campingSpotList.filter{
                 $0.contentId == item2.diary.diaryAddress

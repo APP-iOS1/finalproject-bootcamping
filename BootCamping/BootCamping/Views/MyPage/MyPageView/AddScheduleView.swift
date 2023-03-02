@@ -18,7 +18,7 @@ struct AddScheduleView: View {
 
     @State private var startDate = Date()
     @State private var endDate = Date()
-    @State private var campingSpotItem: Item = CampingSpotStore().campingSpot
+    @State private var campingSpotItem: CampingSpot = CampingSpotStore().campingSpot
     
     @State private var campingSpot: String = ""
     @State private var ischeckingDate = true

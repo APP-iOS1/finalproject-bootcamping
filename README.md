@@ -25,7 +25,7 @@
 |`스플래시뷰`|`온보딩뷰`|`로그인 및 회원가입`|`친구추가???`|
 |<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|<img src="-"></img>|<img src="-f"></img>|<img src="-"></img>|
 |`인기 캠핑 포토카드`|`실시간 캠핑 피드`|`캠핑장 검색`|`캠핑장 정보`|
-|<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|<img src="-"></img>|<img src="-"></img>|<img src="-"></img>|
+|<img src="https://user-images.githubusercontent.com/114223237/217022771-a1718efe-dafe-4ea0-b6c9-21a31f4859cd.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222380498-9a937eaf-e2d7-4238-a58e-47faaa6832fa.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222377310-dccaf43f-e404-4a0c-8b3e-2c5cbab1c7c0.gif"></img>|<img src="https://user-images.githubusercontent.com/114223237/222379262-bc0d69ce-7162-4d27-aa4f-9835c76c41c9.gif"></img>|
 |`내 캠핑일기`|`캠핑일기 작성`|`마이페이지`|`북마크`|
 <br>
 <br>
@@ -49,10 +49,10 @@
 <br>
 
 ## 개발 환경
-- iOS 15.0 이상
+- iOS 16.0 이상
 - iPhone 14 Pro에서 최적화됨
-- 다크모드 지원 <br>
-- 기능추가 <br>
+- 다크모드 지원
+- 기능추가
 <br>
 <br>
 
@@ -65,11 +65,14 @@
 
 ## 코드 컨벤션
 ```
-- [Feat] 새로운 기능 구현
-- [Add] Feat 이외의 부수적인 코드 추가, 라이브러리 추가, 새로운 파일 생성 시, 에셋 추가
-- [Fix] 버그, 오류 해결
-- [Del] 쓸모없는 코드 삭제
-- [Move] 파일 이름/위치 변경
+- [Feat] : 새로운 기능 추가
+- [Add]: 새로운 파일 추가 (json, img, asset, 목업데이터 등등) 
+- [Fix] : 버그 수정 
+- [Docs] : 문서 수정 
+- [Style] : 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우 
+- [Refactor] : 코드 리펙토링 
+- [Test] : 테스트 코드, 리펙토링 테스트 코드 추가 
+- [Chore] : 빌드 업무 수정, 패키지 매니저 수정 
 ```
 <br>
 <br>

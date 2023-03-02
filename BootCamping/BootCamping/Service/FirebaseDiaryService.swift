@@ -11,14 +11,19 @@ import FirebaseStorage
 import FirebaseAuth
 import Firebase
 
+//MARK: - 다이어리 정보와 유저정보를 함께 담을 구조체
 struct UserInfoDiary: Hashable {
     var diary: Diary
     var user: User
 }
+
+//MARK: - 다이어리 정보와 유저정보, 파이어베이스의 마지막 도큐먼트 스냅샷을 저장하기 위한 구조체
 struct LastDocWithDiaryList: Hashable  {
     var userInfoDiarys: [UserInfoDiary]
     var lastDoc: QueryDocumentSnapshot?
 }
+
+//MARK: - 다이어리 서비스 에러 처리
 
 enum FirebaseDiaryServiceError: Error {
     case badSnapshot
@@ -40,6 +45,7 @@ enum FirebaseDiaryServiceError: Error {
     }
 }
 
+//MARK: - 다이어리 서비스 CRUD 구현
 
 struct FirebaseDiaryService {
     
@@ -95,6 +101,8 @@ struct FirebaseDiaryService {
             var imageURLs: [String] = []
             var imageNamesURLs: [Int: String] = [:]
             
+            // DispatchGroup 선언, 비동기 함수들의 작업 완료됨에 따라 동시성 프로그래밍 역할을 맡는다.
+            
             let group = DispatchGroup()
             
             guard let userUID = Auth.auth().currentUser?.uid else { return }
@@ -135,7 +143,7 @@ struct FirebaseDiaryService {
                 
             }
             group.notify(queue: .global(qos: .userInteractive)) {
-                
+                // 두번째 비동기 통신
                 for (index,imageName) in imageNames.enumerated() {
                     
                     
@@ -154,7 +162,7 @@ struct FirebaseDiaryService {
                 }
                 
                 group.notify(queue: .main) {
-                    
+                    // 마지막 비동기 통신
                     let sortedImageNamesURLs = imageNamesURLs.sorted { $0.0 < $1.0 }
                     for i in sortedImageNamesURLs {
                         imageURLs.append(i.value)
@@ -217,7 +225,8 @@ struct FirebaseDiaryService {
         .eraseToAnyPublisher()
     }
     
-    //MARK: - 프로필 업데이트할때 유저이름 바꿔줌
+    //MARK: - 프로필 업데이트할때 작성한 다이어리의 유저이름 바꿔주는 함수
+    
     func updateDiarysNickNameService(userUID: String, nickName: String) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { promise in
             self.database.collection("Diarys").whereField("uid", isEqualTo: userUID).getDocuments { snapshot, error in

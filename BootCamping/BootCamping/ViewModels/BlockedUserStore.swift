@@ -39,6 +39,7 @@ class BlockedUserStore: ObservableObject {
     }
     
     //MARK: - Update Blocked User to Blocked User Combine
+    /// ** 현재 사용되지 않는 함수
     /// 해당 함수 호출 후 현재 유저의 정보를 업데이트 해주어야 한다
     /// -> wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!) 호출해주어야 한다
     func updateBlockedUserCombine(blockedUsers: [String]) {

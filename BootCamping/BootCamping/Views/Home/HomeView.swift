@@ -66,7 +66,6 @@ private extension HomeView {
                 ForEach(tapInfo.allCases, id: \.self) { item in
                     VStack {
                         Text(item.rawValue)
-                            // .font(.system(.title3, weight: .heavy)) // 사이즈 확인필요~~
                             .font(.system(size: 18, weight: .semibold))
                             .kerning(-1)
                             .frame(maxWidth: 180, maxHeight: 40)

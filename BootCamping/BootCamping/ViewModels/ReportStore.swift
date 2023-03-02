@@ -8,6 +8,7 @@
 import Combine
 import Firebase
 
+// TODO: - 신고 프로세스 짜기...
 class ReportStore: ObservableObject {
     
     @Published var reportedDiaries: [ReportedDiary] = []

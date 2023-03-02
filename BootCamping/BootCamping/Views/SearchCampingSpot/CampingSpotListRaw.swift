@@ -10,7 +10,7 @@ import SDWebImageSwiftUI
 
 //MARK: 캠핑장 리스트 셀 뷰
 struct CampingSpotListRaw: View {
-    var item: Item
+    var item: CampingSpot
     
     var body: some View{
         VStack(alignment: .leading) {

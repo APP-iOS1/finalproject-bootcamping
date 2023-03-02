@@ -12,7 +12,7 @@ import SDWebImageSwiftUI
 struct BookmarkCellView: View {
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @State var isBookmarked: Bool = true
-    var campingSpot: Item
+    var campingSpot: CampingSpot
     
     var body: some View {
         HStack {

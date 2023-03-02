@@ -24,7 +24,7 @@ struct SearchByCampingSpotNameView: View {
     @State var keywordForParameter: String = ""
     @State var isSearching: Bool = false
     
-    @Binding var campingSpot: Item
+    @Binding var campingSpot: CampingSpot
     
     var body: some View {
         VStack {
@@ -105,7 +105,7 @@ struct SearchByCampingSpotNameView: View {
 }
 
 struct SearchByCampingSpotNameRow: View {
-    var campingSpot: Item
+    var campingSpot: CampingSpot
     
     var body: some View {
         RoundedRectangle(cornerRadius: 10)

@@ -11,7 +11,7 @@ import FirebaseFirestore
 import FirebaseAuth
 import Firebase
 
-
+//MARK: - 댓글 서비스 에러 처리
 enum FirebaseCommentServiceError: Error {
     case badSnapshot
     case createCommentError
@@ -31,6 +31,8 @@ enum FirebaseCommentServiceError: Error {
         }
     }
 }
+
+//MARK: - 댓글 서비스 CRUD 구현
 
 struct FirebaseCommentService {
     

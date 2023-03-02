@@ -8,7 +8,6 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-// TODO: 유저 모델 받아와서 데이터 뿌려주기
 // MARK: -View : 내가 북마크한 캠핑장을 보여주는 cell
 struct BookmarkCellView: View {
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()

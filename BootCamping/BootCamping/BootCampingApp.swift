@@ -83,10 +83,12 @@ struct BootCampingApp: App {
 }
 
 // MARK: - 앱 시작 시 APN과 통신
+/// 앱을 APN에 등록하는 것을 처리하는 함수들입니다.
 extension AppDelegate {
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken
                      deviceToken: Data) {
+        // 앱을 APN에 성공적으로 등록한 후 이 메서드를 호출하여 대리자에게 알립니다.
         print(#function, "+++ didRegister Success", deviceToken)
         
     }
@@ -94,6 +96,7 @@ extension AppDelegate {
     func application(_ application: UIApplication,
                      didFailToRegisterForRemoteNotificationsWithError
                      error: Error) {
+        // 앱을 APN에 성공적으로 등록할 수 없는 경우 이 메서드를 호출하여 대리인에게 알립니다.
         print(#function, "DEBUG: +++ register error: \(error.localizedDescription)")
         // Try again later.
     }

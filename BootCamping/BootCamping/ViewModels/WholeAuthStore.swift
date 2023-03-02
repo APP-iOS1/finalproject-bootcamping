@@ -16,6 +16,8 @@ import Combine
 import CryptoKit
 import AuthenticationServices
 
+// MARK: - 로그인 서비스 에러처리
+
 enum AuthServiceError: Error {
     case emailDuplicated
     case signInError
@@ -36,6 +38,7 @@ enum AuthServiceError: Error {
     }
 }
 
+// MARK: - 로그인 플랫폼
 enum LoginPlatform {
     case email
     case google
@@ -44,6 +47,7 @@ enum LoginPlatform {
     case none
 }
 
+// MARK: - 로그인 정보를 가지고 있는 스토어
 
 class WholeAuthStore: ObservableObject {
     

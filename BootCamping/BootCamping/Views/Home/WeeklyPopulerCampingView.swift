@@ -20,6 +20,7 @@ struct WeeklyPopulerCampingView: View {
         VStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
+                    // 차단한 유저의 글을 제외하고 보여준다
                     ForEach(diaryStore.popularDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }, id: \.self) { item in
                         NavigationLink {
                             DiaryDetailView(item: item) //맞나

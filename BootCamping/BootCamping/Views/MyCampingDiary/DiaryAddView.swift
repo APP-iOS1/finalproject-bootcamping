@@ -14,19 +14,18 @@ import AlertToast
 
 // 키보드 다음 버튼 눌렀을 때 다음 텍스트 필드로 넘어가기 위해 필요해요
 enum CurrentField{
-    case field1
     case field2
 }
 
 struct DiaryAddView: View {
+    // 대표 이미지 말고 다른 이미지들도 보는 버튼 bool 값
     @State var isImageView = false
     
-    @State var field1 = ""
-    @State var field2 = ""
+    // 키보드 다음 버튼 눌렀을 때 다음 텍스트 필드로 넘어가기 위해 필요해요
     @FocusState var activeState: CurrentField?
     
     // 탭 했을 때 작성하기 버튼 숨기기 위해서
-    @State var isTapTextField = false
+//    @State var isTapTextField = false
     
     @State private var diaryTitle: String = ""
     @State private var locationInfo: String = ""
@@ -47,12 +46,10 @@ struct DiaryAddView: View {
     @State private var selectedDate: Date = .now
     
     //이미지 피커
-    //    @State private var imagePickerPresented = false // 이미지 피커를 띄울 변수
     @State private var selectedImages: [PhotosPickerItem] = []   // 이미지 피커에서 선택한 이미지저장.
-    @State private var diaryImages: [Data] = []         // selectedImages를 [Data] 타입으로 저장
-    @State private var isProcessing: Bool = false
+    @State private var diaryImages: [Data] = []                  // selectedImages를 [Data] 타입으로 저장
     
-    var images: [UIImage] = [UIImage()]
+    @State private var isProcessing: Bool = false
     
     //텍스트필드 포커싱
     @Namespace var title
@@ -83,12 +80,8 @@ struct DiaryAddView: View {
                                     .padding(.bottom, 10)
                             }
                             .font(.subheadline)
-                            .onTapGesture {
-                                isTapTextField = false
-                                dismissKeyboard()
-                            }
-
-                            //diaryTitle
+                            
+                            // 제목
                             TextField("제목을 입력해주세요(최대 20자)", text: $diaryTitle)
                                 .font(.headline)
                                 .padding(.vertical, 5)
@@ -100,11 +93,10 @@ struct DiaryAddView: View {
                                 }
                                 .focused($inputFocused)
                                 .onSubmit{
-                                    activeState = .field2
+                                    activeState = .field2   // 키보드 다음 버튼 누르면 다음 텍스트필드로 이동
                                     proxy.scrollTo(under, anchor: .bottom)
                                 }
                                 .onTapGesture {
-                                    isTapTextField = true
                                     withAnimation {
                                         proxy.scrollTo(title, anchor: .bottom)
                                     }
@@ -114,6 +106,7 @@ struct DiaryAddView: View {
                             EmptyView()
                                 .id(title)
                             
+                            // 일기 내용
                             TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
                                 .frame(minHeight: UIScreen.screenHeight / 4, alignment: .top)
                                 .lineLimit(10)
@@ -122,16 +115,12 @@ struct DiaryAddView: View {
                                 .onChange(of: diaryContent.count, perform: { _ in
                                     proxy.scrollTo(under, anchor: .bottom)
                                 })
-                                .onTapGesture {
-                                    isTapTextField = true
-                                }
                             
-
+                            
                             Text("").id(under)
                             
                         }
                         .padding(.horizontal, UIScreen.screenWidth*0.03)
-
                     }
                     
                     
@@ -154,19 +143,19 @@ struct DiaryAddView: View {
                         self.value = 0
                     }
                 }
-
+                
                 .navigationTitle(Text("캠핑 일기 쓰기"))
                 .onTapGesture {
                     inputFocused = false
                 }
-                .disableAutocorrection(true) //자동 수정 비활성화
-                .textInputAutocapitalization(.never) //첫 글자 대문자 비활성화
+                .disableAutocorrection(true)            // 자동 수정 비활성화
+                .textInputAutocapitalization(.never)    // 첫 글자 대문자 비활성화
                 .toolbar {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
                         Button {
-                            submit()
-                            inputFocused = false
+                            submit()                // 키보드 내림
+                            inputFocused = false    // 작성완료 버튼 나옴
                             proxy.scrollTo(top, anchor: .top)
                         } label: {
                             Image(systemName: "keyboard.chevron.compact.down")
@@ -183,7 +172,7 @@ struct DiaryAddView: View {
         .toast(isPresenting: $isProcessing) {
             AlertToast(displayMode: .alert, type: .loading)
         }
-        .sheet(isPresented: $isImageView) {
+        .sheet(isPresented: $isImageView) { // 대표이미지 말고 다른 이미지도 볼 수 있는 시트
             DiaryAddDetailImageView(diaryImages: $diaryImages, isImageView: $isImageView)
         }
     }
@@ -212,7 +201,7 @@ private extension DiaryAddView {
                     .onChange(of: selectedImages) { newValue in
                         Task {
                             isProcessing = true
-                            diaryImages = []
+                            diaryImages = []    // 사진 다시 고를 경우 기존에 있는 거 비워줌
                             for value in newValue {
                                 if let imageData = try? await value.loadTransferable(type: Data.self) {
                                     let uiImage = UIImage(data: imageData)
@@ -222,32 +211,26 @@ private extension DiaryAddView {
                             isProcessing = false
                         }
                     }
-                
-//                Text("\(diaryImages.count) / 10")
-//                    .font(.caption2)
-//                    .foregroundColor(.gray)
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack{
-                    if diaryImages == [] {
+                    if diaryImages == [] {  // 사진을 안 골랐을 경우
                         Text(diaryImages.isEmpty ? "사진을 추가해주세요 (최대 10장)" : "")
                             .foregroundColor(.secondary)
                             .opacity(0.5)
                             .frame(height: UIScreen.screenWidth * 0.2)
                             .padding(.leading, UIScreen.screenWidth * 0.05)
                         
-                    } else {
+                    } else {                // 사진 고른 경우
                         Button {
-                            isImageView = true
+                            isImageView = true  // 버튼 누르면 사진 여러장 볼 수 있음
                         } label: {
-                            Image(uiImage: UIImage(data: diaryImages.first!)!)
-    //                            .resizeImageData(data: diaryImages.first)
+                            Image(uiImage: UIImage(data: diaryImages.first!)!) // 대표이미지
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
                                 .clipped()
                                 .overlay(alignment: .topTrailing) {
-//                                    Text("대표 이미지")
                                     Image(systemName: "hand.tap")
                                         .font(.footnote)
                                         .foregroundColor(.white)
@@ -259,31 +242,6 @@ private extension DiaryAddView {
                                         .padding(2.5)
                                 }
                         }
-
-                        
-//                        ForEach(Array(zip(0..<(diaryImages.count), diaryImages)), id: \.0) { index, image in
-//                            Image(uiImage: UIImage(data: image)!)
-//                                .resizeImageData(data: image)
-//                                .resizable()
-//                                .scaledToFill()
-//                                .frame(width: UIScreen.screenWidth * 0.2, height: UIScreen.screenWidth * 0.2)
-//                                .clipped()
-//                                .overlay(alignment: .topLeading) {
-//                                    VStack {
-//                                        Text("대표 이미지")
-//                                            .font(.caption2)
-//                                            .foregroundColor(.white)
-//                                            .background(
-//                                                RoundedRectangle(cornerRadius: 5)
-//                                                    .fill(Color.bcGreen)
-//                                                    .padding(-0.5)
-//                                                
-//                                            )
-//                                            .padding(2.5)
-//                                    }
-//                                    .opacity(index == 0 ? 1 : 0)
-//                                }
-//                        }
                     }
                 }
                 .padding(.vertical ,UIScreen.screenWidth * 0.005)
@@ -295,7 +253,6 @@ private extension DiaryAddView {
     
     
     //MARK: - 위치 등록하기
-    //TODO: - 캠핑장 연동하기
     var addViewLocationInfo: some View {
         VStack {
             if campingSpot == "" {
@@ -335,7 +292,6 @@ private extension DiaryAddView {
             .environment(\.locale, Locale(identifier: "ko_KR"))
             .environment(\.calendar, Calendar(identifier: .gregorian))
             .environment(\.timeZone, TimeZone(abbreviation: "KST")!)
-//            .padding(.vertical)
         }
     }
     
@@ -353,8 +309,8 @@ private extension DiaryAddView {
                     Image(systemName: diaryIsPrivate ? "lock" : "lock.open" )
                         .animation(.none)
                         .padding(.trailing, diaryIsPrivate ? 1.5 : 0)
-                        .opacity(0)
-                    
+                        .opacity(0) // 투명하게 만들고 overlay로 덮었음
+                        // 안그러면 계속 약간 애니메이션 걸려있움 ;;;;;
                     
                     Text(diaryIsPrivate ? "비공개": "공개")
                         .animation(.none)
@@ -372,45 +328,7 @@ private extension DiaryAddView {
                     .padding(.bottom, 15)
             }
         }
-//        .padding(.vertical)
-        
     }
-    
-    // MARK: 제목
-//    var addViewTitle: some View {
-//        Section {
-//            TextField("제목을 입력해주세요(최대 20자)", text: $diaryTitle)
-//                .font(.title3)
-//                .padding(.vertical)
-//                .submitLabel(.next)
-//                .onChange(of: diaryTitle) { newValue in             // 제목 20글자까지 가능
-//                    if newValue.count > 20 {
-//                        diaryTitle = String(newValue.prefix(20))
-//                    }
-//                }
-//        }
-//        .focused($inputFocused)
-//        .onSubmit{
-//            activeState = .field2
-//        }
-//        .onTapGesture {
-//            isTapTextField = true
-//        }
-//    }
-    
-    //MARK: - 일기 작성 뷰
-//    var addViewDiaryContent: some View {
-//        VStack {
-//
-//            TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
-//                .focused($inputFocused)
-//                .onTapGesture {
-//                    isTapTextField = true
-//                }
-//                .focused($activeState, equals: .field2)
-//        }
-//    }
-
     
     //MARK: - 추가버튼
     var addViewAddButton: some View {

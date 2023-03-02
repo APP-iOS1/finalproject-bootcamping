@@ -12,6 +12,8 @@ import FirebaseFirestore
 import FirebaseStorage
 import Combine
 
+//MARK: - 유저정보 에러 처리
+
 enum FirebaseUserServiceError: Error {
     case badSnapshot
     case createUserListError
@@ -31,6 +33,8 @@ enum FirebaseUserServiceError: Error {
         }
     }
 }
+
+//MARK: - 유저정보 CRUD 구현
 
 struct FirebaseUserService {
     

@@ -10,6 +10,8 @@ import PhotosUI
 import FirebaseAuth
 import SDWebImageSwiftUI
 
+// MARK: - View: ProfileSettingView
+/// 사용자의 프로필 사진과 닉네임을 변경할 수 있는 뷰
 struct ProfileSettingView: View {
     
     //이미지 피커
@@ -20,11 +22,11 @@ struct ProfileSettingView: View {
     
     @EnvironmentObject var wholeAuthStore: WholeAuthStore
     @EnvironmentObject var diaryStore: DiaryStore
-
+    
     
     @State private var updateNickname: String = ""
     
-    @State private var isProfileImageReset: Bool = false
+    @State private var isProfileImageReset: Bool = false    // 프로필 사진 기본이미지로 설정할 때 필요
     
     
     var body: some View {
@@ -41,7 +43,7 @@ struct ProfileSettingView: View {
             }
         }
         .padding(.horizontal, UIScreen.screenWidth * 0.03)
-
+        
     }
     
 }
@@ -55,7 +57,9 @@ extension ProfileSettingView {
                 imagePickerPresented.toggle()
             }, label: {
                 if profileImage == nil {
+                    // 프로필 사진을 안골랐을 때
                     if wholeAuthStore.currnetUserInfo!.profileImageURL != "" && isProfileImageReset == false {
+                        // 기존 사용자 프로필 사진이 있고 기본 이미지를 선택하지 않은 경우 -> 기존 사용자의 프로필 이미지를 보여준다.
                         WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
                             .resizable()
                             .scaledToFill()
@@ -77,9 +81,9 @@ extension ProfileSettingView {
                                 }
                             }
                     } else if wholeAuthStore.currnetUserInfo!.profileImageURL == "" || isProfileImageReset == true{
+                        // 기존 프로필 사진도 없거나, 기본 이미지를 선택한 경우 -> 기본 프로필 이미지(부트캠핑 로고) 를 보여준다
                         Image("defaultProfileImage")
                             .resizable()
-//                            .foregroundColor(.bcBlack)
                             .scaledToFill()
                             .clipped()
                             .frame(width: 100, height: 100)
@@ -100,6 +104,7 @@ extension ProfileSettingView {
                             }
                     }
                 } else {
+                    // 프로필 사진을 골랐을 때
                     let image = UIImage(data: profileImage ?? Data()) == nil ? UIImage(contentsOfFile: "defaultProfileImage") : UIImage(data: profileImage ?? Data()) ?? UIImage(contentsOfFile: "defaultProfileImage")
                     Image(uiImage: ((image ?? UIImage(contentsOfFile: "defaultProfileImage"))!))
                         .resizable()
@@ -125,11 +130,11 @@ extension ProfileSettingView {
                 }
             })
             .sheet(isPresented: $imagePickerPresented,
-                   onDismiss: {
-                loadData()
-            },
+                   onDismiss: { loadData() },
                    content: { ImagePicker(image: $selectedImage) })
             .padding(.bottom, 7)
+            
+            // 기본 이미지로 변경할 수 있는 버튼
             Button {
                 profileImage = nil
                 isProfileImageReset = true
@@ -139,20 +144,17 @@ extension ProfileSettingView {
                     .padding(4)
                     .overlay{
                         RoundedRectangle(cornerRadius: 5)
-//                            .stroke(Color.bcDarkGray, lineWidth: 1)
                             .fill(Color.bcDarkGray)
                             .opacity(0.3)
                     }
-                
             }
-            
         }
     }
+    
     // selectedImage: UIImage 타입을 Data타입으로 저장하는 함수
     func loadData() {
         guard let selectedImage = selectedImage else { return }
         profileImage = selectedImage.jpegData(compressionQuality: 0.1)
-        
     }
     
     
@@ -178,7 +180,7 @@ extension ProfileSettingView {
                 //닉네임 x 사진 기본으로
                 if isProfileImageReset {
                     wholeAuthStore.updateUserCombine(image: nil, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: wholeAuthStore.currnetUserInfo!.profileImageURL, nickName: wholeAuthStore.currnetUserInfo!.nickName, userEmail: "", bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot, blockedUser: wholeAuthStore.currnetUserInfo!.blockedUser))
-                
+                    
                 } else {
                     // 닉네임 x 사진 변경
                     wholeAuthStore.updateUserCombine(image: profileImage, user: User(id: wholeAuthStore.currnetUserInfo!.id, profileImageName: wholeAuthStore.currnetUserInfo!.profileImageName, profileImageURL: wholeAuthStore.currnetUserInfo!.profileImageURL, nickName: wholeAuthStore.currnetUserInfo!.nickName, userEmail: wholeAuthStore.currnetUserInfo!.userEmail, bookMarkedDiaries: wholeAuthStore.currnetUserInfo!.bookMarkedDiaries, bookMarkedSpot: wholeAuthStore.currnetUserInfo!.bookMarkedSpot, blockedUser: wholeAuthStore.currnetUserInfo!.blockedUser))
@@ -200,6 +202,7 @@ extension ProfileSettingView {
                 .modifier(GreenButtonModifier())
         }
         .disabled(updateNickname == "" && selectedImage == nil && isProfileImageReset == false)
+        // 닉네임, 프사 다 안바꾼 경우 버튼 비활성화
     }
     
 }

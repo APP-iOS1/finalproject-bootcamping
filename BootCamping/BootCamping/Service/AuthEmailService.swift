@@ -12,6 +12,8 @@ import SwiftUI
 import FirebaseAuth
 import Combine
 
+// MARK: - 이메일 로그인 서비스
+
 struct AuthEmailService {
     
     let database = Firestore.firestore()

@@ -17,8 +17,7 @@ class ScheduleStore: ObservableObject {
     let database = Firestore.firestore()
     private var cancellables = Set<AnyCancellable>()
 
-    //MARK: Read Schedule Combine
-    
+    //MARK: - Read Schedule Combine
     func readScheduleCombine() {
         FirebaseScheduleService().readScheduleService()
             .receive(on: DispatchQueue.main)
@@ -40,8 +39,7 @@ class ScheduleStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    //MARK: Create Schedule Combine
-    
+    //MARK: - Create Schedule Combine
     func createScheduleCombine(schedule: Schedule) {
         FirebaseScheduleService().createScheduleService(schedule: schedule)
             .receive(on: DispatchQueue.main)
@@ -64,8 +62,7 @@ class ScheduleStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    //MARK: Delete Schedule Combine
-    
+    //MARK: - Delete Schedule Combine
     func deleteScheduleCombine(schedule: Schedule) {
         FirebaseScheduleService().deleteScheduleService(schedule: schedule)
             .receive(on: DispatchQueue.main)

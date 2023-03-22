@@ -788,7 +788,7 @@ struct FirebaseDiaryService {
         .eraseToAnyPublisher()
     }
     
-    //MARK: 캠핑장 디테일 뷰에 들어갈 캠핑일기 리스트 받아오는 함수
+    //MARK: 캠핑장 디테일 뷰에 들어갈 캠핑노트 리스트 받아오는 함수
     func readCampingSpotsDiariesService(contentId: String) -> AnyPublisher<LastDocWithDiaryList, Error> {
         Future<LastDocWithDiaryList, Error> { promise in
             database.collection("Diarys")

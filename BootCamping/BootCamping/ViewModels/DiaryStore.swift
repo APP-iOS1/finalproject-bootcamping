@@ -322,7 +322,7 @@ class DiaryStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    //MARK: - 캠핑장 디테일뷰에 들어갈 일기 Read하는 함수
+    //MARK: - 캠핑장 디테일뷰에 들어갈 노트 Read하는 함수
     
     func readCampingSpotsDiariesCombine(contentId: String) {
         FirebaseDiaryService().readCampingSpotsDiariesService(contentId: contentId)

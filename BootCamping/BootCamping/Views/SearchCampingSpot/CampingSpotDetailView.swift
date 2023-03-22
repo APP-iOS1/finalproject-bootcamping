@@ -349,7 +349,7 @@ struct CampingSpotDetailView: View {
                     
                     Group {
                         HStack {
-                            Text("관련 캠핑일기")
+                            Text("관련 캠핑노트")
                                 .font(.headline)
                                 .padding(.bottom, 10)
                             Spacer()
@@ -367,7 +367,7 @@ struct CampingSpotDetailView: View {
                         }
                         ScrollView(.horizontal, showsIndicators: false) {
                             if diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }.isEmpty {
-                                Text("등록된 캠핑일기가 없습니다.")
+                                Text("등록된 캠핑노트가 없습니다.")
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                             } else if diaryStore.realTimeDiaryUserInfoDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }.count <= 3 {

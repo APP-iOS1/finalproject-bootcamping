@@ -70,7 +70,7 @@ struct DiaryCellView: View {
                     .frame(height: UIScreen.screenWidth / 5)
                     .aspectRatio(contentMode: .fit)
                     .padding(.vertical, 10)
-                    Text("비공개 일기입니다")
+                    Text("비공개 캠핑 노트입니다")
                     Text("버튼을 눌러 잠금을 해제해주세요")
                 }
                 .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
@@ -243,8 +243,8 @@ private extension DiaryCellView {
                 .font(.title3)
                 .frame(width: 30, height: 30)
         }
-        //MARK: - 일기 삭제 알림
-        .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
+        //MARK: - 노트 삭제 알림
+        .alert("캠핑 노트를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
             Button("취소", role: .cancel) {
                 isShowingDeleteAlert = false
             }

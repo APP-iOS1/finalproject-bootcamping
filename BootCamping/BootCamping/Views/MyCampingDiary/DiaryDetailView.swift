@@ -275,8 +275,8 @@ private extension DiaryDetailView {
                 .font(.title3)
                 .frame(width: 30,height: 30)
         }
-        //MARK: - 일기 삭제 알림
-        .alert("일기를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
+        //MARK: - 노트 삭제 알림
+        .alert("캠핑 노트를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
             Button("취소", role: .cancel) {
                 isShowingDeleteAlert = false
             }

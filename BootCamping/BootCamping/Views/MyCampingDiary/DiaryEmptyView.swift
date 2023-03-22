@@ -10,6 +10,8 @@ import AlertToast
 
 struct DiaryEmptyView: View {
     @EnvironmentObject var diaryStore: DiaryStore
+    @State private var isShowingAdd = false
+    
     var body: some View {
         ZStack {
             VStack {
@@ -21,10 +23,20 @@ struct DiaryEmptyView: View {
                     .padding()
                     .padding(.bottom, 50)
                 
-                NavigationLink (destination: DiaryAddView()){
+                Button {
+                    self.isShowingAdd = true
+                } label: {
                     Text("캠핑일기 작성하러 가기")
                         .modifier(GreenButtonModifier())
                 }
+                .sheet(isPresented: self.$isShowingAdd) {
+                    DiaryAddView()
+                }
+                
+//                NavigationLink (destination: DiaryAddView()){
+//                    Text("캠핑일기 작성하러 가기")
+//                        .modifier(GreenButtonModifier())
+//                }
                 Spacer()
             }
             diaryStore.isProcessing ? Color.black.opacity(0.3) : Color.clear

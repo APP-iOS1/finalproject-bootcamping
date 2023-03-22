@@ -24,6 +24,7 @@ struct MyCampingDiaryView: View {
     
     @State private var isShowingAcceptedToast = false
     @State private var isShowingBlockedToast = false
+    @State private var isShowingAdd = false
     
     var body: some View {
         ZStack {
@@ -81,6 +82,15 @@ struct MyCampingDiaryView: View {
                 {
                     Image(systemName: "plus")
                 }
+                
+//                Button {
+//                    self.isShowingAdd = true
+//                } label: {
+//                    Image(systemName: "plus")
+//                }
+//                .sheet(isPresented: self.$isShowingAdd) {
+//                    DiaryAddView()
+//                }
             }
         }
         .alert("다이어리 만들기에 실패했습니다.. 다시 시도해 주세요.", isPresented: $diaryStore.isError) {

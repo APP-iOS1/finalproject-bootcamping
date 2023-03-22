@@ -4,7 +4,9 @@
 //
 //  Created by Deokhun KIM on 2023/01/17.
 //
-
+import Firebase
+import FirebaseAnalytics
+import FirebaseAnalyticsSwift
 import SDWebImageSwiftUI
 import SwiftUI
 
@@ -52,38 +54,55 @@ struct SearchCampingSpotView: View {
     
     //MARK: searchable
     @State var searchText: String = ""
+    
+    @FocusState var isTextFieldFocused: Bool
+    
+    @State private var isLoading: Bool = false
+    @State var keywordForSearching: String = ""
+    @State var keywordForParameter: String = ""
+    @State var isSearching: Bool = false
+    
 
     var body: some View {
         VStack {
             ScrollView {
-                VStack(alignment: .leading){
-                    
-                    // 광고 부분
-//                    adCamping
-                    
-                    // 지역 선택
-                    areaSelect
-                        .padding(.top, 10)
-                    
-                    // 전망 선택
-                    viewSelect
-                    
-                    // 추천 캠핑장
-                    recommendCampingSpot
-                    
-                }//VStack 끝
-                .padding(.horizontal, UIScreen.screenWidth*0.03)
+                campingSpotListSearchTextfield
+                if !isSearching {
+                    VStack(alignment: .leading){
+                        
+                        // 광고 부분
+                        //                    adCamping
+                        
+                        // 지역 선택
+                        areaSelect
+                            .padding(.top, 10)
+                        
+                        // 전망 선택
+                        viewSelect
+                        
+                        // 추천 캠핑장
+                        recommendCampingSpot
+                        
+                    }//VStack 끝
+                    .padding(.horizontal, UIScreen.screenWidth*0.03)
+                }
             }
             .toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {
                     Text("Search")
                         .font(.title2.bold())
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink {
-                        CampingSpotListSearchingView(selectedFilter: filterCase.campingSpotAddr)
-                    } label: {
-                        Image(systemName: "magnifyingglass")
+                if isSearching {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            isSearching.toggle()
+                            keywordForSearching = ""
+                            campingSpotStore.campingSpotList = []
+                            campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: campingSpotADName))
+                        } label: {
+                            Text("취소")
+                        }
+
                     }
                 }
             }
@@ -96,6 +115,79 @@ struct SearchCampingSpotView: View {
 }
 
 extension SearchCampingSpotView {
+    
+    private var campingSpotListSearchTextfield: some View {
+        VStack {
+            TextField("\(Image(systemName: "magnifyingglass"))캠핑하실 지역을 검색해 주세요", text: $keywordForSearching)
+                .textFieldStyle(.roundedBorder)
+                .focused($isTextFieldFocused)
+                .showClearButton($keywordForSearching)
+                .padding(.horizontal, UIScreen.screenWidth*0.03)
+                .submitLabel(.search)
+                .onSubmit {
+                    keywordForParameter = keywordForSearching
+                    isLoading = false
+                    isSearching = true
+                    campingSpotStore.campingSpotList.removeAll()
+                    campingSpotStore.lastDoc = nil
+                    //For Googole Analystic
+                    Analytics.logEvent("Search", parameters: [
+                        "UID" : "\(String(describing: Auth.auth().currentUser?.uid))",
+                        "Email" : "\(String(describing: Auth.auth().currentUser?.email))",
+                        "searchingKeyword" : "\(keywordForParameter)",
+                      ])
+                    //탭틱
+                    UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+                }
+            if isSearching {
+                VStack {
+                    ScrollView(showsIndicators: false) {
+                        if !isLoading {
+                            LazyVStack {
+                                ForEach(0...2, id: \.self) { _ in
+                                    EmptyCampingSpotListCell()
+                                }
+                            }
+                            .task {
+                                campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotName: keywordForParameter))
+                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                                    isLoading.toggle()
+                                }
+                            }
+                        } else {
+                            LazyVStack {
+                                if campingSpotStore.campingSpotList.isEmpty {
+                                    Spacer()
+                                    Text("검색 결과가 없습니다.")
+                                    Spacer()
+                                } else {
+                                    ForEach(campingSpotStore.campingSpotList.indices, id: \.self) { index in
+                                        NavigationLink {
+                                            CampingSpotDetailView(campingSpot: campingSpotStore.campingSpotList[index])
+                                        } label: {
+                                            CampingSpotListRaw(item: campingSpotStore.campingSpotList[index])
+                                                .padding(.bottom,40)
+                                        }
+                                        .task {
+                                            if index == campingSpotStore.campingSpotList.count - 1 {
+                                                Task {
+//                                                    campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotName: keywordForParameter, lastDoc: campingSpotStore.lastDoc))
+                                                    print("WOW")
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .padding(.bottom, 0.1)
+                }
+            } else {
+                Spacer()
+            }
+        }
+    }
     
     //MARK: 광고 부분
     private var adCamping: some View {

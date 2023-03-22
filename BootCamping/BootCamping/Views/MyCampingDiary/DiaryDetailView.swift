@@ -52,8 +52,9 @@ struct DiaryDetailView: View {
     //자동 스크롤
     @Namespace var topID
     @Namespace var bottomID
+    @Namespace var commentButtonID
     
-    //키보드 dismiss
+    //키보드 포커싱
     @FocusState private var inputFocused: Bool
     
     var item: UserInfoDiary
@@ -64,19 +65,21 @@ struct DiaryDetailView: View {
                 ScrollView(showsIndicators: false) {
                     LazyVStack(alignment: .leading) {
                         diaryUserProfile.id(topID)
-                        diaryDetailImage.zIndex(1) 
+                        diaryDetailImage.zIndex(1)
                         Group {
+                            EmptyView().id(commentButtonID)
                             HStack(alignment: .center){
                                 if (item.diary.uid == wholeAuthStore.currnetUserInfo!.id && item.diary.diaryIsPrivate) {
                                     isPrivateImage
                                 }
+                                //댓글버튼 클릭시 본문부터 보이도록
                                 diaryDetailTitle
                             }
                             diaryDetailContent
                             if !campingSpotStore.campingSpotList.isEmpty {
                                 diaryCampingLink
                             }
-                            Divider().padding(.top, 5)
+//                            Divider().padding(.top, 5)
                             
                             diaryDetailInfo
                             
@@ -92,11 +95,18 @@ struct DiaryDetailView: View {
                             .frame(height: 0.1)
                             .id(bottomID)
                         Spacer()
+
                     }
-                   
-                    .onAppear {
-                        withAnimation {
-                            proxy.scrollTo(topID)
+                    .task {
+                        //이전화면에서 댓글버튼 눌렀다면 바로 키보드 나오게
+                        if diaryStore.isCommentButtonClicked {
+                            self.inputFocused = true
+                            proxy.scrollTo(commentButtonID, anchor: .top)
+                            diaryStore.isCommentButtonClicked = false
+                        } else {
+                            withAnimation {
+                                proxy.scrollTo(topID)
+                            }
                         }
                     }
                 }.introspectScrollView(customize: { uiScrollView in
@@ -125,7 +135,7 @@ struct DiaryDetailView: View {
                         .font(.callout)
                         .onTapGesture {
                             withAnimation {
-                                proxy.scrollTo(bottomID, anchor: .bottom)
+                                proxy.scrollTo(commentButtonID, anchor: .top)
                             }
                         }
 
@@ -135,8 +145,8 @@ struct DiaryDetailView: View {
                         withAnimation {
                             proxy.scrollTo(bottomID, anchor: .bottom)
                         }
-                        
                         diaryComment = ""
+
                     } label: {
                         Image(systemName: "paperplane")
                             .font(.title3)
@@ -150,6 +160,7 @@ struct DiaryDetailView: View {
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 
             }
+
             .toast(isPresenting: $isShowingAcceptedToast) {
                 AlertToast(type: .regular, title: "이 게시물에 대한 신고가 접수되었습니다.")
             }
@@ -356,7 +367,6 @@ private extension DiaryDetailView {
     }
     
     //MARK: - 방문한 캠핑장 링크
-    //TODO: - 캠핑장 정보 연결
     var diaryCampingLink: some View {
         
         NavigationLink {
@@ -462,5 +472,21 @@ private extension DiaryDetailView {
         } else {
             dismissKeyboard()
         }
+    }
+}
+
+//키보드 올리기
+extension UIResponder {
+    static weak var currentFirstResponder: UIResponder? = nil
+
+    public func becomeFirstResponder() -> Bool {
+        UIResponder.currentFirstResponder = self
+        return true
+    }
+}
+
+extension UIView {
+    var globalFrame: CGRect? {
+        return superview?.convert(frame, to: nil)
     }
 }

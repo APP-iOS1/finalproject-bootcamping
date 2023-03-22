@@ -41,6 +41,9 @@ class DiaryStore: ObservableObject {
     // 다이어리 생성함수 상태 변화에따라 뷰의 온체인지 함수 기능 작동
     @Published var createFinshed: Bool = false
     
+    //댓글 눌렀을때
+    @Published var isCommentButtonClicked: Bool = false
+    
     //파베 기본 경로
     let database = Firestore.firestore()
     

@@ -62,8 +62,8 @@ struct PhotoCardFrame: View {
                     Image(systemName: "chevron.right.2")
                 }
                 .shadow(radius: 10)
-                .foregroundColor(.bcWhite)
                 .font(.subheadline)
+                .foregroundColor(.white)
                 .kerning(-0.7)
                 .padding(20)
                 .padding(.bottom, 30)
@@ -87,11 +87,13 @@ struct PhotoMainStory: View {
                     .padding(.bottom, 0.01)
                     .padding(.top, 70)
                 
-                //TODO: -캠핑장 이름 연결
-                Text("\(campingSpotStore.campingSpotList.first?.facltNm ?? "")")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .padding(.bottom, UIScreen.screenHeight * 0.03)
+                //캠핑장 정보 있을때만 화면에 나옴
+                if campingSpotStore.campingSpotList.first?.facltNm != nil {
+                    Text("\(campingSpotStore.campingSpotList.first?.facltNm ?? "")")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .padding(.bottom, UIScreen.screenHeight * 0.03)
+                }
                 
                 Text(item.diaryTitle)
                     .font(.title)
@@ -107,7 +109,6 @@ struct PhotoMainStory: View {
                 }
                 .italic()
                 .font(.subheadline)
-                
             }
             .onAppear {
                 campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diaryAddress]))

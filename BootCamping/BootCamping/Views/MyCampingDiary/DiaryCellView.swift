@@ -24,6 +24,7 @@ struct DiaryCellView: View {
     
     @State var isBookmarked: Bool = false
     
+    
     //선택한 다이어리 정보 변수입니다.
     var item: UserInfoDiary
     //삭제 알림
@@ -40,6 +41,9 @@ struct DiaryCellView: View {
     
     @EnvironmentObject var faceId: FaceId
     @AppStorage("faceId") var usingFaceId: Bool = false
+    
+    //댓글 버튼 클릭시 다음 화면으로 이동.
+    @State var tag:Int? = nil
     
     var diaryCampingSpot: [CampingSpot] {
         get {
@@ -85,6 +89,7 @@ struct DiaryCellView: View {
                             diaryTitle
                         }
                         diaryContent
+                        
                         HStack {
                             Spacer()
                             HStack{
@@ -93,20 +98,24 @@ struct DiaryCellView: View {
                             }
                             .font(.footnote)
                             .foregroundColor(.secondary)
+                            .padding(.vertical, 10)
                         }
                         
-                        if !campingSpotStore.campingSpotList.isEmpty {
-                            diaryCampingLink
-                        }
-                        
-                        Divider().padding(.top, 5)
-                        
-                        diaryDetailInfo
-                        
+                        //TODO: -캠핑장 정보 네모 버튼. 없애고 피드백 후 수정 예정
+//                        if !campingSpotStore.campingSpotList.isEmpty {
+//                            diaryCampingLink
+//                        }
+                
                     }
                     .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 }
                 .foregroundColor(.bcBlack)
+                
+                diaryDetailInfo
+                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                    .foregroundColor(.bcBlack)
+                
+                Divider().padding(.top, 5)
             }
         }
         .sheet(isPresented: $isShowingUserReportAlert) {
@@ -288,7 +297,7 @@ private extension DiaryCellView {
         Text(item.diary.diaryContent)
             .lineLimit(3)
             .multilineTextAlignment(.leading)
-            .padding(.bottom, 25)
+            .padding(.bottom, 15)
     }
     
     //MARK: - 캠핑장 이동
@@ -348,10 +357,34 @@ private extension DiaryCellView {
                 .frame(width: 20, alignment: .leading)
             
             //댓글 버튼
-            Image(systemName: "message")
-                .font(.callout)
-                .foregroundColor(.secondary)
+//            NavigationLink {
+//                DiaryDetailView(item: item)
+//                    .onTapGesture {
+//                        diaryStore.isCommentButtonClicked = true
+//                        print("---------------button: \(diaryStore.isCommentButtonClicked)")
+//                    }
+//            } label: {
+//                Image(systemName: "message")
+//                    .font(.callout)
+//                    .foregroundColor(.secondary)
+//
+//            }
+            //댓글버튼.
+            NavigationLink(destination: DiaryDetailView(item: item), tag: 1, selection: $tag) {
+                EmptyView()
+            }
             
+            Button {
+                self.tag = 1
+                diaryStore.isCommentButtonClicked = true
+            } label: {
+                Image(systemName: "message")
+                    .font(.callout)
+                    .foregroundColor(.secondary)
+            }
+
+
+
             Text("\(commentStore.commentList.count)")
                 .font(.callout)
                 .foregroundColor(.secondary)

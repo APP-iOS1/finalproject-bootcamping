@@ -57,6 +57,9 @@ struct DiaryDetailView: View {
     //키보드 포커싱
     @FocusState private var inputFocused: Bool
     
+    //버튼 클릭시 캠핑장 상세뷰로 이동.
+    @State var tag:Int? = nil
+    
     var item: UserInfoDiary
     
     var body: some View {
@@ -201,6 +204,7 @@ struct DiaryDetailView: View {
             submit()
         }
     }
+    
 }
 
 private extension DiaryDetailView {
@@ -369,44 +373,51 @@ private extension DiaryDetailView {
     //MARK: - 방문한 캠핑장 링크
     var diaryCampingLink: some View {
         
-        NavigationLink {
-            CampingSpotDetailView(campingSpot: campingSpotStore.campingSpotList.first ?? campingSpotStore.campingSpot)
-        } label: {
-            HStack {
-                WebImage(url: URL(string: campingSpotStore.campingSpotList.first?.firstImageUrl == "" ? campingSpotStore.noImageURL : campingSpotStore.campingSpotList.first?.firstImageUrl ?? ""))
-                    .resizable()
-                    .frame(width: 60, height: 60)
-                    .padding(.trailing, 5)
-                
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(campingSpotStore.campingSpotList.first?.facltNm ?? "")
-                        .multilineTextAlignment(.leading)
-                        .font(.headline)
+        HStack {
+            NavigationLink(destination: CampingSpotDetailView(campingSpot: campingSpotStore.campingSpotList.first ?? campingSpotStore.campingSpot), tag: 1, selection: $tag) {
+                EmptyView()
+            }
+            
+            Button {
+                self.tag = 1
+                submit()
+            } label: {
+                HStack {
+                    WebImage(url: URL(string: campingSpotStore.campingSpotList.first?.firstImageUrl == "" ? campingSpotStore.noImageURL : campingSpotStore.campingSpotList.first?.firstImageUrl ?? ""))
+                        .resizable()
+                        .frame(width: 60, height: 60)
+                        .padding(.trailing, 5)
+                    
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(campingSpotStore.campingSpotList.first?.facltNm ?? "")
+                            .multilineTextAlignment(.leading)
+                            .font(.headline)
+                        HStack {
+                            Text("\(campingSpotStore.campingSpotList.first?.doNm ?? "") \(campingSpotStore.campingSpotList.first?.sigunguNm ?? "")")
+                                .padding(.vertical, 2)
+                            Spacer()
+                        }
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                    }
+                    .foregroundColor(.bcBlack)
+                    
                     HStack {
-                        Text("\(campingSpotStore.campingSpotList.first?.doNm ?? "") \(campingSpotStore.campingSpotList.first?.sigunguNm ?? "")")
-                            .padding(.vertical, 2)
-                        Spacer()
+                            Text("자세히 보기")
+                            Image(systemName: "chevron.right.2")
                     }
                     .font(.footnote)
                     .foregroundColor(.secondary)
                 }
-                .foregroundColor(.bcBlack)
-                
-                HStack {
-                        Text("자세히 보기")
-                        Image(systemName: "chevron.right.2")
-                }
-                .font(.footnote)
-                .foregroundColor(.secondary)
+                .padding(10)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.bcDarkGray, lineWidth: 1)
+                        .opacity(0.3)
+                )
             }
-            .padding(10)
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.bcDarkGray, lineWidth: 1)
-                    .opacity(0.3)
-            )
+            .foregroundColor(.clear)
         }
-        .foregroundColor(.clear)
     }
     
     
@@ -475,18 +486,3 @@ private extension DiaryDetailView {
     }
 }
 
-//키보드 올리기
-extension UIResponder {
-    static weak var currentFirstResponder: UIResponder? = nil
-
-    public func becomeFirstResponder() -> Bool {
-        UIResponder.currentFirstResponder = self
-        return true
-    }
-}
-
-extension UIView {
-    var globalFrame: CGRect? {
-        return superview?.convert(frame, to: nil)
-    }
-}

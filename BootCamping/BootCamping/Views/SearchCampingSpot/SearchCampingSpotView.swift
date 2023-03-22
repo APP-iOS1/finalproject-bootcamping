@@ -76,7 +76,7 @@ struct SearchCampingSpotView: View {
             }
             .toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Text("BOOTCAMPING")
+                    Text("Search")
                         .font(.title2.bold())
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {

@@ -18,9 +18,9 @@ struct DescribeDiaryView: View {
                     .frame(width: 230, height: 230)
                 //    .offset(x: 0, y: -50)
                 VStack {
-                    Text("프라이빗한 캠핑 일기장에")
+                    Text("부트캠핑과 함께 캠핑 노트에")
                         .padding(.bottom, 1)
-                    Text("내 캠핑 일기를 기록해봐요!")
+                    Text("나의 캠핑을 기록해봐요!")
                 }
                 .font(.title2)
                 .kerning(-1)

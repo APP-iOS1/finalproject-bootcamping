@@ -75,7 +75,7 @@ private extension PrivacyView {
     var isUsingFaceIdSetting: some View {
         HStack {
             Toggle(isOn: $toggleUsingFaceId) {
-                Text("내 캠핑일기 잠그기")
+                Text("내 캠핑 노트 잠그기")
             }
             .toggleStyle(SwitchToggleStyle(tint: .bcGreen))
             .onChange(of: toggleUsingFaceId) { _ in

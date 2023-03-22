@@ -106,8 +106,8 @@ struct DiaryAddView: View {
                             EmptyView()
                                 .id(title)
                             
-                            // 일기 내용
-                            TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
+                            // 노트 내용
+                            TextField("캠핑 노트를 작성해주세요", text: $diaryContent, axis: .vertical)
                                 .frame(minHeight: UIScreen.screenHeight / 4, alignment: .top)
                                 .lineLimit(10)
                                 .focused($inputFocused)
@@ -144,7 +144,7 @@ struct DiaryAddView: View {
                     }
                 }
                 
-                .navigationTitle(Text("캠핑 일기 쓰기"))
+                .navigationTitle(Text("캠핑 노트 쓰기"))
                 .onTapGesture {
                     inputFocused = false
                 }
@@ -341,7 +341,7 @@ private extension DiaryAddView {
                 UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                 dismiss()
             } label: {
-                Text(diaryTitle.isEmpty || diaryContent.isEmpty ? "내용을 작성해주세요" : "일기 쓰기")
+                Text(diaryTitle.isEmpty || diaryContent.isEmpty ? "내용을 작성해주세요" : "캠핑 노트 작성하기")
                     .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07) // 이거 밖에 있으면 글씨 부분만 버튼 적용됨
             }
             .font(.headline)

@@ -47,7 +47,7 @@ struct ContentView: View {
                         Label("캠핑장 검색", systemImage: "magnifyingglass")
                     }.tag(TabViewScreen.two)
                     
-                    //MARK: -세번째 캠핑일기 탭입니다.
+                    //MARK: -세번째 캠핑노트 탭입니다.
                     NavigationStack {
                         if diaryStore.myDiaryUserInfoDiaryList.count == 0 {
                             DiaryEmptyView()
@@ -55,7 +55,7 @@ struct ContentView: View {
                             MyCampingDiaryView()
                         }
                     }.tabItem {
-                        Label("내 캠핑일기", systemImage: "book")
+                        Label("내 캠핑노트", systemImage: "book")
                     }.tag(TabViewScreen.three)
                     
                     //MARK: - 네번째 마이페이지 탭입니다.

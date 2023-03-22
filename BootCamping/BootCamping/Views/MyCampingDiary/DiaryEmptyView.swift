@@ -18,7 +18,7 @@ struct DiaryEmptyView: View {
                 Spacer()
                 Image(systemName: "tray")
                     .font(.largeTitle)
-                Text("내 캠핑일기가 아직 없어요.")
+                Text("내 캠핑 노트가 아직 없어요.")
                     .font(.title3)
                     .padding()
                     .padding(.bottom, 50)
@@ -26,7 +26,7 @@ struct DiaryEmptyView: View {
                 Button {
                     self.isShowingAdd = true
                 } label: {
-                    Text("캠핑일기 작성하러 가기")
+                    Text("캠핑 노트 작성하러 가기")
                         .modifier(GreenButtonModifier())
                 }
                 .sheet(isPresented: self.$isShowingAdd) {
@@ -34,7 +34,7 @@ struct DiaryEmptyView: View {
                 }
                 
 //                NavigationLink (destination: DiaryAddView()){
-//                    Text("캠핑일기 작성하러 가기")
+//                    Text("캠핑 노트 작성하러 가기")
 //                        .modifier(GreenButtonModifier())
 //                }
                 Spacer()

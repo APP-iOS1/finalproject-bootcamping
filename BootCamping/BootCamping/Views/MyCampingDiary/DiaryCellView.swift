@@ -77,6 +77,7 @@ struct DiaryCellView: View {
                 .background(Color.secondary)
             } else {
                 diaryImage
+                    .edgesIgnoringSafeArea(.all)
                 
                 NavigationLink {
                     DiaryDetailView(item: item)
@@ -153,7 +154,7 @@ struct DiaryCellView: View {
 private extension DiaryCellView {
     //MARK: - 메인 이미지
     var diaryImage: some View {
-        TabView{
+//        TabView{
             ForEach(item.diary.diaryImageURLs, id: \.self) { url in
                 WebImage(url: URL(string: url))
                     .resizable()
@@ -165,7 +166,8 @@ private extension DiaryCellView {
                     .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     .clipped()
             }
-        }
+//        }
+        .pinchZoom()
         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
         .tabViewStyle(PageTabViewStyle())
         // .never 로 하면 배경 안보이고 .always 로 하면 인디케이터 배경 보입니다.
@@ -182,7 +184,7 @@ private extension DiaryCellView {
             }
             diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
         }
-//        .pinchZoomAndDrag()
+
     }
     
     //MARK: - 다이어리 작성자 프로필

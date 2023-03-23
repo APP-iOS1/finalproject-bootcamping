@@ -68,7 +68,8 @@ struct DiaryDetailView: View {
                 ScrollView(showsIndicators: false) {
                     LazyVStack(alignment: .leading) {
                         diaryUserProfile.id(topID)
-                        diaryDetailImage.zIndex(1)
+                        diaryDetailImage
+                            .edgesIgnoringSafeArea(.all)
                         Group {
                             EmptyView().id(commentButtonID)
                             HStack(alignment: .center){
@@ -320,9 +321,7 @@ private extension DiaryDetailView {
     
     // MARK: -View : 다이어리 사진
     var diaryDetailImage: some View {
-        TabView{
             ForEach(item.diary.diaryImageURLs, id: \.self) { url in
-                ZStack{
                     WebImage(url: URL(string: url))
                         .resizable()
                         .placeholder {
@@ -332,8 +331,7 @@ private extension DiaryDetailView {
                         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                         .clipped()
                 }
-            }
-        }
+            .pinchZoom()
         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
         .tabViewStyle(PageTabViewStyle())
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))

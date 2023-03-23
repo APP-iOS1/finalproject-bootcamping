@@ -23,7 +23,7 @@ struct DiaryCellView: View {
     
     
     @State var isBookmarked: Bool = false
-    
+    @State private var isShowingEdit = false
     
     //선택한 다이어리 정보 변수입니다.
     var item: UserInfoDiary
@@ -130,6 +130,10 @@ struct DiaryCellView: View {
                     .presentationDragIndicator(.hidden)
             }
         }
+        //editView 모달로 변경
+        .sheet(isPresented: $isShowingEdit) {
+            DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", item: item, selectedDate: item.diary.diaryVisitedDate)
+        }
         .padding(.top, UIScreen.screenWidth * 0.03)
         .onAppear {
             commentStore.readCommentsCombine(diaryId: item.diary.id)
@@ -226,11 +230,20 @@ private extension DiaryCellView {
     var alertMenu: some View {
         //MARK: - ... 버튼입니다.
         Menu {
-            NavigationLink {
-                DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", item: item, selectedDate: item.diary.diaryVisitedDate)
+            //기존 버튼
+//            NavigationLink {
+//                DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", item: item, selectedDate: item.diary.diaryVisitedDate)
+//            } label: {
+//                Text("수정하기")
+//            }
+            
+            //Edit View 모달로 변경
+            Button {
+                self.isShowingEdit = true
             } label: {
                 Text("수정하기")
             }
+
             
             Button {
                 isShowingDeleteAlert = true

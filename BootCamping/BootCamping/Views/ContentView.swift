@@ -33,51 +33,55 @@ struct ContentView: View {
             }
             if isSignIn {
                 TabView(selection: $tabSelection.screen) {
-                    //MARK: - 첫번째 홈탭 입니다.
-                    NavigationStack {
-                        HomeView()
-                    }.tabItem {
-                        Label("메인", systemImage: "tent")
-                    }.tag(TabViewScreen.one)
-                    
-                    //MARK: - 두번째 캠핑장 탭입니다.
-                    NavigationStack {
-                        SearchCampingSpotView()
-                    }.tabItem {
-                        Label("캠핑장 검색", systemImage: "magnifyingglass")
-                    }.tag(TabViewScreen.two)
-                    
-                    //MARK: -세번째 캠핑노트 탭입니다.
-                    NavigationStack {
-                        if diaryStore.myDiaryUserInfoDiaryList.count == 0 {
-                            DiaryEmptyView()
-                        } else {
-                            MyCampingDiaryView()
+                    Group {
+                        //MARK: - 첫번째 홈탭 입니다.
+                        NavigationStack {
+                            HomeView()
+                        }.tabItem {
+                            Label("메인", systemImage: "tent")
+                        }.tag(TabViewScreen.one)
+                        
+                        //MARK: - 두번째 캠핑장 탭입니다.
+                        NavigationStack {
+                            SearchCampingSpotView()
+                        }.tabItem {
+                            Label("캠핑장 검색", systemImage: "magnifyingglass")
+                        }.tag(TabViewScreen.two)
+                        
+                        //MARK: -세번째 캠핑노트 탭입니다.
+                        NavigationStack {
+                            if diaryStore.myDiaryUserInfoDiaryList.count == 0 {
+                                DiaryEmptyView()
+                            } else {
+                                MyCampingDiaryView()
+                            }
+                        }.tabItem {
+                            Label("내 캠핑노트", systemImage: "book")
+                        }.tag(TabViewScreen.three)
+                        
+                        //MARK: - 네번째 마이페이지 탭입니다.
+                        NavigationStack {
+                            MyPageView()
+                        }.tabItem {
+                            Label("마이 페이지", systemImage: "person")
+                        }.tag(TabViewScreen.four) 
+                    }
+                    .toolbar(.visible, for: .tabBar)
+                    .toolbarBackground(Color.bcWhite, for: .tabBar)
+                    .onAppear {
+                        if wholeAuthStore.currentUser != nil {
+                            diaryStore.firstGetMyDiaryCombine()
+                            diaryStore.mostLikedGetDiarysCombine()
+                            diaryStore.firstGetRealTimeDiaryCombine()
+                            scheduleStore.readScheduleCombine()
+                            reportStore.readReportCombine()
+                            //For Googole Analystic
+                            Analytics.logEvent(AnalyticsEventLogin, parameters: [
+                                "LoginEmail": "\(String(describing: Auth.auth().currentUser?.email))",
+                                "LoginUID": "\(String(describing: Auth.auth().currentUser?.uid))"
+                            ])
+                            wholeAuthStore.getUserInfo(userUID: wholeAuthStore.currentUser!.uid) {}
                         }
-                    }.tabItem {
-                        Label("내 캠핑노트", systemImage: "book")
-                    }.tag(TabViewScreen.three)
-                    
-                    //MARK: - 네번째 마이페이지 탭입니다.
-                    NavigationStack {
-                        MyPageView()
-                    }.tabItem {
-                        Label("마이 페이지", systemImage: "person")
-                    }.tag(TabViewScreen.four)
-                }
-                .onAppear {
-                    if wholeAuthStore.currentUser != nil {
-                        diaryStore.firstGetMyDiaryCombine()
-                        diaryStore.mostLikedGetDiarysCombine()
-                        diaryStore.firstGetRealTimeDiaryCombine()
-                        scheduleStore.readScheduleCombine()
-                        reportStore.readReportCombine()
-                        //For Googole Analystic
-                        Analytics.logEvent(AnalyticsEventLogin, parameters: [
-                            "LoginEmail": "\(String(describing: Auth.auth().currentUser?.email))",
-                            "LoginUID": "\(String(describing: Auth.auth().currentUser?.uid))"
-                        ])
-                        wholeAuthStore.getUserInfo(userUID: wholeAuthStore.currentUser!.uid) {}
                     }
                 }
             } else {

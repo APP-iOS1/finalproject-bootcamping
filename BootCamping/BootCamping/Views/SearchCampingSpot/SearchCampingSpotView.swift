@@ -111,6 +111,12 @@ struct SearchCampingSpotView: View {
             campingSpotStore.campingSpotList = []
             campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: campingSpotADName))
         }
+        .onTapGesture {
+            dismissKeyboard()
+        }
+        .onDisappear {
+            dismissKeyboard()
+        }
     }
 }
 

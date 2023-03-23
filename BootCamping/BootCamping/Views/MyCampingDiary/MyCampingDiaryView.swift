@@ -74,7 +74,7 @@ struct MyCampingDiaryView: View {
         }
         .toolbar{
             ToolbarItem(placement: .navigationBarLeading) {
-                Text("My Camping Diary")
+                Text("My Camping Note")
                     .font(.title2.bold())
             }
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -93,7 +93,7 @@ struct MyCampingDiaryView: View {
 //                }
             }
         }
-        .alert("다이어리 만들기에 실패했습니다.. 다시 시도해 주세요.", isPresented: $diaryStore.isError) {
+        .alert("노트 만들기에 실패했습니다.. 다시 시도해 주세요.", isPresented: $diaryStore.isError) {
             Button("확인", role: .cancel) {
                 diaryStore.isError = false
             }

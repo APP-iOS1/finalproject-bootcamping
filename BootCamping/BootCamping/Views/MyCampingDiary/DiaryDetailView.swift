@@ -416,6 +416,7 @@ private extension DiaryDetailView {
                         .opacity(0.3)
                 )
             }
+            .padding(.bottom, 10)
             .foregroundColor(.clear)
         }
     }

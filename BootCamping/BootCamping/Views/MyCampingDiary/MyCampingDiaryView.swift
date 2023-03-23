@@ -78,19 +78,21 @@ struct MyCampingDiaryView: View {
                     .font(.title2.bold())
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink (destination: DiaryAddView())
-                {
-                    Image(systemName: "plus")
-                }
-                
-//                Button {
-//                    self.isShowingAdd = true
-//                } label: {
+                //기존 코드
+//                NavigationLink (destination: DiaryAddView())
+//                {
 //                    Image(systemName: "plus")
 //                }
-//                .sheet(isPresented: self.$isShowingAdd) {
-//                    DiaryAddView()
-//                }
+                
+                //Add View 모달로 변경
+                Button {
+                    self.isShowingAdd = true
+                } label: {
+                    Image(systemName: "plus")
+                }
+                .sheet(isPresented: self.$isShowingAdd) {
+                    DiaryAddView()
+                }
             }
         }
         .alert("노트 만들기에 실패했습니다.. 다시 시도해 주세요.", isPresented: $diaryStore.isError) {

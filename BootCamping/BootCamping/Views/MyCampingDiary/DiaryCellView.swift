@@ -374,6 +374,8 @@ private extension DiaryCellView {
                 EmptyView()
             }
             
+            
+            
             Button {
                 self.tag = 1
                 diaryStore.isCommentButtonClicked = true
@@ -399,4 +401,5 @@ private extension DiaryCellView {
         }
         .padding(.bottom, 15)
     }
+    
 }

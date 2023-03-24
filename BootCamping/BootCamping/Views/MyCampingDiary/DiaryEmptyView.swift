@@ -30,7 +30,7 @@ struct DiaryEmptyView: View {
                         .modifier(GreenButtonModifier())
                 }
                 .sheet(isPresented: self.$isShowingAdd) {
-                    DiaryAddView()
+                    DiaryAddView(isShowingAdd: $isShowingAdd)
                 }
                 
 //                NavigationLink (destination: DiaryAddView()){

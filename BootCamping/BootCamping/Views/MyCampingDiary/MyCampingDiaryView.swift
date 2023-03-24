@@ -88,10 +88,14 @@ struct MyCampingDiaryView: View {
                 Button {
                     self.isShowingAdd = true
                 } label: {
-                    Image(systemName: "plus")
+                    Image(systemName: "square.and.pencil")
+                        .font(.title2.bold())
                 }
-                .sheet(isPresented: self.$isShowingAdd) {
-                    DiaryAddView()
+//                .sheet(isPresented: self.$isShowingAdd) {
+//                    DiaryAddView()
+//                }
+                .fullScreenCover(isPresented: $isShowingAdd) {
+                    DiaryAddView(isShowingAdd: $isShowingAdd)
                 }
             }
         }

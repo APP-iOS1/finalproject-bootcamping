@@ -197,7 +197,9 @@ struct DiaryAddView: View {
             }
             .sheet(isPresented: $isImageView) { // 대표이미지 말고 다른 이미지도 볼 수 있는 시트
                 DiaryAddDetailImageView(diaryImages: $diaryImages, isImageView: $isImageView)
-        }
+                    .presentationDetents([.large])
+                    .presentationDragIndicator(.visible)
+            }
         }
     }
 }

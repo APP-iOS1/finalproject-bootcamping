@@ -88,22 +88,17 @@ struct DiaryCellView: View {
                         }
                         diaryTitle
                     }
-                    if item.diary.diaryContent.count > 30 {
-                        if isMore {
-                            diaryFullContent
-                        } else {
-                            diaryLimitContent
+                    
+                    if isMore {
+                        diaryFullContent
+                        //TODO: -캠핑장 정보 네모 버튼. 없애고 피드백 후 수정 예정
+                        if !campingSpotStore.campingSpotList.isEmpty {
+                            diaryCampingLink
                         }
                     } else {
-                        diaryFullContent
+                        diaryLimitContent
                     }
-                    
-                    
-                    //TODO: -캠핑장 정보 네모 버튼. 없애고 피드백 후 수정 예정
-                    //                        if !campingSpotStore.campingSpotList.isEmpty {
-                    //                            diaryCampingLink
-                    //                        }
-                    
+                
                 }
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 
@@ -133,7 +128,6 @@ struct DiaryCellView: View {
         .padding(.top, UIScreen.screenWidth * 0.03)
         .onAppear {
             commentStore.readCommentsCombine(diaryId: item.diary.id)
-//            campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
             //TODO: -함수 업데이트되면 넣기
             diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
             // 현재 다이어리가 신고된 다이어리인 경우 reportState를 .alreadyReported로, 그렇지 않은 경우 .notReported로 설정한다
@@ -312,6 +306,7 @@ private extension DiaryCellView {
                 .foregroundColor(.secondary)
                 .onTapGesture {
                     isMore.toggle()
+                    campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
                 }
         }.padding(.bottom, 15)
     }

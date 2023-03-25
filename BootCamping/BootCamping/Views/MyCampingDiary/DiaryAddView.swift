@@ -22,6 +22,7 @@ struct DiaryAddView: View {
     @Binding var isShowingAdd: Bool
 
     
+    
     // 대표 이미지 말고 다른 이미지들도 보는 버튼 bool 값
     @State var isImageView = false
     
@@ -180,7 +181,11 @@ struct DiaryAddView: View {
 
                         }
                     }
-                    .task {
+//                    .task {
+//                        campingSpot = campingSpotItem.facltNm
+//                        locationInfo = campingSpotItem.contentId
+//                    }
+                    .onChange(of: campingSpotItem) { _ in
                         campingSpot = campingSpotItem.facltNm
                         locationInfo = campingSpotItem.contentId
                     }

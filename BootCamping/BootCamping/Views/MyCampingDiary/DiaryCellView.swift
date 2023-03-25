@@ -94,6 +94,7 @@ struct DiaryCellView: View {
                         //TODO: -캠핑장 정보 네모 버튼. 없애고 피드백 후 수정 예정
                         if !campingSpotStore.campingSpotList.isEmpty {
                             diaryCampingLink
+                                .padding(.bottom, 10)
                         }
                     } else {
                         diaryLimitContent

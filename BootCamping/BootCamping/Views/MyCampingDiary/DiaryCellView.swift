@@ -45,6 +45,8 @@ struct DiaryCellView: View {
     //댓글 버튼 클릭시 다음 화면으로 이동.
     @State var tag:Int? = nil
     
+    @State private var isMore: Bool = false
+    
     var diaryCampingSpot: [CampingSpot] {
         get {
             return campingSpotStore.campingSpotList.filter{
@@ -79,38 +81,27 @@ struct DiaryCellView: View {
                 diaryImage
                     .edgesIgnoringSafeArea(.all)
                 
-                NavigationLink {
-                    DiaryDetailView(item: item)
-                } label: {
-                    VStack(alignment: .leading) {
-                        HStack(alignment: .center){
-                            if (item.diary.uid == wholeAuthStore.currnetUserInfo!.id && item.diary.diaryIsPrivate) {
-                                isPrivateImage
-                            }
-                            diaryTitle
+                VStack(alignment: .leading) {
+                    HStack(alignment: .center){
+                        if (item.diary.uid == wholeAuthStore.currnetUserInfo!.id && item.diary.diaryIsPrivate) {
+                            isPrivateImage
                         }
-                        diaryContent
-                        
-                        HStack {
-                            Spacer()
-                            HStack{
-                                Text("자세히 보기")
-                                Image(systemName: "chevron.right.2")
-                            }
-                            .font(.footnote)
-                            .foregroundColor(.secondary)
-                            .padding(.vertical, 10)
-                        }
-                        
-                        //TODO: -캠핑장 정보 네모 버튼. 없애고 피드백 후 수정 예정
-//                        if !campingSpotStore.campingSpotList.isEmpty {
-//                            diaryCampingLink
-//                        }
-                
+                        diaryTitle
                     }
-                    .padding(.horizontal, UIScreen.screenWidth * 0.03)
+                    
+                    if isMore {
+                        diaryFullContent
+                        //TODO: -캠핑장 정보 네모 버튼. 없애고 피드백 후 수정 예정
+                        if !campingSpotStore.campingSpotList.isEmpty {
+                            diaryCampingLink
+                                .padding(.bottom, 10)
+                        }
+                    } else {
+                        diaryLimitContent
+                    }
+                
                 }
-                .foregroundColor(.bcBlack)
+                .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 
                 diaryDetailInfo
                     .padding(.horizontal, UIScreen.screenWidth * 0.03)
@@ -138,7 +129,6 @@ struct DiaryCellView: View {
         .padding(.top, UIScreen.screenWidth * 0.03)
         .onAppear {
             commentStore.readCommentsCombine(diaryId: item.diary.id)
-            campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
             //TODO: -함수 업데이트되면 넣기
             diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
             // 현재 다이어리가 신고된 다이어리인 경우 reportState를 .alreadyReported로, 그렇지 않은 경우 .notReported로 설정한다
@@ -307,10 +297,24 @@ private extension DiaryCellView {
             .foregroundColor(Color.secondary)
     }
     
+    //MARK: - 내용 + 더보기
+    var diaryLimitContent: some View {
+        HStack {
+            Text("\(item.diary.diaryContent)")
+                .lineLimit(1)
+                .multilineTextAlignment(.leading)
+            Text("더보기")
+                .foregroundColor(.secondary)
+                .onTapGesture {
+                    isMore.toggle()
+                    campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
+                }
+        }.padding(.bottom, 15)
+    }
+    
     //MARK: - 내용
-    var diaryContent: some View {
-        Text(item.diary.diaryContent)
-            .lineLimit(3)
+    var diaryFullContent: some View {
+        Text("\(item.diary.diaryContent)")
             .multilineTextAlignment(.leading)
             .padding(.bottom, 15)
     }

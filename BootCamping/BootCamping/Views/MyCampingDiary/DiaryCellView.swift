@@ -79,7 +79,6 @@ struct DiaryCellView: View {
                 .background(Color.secondary)
             } else {
                 diaryImage
-                    .edgesIgnoringSafeArea(.all)
                 
                 VStack(alignment: .leading) {
                     HStack(alignment: .center){

@@ -64,8 +64,6 @@ struct MyCampingDiaryView: View {
             //다이어리 비어있을때 추가 화면
             DiaryEmptyView().zIndex(-1)
             diaryStore.isProcessing ? Color.black.opacity(0.3) : Color.clear
-
-            
         }
         .onChange(of: diaryStore.createFinshed) { _ in
             diaryStore.firstGetMyDiaryCombine()

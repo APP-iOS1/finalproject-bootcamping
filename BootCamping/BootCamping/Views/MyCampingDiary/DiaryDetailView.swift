@@ -68,23 +68,16 @@ struct DiaryDetailView: View {
                 ScrollView(showsIndicators: false) {
                     LazyVStack(alignment: .leading) {
                         diaryUserProfile.id(topID)
-                        diaryDetailImage
-                            .edgesIgnoringSafeArea(.all)
+                        
                         Group {
-                            EmptyView().id(commentButtonID)
-                            HStack(alignment: .center){
-                                if (item.diary.uid == wholeAuthStore.currnetUserInfo!.id && item.diary.diaryIsPrivate) {
-                                    isPrivateImage
-                                }
-                                //댓글버튼 클릭시 본문부터 보이도록
-                                diaryDetailTitle
-                            }
+                            diaryDetailTitle
+                            
                             diaryDetailContent
+                            
                             if !campingSpotStore.campingSpotList.isEmpty {
                                 diaryCampingLink
                             }
-//                            Divider().padding(.top, 5)
-                            
+                            //좋아요, 댓글, 타임스탬프
                             diaryDetailInfo
                             
                             Divider()
@@ -164,45 +157,18 @@ struct DiaryDetailView: View {
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
                 
             }
-
-            .toast(isPresenting: $isShowingAcceptedToast) {
-                AlertToast(type: .regular, title: "이 게시물에 대한 신고가 접수되었습니다.")
-            }
-            .toast(isPresenting: $isShowingBlockedToast) {
-                AlertToast(type: .regular, title: "이 사용자를 차단했습니다.", subTitle: "차단 해제는 마이페이지 > 설정에서 가능합니다.")
-            }
-            .sheet(isPresented: $isShowingUserReportAlert) {
-                if reportState == .alreadyReported {
-                    // 현재 다이어리의 reportState가 .alreadyReported인 경우 WaitingView(신고가 이미 접수되었음을 알려주는 뷰)를 나타낸다
-                    WaitingView()
-                        .presentationDetents([.fraction(0.3), .medium])
-                } else {
-                    // 현재 다이어리의 reportState가 .alreadyReported가 아닌 경우 ReportView를 띄워 신고가 가능하게 한다
-                    ReportView(reportState: $reportState, reportedDiaryId: item.diary.id)
-                        .presentationDetents([.fraction(0.5), .medium, .large]) // 화면의 아래쪽 50%를 차지하는 시트를 만든다
-                        .presentationDragIndicator(.hidden)
-                }
-            }
-//            .padding(.top)
+            .padding(.top)
             .padding(.bottom)
-            .navigationTitle("BOOTCAMPING")
+            .navigationTitle("댓글")
+            .navigationBarTitleDisplayMode(.inline)
             .onAppear{
                 commentStore.readCommentsCombine(diaryId: item.diary.id)
-                campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
-                // 현재 다이어리가 신고된 다이어리인 경우 reportState를 .alreadyReported로, 그렇지 않은 경우 .notReported로 설정한다
-                reportState = (reportStore.reportedDiaries.filter{ reportedDiary in reportedDiary.reportedDiaryId == item.diary.id }.count != 0) ? ReportState.alreadyReported : ReportState.notReported
+                campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diary.diaryAddress]))
             }
-            // 다이어리의 상태가 nowReported(지금 신고된 경우)로 변경될 때 신고가 접수되었따는 토스트 알림을 뛰운다.
-            .onChange(of: reportState) { newReportState in
-                isShowingAcceptedToast = (reportState == ReportState.nowReported)
-            }
-        }
-        .onChange(of: diaryStore.createFinshed) { _ in
-            dismiss()
         }
         .onTapGesture {
-            submit()
+            dismissKeyboard()
         }
     }
     
@@ -239,15 +205,6 @@ private extension DiaryDetailView {
             Text(item.diary.diaryUserNickName)
                 .font(.callout)
             Spacer()
-            
-            //MARK: -...버튼 글 쓴 유저일때만 ...나타나도록
-            if item.diary.uid == Auth.auth().currentUser?.uid {
-                alertMenu
-            }
-            else {
-                reportAlertMenu
-            }
-            
         }
         .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
@@ -258,99 +215,6 @@ private extension DiaryDetailView {
             .foregroundColor(Color.secondary)
     }
     
-    //MARK: - Alert Menu 버튼
-    var alertMenu: some View {
-        //MARK: - ... 버튼입니다.
-        Menu {
-            NavigationLink {
-                DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", item: item, selectedDate: item.diary.diaryVisitedDate)
-            } label: {
-                Text("수정하기")
-            }
-
-            
-            Button {
-                isShowingDeleteAlert = true
-            } label: {
-                Text("삭제하기")
-            }
-            
-        } label: {
-            Image(systemName: "ellipsis")
-                .font(.title3)
-                .frame(width: 30,height: 30)
-        }
-        //MARK: - 노트 삭제 알림
-        .alert("캠핑 노트를 삭제하시겠습니까?", isPresented: $isShowingDeleteAlert) {
-            Button("취소", role: .cancel) {
-                isShowingDeleteAlert = false
-            }
-            Button("삭제", role: .destructive) {
-                diaryStore.deleteDiaryCombine(diary: item.diary)
-                dismiss()
-            }
-        }
-    }
-    
-    //MARK: - 유저 신고 / 차단 버튼
-    var reportAlertMenu: some View {
-        
-        //MARK: - ... 버튼입니다.
-        
-        Button(action: {
-            isShowingConfirmationDialog.toggle()
-        }) {
-            Image(systemName: "ellipsis")
-                .font(.title3)
-                .frame(width: 30,height: 30)
-
-        }
-        .confirmationDialog("알림", isPresented: $isShowingConfirmationDialog, titleVisibility: .hidden, actions: {
-            Button("게시물 신고하기", role: .destructive) {
-                isShowingUserReportAlert.toggle()
-            }
-            Button("\(item.user.nickName)님 차단하기", role: .destructive) {
-                blockedUserStore.addBlockedUserCombine(blockedUserId: item.diary.uid)
-                wholeAuthStore.readMyInfoCombine(user: wholeAuthStore.currnetUserInfo!)
-                isShowingBlockedToast.toggle()
-            }
-            Button("취소", role: .cancel) {}
-        })
-    }
-
-    
-    // MARK: -View : 다이어리 사진
-    var diaryDetailImage: some View {
-            ForEach(item.diary.diaryImageURLs, id: \.self) { url in
-                    WebImage(url: URL(string: url))
-                        .resizable()
-                        .placeholder {
-                            Rectangle().foregroundColor(.gray)
-                        }
-                        .scaledToFill()
-                        .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
-                        .clipped()
-                }
-            .pinchZoom()
-        .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
-        .tabViewStyle(PageTabViewStyle())
-        .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
-        //사진 두번 클릭시 좋아요
-        .onTapGesture(count: 2) {
-            //좋아요 버튼, 카운드
-            if diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") {
-                //포함되있으면 아무것도 안함
-            } else {
-                diaryLikeStore.addDiaryLikeCombine(diaryId: item.diary.id)
-                //탭틱
-                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
-            }
-            //TODO: -함수 업데이트되면 넣기
-            diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
-        }
-//        .pinchZoomAndDrag()
-
-    }
     
     // MARK: -View : 다이어리 제목
     var diaryDetailTitle: some View {
@@ -368,57 +232,56 @@ private extension DiaryDetailView {
             .padding(.bottom, 25)
     }
     
-    //MARK: - 방문한 캠핑장 링크
-    var diaryCampingLink: some View {
-        
-        HStack {
-            NavigationLink(destination: CampingSpotDetailView(campingSpot: campingSpotStore.campingSpotList.first ?? campingSpotStore.campingSpot), tag: 1, selection: $tag) {
-                EmptyView()
-            }
-            
-            Button {
-                self.tag = 1
-                submit()
-            } label: {
-                HStack {
-                    WebImage(url: URL(string: campingSpotStore.campingSpotList.first?.firstImageUrl == "" ? campingSpotStore.noImageURL : campingSpotStore.campingSpotList.first?.firstImageUrl ?? ""))
-                        .resizable()
-                        .frame(width: 60, height: 60)
-                        .padding(.trailing, 5)
-                    
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text(campingSpotStore.campingSpotList.first?.facltNm ?? "")
-                            .multilineTextAlignment(.leading)
-                            .font(.headline)
+        //MARK: - 방문한 캠핑장 링크
+        var diaryCampingLink: some View {
+    
+            HStack {
+                NavigationLink(destination: CampingSpotDetailView(campingSpot: campingSpotStore.campingSpotList.first ?? campingSpotStore.campingSpot), tag: 1, selection: $tag) {
+                    EmptyView()
+                }
+    
+                Button {
+                    self.tag = 1
+                    dismissKeyboard()
+                } label: {
+                    HStack {
+                        WebImage(url: URL(string: campingSpotStore.campingSpotList.first?.firstImageUrl == "" ? campingSpotStore.noImageURL : campingSpotStore.campingSpotList.first?.firstImageUrl ?? ""))
+                            .resizable()
+                            .frame(width: 60, height: 60)
+                            .padding(.trailing, 5)
+    
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(campingSpotStore.campingSpotList.first?.facltNm ?? "")
+                                .multilineTextAlignment(.leading)
+                                .font(.headline)
+                            HStack {
+                                Text("\(campingSpotStore.campingSpotList.first?.doNm ?? "") \(campingSpotStore.campingSpotList.first?.sigunguNm ?? "")")
+                                    .padding(.vertical, 2)
+                                Spacer()
+                            }
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                        }
+                        .foregroundColor(.bcBlack)
+    
                         HStack {
-                            Text("\(campingSpotStore.campingSpotList.first?.doNm ?? "") \(campingSpotStore.campingSpotList.first?.sigunguNm ?? "")")
-                                .padding(.vertical, 2)
-                            Spacer()
+                                Text("자세히 보기")
+                                Image(systemName: "chevron.right.2")
                         }
                         .font(.footnote)
                         .foregroundColor(.secondary)
                     }
-                    .foregroundColor(.bcBlack)
-                    
-                    HStack {
-                            Text("자세히 보기")
-                            Image(systemName: "chevron.right.2")
-                    }
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
+                    .padding(10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.bcDarkGray, lineWidth: 1)
+                            .opacity(0.3)
+                    )
                 }
-                .padding(10)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.bcDarkGray, lineWidth: 1)
-                        .opacity(0.3)
-                )
+                .padding(.bottom, 10)
+                .foregroundColor(.clear)
             }
-            .padding(.bottom, 10)
-            .foregroundColor(.clear)
         }
-    }
-    
     
     
     //MARK: - 좋아요, 댓글, 타임스탬프
@@ -471,17 +334,5 @@ private extension DiaryDetailView {
         }
     }
     
-    //MARK: - 키보드 dismiss 함수입니다.
-    func submit() {
-        resignKeyboard()
-    }
-    //iOS 15 아래버전은 유킷연동 함수 사용
-    func resignKeyboard() {
-        if #available(iOS 15, *) {
-            inputFocused = false
-        } else {
-            dismissKeyboard()
-        }
-    }
 }
 

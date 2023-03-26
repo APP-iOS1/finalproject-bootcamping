@@ -20,8 +20,6 @@ enum CurrentField{
 struct DiaryAddView: View {
     //풀스크린커버
     @Binding var isShowingAdd: Bool
-
-    
     
     // 대표 이미지 말고 다른 이미지들도 보는 버튼 bool 값
     @State var isImageView = false

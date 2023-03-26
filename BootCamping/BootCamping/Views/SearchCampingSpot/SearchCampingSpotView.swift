@@ -124,7 +124,7 @@ extension SearchCampingSpotView {
     
     private var campingSpotListSearchTextfield: some View {
         VStack {
-            TextField("\(Image(systemName: "magnifyingglass"))캠핑하실 지역을 검색해 주세요", text: $keywordForSearching)
+            TextField("\(Image(systemName: "magnifyingglass"))캠핑장을 검색해 주세요", text: $keywordForSearching)
                 .textFieldStyle(.roundedBorder)
                 .focused($isTextFieldFocused)
                 .showClearButton($keywordForSearching)

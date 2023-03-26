@@ -127,7 +127,7 @@ struct DiaryEditView: View {
                 }
             }
             .padding(.horizontal, UIScreen.screenWidth*0.03)
-            .navigationTitle(Text("캠핑 노트 쓰기"))
+            .navigationTitle(Text("캠핑 노트 고쳐쓰기"))
             .onTapGesture {
                 dismissKeyboard()
             }

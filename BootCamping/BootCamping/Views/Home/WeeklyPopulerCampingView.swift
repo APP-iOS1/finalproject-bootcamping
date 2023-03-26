@@ -17,6 +17,8 @@ struct WeeklyPopulerCampingView: View {
     
     var body: some View {
         VStack {
+            Spacer()
+            
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     // 차단한 유저의 글을 제외하고 보여준다

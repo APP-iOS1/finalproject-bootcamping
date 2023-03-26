@@ -22,13 +22,13 @@ struct WeeklyDiaryDetailView: View {
     @EnvironmentObject var blockedUserStore: BlockedUserStore
     @EnvironmentObject var reportStore: ReportStore
     @Environment(\.dismiss) private var dismiss
-
+    
     @StateObject var campingSpotStore: CampingSpotStore = CampingSpotStore()
     @StateObject var diaryLikeStore: DiaryLikeStore = DiaryLikeStore()
     @StateObject var commentStore: CommentStore = CommentStore()
-
+    
     @StateObject var scrollViewHelper: ScrollViewHelper = ScrollViewHelper()
-
+    
     var diaryCampingSpot: [CampingSpot] {
         get {
             return campingSpotStore.campingSpotList.filter{
@@ -36,35 +36,35 @@ struct WeeklyDiaryDetailView: View {
             }
         }
     }
-
+    
     @State private var diaryComment: String = ""
-
+    
     //삭제 알림
     @State private var isShowingDeleteAlert = false
     //유저 신고/ 차단 알림
     @State private var isShowingConfirmationDialog = false
     @State private var isShowingUserReportAlert = false
     @State private var isShowingUserBlockedAlert = false
-
+    
     // 현재 게시물의 신고 상태를 나타낼 변수
     @State private var reportState = ReportState.notReported
-
+    
     @State private var isShowingAcceptedToast = false
     @State private var isShowingBlockedToast = false
-
+    
     //자동 스크롤
     @Namespace var topID
     @Namespace var bottomID
     @Namespace var commentButtonID
-
+    
     //키보드 포커싱
     @FocusState var inputFocused: Bool
-
+    
     //버튼 클릭시 캠핑장 상세뷰로 이동.
     @State var tag:Int? = nil
-
+    
     var item: UserInfoDiary
-
+    
     var body: some View {
         ScrollViewReader { proxy in
             VStack {
@@ -86,10 +86,10 @@ struct WeeklyDiaryDetailView: View {
                             if !campingSpotStore.campingSpotList.isEmpty {
                                 diaryCampingLink
                             }
-//                            Divider().padding(.top, 5)
-
+                            //                            Divider().padding(.top, 5)
+                            
                             diaryDetailInfo
-
+                            
                             Divider()
                             //댓글
                             ForEach(commentStore.commentList) { comment in
@@ -102,7 +102,7 @@ struct WeeklyDiaryDetailView: View {
                             .frame(height: 0.1)
                             .id(bottomID)
                         Spacer()
-
+                        
                     }
                     .task {
                         //이전화면에서 댓글버튼 눌렀다면 바로 키보드 나오게
@@ -120,15 +120,15 @@ struct WeeklyDiaryDetailView: View {
                     uiScrollView.delegate = scrollViewHelper
                 })
                 .padding(.bottom, 0.1)
-
-                 HStack {
+                
+                HStack {
                     if wholeAuthStore.currnetUserInfo?.profileImageURL != "" {
                         WebImage(url: URL(string: wholeAuthStore.currnetUserInfo!.profileImageURL))
                             .resizable()
                             .scaledToFill()
                             .frame(width: 30, height: 30)
                             .clipShape(Circle())
-
+                        
                     } else {
                         Image("defaultProfileImage")
                             .resizable()
@@ -145,7 +145,7 @@ struct WeeklyDiaryDetailView: View {
                                 proxy.scrollTo(commentButtonID, anchor: .top)
                             }
                         }
-
+                    
                     Button {
                         commentStore.createCommentCombine(diaryId: item.diary.id, comment: Comment(id: UUID().uuidString, diaryId: item.diary.id, uid: wholeAuthStore.currnetUserInfo?.id ?? "" , nickName: wholeAuthStore.currnetUserInfo?.nickName ?? "", profileImage: wholeAuthStore.currnetUserInfo?.profileImageURL ?? "", commentContent: diaryComment, commentCreatedDate: Timestamp()))
                         commentStore.readCommentsCombine(diaryId: item.diary.id)
@@ -153,21 +153,21 @@ struct WeeklyDiaryDetailView: View {
                             proxy.scrollTo(bottomID, anchor: .bottom)
                         }
                         diaryComment = ""
-
+                        
                     } label: {
                         Image(systemName: "paperplane")
                             .font(.title3)
                             .foregroundColor(Color.bcDarkGray)
                     }
                     .disabled(diaryComment == "")
-
+                    
                 }
                 .foregroundColor(.bcDarkGray)
                 .padding(.vertical, 1)
                 .padding(.horizontal, UIScreen.screenWidth * 0.03)
-
+                
             }
-
+            
             .toast(isPresenting: $isShowingAcceptedToast) {
                 AlertToast(type: .regular, title: "이 게시물에 대한 신고가 접수되었습니다.")
             }
@@ -186,7 +186,7 @@ struct WeeklyDiaryDetailView: View {
                         .presentationDragIndicator(.hidden)
                 }
             }
-//            .padding(.top)
+            //            .padding(.top)
             .padding(.bottom)
             .navigationTitle("주간 인기캠핑")
             .onAppear{
@@ -208,16 +208,16 @@ struct WeeklyDiaryDetailView: View {
             submit()
         }
     }
-
+    
 }
 
 private extension WeeklyDiaryDetailView {
-
+    
     //MARK: - 댓글 삭제 기능
     func delete(at offsets: IndexSet) {
         commentStore.commentList.remove(atOffsets: offsets)
     }
-
+    
     //MARK: - 다이어리 작성자 프로필
     var diaryUserProfile: some View {
         HStack {
@@ -238,11 +238,11 @@ private extension WeeklyDiaryDetailView {
                     .frame(width: 30, height: 30)
                     .clipShape(Circle())
             }
-
+            
             Text(item.diary.diaryUserNickName)
                 .font(.callout)
             Spacer()
-
+            
             //MARK: -...버튼 글 쓴 유저일때만 ...나타나도록
             if item.diary.uid == Auth.auth().currentUser?.uid {
                 alertMenu
@@ -250,17 +250,17 @@ private extension WeeklyDiaryDetailView {
             else {
                 reportAlertMenu
             }
-
+            
         }
         .padding(.horizontal, UIScreen.screenWidth * 0.03)
     }
-
+    
     // MARK: - 다이어리 공개 여부를 나타내는 이미지
     private var isPrivateImage: some View {
         Image(systemName: "lock")
             .foregroundColor(Color.secondary)
     }
-
+    
     //MARK: - Alert Menu 버튼
     var alertMenu: some View {
         //MARK: - ... 버튼입니다.
@@ -270,14 +270,14 @@ private extension WeeklyDiaryDetailView {
             } label: {
                 Text("수정하기")
             }
-
-
+            
+            
             Button {
                 isShowingDeleteAlert = true
             } label: {
                 Text("삭제하기")
             }
-
+            
         } label: {
             Image(systemName: "ellipsis")
                 .font(.title3)
@@ -294,19 +294,19 @@ private extension WeeklyDiaryDetailView {
             }
         }
     }
-
+    
     //MARK: - 유저 신고 / 차단 버튼
     var reportAlertMenu: some View {
-
+        
         //MARK: - ... 버튼입니다.
-
+        
         Button(action: {
             isShowingConfirmationDialog.toggle()
         }) {
             Image(systemName: "ellipsis")
                 .font(.title3)
                 .frame(width: 30,height: 30)
-
+            
         }
         .confirmationDialog("알림", isPresented: $isShowingConfirmationDialog, titleVisibility: .hidden, actions: {
             Button("게시물 신고하기", role: .destructive) {
@@ -320,21 +320,21 @@ private extension WeeklyDiaryDetailView {
             Button("취소", role: .cancel) {}
         })
     }
-
-
+    
+    
     // MARK: -View : 다이어리 사진
     var diaryDetailImage: some View {
-            ForEach(item.diary.diaryImageURLs, id: \.self) { url in
-                    WebImage(url: URL(string: url))
-                        .resizable()
-                        .placeholder {
-                            Rectangle().foregroundColor(.gray)
-                        }
-                        .scaledToFill()
-                        .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
-                        .clipped()
+        ForEach(item.diary.diaryImageURLs, id: \.self) { url in
+            WebImage(url: URL(string: url))
+                .resizable()
+                .placeholder {
+                    Rectangle().foregroundColor(.gray)
                 }
-            .pinchZoom()
+                .scaledToFill()
+                .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
+                .clipped()
+        }
+        .pinchZoom()
         .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
         .tabViewStyle(PageTabViewStyle())
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
@@ -351,10 +351,10 @@ private extension WeeklyDiaryDetailView {
             //TODO: -함수 업데이트되면 넣기
             diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
         }
-//        .pinchZoomAndDrag()
-
+        //        .pinchZoomAndDrag()
+        
     }
-
+    
     // MARK: -View : 다이어리 제목
     var diaryDetailTitle: some View {
         Text(item.diary.diaryTitle)
@@ -363,22 +363,22 @@ private extension WeeklyDiaryDetailView {
             .padding(.bottom, 5)
             .multilineTextAlignment(.leading)
     }
-
+    
     // MARK: -View : 다이어리 내용
     var diaryDetailContent: some View {
         Text(item.diary.diaryContent)
             .multilineTextAlignment(.leading)
             .padding(.bottom, 25)
     }
-
+    
     //MARK: - 방문한 캠핑장 링크
     var diaryCampingLink: some View {
-
+        
         HStack {
             NavigationLink(destination: CampingSpotDetailView(campingSpot: campingSpotStore.campingSpotList.first ?? campingSpotStore.campingSpot), tag: 1, selection: $tag) {
                 EmptyView()
             }
-
+            
             Button {
                 self.tag = 1
                 submit()
@@ -388,7 +388,7 @@ private extension WeeklyDiaryDetailView {
                         .resizable()
                         .frame(width: 60, height: 60)
                         .padding(.trailing, 5)
-
+                    
                     VStack(alignment: .leading, spacing: 3) {
                         Text(campingSpotStore.campingSpotList.first?.facltNm ?? "")
                             .multilineTextAlignment(.leading)
@@ -402,13 +402,10 @@ private extension WeeklyDiaryDetailView {
                         .foregroundColor(.secondary)
                     }
                     .foregroundColor(.bcBlack)
-
-                    HStack {
-                            Text("자세히 보기")
-                            Image(systemName: "chevron.right.2")
-                    }
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
+                    
+                    Image(systemName: "chevron.right.2")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
                 }
                 .padding(10)
                 .overlay(
@@ -421,9 +418,9 @@ private extension WeeklyDiaryDetailView {
             .foregroundColor(.clear)
         }
     }
-
-
-
+    
+    
+    
     //MARK: - 좋아요, 댓글, 타임스탬프
     var diaryDetailInfo: some View {
         HStack {
@@ -439,7 +436,7 @@ private extension WeeklyDiaryDetailView {
                 diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
             } label: {
                 Image(systemName: diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? "flame.fill" : "flame")
-
+                
                     .foregroundColor(diaryLikeStore.diaryLikeList.contains(wholeAuthStore.currentUser?.uid ?? "") ? .red : .secondary)
             }
             Text("\(diaryLikeStore.diaryLikeList.count)")
@@ -447,8 +444,8 @@ private extension WeeklyDiaryDetailView {
                 .foregroundColor(.secondary)
                 .padding(.leading, -2)
                 .frame(width: 20, alignment: .leading)
-
-
+            
+            
             Button {
                 inputFocused = true
             } label: {
@@ -456,15 +453,15 @@ private extension WeeklyDiaryDetailView {
                     .font(.callout)
                     .foregroundColor(.secondary)
             }
-
-
-
+            
+            
+            
             Text("\(commentStore.commentList.count)")
                 .font(.callout)
                 .foregroundColor(.secondary)
                 .frame(width: 20, alignment: .leading)
                 .padding(.leading, -2)
-
+            
             Spacer()
             //작성 경과시간
             Text("\(TimestampToString.dateString(item.diary.diaryCreatedDate)) 전")
@@ -479,7 +476,7 @@ private extension WeeklyDiaryDetailView {
             ])
         }
     }
-
+    
     //MARK: - 키보드 dismiss 함수입니다.
     func submit() {
         resignKeyboard()

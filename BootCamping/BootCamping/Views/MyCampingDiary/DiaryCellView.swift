@@ -23,7 +23,6 @@ struct DiaryCellView: View {
     
     
     @State var isBookmarked: Bool = false
-    @State private var isShowingEdit = false
     
     //선택한 다이어리 정보 변수입니다.
     var item: UserInfoDiary
@@ -127,9 +126,14 @@ struct DiaryCellView: View {
             }
         }
         //editView 모달로 변경
-        .sheet(isPresented: $isShowingEdit) {
-            DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", item: item, selectedDate: item.diary.diaryVisitedDate)
-        }
+//        .sheet(isPresented: $isShowingEdit) {
+//            DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", item: item, selectedDate: item.diary.diaryVisitedDate)
+//
+//        }
+//        .fullScreenCover(isPresented: $isShowingEdit) {
+//            DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", item: item, selectedDate: item.diary.diaryVisitedDate)
+//
+//        }
         .padding(.top, UIScreen.screenWidth * 0.03)
         .onAppear {
             commentStore.readCommentsCombine(diaryId: item.diary.id)
@@ -227,18 +231,18 @@ private extension DiaryCellView {
         //MARK: - ... 버튼입니다.
         Menu {
             //기존 버튼
-//            NavigationLink {
-//                DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", item: item, selectedDate: item.diary.diaryVisitedDate)
-//            } label: {
-//                Text("수정하기")
-//            }
-            
-            //Edit View 모달로 변경
-            Button {
-                self.isShowingEdit = true
+            NavigationLink {
+                DiaryEditView(diaryTitle: item.diary.diaryTitle, diaryIsPrivate: item.diary.diaryIsPrivate, diaryContent: item.diary.diaryContent, campingSpotItem: diaryCampingSpot.first ?? campingSpotStore.campingSpot, campingSpot: diaryCampingSpot.first?.facltNm ?? "", item: item, selectedDate: item.diary.diaryVisitedDate)
             } label: {
                 Text("수정하기")
             }
+            
+//            //Edit View 모달로 변경하려면 이거 쓰기
+//            Button {
+//                self.isShowingEdit.toggle()
+//            } label: {
+//                Text("수정하기")
+//            }
 
             
             Button {

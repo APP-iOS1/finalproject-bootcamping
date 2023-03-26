@@ -18,6 +18,11 @@ enum CurrentField{
 }
 
 struct DiaryAddView: View {
+    //풀스크린커버
+    @Binding var isShowingAdd: Bool
+
+    
+    
     // 대표 이미지 말고 다른 이미지들도 보는 버튼 bool 값
     @State var isImageView = false
     
@@ -145,13 +150,17 @@ struct DiaryAddView: View {
                         }
                     }
                     
-                    .navigationTitle(Text("캠핑 노트 쓰기"))
+//                    .navigationTitle(Text("캠핑 노트 쓰기"))
                     .onTapGesture {
                         inputFocused = false
                     }
                     .disableAutocorrection(true)            // 자동 수정 비활성화
                     .textInputAutocapitalization(.never)    // 첫 글자 대문자 비활성화
                     .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Text("캠핑 노트 쓰기")
+                                .font(.title2.bold())
+                        }
                         ToolbarItemGroup(placement: .keyboard) {
                             Spacer()
                             Button {
@@ -162,8 +171,21 @@ struct DiaryAddView: View {
                                 Image(systemName: "keyboard.chevron.compact.down")
                             }
                         }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button {
+                                isShowingAdd.toggle()
+                            } label: {
+                                Text("닫기")
+                                    .font(.title2.bold())
+                            }
+
+                        }
                     }
-                    .task {
+//                    .task {
+//                        campingSpot = campingSpotItem.facltNm
+//                        locationInfo = campingSpotItem.contentId
+//                    }
+                    .onChange(of: campingSpotItem) { _ in
                         campingSpot = campingSpotItem.facltNm
                         locationInfo = campingSpotItem.contentId
                     }
@@ -175,7 +197,9 @@ struct DiaryAddView: View {
             }
             .sheet(isPresented: $isImageView) { // 대표이미지 말고 다른 이미지도 볼 수 있는 시트
                 DiaryAddDetailImageView(diaryImages: $diaryImages, isImageView: $isImageView)
-        }
+                    .presentationDetents([.large])
+                    .presentationDragIndicator(.visible)
+            }
         }
     }
 }

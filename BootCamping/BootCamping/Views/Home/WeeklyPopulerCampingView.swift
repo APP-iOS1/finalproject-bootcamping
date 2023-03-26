@@ -22,7 +22,7 @@ struct WeeklyPopulerCampingView: View {
                     // 차단한 유저의 글을 제외하고 보여준다
                     ForEach(diaryStore.popularDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }, id: \.self) { item in
                         NavigationLink {
-                            DiaryDetailView(item: item)
+                            WeeklyDiaryDetailView(item: item)
                         } label: {
                             ZStack(alignment: .topLeading) {
                                 PhotoCardFrame(image: item.diary.diaryImageURLs[0])
@@ -36,6 +36,9 @@ struct WeeklyPopulerCampingView: View {
                     }
                 }
             }
+            
+            Spacer()
+            Divider()
         }
         .onChange(of: diaryStore.createFinshed) { _ in
             diaryStore.firstGetMyDiaryCombine()

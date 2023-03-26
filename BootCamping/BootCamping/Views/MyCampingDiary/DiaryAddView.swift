@@ -176,7 +176,6 @@ struct DiaryAddView: View {
                                 isShowingAdd.toggle()
                             } label: {
                                 Text("닫기")
-                                    .font(.title2.bold())
                             }
 
                         }

@@ -88,13 +88,18 @@ struct DiaryCellView: View {
                         diaryTitle
                     }
                     
-                    if isMore {
+                    if isMore && !item.diary.diaryAddress.isEmpty {
                         diaryFullContent
-                        //TODO: -캠핑장 정보 네모 버튼. 없애고 피드백 후 수정 예정
-                        if !campingSpotStore.campingSpotList.isEmpty {
+                        NavigationLink {
+                            CampingSpotDetailView(campingSpot: campingSpotStore.campingSpotList.first ?? campingSpotStore.campingSpot)
+                        } label: {
                             diaryCampingLink
                                 .padding(.bottom, 10)
                         }
+                    } else if !isMore && item.diary.diaryAddress.isEmpty && item.diary.diaryContent.count < 35 {
+                        diaryFullContent
+                    } else if isMore {
+                        diaryFullContent
                     } else {
                         diaryLimitContent
                     }
@@ -333,12 +338,17 @@ private extension DiaryCellView {
                 HStack {
                     Text("방문일자: \(item.diary.diaryVisitedDate.getKoreanDate())")
                         .padding(.vertical, 2)
-                    Spacer()
                 }
                 .font(.footnote)
                 .foregroundColor(.secondary)
             }
             .foregroundColor(.bcBlack)
+            
+            Spacer()
+            
+            Image(systemName: "chevron.right.2")
+                .font(.footnote)
+                .foregroundColor(.secondary)
             
         }
         .padding(10)

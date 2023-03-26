@@ -67,8 +67,8 @@ struct ContentView: View {
                             Label("마이 페이지", systemImage: "person")
                         }.tag(TabViewScreen.four) 
                     }
-                    .toolbar(.visible, for: .tabBar)
-                    .toolbarBackground(Color.bcWhite, for: .tabBar)
+//                    .toolbar(.visible, for: .tabBar)
+//                    .toolbarBackground(Color.bcWhite, for: .tabBar)
                     .onAppear {
                         if wholeAuthStore.currentUser != nil {
                             diaryStore.firstGetMyDiaryCombine()
@@ -85,6 +85,7 @@ struct ContentView: View {
                         }
                     }
                 }
+                
             } else {
                 LoginView()
                     .task {

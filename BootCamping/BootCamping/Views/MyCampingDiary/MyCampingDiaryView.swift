@@ -87,7 +87,7 @@ struct MyCampingDiaryView: View {
                     self.isShowingAdd = true
                 } label: {
                     Image(systemName: "square.and.pencil")
-                        .font(.title2.bold())
+                        .font(.title3.bold())
                 }
 //                .sheet(isPresented: self.$isShowingAdd) {
 //                    DiaryAddView()

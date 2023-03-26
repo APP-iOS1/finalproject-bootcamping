@@ -72,7 +72,7 @@ struct MyCampingDiaryView: View {
         }
         .toolbar{
             ToolbarItem(placement: .navigationBarLeading) {
-                Text("My Camping Note")
+                Text("내 캠핑노트")
                     .font(.title2.bold())
             }
             ToolbarItem(placement: .navigationBarTrailing) {

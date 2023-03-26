@@ -89,7 +89,7 @@ struct SearchCampingSpotView: View {
             }
             .toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Text("Search")
+                    Text("캠핑장 검색")
                         .font(.title2.bold())
                 }
                 if isSearching {

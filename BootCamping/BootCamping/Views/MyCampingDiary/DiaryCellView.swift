@@ -156,7 +156,9 @@ private extension DiaryCellView {
             ForEach(item.diary.diaryImageURLs, id: \.self) { url in
                 WebImage(url: URL(string: url))
                     .resizable()
-                    .placeholder(Image("noImage"))
+                    .placeholder {
+                        Rectangle().foregroundColor(.secondary) .skeletonAnimation()
+                    }
                     .indicator(.activity)
                     .transition(.fade(duration: 0.5))
                     .scaledToFill()
@@ -190,9 +192,12 @@ private extension DiaryCellView {
             if item.user.profileImageURL != "" {
                 WebImage(url: URL(string: item.user.profileImageURL))
                     .resizable()
-                    .placeholder(Image("noImage"))
+                    .placeholder {
+                        Rectangle().foregroundColor(.secondary) .skeletonAnimation()
+                    }
                     .indicator(.activity)
-                    .transition(.fade(duration: 0.5))                    .scaledToFill()
+                    .transition(.fade(duration: 0.5))
+                    .scaledToFill()
                     .frame(width: 30, height: 30)
                     .clipShape(Circle())
             } else {

@@ -224,7 +224,9 @@ private extension WeeklyDiaryDetailView {
             if item.user.profileImageURL != "" {
                 WebImage(url: URL(string: item.user.profileImageURL))
                     .resizable()
-                    .placeholder(Image("noImage"))
+                    .placeholder {
+                        Rectangle().foregroundColor(.secondary) .skeletonAnimation()
+                    }
                     .indicator(.activity)
                     .transition(.fade(duration: 0.5))
                     .scaledToFill()
@@ -327,7 +329,9 @@ private extension WeeklyDiaryDetailView {
         ForEach(item.diary.diaryImageURLs, id: \.self) { url in
             WebImage(url: URL(string: url))
                 .resizable()
-                .placeholder(Image("noImage"))
+                .placeholder {
+                    Rectangle().foregroundColor(.secondary) .skeletonAnimation()
+                }
                 .indicator(.activity)
                 .transition(.fade(duration: 0.5))
                 .scaledToFill()

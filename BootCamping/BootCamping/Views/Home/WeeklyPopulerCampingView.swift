@@ -57,6 +57,9 @@ struct PhotoCardFrame: View {
     var body: some View {
         WebImage(url: URL(string: image))
             .resizable()
+            .placeholder(Image("noImage"))
+            .indicator(.activity)
+            .transition(.fade(duration: 0.5))
             .scaledToFill()
             .frame(width: UIScreen.screenWidth * 0.75, height: UIScreen.screenHeight * 0.7)
             .clipped()

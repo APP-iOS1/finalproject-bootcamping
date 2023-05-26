@@ -52,7 +52,6 @@ private extension HomeView {
                     }
                 }
             }
-            
         }
     }
     

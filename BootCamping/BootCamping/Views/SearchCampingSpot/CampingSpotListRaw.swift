@@ -25,9 +25,10 @@ struct CampingSpotListRaw: View {
                 WebImage(url: URL(string: item.firstImageUrl))
                     .resizable()
                     .placeholder {
-                        ProgressView()
-                            .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
+                        Rectangle().foregroundColor(.secondary) .skeletonAnimation()
                     }
+                    .indicator(.activity)
+                    .transition(.fade(duration: 0.5))
                     .aspectRatio(contentMode: .fill)
                     .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                     .clipped()

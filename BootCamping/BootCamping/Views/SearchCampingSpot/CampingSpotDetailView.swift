@@ -45,8 +45,9 @@ struct CampingSpotDetailView: View {
                     WebImage(url: URL(string: campingSpot.firstImageUrl == "" ? CampingSpotStore().noImageURL : campingSpot.firstImageUrl))
                         .resizable()
                         .placeholder {
-                            Rectangle().foregroundColor(.secondary)
+                            Rectangle().foregroundColor(.secondary) .skeletonAnimation()
                         }
+                        .indicator(.activity)
                         .transition(.fade(duration: 0.5))
                         .aspectRatio(contentMode: .fill)
                         .frame(width: UIScreen.screenWidth)

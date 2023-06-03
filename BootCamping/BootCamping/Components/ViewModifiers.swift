@@ -46,3 +46,78 @@ struct LogInAlertModifier : ViewModifier {
             }
     }
 }
+
+
+//MARK: - 스켈레톤 로딩뷰
+//https://github.com/markiv/SwiftUI-Shimmer 수정
+
+public struct Shimmer: ViewModifier {
+    let animation: Animation
+    @State private var phase: CGFloat = 0
+
+    public init(animation: Animation = Self.defaultAnimation) {
+        self.animation = animation
+    }
+
+    public static let defaultAnimation = Animation.linear(duration: 1.5).repeatForever(autoreverses: false)
+
+    public init(duration: Double = 1.5, bounce: Bool = false, delay: Double = 0) {
+        self.animation = .linear(duration: duration)
+            .repeatForever(autoreverses: bounce)
+            .delay(delay)
+    }
+
+    public func body(content: Content) -> some View {
+        content
+            .modifier(
+                AnimatedMask(phase: phase).animation(animation)
+            )
+            .onAppear { phase = 0.8 }
+    }
+
+    struct AnimatedMask: AnimatableModifier {
+        var phase: CGFloat = 0
+
+        var animatableData: CGFloat {
+            get { phase }
+            set { phase = newValue }
+        }
+
+        func body(content: Content) -> some View {
+            content
+                .mask(GradientMask(phase: phase).scaleEffect(3))
+        }
+    }
+
+    struct GradientMask: View {
+        let phase: CGFloat
+        let centerColor = Color.gray.opacity(0.5)
+        let edgeColor = Color.gray.opacity(0.3)
+        @Environment(\.layoutDirection) private var layoutDirection
+
+        var body: some View {
+            let isRightToLeft = layoutDirection == .rightToLeft
+            LinearGradient(
+                gradient: Gradient(stops: [
+                    .init(color: edgeColor, location: phase),
+                    .init(color: centerColor, location: phase + 0.1),
+                    .init(color: edgeColor, location: phase + 0.2)
+                ]),
+                startPoint: isRightToLeft ? .bottomTrailing : .topLeading,
+                endPoint: isRightToLeft ? .topLeading : .bottomTrailing
+            )
+        }
+    }
+}
+
+public extension View {
+    @ViewBuilder func skeletonAnimation(
+        active: Bool = true, duration: Double = 1.5, bounce: Bool = false, delay: Double = 0
+    ) -> some View {
+        if active {
+            modifier(Shimmer(duration: duration, bounce: bounce, delay: delay))
+        } else {
+            self
+        }
+    }
+}

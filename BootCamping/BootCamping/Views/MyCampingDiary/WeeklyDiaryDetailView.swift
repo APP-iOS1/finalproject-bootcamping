@@ -225,8 +225,10 @@ private extension WeeklyDiaryDetailView {
                 WebImage(url: URL(string: item.user.profileImageURL))
                     .resizable()
                     .placeholder {
-                        Rectangle().foregroundColor(.gray)
+                        Rectangle().foregroundColor(.secondary) .skeletonAnimation()
                     }
+                    .indicator(.activity)
+                    .transition(.fade(duration: 0.5))
                     .scaledToFill()
                     .frame(width: 30, height: 30)
                     .clipShape(Circle())
@@ -328,8 +330,10 @@ private extension WeeklyDiaryDetailView {
             WebImage(url: URL(string: url))
                 .resizable()
                 .placeholder {
-                    Rectangle().foregroundColor(.gray)
+                    Rectangle().foregroundColor(.secondary) .skeletonAnimation()
                 }
+                .indicator(.activity)
+                .transition(.fade(duration: 0.5))
                 .scaledToFill()
                 .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth)
                 .clipped()

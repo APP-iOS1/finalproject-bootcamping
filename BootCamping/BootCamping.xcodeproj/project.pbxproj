@@ -67,7 +67,6 @@
 		790B62E2297A28E00048C110 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E1297A28E00048C110 /* KakaoSDK */; };
 		790B62E4297A28E00048C110 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E3297A28E00048C110 /* KakaoSDKAuth */; };
 		790B62E6297A28E00048C110 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E5297A28E00048C110 /* KakaoSDKCommon */; };
-		790B62E8297A28E00048C110 /* KakaoSDKCommonCore in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E7297A28E00048C110 /* KakaoSDKCommonCore */; };
 		790B62EA297A28E00048C110 /* KakaoSDKNavi in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62E9297A28E00048C110 /* KakaoSDKNavi */; };
 		790B62EC297A28E00048C110 /* KakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62EB297A28E00048C110 /* KakaoSDKShare */; };
 		790B62EE297A28E00048C110 /* KakaoSDKStory in Frameworks */ = {isa = PBXBuildFile; productRef = 790B62ED297A28E00048C110 /* KakaoSDKStory */; };
@@ -239,7 +238,6 @@
 				6E996E81297A4E290085D914 /* GoogleSignIn in Frameworks */,
 				790B62E2297A28E00048C110 /* KakaoSDK in Frameworks */,
 				7C3FC49729877C7200E96A01 /* SDWebImageSwiftUI in Frameworks */,
-				790B62E8297A28E00048C110 /* KakaoSDKCommonCore in Frameworks */,
 				6E11BE2D298C8FD60019E963 /* Lottie in Frameworks */,
 				790B62EE297A28E00048C110 /* KakaoSDKStory in Frameworks */,
 				790B62EA297A28E00048C110 /* KakaoSDKNavi in Frameworks */,
@@ -568,7 +566,6 @@
 				790B62E1297A28E00048C110 /* KakaoSDK */,
 				790B62E3297A28E00048C110 /* KakaoSDKAuth */,
 				790B62E5297A28E00048C110 /* KakaoSDKCommon */,
-				790B62E7297A28E00048C110 /* KakaoSDKCommonCore */,
 				790B62E9297A28E00048C110 /* KakaoSDKNavi */,
 				790B62EB297A28E00048C110 /* KakaoSDKShare */,
 				790B62ED297A28E00048C110 /* KakaoSDKStory */,
@@ -1109,11 +1106,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKCommon;
-		};
-		790B62E7297A28E00048C110 /* KakaoSDKCommonCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 790B62E0297A28E00048C110 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKCommonCore;
 		};
 		790B62E9297A28E00048C110 /* KakaoSDKNavi */ = {
 			isa = XCSwiftPackageProductDependency;

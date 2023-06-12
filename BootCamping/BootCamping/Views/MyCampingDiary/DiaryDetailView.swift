@@ -188,7 +188,9 @@ private extension DiaryDetailView {
                 WebImage(url: URL(string: item.user.profileImageURL))
                     .resizable()
                     .placeholder {
-                        Rectangle().foregroundColor(.secondary) .skeletonAnimation()
+                        Rectangle()
+                            .foregroundColor(.secondary)
+                            .skeletonAnimation()
                     }
                     .indicator(.activity)
                     .transition(.fade(duration: 0.5))

@@ -225,7 +225,9 @@ private extension WeeklyDiaryDetailView {
                 WebImage(url: URL(string: item.user.profileImageURL))
                     .resizable()
                     .placeholder {
-                        Rectangle().foregroundColor(.secondary) .skeletonAnimation()
+                        Rectangle()
+                            .foregroundColor(.secondary)
+                            .skeletonAnimation()
                     }
                     .indicator(.activity)
                     .transition(.fade(duration: 0.5))
@@ -330,7 +332,9 @@ private extension WeeklyDiaryDetailView {
             WebImage(url: URL(string: url))
                 .resizable()
                 .placeholder {
-                    Rectangle().foregroundColor(.secondary) .skeletonAnimation()
+                    Rectangle()
+                        .foregroundColor(.secondary)
+                        .skeletonAnimation()
                 }
                 .indicator(.activity)
                 .transition(.fade(duration: 0.5))
@@ -352,10 +356,8 @@ private extension WeeklyDiaryDetailView {
                 //탭틱
                 UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
             }
-            //TODO: -함수 업데이트되면 넣기
             diaryLikeStore.readDiaryLikeCombine(diaryId: item.diary.id)
         }
-        //        .pinchZoomAndDrag()
         
     }
     

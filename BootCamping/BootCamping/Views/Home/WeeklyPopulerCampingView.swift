@@ -58,7 +58,9 @@ struct PhotoCardFrame: View {
         WebImage(url: URL(string: image))
             .resizable()
             .placeholder {
-                Rectangle().foregroundColor(.secondary) .skeletonAnimation()
+                Rectangle()
+                    .foregroundColor(.secondary)
+                    .skeletonAnimation()
             }
             .indicator(.activity)
             .transition(.fade(duration: 0.5))

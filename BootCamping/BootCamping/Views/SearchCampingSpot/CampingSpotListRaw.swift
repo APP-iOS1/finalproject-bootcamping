@@ -25,7 +25,9 @@ struct CampingSpotListRaw: View {
                 WebImage(url: URL(string: item.firstImageUrl))
                     .resizable()
                     .placeholder {
-                        Rectangle().foregroundColor(.secondary) .skeletonAnimation()
+                        Rectangle()
+                            .foregroundColor(.secondary)
+                            .skeletonAnimation()
                     }
                     .indicator(.activity)
                     .transition(.fade(duration: 0.5))

@@ -667,7 +667,7 @@ struct FirebaseDiaryService {
 
     func mostLikedGetDiarysService() -> AnyPublisher<[UserInfoDiary], Error> {
         Future<[UserInfoDiary], Error> { promise in
-            database.collection("Diarys").whereField("diaryIsPrivate", isEqualTo: false).whereField("diaryCreatedDate", isGreaterThan: Timestamp(date: Date(timeIntervalSinceNow: -180 * 24 * 60 * 60))).getDocuments { snapshot, error in
+            database.collection("Diarys").whereField("diaryIsPrivate", isEqualTo: false).whereField("diaryCreatedDate", isGreaterThan: Timestamp(date: Date(timeIntervalSinceNow: -360 * 24 * 60 * 60))).getDocuments { snapshot, error in
                 if let error = error {
                     print(error)
                 }

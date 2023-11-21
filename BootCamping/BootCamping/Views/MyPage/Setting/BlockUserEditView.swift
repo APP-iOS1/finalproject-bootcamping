@@ -19,7 +19,7 @@ struct BlockUserEditView: View {
     var body: some View {
         List {
             Section {
-                if let blockedUserList = (wholeAuthStore.userList.filter{ blockedUIDs.contains($0.id) }) {
+                let blockedUserList = (wholeAuthStore.userList.filter{ blockedUIDs.contains($0.id) })
                     if !blockedUserList.isEmpty{
                         ForEach(Array(zip(blockedUserList.indices, blockedUserList)), id: \.0) { index, blockedUser in
                             HStack {
@@ -43,7 +43,7 @@ struct BlockUserEditView: View {
                             }
                         }
                     }
-                }
+                
             } header: {
                 Text("차단한 사용자 닉네임")
             } footer: {

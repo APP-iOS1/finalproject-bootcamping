@@ -10,21 +10,33 @@ import AlertToast
 
 struct DiaryEmptyView: View {
     @EnvironmentObject var diaryStore: DiaryStore
+    @State private var isShowingAdd = false
+    
     var body: some View {
         ZStack {
             VStack {
                 Spacer()
                 Image(systemName: "tray")
                     .font(.largeTitle)
-                Text("내 캠핑일기가 아직 없어요.")
+                Text("내 캠핑 노트가 아직 없어요.")
                     .font(.title3)
                     .padding()
                     .padding(.bottom, 50)
                 
-                NavigationLink (destination: DiaryAddView()){
-                    Text("캠핑일기 작성하러 가기")
+                Button {
+                    self.isShowingAdd = true
+                } label: {
+                    Text("캠핑 노트 작성하러 가기")
                         .modifier(GreenButtonModifier())
                 }
+                .sheet(isPresented: self.$isShowingAdd) {
+                    DiaryAddView(isShowingAdd: $isShowingAdd)
+                }
+                
+//                NavigationLink (destination: DiaryAddView()){
+//                    Text("캠핑 노트 작성하러 가기")
+//                        .modifier(GreenButtonModifier())
+//                }
                 Spacer()
             }
             diaryStore.isProcessing ? Color.black.opacity(0.3) : Color.clear

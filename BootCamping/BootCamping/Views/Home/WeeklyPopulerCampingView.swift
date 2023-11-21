@@ -17,12 +17,14 @@ struct WeeklyPopulerCampingView: View {
     
     var body: some View {
         VStack {
+            Spacer()
+            
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     // 차단한 유저의 글을 제외하고 보여준다
                     ForEach(diaryStore.popularDiaryList.filter{ !wholeAuthStore.currnetUserInfo!.blockedUser.contains($0.diary.uid) }, id: \.self) { item in
                         NavigationLink {
-                            DiaryDetailView(item: item)
+                            WeeklyDiaryDetailView(item: item)
                         } label: {
                             ZStack(alignment: .topLeading) {
                                 PhotoCardFrame(image: item.diary.diaryImageURLs[0])
@@ -36,6 +38,9 @@ struct WeeklyPopulerCampingView: View {
                     }
                 }
             }
+            
+            Spacer()
+            Divider()
         }
         .onChange(of: diaryStore.createFinshed) { _ in
             diaryStore.firstGetMyDiaryCombine()
@@ -52,6 +57,13 @@ struct PhotoCardFrame: View {
     var body: some View {
         WebImage(url: URL(string: image))
             .resizable()
+            .placeholder {
+                Rectangle()
+                    .foregroundColor(.secondary)
+                    .skeletonAnimation()
+            }
+            .indicator(.activity)
+            .transition(.fade(duration: 0.5))
             .scaledToFill()
             .frame(width: UIScreen.screenWidth * 0.75, height: UIScreen.screenHeight * 0.7)
             .clipped()
@@ -62,8 +74,8 @@ struct PhotoCardFrame: View {
                     Image(systemName: "chevron.right.2")
                 }
                 .shadow(radius: 10)
-                .foregroundColor(.bcWhite)
                 .font(.subheadline)
+                .foregroundColor(.white)
                 .kerning(-0.7)
                 .padding(20)
                 .padding(.bottom, 30)
@@ -87,11 +99,13 @@ struct PhotoMainStory: View {
                     .padding(.bottom, 0.01)
                     .padding(.top, 70)
                 
-                //TODO: -캠핑장 이름 연결
-                Text("\(campingSpotStore.campingSpotList.first?.facltNm ?? "")")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .padding(.bottom, UIScreen.screenHeight * 0.03)
+                //캠핑장 정보 있을때만 화면에 나옴
+                if campingSpotStore.campingSpotList.first?.facltNm != nil {
+                    Text("\(campingSpotStore.campingSpotList.first?.facltNm ?? "")")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .padding(.bottom, UIScreen.screenHeight * 0.03)
+                }
                 
                 Text(item.diaryTitle)
                     .font(.title)
@@ -107,7 +121,6 @@ struct PhotoMainStory: View {
                 }
                 .italic()
                 .font(.subheadline)
-                
             }
             .onAppear {
                 campingSpotStore.readCampingSpotListCombine(readDocument: ReadDocuments(campingSpotContenId: [item.diaryAddress]))

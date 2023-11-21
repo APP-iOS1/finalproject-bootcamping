@@ -18,6 +18,9 @@ enum CurrentField{
 }
 
 struct DiaryAddView: View {
+    //풀스크린커버
+    @Binding var isShowingAdd: Bool
+    
     // 대표 이미지 말고 다른 이미지들도 보는 버튼 bool 값
     @State var isImageView = false
     
@@ -60,120 +63,140 @@ struct DiaryAddView: View {
     @State var value: CGFloat = 0
     
     var body: some View {
-        ZStack {
-            ScrollViewReader { proxy in
-                VStack {
-                    ScrollView{
-                        VStack(alignment: .leading) {
-                            Group {
-                                imagePicker.id(top)
-                                Divider()
-                                addViewLocationInfo
-                                    .padding(.vertical, 10)
-                                Divider()
+        NavigationStack {
+            ZStack {
+                ScrollViewReader { proxy in
+                    VStack {
+                        ScrollView{
+                            VStack(alignment: .leading) {
+                                Group {
+                                    imagePicker.id(top)
+                                    Divider()
+                                    addViewLocationInfo
+                                        .padding(.vertical, 10)
+                                    Divider()
+                                    
+                                    addViewVisitDate
+                                    Divider()
+                                    
+                                    addViewIsPrivate
+                                    Divider()
+                                        .padding(.bottom, 10)
+                                }
+                                .font(.subheadline)
                                 
-                                addViewVisitDate
-                                Divider()
+                                // 제목
+                                TextField("제목을 입력해주세요(최대 20자)", text: $diaryTitle)
+                                    .font(.headline)
+                                    .padding(.vertical, 5)
+                                    .submitLabel(.next)
+                                    .onChange(of: diaryTitle) { newValue in             // 제목 20글자까지 가능
+                                        if newValue.count > 20 {
+                                            diaryTitle = String(newValue.prefix(20))
+                                        }
+                                    }
+                                    .focused($inputFocused)
+                                    .onSubmit{
+                                        activeState = .field2   // 키보드 다음 버튼 누르면 다음 텍스트필드로 이동
+                                        proxy.scrollTo(under, anchor: .bottom)
+                                    }
+                                    .onTapGesture {
+                                        withAnimation {
+                                            proxy.scrollTo(title, anchor: .bottom)
+                                        }
+                                    }
                                 
-                                addViewIsPrivate
                                 Divider()
-                                    .padding(.bottom, 10)
+                                EmptyView()
+                                    .id(title)
+                                
+                                // 노트 내용
+                                TextField("캠핑 노트를 작성해주세요", text: $diaryContent, axis: .vertical)
+                                    .frame(minHeight: UIScreen.screenHeight / 4, alignment: .top)
+                                    .lineLimit(10)
+                                    .focused($inputFocused)
+                                    .focused($activeState, equals: .field2)
+                                    .onChange(of: diaryContent.count, perform: { _ in
+                                        proxy.scrollTo(under, anchor: .bottom)
+                                    })
+                                
+                                
+                                Text("").id(under)
+                                
                             }
-                            .font(.subheadline)
-                            
-                            // 제목
-                            TextField("제목을 입력해주세요(최대 20자)", text: $diaryTitle)
-                                .font(.headline)
-                                .padding(.vertical, 5)
-                                .submitLabel(.next)
-                                .onChange(of: diaryTitle) { newValue in             // 제목 20글자까지 가능
-                                    if newValue.count > 20 {
-                                        diaryTitle = String(newValue.prefix(20))
-                                    }
-                                }
-                                .focused($inputFocused)
-                                .onSubmit{
-                                    activeState = .field2   // 키보드 다음 버튼 누르면 다음 텍스트필드로 이동
-                                    proxy.scrollTo(under, anchor: .bottom)
-                                }
-                                .onTapGesture {
-                                    withAnimation {
-                                        proxy.scrollTo(title, anchor: .bottom)
-                                    }
-                                }
-                            
-                            Divider()
-                            EmptyView()
-                                .id(title)
-                            
-                            // 일기 내용
-                            TextField("일기를 작성해주세요", text: $diaryContent, axis: .vertical)
-                                .frame(minHeight: UIScreen.screenHeight / 4, alignment: .top)
-                                .lineLimit(10)
-                                .focused($inputFocused)
-                                .focused($activeState, equals: .field2)
-                                .onChange(of: diaryContent.count, perform: { _ in
-                                    proxy.scrollTo(under, anchor: .bottom)
-                                })
-                            
-                            
-                            Text("").id(under)
-                            
+                            .padding(.horizontal, UIScreen.screenWidth*0.03)
                         }
-                        .padding(.horizontal, UIScreen.screenWidth*0.03)
+                        
+                        
+                        if inputFocused == false {
+                            withAnimation {
+                                addViewAddButton
+                                    .id(bottom)
+                            }
+                        }
+                    }
+                    .onAppear {
+                        NotificationCenter.default.addObserver(forName:UIResponder.keyboardWillShowNotification,object:
+                                                                nil, queue: .main) { (noti) in
+                            let value = noti.userInfo! [UIResponder .keyboardFrameEndUserInfoKey] as! CGRect
+                            let height = value.height
+                            self.value = height
+                        }
+                        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object:
+                                                                nil, queue: .main) { (noti) in
+                            self.value = 0
+                        }
                     }
                     
-                    
-                    if inputFocused == false {
-                        withAnimation {
-                            addViewAddButton
-                                .id(bottom)
+//                    .navigationTitle(Text("캠핑 노트 쓰기"))
+                    .onTapGesture {
+                        inputFocused = false
+                    }
+                    .disableAutocorrection(true)            // 자동 수정 비활성화
+                    .textInputAutocapitalization(.never)    // 첫 글자 대문자 비활성화
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Text("캠핑 노트 쓰기")
+                                .font(.title2.bold())
+                        }
+                        ToolbarItemGroup(placement: .keyboard) {
+                            Spacer()
+                            Button {
+                                submit()                // 키보드 내림
+                                inputFocused = false    // 작성완료 버튼 나옴
+                                proxy.scrollTo(top, anchor: .top)
+                            } label: {
+                                Image(systemName: "keyboard.chevron.compact.down")
+                            }
+                        }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button {
+                                isShowingAdd.toggle()
+                            } label: {
+                                Text("닫기")
+                            }
+
                         }
                     }
-                }
-                .onAppear {
-                    NotificationCenter.default.addObserver(forName:UIResponder.keyboardWillShowNotification,object:
-                                                            nil, queue: .main) { (noti) in
-                        let value = noti.userInfo! [UIResponder .keyboardFrameEndUserInfoKey] as! CGRect
-                        let height = value.height
-                        self.value = height
-                    }
-                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object:
-                                                            nil, queue: .main) { (noti) in
-                        self.value = 0
+//                    .task {
+//                        campingSpot = campingSpotItem.facltNm
+//                        locationInfo = campingSpotItem.contentId
+//                    }
+                    .onChange(of: campingSpotItem) { _ in
+                        campingSpot = campingSpotItem.facltNm
+                        locationInfo = campingSpotItem.contentId
                     }
                 }
-                
-                .navigationTitle(Text("캠핑 일기 쓰기"))
-                .onTapGesture {
-                    inputFocused = false
-                }
-                .disableAutocorrection(true)            // 자동 수정 비활성화
-                .textInputAutocapitalization(.never)    // 첫 글자 대문자 비활성화
-                .toolbar {
-                    ToolbarItemGroup(placement: .keyboard) {
-                        Spacer()
-                        Button {
-                            submit()                // 키보드 내림
-                            inputFocused = false    // 작성완료 버튼 나옴
-                            proxy.scrollTo(top, anchor: .top)
-                        } label: {
-                            Image(systemName: "keyboard.chevron.compact.down")
-                        }
-                    }
-                }
-                .task {
-                    campingSpot = campingSpotItem.facltNm
-                    locationInfo = campingSpotItem.contentId
-                }
+                isProcessing ? Color.black.opacity(0.3) : Color.clear
             }
-            isProcessing ? Color.black.opacity(0.3) : Color.clear
-        }
-        .toast(isPresenting: $isProcessing) {
-            AlertToast(displayMode: .alert, type: .loading)
-        }
-        .sheet(isPresented: $isImageView) { // 대표이미지 말고 다른 이미지도 볼 수 있는 시트
-            DiaryAddDetailImageView(diaryImages: $diaryImages, isImageView: $isImageView)
+            .toast(isPresenting: $isProcessing) {
+                AlertToast(displayMode: .alert, type: .loading)
+            }
+            .sheet(isPresented: $isImageView) { // 대표이미지 말고 다른 이미지도 볼 수 있는 시트
+                DiaryAddDetailImageView(diaryImages: $diaryImages, isImageView: $isImageView)
+                    .presentationDetents([.large])
+                    .presentationDragIndicator(.visible)
+            }
         }
     }
 }
@@ -341,7 +364,7 @@ private extension DiaryAddView {
                 UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                 dismiss()
             } label: {
-                Text(diaryTitle.isEmpty || diaryContent.isEmpty ? "내용을 작성해주세요" : "일기 쓰기")
+                Text(diaryTitle.isEmpty || diaryContent.isEmpty ? "내용을 작성해주세요" : "캠핑 노트 작성하기")
                     .frame(width: UIScreen.screenWidth * 0.9, height: UIScreen.screenHeight * 0.07) // 이거 밖에 있으면 글씨 부분만 버튼 적용됨
             }
             .font(.headline)

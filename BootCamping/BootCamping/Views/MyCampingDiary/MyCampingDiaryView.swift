@@ -24,6 +24,7 @@ struct MyCampingDiaryView: View {
     
     @State private var isShowingAcceptedToast = false
     @State private var isShowingBlockedToast = false
+    @State private var isShowingAdd = false
     
     var body: some View {
         ZStack {
@@ -63,8 +64,6 @@ struct MyCampingDiaryView: View {
             //다이어리 비어있을때 추가 화면
             DiaryEmptyView().zIndex(-1)
             diaryStore.isProcessing ? Color.black.opacity(0.3) : Color.clear
-
-            
         }
         .onChange(of: diaryStore.createFinshed) { _ in
             diaryStore.firstGetMyDiaryCombine()
@@ -73,17 +72,32 @@ struct MyCampingDiaryView: View {
         }
         .toolbar{
             ToolbarItem(placement: .navigationBarLeading) {
-                Text("My Camping Diary")
+                Text("내 캠핑노트")
                     .font(.title2.bold())
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink (destination: DiaryAddView())
-                {
-                    Image(systemName: "plus")
+                //기존 코드
+//                NavigationLink (destination: DiaryAddView())
+//                {
+//                    Image(systemName: "plus")
+//                }
+                
+                //Add View 모달로 변경
+                Button {
+                    self.isShowingAdd = true
+                } label: {
+                    Image(systemName: "square.and.pencil")
+                        .font(.title3.bold())
+                }
+//                .sheet(isPresented: self.$isShowingAdd) {
+//                    DiaryAddView()
+//                }
+                .fullScreenCover(isPresented: $isShowingAdd) {
+                    DiaryAddView(isShowingAdd: $isShowingAdd)
                 }
             }
         }
-        .alert("다이어리 만들기에 실패했습니다.. 다시 시도해 주세요.", isPresented: $diaryStore.isError) {
+        .alert("노트 만들기에 실패했습니다.. 다시 시도해 주세요.", isPresented: $diaryStore.isError) {
             Button("확인", role: .cancel) {
                 diaryStore.isError = false
             }

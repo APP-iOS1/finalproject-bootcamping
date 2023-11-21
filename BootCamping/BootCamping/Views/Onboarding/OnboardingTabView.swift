@@ -18,7 +18,7 @@ struct OnboardingTabView: View {
             // 페이지 2: 사진공유
             DescribePictureView()
             
-            // 페이지 3: 캠핑일기
+            // 페이지 3: 캠핑노트
             DescribeDiaryView(isFirstLaunching: $isFirstLaunching)
             
         }

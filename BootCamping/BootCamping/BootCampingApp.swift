@@ -12,6 +12,7 @@ import FirebaseAuth
 import GoogleSignIn
 import KakaoSDKCommon
 import KakaoSDKAuth
+import KakaoSDKUser
 
 //TODO: -구글, 카카오 로그인 연동 완료하기
 

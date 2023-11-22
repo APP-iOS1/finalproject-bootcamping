@@ -15,6 +15,9 @@ import GoogleSignIn
 import Combine
 import CryptoKit
 import AuthenticationServices
+import KakaoSDKCommon
+import KakaoSDKAuth
+import KakaoSDKUser
 
 // MARK: - 로그인 서비스 에러처리
 

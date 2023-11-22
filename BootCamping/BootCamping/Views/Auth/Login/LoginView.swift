@@ -10,6 +10,8 @@ import FirebaseAuth
 import FirebaseCore
 import GoogleSignIn
 import GoogleSignInSwift
+import KakaoSDKCommon
+import KakaoSDKAuth
 import KakaoSDKUser
 import SwiftUI
 import AuthenticationServices
